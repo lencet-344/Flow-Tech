@@ -13,6 +13,12 @@ return new class extends Migration
     {
         Schema::create('trades', function (Blueprint $table) {
             $table->increments("id");
+            $table->string("name",30);
+            $table->integer("quantity",20);
+            $table->decimal("price", 8, 2);
+            $table->string("type_product",30);
+            $table->date("date_trade");
+            $table->string("description",100);
             
             $table->timestamps();
         });
