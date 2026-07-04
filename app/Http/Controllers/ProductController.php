@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Product;
+use App\Http\Request\ProductRequest;
 
 class ProductController extends Controller
 {
@@ -11,7 +13,8 @@ class ProductController extends Controller
      */
     public function index()
     {
-        //
+        $products = Product::orderByDesc("id")->get();
+        return view("products.index", compact("products"));
     }
 
     /**
@@ -19,15 +22,17 @@ class ProductController extends Controller
      */
     public function create()
     {
-        //
+        $products = new Product::all();
+        return view("products.create", compact("products"));
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(ProductRequest $request)
     {
-        //
+        Product::create($request->validated());
+        return redirect()->route("products.index")->with("success", "Producto a sido creado correctamente.");
     }
 
     /**
@@ -35,7 +40,8 @@ class ProductController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $product = Product::findOrFail($id);
+        return view("products.show", compact("product"));
     }
 
     /**
@@ -43,22 +49,27 @@ class ProductController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $product = Product::findOrFail($id);
+        return view("products.edit", compact("product"));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(ProductRequest $request, Product $product)
     {
-        //
+        $product->update($request->validated());
+        return redirect()->route("products.index")->with("success", "Producto a sido actualizado correctamente.");
     }
+
 
     /**
      * Remove the specified resource from storage.
      */
     public function destroy(string $id)
     {
-        //
+        $product = Product::findOrFail($id);
+        $product->delete();
+        return redirect()->route("products.index")->with("success", "Producto a sido eliminado correctamente.");
     }
 }
