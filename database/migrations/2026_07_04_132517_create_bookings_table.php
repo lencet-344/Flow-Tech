@@ -18,7 +18,10 @@ return new class extends Migration
             $table->decimal("deposit_amount", 8, 2);
             $table->string("payment_method",30);
             $table->string("special_requests",100);
-            
+
+            $table->integer("supplier_id")->unsigned();
+            $table->foreign("supplier_id")->references("id")->on("suppliers")->onDelete("cascade")->onUpdate("cascade");
+
             $table->timestamps();
         });
     }

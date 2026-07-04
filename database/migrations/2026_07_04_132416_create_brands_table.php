@@ -18,7 +18,10 @@ return new class extends Migration
             $table->string("country_origin",30);
             $table->string("industry",30);
             $table->string("description",100);
-            
+
+            $table->integer("product_id")->unsigned();
+            $table->foreign("product_id")->references("id")->on("products")->onDelete("cascade")->onUpdate("cascade");
+
             $table->timestamps();
         });
     }

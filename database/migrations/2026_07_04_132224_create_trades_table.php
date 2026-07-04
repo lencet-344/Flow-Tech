@@ -19,7 +19,11 @@ return new class extends Migration
             $table->string("type_product",30);
             $table->date("date_trade");
             $table->string("description",100);
-            
+
+            $table->integer("product_id")->unsigned();
+            $table->foreign("product_id")->references("id")->on("products")->onDelete("cascade")->onUpdate("cascade");
+
+
             $table->timestamps();
         });
     }
