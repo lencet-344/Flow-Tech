@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Http\Request\CompanyRequest;
+use App\Models\Company;
+
 
 class CompanyController extends Controller
 {
@@ -11,7 +14,8 @@ class CompanyController extends Controller
      */
     public function index()
     {
-        //
+        $companies = Company::orderByDesc("id")->get();
+        return view("companies.index", compact("companies"));
     }
 
     /**
@@ -19,15 +23,17 @@ class CompanyController extends Controller
      */
     public function create()
     {
-        //
+        $companies = new Company::all();
+        return view("companies.create", compact("companies"));
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(CompanyRequest $request)
     {
-        //
+        Company::create($request->validated());
+        return redirect()->route("companies.index")->with("success", "Empresa a sido creado correctamente.");
     }
 
     /**
@@ -35,7 +41,8 @@ class CompanyController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $company = Company::findOrFail($id);
+        return view("companies.show", compact("company"));
     }
 
     /**
@@ -43,15 +50,17 @@ class CompanyController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $company = Company::findOrFail($id);
+        return view("companies.edit", compact("company"));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(CompanyRequest $request, Company $company)
     {
-        //
+        $company->update($request->validated());
+        return redirect()->route("companies.index")->with("success", "Empresa a sido actualizado correctamente.");
     }
 
     /**
@@ -59,6 +68,8 @@ class CompanyController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $company = Company::findOrFail($id);
+        $company->delete();
+        return redirect()->route("companies.index")->with("success", "Empresa a sido eliminado correctamente.");
     }
 }
