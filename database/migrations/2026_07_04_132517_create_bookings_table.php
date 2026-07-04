@@ -13,6 +13,11 @@ return new class extends Migration
     {
         Schema::create('bookings', function (Blueprint $table) {
             $table->increments("id");
+            $table->date("date_booking");
+            $table->decimal("total_amount", 8, 2);
+            $table->decimal("deposit_amount", 8, 2);
+            $table->string("payment_method",30);
+            $table->string("special_requests",100);
             
             $table->timestamps();
         });
