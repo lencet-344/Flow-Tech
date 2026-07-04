@@ -18,6 +18,9 @@ return new class extends Migration
             $table->integer("telephone", 8)->unique();
             $table->string("location", 30);
 
+            $table->integer("company_id")->unsigned();
+            $table->foreign("company_id")->references("id")->on("companies")->onDelete("cascade")->onUpdate("cascade");
+
 
             $table->timestamps();
         });

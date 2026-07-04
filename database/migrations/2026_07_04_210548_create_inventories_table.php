@@ -20,6 +20,15 @@ return new class extends Migration
             $table->date("last_restock");
             $table->date("update_restock");
 
+            $table->integer("product_id")->unsigned();
+            $table->foreign("product_id")->references("id")->on("products")->onDelete("cascade")->onUpdate("cascade");
+
+            $table->integer("supplier_id")->unsigned();
+            $table->foreign("supplier_id")->references("id")->on("suppliers")->onDelete("cascade")->onUpdate("cascade");
+
+            $table->integer("order_detail_id")->unsigned();
+            $table->foreign("order_detail_id")->references("id")->on("order_details")->onDelete("cascade")->onUpdate("cascade");
+
             $table->timestamps();
         });
     }

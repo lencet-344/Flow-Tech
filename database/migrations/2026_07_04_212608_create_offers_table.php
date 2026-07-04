@@ -18,6 +18,9 @@ return new class extends Migration
             $table->decimal("discount", 8, 2);
             $table->string("description",100);
 
+            $table->integer("product_id")->unsigned();
+            $table->foreign("product_id")->references("id")->on("products")->onDelete("cascade")->onUpdate("cascade");
+
             $table->timestamps();
         });
     }
