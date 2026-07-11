@@ -11,12 +11,12 @@ class BuyVerification extends Model
 
     protected $table = 'buy_verification';
 
-    protected $fillable = [
-        'order_id',
+        protected $fillable = [
         'quantity',
         'date_buy',
         'iva',
-        'cost_total'
+        'cost_total',
+        'order_id',
     ];
 
     public function order()
