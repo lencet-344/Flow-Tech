@@ -11,25 +11,29 @@ class FavoriteRequest extends FormRequest
         return true;
     }
 
-    public function rules(): array
+        public function rules(): array
     {
         return [
+            'name' => 'required|string|max:30',
+            'type_product' => 'required|string|max:30',
             'user_id' => 'required|integer|exists:users,id',
             'product_id' => 'required|integer|exists:products,id',
-            'name' => 'required|string|max:255',
-            'type_product' => 'required|string|max:255',
         ];
     }
 
-    public function messages(): array
+        public function messages(): array
     {
         return [
-            'user_id.required' => 'El usuario es requerido',
-            'user_id.exists' => 'El usuario seleccionado no existe',
-            'product_id.required' => 'El producto es requerido',
-            'product_id.exists' => 'El producto seleccionado no existe',
-            'name.required' => 'El nombre es requerido',
-            'type_product.required' => 'El tipo de producto es requerido',
+            'name.required' => 'El campo name es requerido',
+            'name.max' => 'El campo name no debe exceder los 30 caracteres',
+            'type_product.required' => 'El campo type product es requerido',
+            'type_product.max' => 'El campo type product no debe exceder los 30 caracteres',
+            'user_id.required' => 'El campo user id es requerido',
+            'user_id.integer' => 'El campo user id debe ser un número entero',
+            'user_id.exists' => 'La referencia seleccionada en user id no existe',
+            'product_id.required' => 'El campo product id es requerido',
+            'product_id.integer' => 'El campo product id debe ser un número entero',
+            'product_id.exists' => 'La referencia seleccionada en product id no existe',
         ];
     }
 }
