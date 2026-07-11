@@ -11,24 +11,31 @@ class OfferRequest extends FormRequest
         return true;
     }
 
-    public function rules(): array
+        public function rules(): array
     {
         return [
-            'tittle' => 'required|string|max:255',
-            'type_offer' => 'required|string|max:255',
+            'title' => 'required|string|max:30',
+            'type_offer' => 'required|string|max:30',
             'discount' => 'required|numeric',
-            'description' => 'nullable|string|max:500',
+            'description' => 'required|string|max:100',
+            'product_id' => 'required|integer|exists:products,id',
         ];
     }
 
-    public function messages(): array
+        public function messages(): array
     {
         return [
-            'tittle.required' => 'El título de la oferta es requerido',
-            'type_offer.required' => 'El tipo de oferta es requerido',
-            'discount.required' => 'El descuento es requerido',
-            'discount.numeric' => 'El descuento debe ser un valor numérico',
-            'description.max' => 'La descripción no debe exceder los 500 caracteres',
+            'title.required' => 'El campo title es requerido',
+            'title.max' => 'El campo title no debe exceder los 30 caracteres',
+            'type_offer.required' => 'El campo type offer es requerido',
+            'type_offer.max' => 'El campo type offer no debe exceder los 30 caracteres',
+            'discount.required' => 'El campo discount es requerido',
+            'discount.numeric' => 'El campo discount debe ser numérico',
+            'description.required' => 'El campo description es requerido',
+            'description.max' => 'El campo description no debe exceder los 100 caracteres',
+            'product_id.required' => 'El campo product id es requerido',
+            'product_id.integer' => 'El campo product id debe ser un número entero',
+            'product_id.exists' => 'La referencia seleccionada en product id no existe',
         ];
     }
 }
