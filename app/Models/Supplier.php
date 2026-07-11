@@ -16,13 +16,12 @@ class Supplier extends Model
         'age',
         'gender', 
         'address', 
-        'gmail', 
+        'email', 
         'telephone', 
         'identification_card', 
         'company', 
-        'code_employee', 
-        'no_inss', 
-        'booking_idbooking'
+        'code_company', 
+        'No_INSS'
     ];
 
     public function inventories()
