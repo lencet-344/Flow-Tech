@@ -15,8 +15,9 @@ class Company extends Model
         'name',
         'email',
         'address',
+        'telephone',
         'type_product',
-        'production'
+        
     ];
 
     public function products()
