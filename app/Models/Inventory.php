@@ -11,14 +11,16 @@ class Inventory extends Model
 
     protected $table = 'inventory';
 
-    protected $fillable = [
-        'product_id', 
-        'supplier_id', 
-        'quantity', 
-        'batch_number', 
-        'unit_cost', 
-        'status', 
-        'last_restocked'
+        protected $fillable = [
+        'quantity',
+        'batch_number',
+        'unit_cost',
+        'status',
+        'last_restock',
+        'update_restock',
+        'product_id',
+        'supplier_id',
+        'order_detail_id',
     ];
 
     public function product()

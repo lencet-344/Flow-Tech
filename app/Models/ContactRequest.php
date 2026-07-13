@@ -11,12 +11,12 @@ class ContactRequest extends Model
 
     protected $table = 'contact_request';
 
-    protected $fillable = [
-        'company_id',
+        protected $fillable = [
         'name',
-        'telephone',
         'email',
-        'location'
+        'telephone',
+        'location',
+        'company_id',
     ];
 
     public function company()

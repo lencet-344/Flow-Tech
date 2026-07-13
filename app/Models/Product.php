@@ -18,32 +18,10 @@ class Product extends Model
         'cost',
         'presentation',
         'state',
-        'code_bar',
-        'category_id',
-        'brand_id',
-        'company_id',
-        'offer_id'
+        'code_bar'
+        
     ];
 
-    public function category()
-    {
-        return $this->belongsTo(Category::class);
-    }
-
-    public function brand()
-    {
-        return $this->belongsTo(Brand::class);
-    }
-
-    public function company()
-    {
-        return $this->belongsTo(Company::class);
-    }
-
-    public function offer()
-    {
-        return $this->belongsTo(Offer::class);
-    }
 
     public function trades()
     {

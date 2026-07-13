@@ -11,28 +11,34 @@ class BookingRequest extends FormRequest
         return true;
     }
 
-    public function rules(): array
+        public function rules(): array
     {
         return [
             'date_booking' => 'required|date',
             'total_amount' => 'required|numeric',
             'deposit_amount' => 'required|numeric',
-            'payment_status' => 'required|string|max:255',
-            'special_request' => 'nullable|string|max:500',
+            'payment_method' => 'required|string|max:30',
+            'special_requests' => 'required|string|max:100',
+            'supplier_id' => 'required|integer|exists:suppliers,id',
         ];
     }
 
-    public function messages(): array
+        public function messages(): array
     {
         return [
-            'date_booking.required' => 'La fecha de reserva es requerida',
-            'date_booking.date' => 'El formato de fecha no es válido',
-            'total_amount.required' => 'El monto total es requerido',
-            'total_amount.numeric' => 'El monto total debe ser un valor numérico',
-            'deposit_amount.required' => 'El monto de depósito es requerido',
-            'deposit_amount.numeric' => 'El monto de depósito debe ser un valor numérico',
-            'payment_status.required' => 'El estado de pago es requerido',
-            'special_request.max' => 'La petición especial no debe exceder los 500 caracteres',
+            'date_booking.required' => 'El campo date booking es requerido',
+            'date_booking.date' => 'El campo date booking debe ser una fecha válida',
+            'total_amount.required' => 'El campo total amount es requerido',
+            'total_amount.numeric' => 'El campo total amount debe ser numérico',
+            'deposit_amount.required' => 'El campo deposit amount es requerido',
+            'deposit_amount.numeric' => 'El campo deposit amount debe ser numérico',
+            'payment_method.required' => 'El campo payment method es requerido',
+            'payment_method.max' => 'El campo payment method no debe exceder los 30 caracteres',
+            'special_requests.required' => 'El campo special requests es requerido',
+            'special_requests.max' => 'El campo special requests no debe exceder los 100 caracteres',
+            'supplier_id.required' => 'El campo supplier id es requerido',
+            'supplier_id.integer' => 'El campo supplier id debe ser un número entero',
+            'supplier_id.exists' => 'La referencia seleccionada en supplier id no existe',
         ];
     }
 }

@@ -11,28 +11,34 @@ class ContactRequestRequest extends FormRequest
         return true;
     }
 
-    public function rules(): array
+        public function rules(): array
     {
         return [
-            'company_id' => 'required|integer|exists:company,id',
-            'name' => 'required|string|max:255',
-            'telephone' => 'required|string|unique:contact_request,telephone',
-            'email' => 'required|string|email|max:255',
-            'location' => 'required|string|max:255',
+            'name' => 'required|string|max:30',
+            'email' => 'required|string|email|max:30|unique:contact_requests,email',
+            'telephone' => 'required|integer|unique:contact_requests,telephone',
+            'location' => 'required|string|max:30',
+            'company_id' => 'required|integer|exists:companies,id',
         ];
     }
 
-    public function messages(): array
+        public function messages(): array
     {
         return [
-            'company_id.required' => 'La empresa es requerida',
-            'company_id.exists' => 'La empresa seleccionada no existe',
-            'name.required' => 'El nombre es requerido',
-            'telephone.required' => 'El teléfono es requerido',
-            'telephone.unique' => 'Este teléfono ya está registrado',
-            'email.required' => 'El correo electrónico es requerido',
+            'name.required' => 'El campo name es requerido',
+            'name.max' => 'El campo name no debe exceder los 30 caracteres',
+            'email.required' => 'El campo email es requerido',
             'email.email' => 'Debe ingresar un formato de correo válido',
-            'location.required' => 'La ubicación es requerida',
+            'email.max' => 'El campo email no debe exceder los 30 caracteres',
+            'email.unique' => 'Este email ya está registrado',
+            'telephone.required' => 'El campo telephone es requerido',
+            'telephone.integer' => 'El campo telephone debe ser un número entero',
+            'telephone.unique' => 'Este telephone ya está registrado',
+            'location.required' => 'El campo location es requerido',
+            'location.max' => 'El campo location no debe exceder los 30 caracteres',
+            'company_id.required' => 'El campo company id es requerido',
+            'company_id.integer' => 'El campo company id debe ser un número entero',
+            'company_id.exists' => 'La referencia seleccionada en company id no existe',
         ];
     }
 }

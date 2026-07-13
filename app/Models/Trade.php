@@ -11,14 +11,14 @@ class Trade extends Model
 
     protected $table = 'trade';
 
-    protected $fillable = [
-        'product_id',
-        'name_product',
+        protected $fillable = [
+        'name',
         'quantity',
         'price',
         'type_product',
-        'trade_date',
-        'description'
+        'date_trade',
+        'description',
+        'product_id',
     ];
 
     public function product()

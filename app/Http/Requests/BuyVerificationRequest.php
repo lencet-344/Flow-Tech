@@ -11,30 +11,31 @@ class BuyVerificationRequest extends FormRequest
         return true;
     }
 
-    public function rules(): array
+        public function rules(): array
     {
         return [
-            'order_id' => 'required|integer|exists:orders,id',
             'quantity' => 'required|integer',
             'date_buy' => 'required|date',
             'iva' => 'required|numeric',
             'cost_total' => 'required|numeric',
+            'order_id' => 'required|integer|exists:orders,id',
         ];
     }
 
-    public function messages(): array
+        public function messages(): array
     {
         return [
-            'order_id.required' => 'La orden es requerida',
-            'order_id.exists' => 'La orden seleccionada no existe',
-            'quantity.required' => 'La cantidad es requerida',
-            'quantity.integer' => 'La cantidad debe ser un número entero',
-            'date_buy.required' => 'La fecha de compra es requerida',
-            'date_buy.date' => 'El formato de fecha no es válido',
-            'iva.required' => 'El IVA es requerido',
-            'iva.numeric' => 'El IVA debe ser un valor numérico',
-            'cost_total.required' => 'El costo total es requerido',
-            'cost_total.numeric' => 'El costo total debe ser un valor numérico',
+            'quantity.required' => 'El campo quantity es requerido',
+            'quantity.integer' => 'El campo quantity debe ser un número entero',
+            'date_buy.required' => 'El campo date buy es requerido',
+            'date_buy.date' => 'El campo date buy debe ser una fecha válida',
+            'iva.required' => 'El campo iva es requerido',
+            'iva.numeric' => 'El campo iva debe ser numérico',
+            'cost_total.required' => 'El campo cost total es requerido',
+            'cost_total.numeric' => 'El campo cost total debe ser numérico',
+            'order_id.required' => 'El campo order id es requerido',
+            'order_id.integer' => 'El campo order id debe ser un número entero',
+            'order_id.exists' => 'La referencia seleccionada en order id no existe',
         ];
     }
 }
