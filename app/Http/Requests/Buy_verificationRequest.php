@@ -2,9 +2,12 @@
 
 namespace App\Http\Requests;
 
+
+use Illuminate\Validation\Rule;
+
 use Illuminate\Foundation\Http\FormRequest;
 
-class BuyVerificationRequest extends FormRequest
+class Buy_verificationRequest extends FormRequest
 {
     public function authorize(): bool
     {
