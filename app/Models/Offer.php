@@ -11,11 +11,12 @@ class Offer extends Model
 
     protected $table = 'offer';
 
-    protected $fillable = [
-        'tittle',
+        protected $fillable = [
+        'title',
         'type_offer',
         'discount',
-        'description'
+        'description',
+        'product_id',
     ];
 
     public function products()

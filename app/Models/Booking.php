@@ -11,12 +11,13 @@ class Booking extends Model
 
     protected $table = 'booking';
 
-    protected $fillable = [
+        protected $fillable = [
         'date_booking',
         'total_amount',
         'deposit_amount',
-        'payment_status',
-        'special_request'
+        'payment_method',
+        'special_requests',
+        'supplier_id',
     ];
 
     public function suppliers()

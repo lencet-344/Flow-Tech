@@ -14,9 +14,10 @@ class CategoryRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|string|max:255',
-            'type' => 'required|string|max:255',
-            'description' => 'nullable|string|max:500',
+            'name' => 'required|string|max:30',
+            'type' => 'required|string|max:20',
+            'quantity' => 'required|integer',
+            'description' => 'required|string|max:100',
         ];
     }
 
@@ -24,8 +25,13 @@ class CategoryRequest extends FormRequest
     {
         return [
             'name.required' => 'El nombre de la categoría es requerido',
+            'name.max' => 'El nombre no debe exceder los 30 caracteres',
             'type.required' => 'El tipo de categoría es requerido',
-            'description.max' => 'La descripción no debe exceder los 500 caracteres',
+            'type.max' => 'El tipo no debe exceder los 20 caracteres',
+            'quantity.required' => 'La cantidad es obligatoria',
+            'quantity.integer' => 'La cantidad debe ser un número entero',
+            'description.required' => 'La descripción es requerida',
+            'description.max' => 'La descripción no debe exceder los 100 caracteres',
         ];
     }
 }

@@ -11,11 +11,11 @@ class Favorite extends Model
 
     protected $table = 'favorite';
 
-    protected $fillable = [
+        protected $fillable = [
+        'name',
+        'type_product',
         'user_id',
         'product_id',
-        'name',
-        'type_product'
     ];
 
     public function user()
