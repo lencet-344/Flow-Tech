@@ -19,42 +19,66 @@
                     @method('PUT')
                     
                     <div class="mb-6">
-                        <label for="title" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Título de la nota</label>
-                        <input type="text" id="title" name="title" value="{{ old('title', $note->title) }}" maxlength="100" class="w-full rounded-xl border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring focus:ring-indigo-500 focus:ring-opacity-20 shadow-sm transition-colors" placeholder="Ej. Recordatorio importante">
-                        @error('title')
+                        <label for="date_booking" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Fecha de la reserva</label>
+                        <input type="text" id="date_booking" name="date_booking" value="{{ old('date_booking', $booking->date_booking) }}" maxlength="100" class="w-full rounded-xl border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring focus:ring-indigo-500 focus:ring-opacity-20 shadow-sm transition-colors" placeholder="Ej. Recordatorio importante">
+                        @error('date_booking')
                             <p class="mt-2 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
                         @enderror
                     </div>
 
                     <div class="mb-6">
-                        <label for="content" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Contenido</label>
-                        <textarea id="content" name="content" rows="6" class="w-full rounded-xl border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring focus:ring-indigo-500 focus:ring-opacity-20 shadow-sm transition-colors" placeholder="Escriba el contenido completo de la nota aquí...">{{ old('content', $note->content) }}</textarea>
-                        @error('content')
+                        <label for="total_amount" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Monto total</label>
+                        <input type="number" id="total_amount" name="total_amount" value="{{ old('total_amount', $booking->total_amount) }}" step="0.01" class="w-full rounded-xl border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring focus:ring-indigo-500 focus:ring-opacity-20 shadow-sm transition-colors" placeholder="Ej. 100.00">
+                        @error('total_amount')
                             <p class="mt-2 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
                         @enderror
                     </div>
 
                     <div class="mb-6">
-                        <label for="category_id" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Categoría</label>
-                        <select id="category_id" name="category_id" class="w-full rounded-xl border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring focus:ring-indigo-500 focus:ring-opacity-20 shadow-sm transition-colors">
+                        <label for="deposit_amount" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Monto del depósito</label>
+                        <input type="number" id="deposit_amount" name="deposit_amount" value="{{ old('deposit_amount', $booking->deposit_amount) }}" step="0.01" class="w-full rounded-xl border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring focus:ring-indigo-500 focus:ring-opacity-20 shadow-sm transition-colors" placeholder="Ej. 50.00">
+                        @error('deposit_amount')
+                            <p class="mt-2 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    <div class="mb-6">
+                        <label for="payment_method" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Método de pago</label>
+                        <input type="text" id="payment_method" name="payment_method" value="{{ old('payment_method', $booking->payment_method) }}" maxlength="100" class="w-full rounded-xl border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring focus:ring-indigo-500 focus:ring-opacity-20 shadow-sm transition-colors" placeholder="Ej. Tarjeta de crédito">
+                        @error('payment_method')
+                            <p class="mt-2 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    <div class="mb-6">
+                        <label for="special_requests" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Solicitudes especiales</label>
+                        <input type="text" id="special_requests" name="special_requests" value="{{ old('special_requests', $booking->special_requests) }}" maxlength="200" class="w-full rounded-xl border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring focus:ring-indigo-500 focus:ring-opacity-20 shadow-sm transition-colors" placeholder="Ej. Requiere acceso para personas con movilidad reducida">
+                        @error('special_requests')
+                            <p class="mt-2 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    <div class="mb-6">
+                        <label for="supplier_id" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Categoría</label>
+                        <select id="supplier_id" name="supplier_id" class="w-full rounded-xl border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring focus:ring-indigo-500 focus:ring-opacity-20 shadow-sm transition-colors">
                             <option value="">-- Seleccione una categoría --</option>
-                            @foreach($categories as $category)
-                                <option value="{{ $category->id }}" {{ old('category_id', $note->category_id) == $category->id ? 'selected' : '' }}>
-                                    {{ $category->name }}
+                            @foreach($suppliers as $supplier)
+                                <option value="{{ $supplier->id }}" {{ old('supplier_id', $booking->supplier_id) == $supplier->id ? 'selected' : '' }}>
+                                    {{ $supplier->name }}
                                 </option>
                             @endforeach
                         </select>
-                        @error('category_id')
+                        @error('supplier_id')
                             <p class="mt-2 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
                         @enderror
                     </div>
 
                     <div class="flex items-center justify-end gap-4 mt-8 pt-6 border-t border-gray-100 dark:border-gray-700">
-                        <a href="{{ route('notes.index') }}" class="inline-flex items-center px-4 py-2 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-xl font-semibold text-xs text-gray-700 dark:text-gray-300 uppercase tracking-widest shadow-sm hover:bg-gray-50 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 disabled:opacity-25 transition ease-in-out duration-150">
+                        <a href="{{ route('bookings.index') }}" class="inline-flex items-center px-4 py-2 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-xl font-semibold text-xs text-gray-700 dark:text-gray-300 uppercase tracking-widest shadow-sm hover:bg-gray-50 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 disabled:opacity-25 transition ease-in-out duration-150">
                             Cancelar
                         </a>
                         <button type="submit" class="inline-flex items-center px-4 py-2 bg-indigo-600 border border-transparent rounded-xl font-semibold text-xs text-white uppercase tracking-widest hover:bg-indigo-700 focus:bg-indigo-700 active:bg-indigo-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition ease-in-out duration-150 shadow-lg shadow-indigo-500/30">
-                            Actualizar Nota
+                            Actualizar Reserva
                         </button>
                     </div>
                 </form>
@@ -69,7 +93,7 @@
             
             Swal.fire({
                 title: '¿Guardar los cambios?',
-                text: "Se actualizará la información de esta nota.",
+                text: "Se actualizará la información de esta reserva.",
                 icon: 'question',
                 showCancelButton: true,
                 confirmButtonColor: '#4f46e5',
