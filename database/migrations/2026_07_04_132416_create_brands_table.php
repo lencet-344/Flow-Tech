@@ -12,14 +12,14 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('brands', function (Blueprint $table) {
-            $table->increments("id");
+            $table->id();
             $table->string("name",30);
             $table->string("logo",100);
             $table->string("country_origin",30);
             $table->string("industry",30);
             $table->string("description",100);
 
-            $table->integer("product_id")->unsigned();
+            $table->unsignedBigInteger("product_id");
             $table->foreign("product_id")->references("id")->on("products")->onDelete("cascade")->onUpdate("cascade");
 
             $table->timestamps();

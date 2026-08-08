@@ -18,9 +18,7 @@ return new class extends Migration
             $table->decimal("iva", 8, 2);
             $table->decimal("cost_total", 8, 2);
 
-            $table->integer("order_id")->unsigned();
-            $table->foreign("order_id")->references("id")->on("orders")->onDelete("cascade")->onUpdate("cascade");
-
+            
 
             $table->timestamps();
         });

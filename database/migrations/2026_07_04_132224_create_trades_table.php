@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('trades', function (Blueprint $table) {
-            $table->increments("id");
+            $table->id();
             $table->string("name",30);
             $table->integer("quantity");
             $table->decimal("price", 8, 2);
@@ -20,7 +20,7 @@ return new class extends Migration
             $table->date("date_trade");
             $table->string("description",100);
 
-            $table->integer("product_id")->unsigned();
+            $table->unsignedBigInteger("product_id");
             $table->foreign("product_id")->references("id")->on("products")->onDelete("cascade")->onUpdate("cascade");
 
 
