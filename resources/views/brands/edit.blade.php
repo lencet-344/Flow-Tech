@@ -2,9 +2,9 @@
     <x-slot name="header">
         <div class="flex items-center justify-between">
             <h2 class="font-semibold text-2xl text-gray-800 dark:text-gray-100 leading-tight tracking-tight">
-                {{ __('Editar Nota') }}
+                {{ __('Editar Marca') }}
             </h2>
-            <a href="{{ route('notes.index') }}" class="text-sm text-gray-500 hover:text-indigo-600 dark:text-gray-400 dark:hover:text-indigo-400 transition-colors font-medium">
+            <a href="{{ route('brands.index') }}" class="text-sm text-gray-500 hover:text-indigo-600 dark:text-gray-400 dark:hover:text-indigo-400 transition-colors font-medium">
                 &larr; Volver a la lista
             </a>
         </div>
@@ -14,47 +14,71 @@
         <div class="max-w-2xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-xl sm:rounded-2xl border border-gray-100 dark:border-gray-700 p-8">
                 
-                <form action="{{ route('notes.update', $note) }}" method="POST" id="form-edit-{{ $note->id }}" onsubmit="confirmarActualizacion(event, {{ $note->id }})" novalidate>
+                <form action="{{ route('brands.update', $brand) }}" method="POST" id="form-edit-{{ $brand->id }}" onsubmit="confirmarActualizacion(event, {{ $brand->id }})" novalidate>
                     @csrf
                     @method('PUT')
                     
                     <div class="mb-6">
-                        <label for="title" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Título de la nota</label>
-                        <input type="text" id="title" name="title" value="{{ old('title', $note->title) }}" maxlength="100" class="w-full rounded-xl border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring focus:ring-indigo-500 focus:ring-opacity-20 shadow-sm transition-colors" placeholder="Ej. Recordatorio importante">
-                        @error('title')
+                        <label for="name" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Nombre de la marca</label>
+                        <input type="text" id="name" name="name" value="{{ old('name', $brand->name) }}" maxlength="100" class="w-full rounded-xl border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring focus:ring-indigo-500 focus:ring-opacity-20 shadow-sm transition-colors" placeholder="Ej. Recordatorio importante">
+                        @error('name')
                             <p class="mt-2 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
                         @enderror
                     </div>
 
                     <div class="mb-6">
-                        <label for="content" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Contenido</label>
-                        <textarea id="content" name="content" rows="6" class="w-full rounded-xl border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring focus:ring-indigo-500 focus:ring-opacity-20 shadow-sm transition-colors" placeholder="Escriba el contenido completo de la nota aquí...">{{ old('content', $note->content) }}</textarea>
-                        @error('content')
+                        <label for="logo" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Logo</label>
+                        <input type="text" id="logo" name="logo" value="{{ old('logo', $brand->logo) }}" maxlength="100" class="w-full rounded-xl border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring focus:ring-indigo-500 focus:ring-opacity-20 shadow-sm transition-colors" placeholder="Ej. Recordatorio importante">
+                        @error('logo')
+                            <p class="mt-2 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
+                        @enderror
+                    </div>
+                    
+                    <div class="mb-6">
+                        <label for="country_origin" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">País de origen</label>
+                        <input type="text" id="country_origin" name="country_origin" value="{{ old('country_origin', $brand->country_origin) }}" maxlength="100" class="w-full rounded-xl border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring focus:ring-indigo-500 focus:ring-opacity-20 shadow-sm transition-colors" placeholder="Ej. Recordatorio importante">
+                        @error('country_origin')
                             <p class="mt-2 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
                         @enderror
                     </div>
 
                     <div class="mb-6">
-                        <label for="category_id" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Categoría</label>
-                        <select id="category_id" name="category_id" class="w-full rounded-xl border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring focus:ring-indigo-500 focus:ring-opacity-20 shadow-sm transition-colors">
-                            <option value="">-- Seleccione una categoría --</option>
-                            @foreach($categories as $category)
-                                <option value="{{ $category->id }}" {{ old('category_id', $note->category_id) == $category->id ? 'selected' : '' }}>
-                                    {{ $category->name }}
+                        <label for="industry" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Industria</label>
+                        <input type="text" id="industry" name="industry" value="{{ old('industry', $brand->industry) }}" maxlength="100" class="w-full rounded-xl border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring focus:ring-indigo-500 focus:ring-opacity-20 shadow-sm transition-colors" placeholder="Ej. Recordatorio importante">
+                        @error('industry')
+                            <p class="mt-2 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    <div class="mb-6">
+                        <label for="description" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Descripción</label>
+                        <textarea id="description" name="description" rows="4" class="w-full rounded-xl border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring focus:ring-indigo-500 focus:ring-opacity-20 shadow-sm transition-colors" placeholder="Ej. Recordatorio importante">{{ old('description', $brand->description) }}</textarea>
+                        @error('description')
+                            <p class="mt-2 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
+                        @enderror
+                    </div>
+                    
+                    <div class="mb-6">
+                        <label for="product_id" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Producto</label>
+                        <select id="product_id" name="product_id" class="w-full rounded-xl border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring focus:ring-indigo-500 focus:ring-opacity-20 shadow-sm transition-colors">
+                            <option value="">-- Seleccione un producto --</option>
+                            @foreach($products as $product)
+                                <option value="{{ $product->id }}" {{ old('product_id', $brand->product_id) == $product->id ? 'selected' : '' }}>
+                                    {{ $product->name }}
                                 </option>
                             @endforeach
                         </select>
-                        @error('category_id')
+                        @error('product_id')
                             <p class="mt-2 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
                         @enderror
                     </div>
 
                     <div class="flex items-center justify-end gap-4 mt-8 pt-6 border-t border-gray-100 dark:border-gray-700">
-                        <a href="{{ route('notes.index') }}" class="inline-flex items-center px-4 py-2 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-xl font-semibold text-xs text-gray-700 dark:text-gray-300 uppercase tracking-widest shadow-sm hover:bg-gray-50 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 disabled:opacity-25 transition ease-in-out duration-150">
+                        <a href="{{ route('brands.index') }}" class="inline-flex items-center px-4 py-2 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-xl font-semibold text-xs text-gray-700 dark:text-gray-300 uppercase tracking-widest shadow-sm hover:bg-gray-50 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 disabled:opacity-25 transition ease-in-out duration-150">
                             Cancelar
                         </a>
                         <button type="submit" class="inline-flex items-center px-4 py-2 bg-indigo-600 border border-transparent rounded-xl font-semibold text-xs text-white uppercase tracking-widest hover:bg-indigo-700 focus:bg-indigo-700 active:bg-indigo-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition ease-in-out duration-150 shadow-lg shadow-indigo-500/30">
-                            Actualizar Nota
+                            Actualizar Marca
                         </button>
                     </div>
                 </form>
@@ -69,7 +93,7 @@
             
             Swal.fire({
                 title: '¿Guardar los cambios?',
-                text: "Se actualizará la información de esta nota.",
+                text: "Se actualizará la información de esta marca.",
                 icon: 'question',
                 showCancelButton: true,
                 confirmButtonColor: '#4f46e5',
