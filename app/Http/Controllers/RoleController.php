@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Role;
 use App\Http\Request\RoleRequest;  
 use App\Models\User;
-use Illuminate\http\redirectResponse;
+
 use Illuminate\view\View;
 
 class RoleController extends Controller
@@ -61,7 +61,7 @@ class RoleController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(RoleRequest $request, string $id) RedirectResponse
+    public function update(RoleRequest $request, string $id)
     {
         $role = Role::with('user')->findOrFail($id);
         $role->update($request->validated());

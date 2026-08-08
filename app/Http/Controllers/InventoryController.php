@@ -7,7 +7,6 @@ use App\Models\Inventory;
 use App\Http\Request\InventoryRequest;
 use App\Models\Product;
 use App\Models\Supplier;
-use Illuminate\http\redirectResponse;
 use Illuminate\view\View;
 
 class InventoryController extends Controller
@@ -64,7 +63,7 @@ class InventoryController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(InventoryRequest $request, string $id)RedirectResponse
+    public function update(InventoryRequest $request, string $id)
     {
         $inventory = Inventory::with("product")->findOrFail($id);
         $inventory->update($request->validated());

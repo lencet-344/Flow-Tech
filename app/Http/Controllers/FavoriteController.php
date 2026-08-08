@@ -7,7 +7,6 @@ use Illuminate\Http\Request\FavoriteRequest;
 use App\Models\Favorite;
 use App\Models\User;
 use App\Models\Product;
-use Illuminate\http\redirectResponse;
 use Illuminate\view\view;
 
 class FavoriteController extends Controller
@@ -65,7 +64,7 @@ class FavoriteController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(FavoriteRequest $request, string $id)RedirectResponse
+    public function update(FavoriteRequest $request, string $id)
     {
         $favorite = Favorite::with('product')->findOrFail($id);
         $favorite->update($request->validated());
