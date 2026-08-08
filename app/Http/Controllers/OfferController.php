@@ -6,7 +6,6 @@ use Illuminate\Http\Request;
 use App\Models\Offer;
 use App\Http\Request\OfferRequest;
 use App\Models\Product;
-use Illuminate\http\redirectResponse;
 use Illuminate\view\View;
 
 class OfferController extends Controller
@@ -61,7 +60,7 @@ class OfferController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(OfferRequest $request, string $id)RedirectResponse
+    public function update(OfferRequest $request, string $id)
     {
         $offer = Offer::with("product")->findOrFail($id);
         $offer->update($request->validated());

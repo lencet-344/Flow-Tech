@@ -6,8 +6,6 @@ use Illuminate\Http\Request;
 use App\Models\Trade;
 use App\Http\Request\TradeRequest;
 use App\Models\Product;
-
-use Illuminate\http\redirectResponse;
 use Illuminate\view\View;
 
 class TradeController extends Controller
@@ -63,7 +61,7 @@ class TradeController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(TradeRequest $request, string $id) RedirectResponse
+    public function update(TradeRequest $request, string $id) 
     {
         $trade = Trade::with("product")->findOrFail($id);
         $trade->update($request->validated());

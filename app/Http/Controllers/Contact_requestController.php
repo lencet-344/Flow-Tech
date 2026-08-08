@@ -6,7 +6,6 @@ use Illuminate\Http\Request;
 use App\Models\Contact_request;
 use App\Http\Request\Contact_request_Request;
 use App\Models\Company;
-use Illuminate\http\redirectResponse;
 use Illuminate\view\View;
 
 class Contact_requestController extends Controller
@@ -61,7 +60,7 @@ class Contact_requestController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Contact_requestsRequest $request, string $id)redirectResponse
+    public function update(Contact_requestsRequest $request, string $id)
     {
         $contact_request = Contact_request::with('company')->findOrFail($id);
         $contact_request->update($request->validated());

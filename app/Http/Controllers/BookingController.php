@@ -6,7 +6,6 @@ use Illuminate\Http\Request;
 use App\Models\Booking;
 use App\Http\Request\BookingRequest;   
 use App\Models\Supplier;
-use Illuminate\http\redirectResponse;
 use Illuminate\view\View;
 
 class BookingController extends Controller
@@ -61,7 +60,7 @@ class BookingController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(BookingRequest $request, string $id) RedirectResponse
+    public function update(BookingRequest $request, string $id) 
     {
         $booking = Booking::with("supplier")->findOrFail($id);
         $booking->update($request->validated());

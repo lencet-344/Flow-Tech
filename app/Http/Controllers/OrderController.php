@@ -7,7 +7,6 @@ use App\Models\Order;
 use App\Http\Request\OrderRequest;
 use App\Models\Buy_verification;
 use App\Models\User;
-use Illuminate\http\redirectResponse;
 use Illuminate\view\View;
 
 class OrderController extends Controller
@@ -64,7 +63,7 @@ class OrderController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(OrderRequest $request, string $id)RedirectResponse
+    public function update(OrderRequest $request, string $id)
     {
         $order = Order::with('user')->findOrFail($id);
         $order->update($request->validated());

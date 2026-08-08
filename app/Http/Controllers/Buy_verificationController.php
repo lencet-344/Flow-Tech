@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 use App\Models\Buy_verification;
 use App\Http\Requests\Buy_verificationRequest;
 use App\Models\Order;
-use Illuminate\http\redirectResponse;
 use Illuminate\View\view;
 
 use Illuminate\Http\Request;
@@ -61,7 +60,7 @@ class Buy_verificationController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Buy_verificationRequest $request, string $id)redirectResponse
+    public function update(Buy_verificationRequest $request, string $id)
     {
         $buy_verification = Buy_verification::with('order')->findOrFail($id);
         $buy_verification->update($request->validated());

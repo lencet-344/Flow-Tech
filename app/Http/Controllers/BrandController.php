@@ -6,7 +6,6 @@ use Illuminate\Http\Request;
 use App\Models\Brand;
 use App\Http\Request\BrandRequest;
 use App\Models\Product;
-use illuminate\http\redirectResponse;
 use illuminate\view\View;
 
 class BrandController extends Controller
@@ -61,7 +60,7 @@ class BrandController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(BrandRequest $request, string $id) RedirectResponse
+    public function update(BrandRequest $request, string $id) 
     {
         $brand = Brand::with("product")->findOrFail($id);
         $brand->update($request->validated());
