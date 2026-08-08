@@ -15,7 +15,7 @@ return new class extends Migration
             $table->increments("id");
             $table->string("name", 30);
             $table->string("email", 30)->unique();
-            $table->integer("telephone", 8)->unique();
+            $table->integer("telephone")->unique();
             $table->string("location", 30);
 
             $table->integer("company_id")->unsigned();

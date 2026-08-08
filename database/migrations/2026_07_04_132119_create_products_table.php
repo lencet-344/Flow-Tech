@@ -15,7 +15,7 @@ return new class extends Migration
             $table->increments("id");
             $table->string("name",30);
             $table->string("type",30);
-            $table->integer("quantity",5);
+            $table->integer("quantity");
             $table->decimal("cost", 8, 2);
             $table->string("presentation",50);
             $table->string("state",30);
