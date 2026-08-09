@@ -12,27 +12,27 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     
                     <div class="mb-4">
-                        <label class="block text-sm font-medium text-gray-500 dark:text-gray-400">Name</label>
+                        <label class="block text-sm font-medium text-gray-500 dark:text-gray-400">Nombre</label>
                         <p class="mt-1 text-lg text-gray-900 dark:text-gray-100">{{ $product->name }}</p>
                     </div>
                     <div class="mb-4">
-                        <label class="block text-sm font-medium text-gray-500 dark:text-gray-400">Type</label>
+                        <label class="block text-sm font-medium text-gray-500 dark:text-gray-400">Tipo</label>
                         <p class="mt-1 text-lg text-gray-900 dark:text-gray-100">{{ $product->type }}</p>
                     </div>
                     <div class="mb-4">
-                        <label class="block text-sm font-medium text-gray-500 dark:text-gray-400">Quantity</label>
+                        <label class="block text-sm font-medium text-gray-500 dark:text-gray-400">Cantidad</label>
                         <p class="mt-1 text-lg text-gray-900 dark:text-gray-100">{{ $product->quantity }}</p>
                     </div>
                     <div class="mb-4">
-                        <label class="block text-sm font-medium text-gray-500 dark:text-gray-400">Cost</label>
+                        <label class="block text-sm font-medium text-gray-500 dark:text-gray-400">Costo</label>
                         <p class="mt-1 text-lg text-gray-900 dark:text-gray-100">{{ $product->cost }}</p>
                     </div>
                     <div class="mb-4">
-                        <label class="block text-sm font-medium text-gray-500 dark:text-gray-400">Presentation</label>
+                        <label class="block text-sm font-medium text-gray-500 dark:text-gray-400">Presentación</label>
                         <p class="mt-1 text-lg text-gray-900 dark:text-gray-100">{{ $product->presentation }}</p>
                     </div>
                     <div class="mb-4">
-                        <label class="block text-sm font-medium text-gray-500 dark:text-gray-400">State</label>
+                        <label class="block text-sm font-medium text-gray-500 dark:text-gray-400">Estado</label>
                         <p class="mt-1 text-lg text-gray-900 dark:text-gray-100">{{ $product->state }}</p>
                     </div>
                     <div class="mb-4">
