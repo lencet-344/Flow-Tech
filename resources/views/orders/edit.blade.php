@@ -13,21 +13,21 @@
                     @method('PUT')
                     
                     <div class="mb-4">
-                        <label for="quantity" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Quantity</label>
+                        <label for="quantity" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Cantidad</label>
                         <input type="text" name="quantity" id="quantity" value="{{ old('quantity', $order->quantity) }}" class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
                         @error('quantity')
                             <p class="mt-2 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
                         @enderror
                     </div>
                     <div class="mb-4">
-                        <label for="price" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Price</label>
+                        <label for="price" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Precio</label>
                         <input type="text" name="price" id="price" value="{{ old('price', $order->price) }}" class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
                         @error('price')
                             <p class="mt-2 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
                         @enderror
                     </div>
                     <div class="mb-4">
-                        <label for="cost" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Cost</label>
+                        <label for="cost" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Costo</label>
                         <input type="text" name="cost" id="cost" value="{{ old('cost', $order->cost) }}" class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
                         @error('cost')
                             <p class="mt-2 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>

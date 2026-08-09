@@ -12,19 +12,19 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     
                     <div class="mb-4">
-                        <label class="block text-sm font-medium text-gray-500 dark:text-gray-400">Name</label>
+                        <label class="block text-sm font-medium text-gray-500 dark:text-gray-400">Nombre</label>
                         <p class="mt-1 text-lg text-gray-900 dark:text-gray-100">{{ $company->name }}</p>
                     </div>
                     <div class="mb-4">
-                        <label class="block text-sm font-medium text-gray-500 dark:text-gray-400">Email</label>
+                        <label class="block text-sm font-medium text-gray-500 dark:text-gray-400">Correo Electrónico</label>
                         <p class="mt-1 text-lg text-gray-900 dark:text-gray-100">{{ $company->email }}</p>
                     </div>
                     <div class="mb-4">
-                        <label class="block text-sm font-medium text-gray-500 dark:text-gray-400">Address</label>
+                        <label class="block text-sm font-medium text-gray-500 dark:text-gray-400">Dirección</label>
                         <p class="mt-1 text-lg text-gray-900 dark:text-gray-100">{{ $company->address }}</p>
                     </div>
                     <div class="mb-4">
-                        <label class="block text-sm font-medium text-gray-500 dark:text-gray-400">Telephone</label>
+                        <label class="block text-sm font-medium text-gray-500 dark:text-gray-400">Teléfono</label>
                         <p class="mt-1 text-lg text-gray-900 dark:text-gray-100">{{ $company->telephone }}</p>
                     </div>
                     <div class="mb-4">

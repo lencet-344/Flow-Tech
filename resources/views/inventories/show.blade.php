@@ -12,7 +12,7 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     
                     <div class="mb-4">
-                        <label class="block text-sm font-medium text-gray-500 dark:text-gray-400">Quantity</label>
+                        <label class="block text-sm font-medium text-gray-500 dark:text-gray-400">Cantidad</label>
                         <p class="mt-1 text-lg text-gray-900 dark:text-gray-100">{{ $inventory->quantity }}</p>
                     </div>
                     <div class="mb-4">
@@ -24,7 +24,7 @@
                         <p class="mt-1 text-lg text-gray-900 dark:text-gray-100">{{ $inventory->unit_cost }}</p>
                     </div>
                     <div class="mb-4">
-                        <label class="block text-sm font-medium text-gray-500 dark:text-gray-400">Status</label>
+                        <label class="block text-sm font-medium text-gray-500 dark:text-gray-400">Estado</label>
                         <p class="mt-1 text-lg text-gray-900 dark:text-gray-100">{{ $inventory->status }}</p>
                     </div>
                     <div class="mb-4">
