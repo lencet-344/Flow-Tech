@@ -12,7 +12,7 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     
                     <div class="mb-4">
-                        <label class="block text-sm font-medium text-gray-500 dark:text-gray-400">Name</label>
+                        <label class="block text-sm font-medium text-gray-500 dark:text-gray-400">Nombre</label>
                         <p class="mt-1 text-lg text-gray-900 dark:text-gray-100">{{ $favorite->name }}</p>
                     </div>
                     <div class="mb-4">

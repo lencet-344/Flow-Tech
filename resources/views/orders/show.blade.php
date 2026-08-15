@@ -12,15 +12,15 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     
                     <div class="mb-4">
-                        <label class="block text-sm font-medium text-gray-500 dark:text-gray-400">Quantity</label>
+                        <label class="block text-sm font-medium text-gray-500 dark:text-gray-400">Cantidad</label>
                         <p class="mt-1 text-lg text-gray-900 dark:text-gray-100">{{ $order->quantity }}</p>
                     </div>
                     <div class="mb-4">
-                        <label class="block text-sm font-medium text-gray-500 dark:text-gray-400">Price</label>
+                        <label class="block text-sm font-medium text-gray-500 dark:text-gray-400">Precio</label>
                         <p class="mt-1 text-lg text-gray-900 dark:text-gray-100">{{ $order->price }}</p>
                     </div>
                     <div class="mb-4">
-                        <label class="block text-sm font-medium text-gray-500 dark:text-gray-400">Cost</label>
+                        <label class="block text-sm font-medium text-gray-500 dark:text-gray-400">Costo</label>
                         <p class="mt-1 text-lg text-gray-900 dark:text-gray-100">{{ $order->cost }}</p>
                     </div>
                     <div class="mb-4">

@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-2xl text-gray-800 dark:text-gray-100">
-            Crear Inventory
+            Crear Inventario
         </h2>
     </x-slot>
 
@@ -12,7 +12,7 @@
                     @csrf
                     
                     <div class="mb-4">
-                        <label for="quantity" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Quantity</label>
+                        <label for="quantity" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Cantidad</label>
                         <input type="text" name="quantity" id="quantity" value="{{ old('quantity') }}" class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
                         @error('quantity')
                             <p class="mt-2 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
@@ -33,7 +33,7 @@
                         @enderror
                     </div>
                     <div class="mb-4">
-                        <label for="status" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Status</label>
+                        <label for="status" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Estado</label>
                         <input type="text" name="status" id="status" value="{{ old('status') }}" class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
                         @error('status')
                             <p class="mt-2 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>

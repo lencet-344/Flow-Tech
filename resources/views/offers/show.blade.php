@@ -24,7 +24,7 @@
                         <p class="mt-1 text-lg text-gray-900 dark:text-gray-100">{{ $offer->discount }}</p>
                     </div>
                     <div class="mb-4">
-                        <label class="block text-sm font-medium text-gray-500 dark:text-gray-400">Description</label>
+                        <label class="block text-sm font-medium text-gray-500 dark:text-gray-400">Descripción</label>
                         <p class="mt-1 text-lg text-gray-900 dark:text-gray-100">{{ $offer->description }}</p>
                     </div>
                     <div class="mb-4">
