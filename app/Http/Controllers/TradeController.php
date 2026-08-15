@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Trade;
-use App\Http\Request\TradeRequest;
+use App\Http\Requests\TradeRequest;
 use App\Models\Product;
 use Illuminate\view\View;
 
