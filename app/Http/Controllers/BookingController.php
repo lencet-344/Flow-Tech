@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Booking;
-use App\Http\Request\BookingRequest;   
+use App\Http\Requests\BookingRequest;   
 use App\Models\Supplier;
 use Illuminate\view\View;
 
