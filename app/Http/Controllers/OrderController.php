@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Order;  
-use App\Http\Request\OrderRequest;
+use App\Http\Requests\OrderRequest;
 use App\Models\Buy_verification;
 use App\Models\User;
 use Illuminate\view\View;
