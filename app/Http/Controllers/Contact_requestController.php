@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Contact_request;
-use App\Http\Request\Contact_request_Request;
+use App\Http\Requests\Contact_requestRequest;
 use App\Models\Company;
 use Illuminate\view\View;
 
@@ -41,7 +41,7 @@ class Contact_requestController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Contact_request $contact_request)
+    public function show(Contact_requestRequest $contact_request)
     {
         $contact_request = Contact_request::with('company')->findOrFail($contact_request->id);
         return view('contact_requests.show', compact('contact_request'));
@@ -60,7 +60,7 @@ class Contact_requestController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Contact_requestsRequest $request, string $id)
+    public function update(Contact_requestRequest $request, string $id)
     {
         $contact_request = Contact_request::with('company')->findOrFail($id);
         $contact_request->update($request->validated());
