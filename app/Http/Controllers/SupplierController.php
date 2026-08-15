@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Supplier;
-use App\Http\Request\SupplierRequest;
+use App\Http\Requests\SupplierRequest;
 
 
 class SupplierController extends Controller
@@ -26,7 +26,7 @@ class SupplierController extends Controller
      */
     public function create()
     {
-        $suppliers = new Supplier::all();
+        $suppliers = new Supplier();
         return view("suppliers.create", compact("suppliers"));
     }
 
@@ -44,8 +44,8 @@ class SupplierController extends Controller
      */
     public function show(string $id)
     {
-        $customer = Supplier::findOrFail($id);
-        return view("suppliers.show", compact("customer"));
+        $supplier = Supplier::findOrFail($id);
+        return view("suppliers.show", compact("supplier"));
     }
 
     /**
@@ -53,8 +53,8 @@ class SupplierController extends Controller
      */
     public function edit(string $id)
     {
-        $customer = Supplier::findOrFail($id);
-        return view("suppliers.edit", compact("customer"));
+        $supplier = Supplier::findOrFail($id);
+        return view("suppliers.edit", compact("supplier"));
     }
 
     /**
