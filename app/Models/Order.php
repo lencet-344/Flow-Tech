@@ -30,8 +30,8 @@ class Order extends Model
         return $this->hasMany(OrderDetail::class);
     }
 
-    public function buyVerification()
+    public function buy_verification()
     {
-        return $this->hasOne(BuyVerification::class);
+        return $this->hasOne(Buy_verification::class);
     }
 }

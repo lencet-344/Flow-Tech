@@ -28,4 +28,9 @@ class Supplier extends Model
     {
         return $this->hasMany(Inventory::class);
     }
+
+    public function bookings()
+    {
+        return $this->hasMany(Booking::class);
+    }
 }
