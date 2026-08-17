@@ -9,7 +9,7 @@ class Favorite extends Model
 {
     use HasFactory;
 
-    protected $table = 'favorite';
+    protected $table = 'favorites';
 
         protected $fillable = [
         'name',
