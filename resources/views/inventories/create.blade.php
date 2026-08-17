@@ -69,26 +69,15 @@
                         <label for="supplier_id" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Supplier id</label>
                         <select name="supplier_id" id="supplier_id" class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
                             <option value="">Seleccione una opción</option>
-                            @foreach($suppliers as $item)
-                                <option value="{{ $item->id }}" {{ old('supplier_id') == $item->id ? 'selected' : '' }}>{{ $item->name ?? $item->title ?? $item->id }}</option>
+                            @foreach($suppliers as $supplier)
+                                <option value="{{ $supplier->id }}" {{ old('supplier_id') == $supplier->id ? 'selected' : '' }}>{{ $supplier->name ?? $supplier->title ?? $supplier->id }}</option>
                             @endforeach
                         </select>
                         @error('supplier_id')
                             <p class="mt-2 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
                         @enderror
                     </div>
-                    <div class="mb-4">
-                        <label for="order_detail_id" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Order detail id</label>
-                        <select name="order_detail_id" id="order_detail_id" class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
-                            <option value="">Seleccione una opción</option>
-                            @foreach($order_details as $item)
-                                <option value="{{ $item->id }}" {{ old('order_detail_id') == $item->id ? 'selected' : '' }}>{{ $item->name ?? $item->title ?? $item->id }}</option>
-                            @endforeach
-                        </select>
-                        @error('order_detail_id')
-                            <p class="mt-2 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
-                        @enderror
-                    </div>
+                    
                     <div class="flex justify-end mt-6">
                         <a href="{{ route('inventories.index') }}" class="mr-4 inline-flex items-center px-4 py-2 border border-gray-300 rounded-md font-semibold text-xs text-gray-700 dark:text-gray-300 uppercase tracking-widest shadow-sm hover:text-gray-500 dark:hover:text-gray-400 focus:outline-none focus:border-indigo-300 focus:ring focus:ring-indigo-200 active:text-gray-800 active:bg-gray-50 transition">
                             Cancelar
