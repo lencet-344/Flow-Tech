@@ -26,12 +26,12 @@ class BookingRequest extends FormRequest
         public function messages(): array
     {
         return [
-            'date_booking.required' => 'El campo date booking es requerido',
-            'date_booking.date' => 'El campo date booking debe ser una fecha válida',
-            'total_amount.required' => 'El campo total amount es requerido',
-            'total_amount.numeric' => 'El campo total amount debe ser numérico',
-            'deposit_amount.required' => 'El campo deposit amount es requerido',
-            'deposit_amount.numeric' => 'El campo deposit amount debe ser numérico',
+            'date_booking.required' => 'El campo Fecha de reserva es requerido',
+            'date_booking.date' => 'El campo Fecha de reserva debe ser una fecha válida',
+            'total_amount.required' => 'El campo Total amount es requerido',
+            'total_amount.numeric' => 'El campo Total amount debe ser numérico',
+            'deposit_amount.required' => 'El campo Deposit amount es requerido',
+            'deposit_amount.numeric' => 'El campo Deposit amount debe ser numérico',
             'payment_method.required' => 'El campo payment method es requerido',
             'payment_method.max' => 'El campo payment method no debe exceder los 30 caracteres',
             'special_requests.required' => 'El campo special requests es requerido',

@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Http\Request\FavoriteRequest;
+use App\Http\Requests\FavoriteRequest;
 use App\Models\Favorite;
 use App\Models\User;
 use App\Models\Product;
@@ -27,7 +27,7 @@ class FavoriteController extends Controller
     {
         $favorite = new Favorite();
         $users = User::all();
-        $products = Product::class();
+        $products = Product::all();
         return view('favorites.create',compact('favorite','users', 'products'));
 
     }
@@ -35,7 +35,7 @@ class FavoriteController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(favoriteRequest $request)
+    public function store(FavoriteRequest $request)
     {
         Favorite::create($request->validated());
         return redirect()->route('favorites.index')->with('success', 'favoritos a sido creada correctamente.');

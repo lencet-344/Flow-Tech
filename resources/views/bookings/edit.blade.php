@@ -18,14 +18,16 @@
                     @csrf
                     @method('PUT')
                     
+                    <!-- FECHA DE LA RESERVA (Corregido a type="date") -->
                     <div class="mb-6">
                         <label for="date_booking" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Fecha de la reserva</label>
-                        <input type="text" id="date_booking" name="date_booking" value="{{ old('date_booking', $booking->date_booking) }}" maxlength="100" class="w-full rounded-xl border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring focus:ring-indigo-500 focus:ring-opacity-20 shadow-sm transition-colors" placeholder="Ej. Recordatorio importante">
+                        <input type="date" id="date_booking" name="date_booking" value="{{ old('date_booking', $booking->date_booking) }}" class="w-full rounded-xl border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring focus:ring-indigo-500 focus:ring-opacity-20 shadow-sm transition-colors">
                         @error('date_booking')
                             <p class="mt-2 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
                         @enderror
                     </div>
 
+                    <!-- MONTO TOTAL -->
                     <div class="mb-6">
                         <label for="total_amount" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Monto total</label>
                         <input type="number" id="total_amount" name="total_amount" value="{{ old('total_amount', $booking->total_amount) }}" step="0.01" class="w-full rounded-xl border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring focus:ring-indigo-500 focus:ring-opacity-20 shadow-sm transition-colors" placeholder="Ej. 100.00">
@@ -34,6 +36,7 @@
                         @enderror
                     </div>
 
+                    <!-- MONTO DEL DEPOSITO -->
                     <div class="mb-6">
                         <label for="deposit_amount" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Monto del depósito</label>
                         <input type="number" id="deposit_amount" name="deposit_amount" value="{{ old('deposit_amount', $booking->deposit_amount) }}" step="0.01" class="w-full rounded-xl border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring focus:ring-indigo-500 focus:ring-opacity-20 shadow-sm transition-colors" placeholder="Ej. 50.00">
@@ -42,26 +45,29 @@
                         @enderror
                     </div>
 
+                    <!-- METODO DE PAGO -->
                     <div class="mb-6">
                         <label for="payment_method" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Método de pago</label>
-                        <input type="text" id="payment_method" name="payment_method" value="{{ old('payment_method', $booking->payment_method) }}" maxlength="100" class="w-full rounded-xl border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring focus:ring-indigo-500 focus:ring-opacity-20 shadow-sm transition-colors" placeholder="Ej. Tarjeta de crédito">
+                        <input type="text" id="payment_method" name="payment_method" value="{{ old('payment_method', $booking->payment_method) }}" maxlength="100" class="w-full rounded-xl border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring focus:ring-indigo-500 focus:ring-opacity-20 shadow-sm transition-colors" placeholder="Ej. Transferencia">
                         @error('payment_method')
                             <p class="mt-2 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
                         @enderror
                     </div>
 
+                    <!-- SOLICITUDES ESPECIALES (Cambiado a textarea por consistencia) -->
                     <div class="mb-6">
                         <label for="special_requests" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Solicitudes especiales</label>
-                        <input type="text" id="special_requests" name="special_requests" value="{{ old('special_requests', $booking->special_requests) }}" maxlength="200" class="w-full rounded-xl border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring focus:ring-indigo-500 focus:ring-opacity-20 shadow-sm transition-colors" placeholder="Ej. Requiere acceso para personas con movilidad reducida">
+                        <textarea id="special_requests" name="special_requests" rows="4" class="w-full rounded-xl border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring focus:ring-indigo-500 focus:ring-opacity-20 shadow-sm transition-colors" placeholder="Ej. Requiere acceso para carga...">{{ old('special_requests', $booking->special_requests) }}</textarea>
                         @error('special_requests')
                             <p class="mt-2 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
                         @enderror
                     </div>
 
+                    <!-- PROVEEDOR (Label corregido de 'Categoría' a 'Proveedor') -->
                     <div class="mb-6">
-                        <label for="supplier_id" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Categoría</label>
+                        <label for="supplier_id" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Proveedor</label>
                         <select id="supplier_id" name="supplier_id" class="w-full rounded-xl border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring focus:ring-indigo-500 focus:ring-opacity-20 shadow-sm transition-colors">
-                            <option value="">-- Seleccione una categoría --</option>
+                            <option value="">-- Seleccione un proveedor --</option>
                             @foreach($suppliers as $supplier)
                                 <option value="{{ $supplier->id }}" {{ old('supplier_id', $booking->supplier_id) == $supplier->id ? 'selected' : '' }}>
                                     {{ $supplier->name }}

@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Order;  
-use App\Http\Request\OrderRequest;
+use App\Http\Requests\OrderRequest;
 use App\Models\Buy_verification;
 use App\Models\User;
 use Illuminate\view\View;
@@ -27,7 +27,7 @@ class OrderController extends Controller
     {
         $order = new Order();
         $users = User::all();
-        $buy_verifications = Buy_verification::class();
+        $buy_verifications = Buy_verification::all();
         return view('orders.create',compact('order','users', 'buy_verifications'));
     }
 
@@ -56,7 +56,7 @@ class OrderController extends Controller
     {
         $order = Order::with('user')->findOrFail($id);
         $users = User::all();
-        $buy_verifications = Buy_Verification::all();
+        $buy_verifications = Buy_verification::all();
         return view('orders.edit', compact('order', 'users', 'buy_verifications'));
     }
 

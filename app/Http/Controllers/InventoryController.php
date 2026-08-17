@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Inventory;
-use App\Http\Request\InventoryRequest;
+use App\Http\Requests\InventoryRequest;
 use App\Models\Product;
 use App\Models\Supplier;
 use Illuminate\view\View;

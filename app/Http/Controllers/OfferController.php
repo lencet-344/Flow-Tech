@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Offer;
-use App\Http\Request\OfferRequest;
+use App\Http\Requests\OfferRequest;
 use App\Models\Product;
 use Illuminate\view\View;
 
