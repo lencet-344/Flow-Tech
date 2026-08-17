@@ -27,7 +27,7 @@ class FavoriteController extends Controller
     {
         $favorite = new Favorite();
         $users = User::all();
-        $products = Product::class();
+        $products = Product::all();
         return view('favorites.create',compact('favorite','users', 'products'));
 
     }

@@ -27,7 +27,7 @@ class OrderController extends Controller
     {
         $order = new Order();
         $users = User::all();
-        $buy_verifications = Buy_verification::class();
+        $buy_verifications = Buy_verification::all();
         return view('orders.create',compact('order','users', 'buy_verifications'));
     }
 
@@ -56,7 +56,7 @@ class OrderController extends Controller
     {
         $order = Order::with('user')->findOrFail($id);
         $users = User::all();
-        $buy_verifications = Buy_Verification::all();
+        $buy_verifications = Buy_verification::all();
         return view('orders.edit', compact('order', 'users', 'buy_verifications'));
     }
 
