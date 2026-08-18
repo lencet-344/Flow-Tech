@@ -8,7 +8,7 @@
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
             
-            <!-- Tarjeta de Bienvenida -->
+            
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-xl sm:rounded-2xl border border-gray-100 dark:border-gray-700 p-8 relative">
                 <div class="absolute top-0 right-0 -mt-4 -mr-4 w-32 h-32 bg-indigo-500 opacity-10 rounded-full blur-3xl"></div>
                 <div class="flex items-center gap-6 relative z-10">
@@ -26,10 +26,10 @@
                 </div>
             </div>
 
-            <!-- Cuadrícula de Accesos Directos (15 Módulos) -->
+            
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
 
-                <!-- 1. Reservas (BookingController) -->
+                
                 <a href="{{ route('bookings.index') }}" class="group block bg-white dark:bg-gray-800 overflow-hidden shadow-md sm:rounded-2xl border border-gray-100 dark:border-gray-700 hover:border-teal-500/50 dark:hover:border-teal-500/50 hover:-translate-y-1 transition-all duration-300">
                     <div class="p-6">
                         <div class="flex justify-between items-start mb-4">
@@ -44,7 +44,7 @@
                     </div>
                 </a>
 
-                <!-- 2. Marcas (BrandController) -->
+                
                 <a href="{{ route('brands.index') }}" class="group block bg-white dark:bg-gray-800 overflow-hidden shadow-md sm:rounded-2xl border border-gray-100 dark:border-gray-700 hover:border-indigo-500/50 dark:hover:border-indigo-500/50 hover:-translate-y-1 transition-all duration-300">
                     <div class="p-6">
                         <div class="flex justify-between items-start mb-4">
@@ -59,7 +59,7 @@
                     </div>
                 </a>
 
-                <!-- 3. Verificaciones de Compra (Buy_verificationController) -->
+                
                 <a href="{{ route('buy_verifications.index') }}" class="group block bg-white dark:bg-gray-800 overflow-hidden shadow-md sm:rounded-2xl border border-gray-100 dark:border-gray-700 hover:border-red-500/50 dark:hover:border-red-500/50 hover:-translate-y-1 transition-all duration-300">
                     <div class="p-6">
                         <div class="flex justify-between items-start mb-4">
@@ -74,7 +74,7 @@
                     </div>
                 </a>
 
-                <!-- 4. Categorías (CategoryController) -->
+                
                 <a href="{{ route('categories.index') }}" class="group block bg-white dark:bg-gray-800 overflow-hidden shadow-md sm:rounded-2xl border border-gray-100 dark:border-gray-700 hover:border-emerald-500/50 dark:hover:border-emerald-500/50 hover:-translate-y-1 transition-all duration-300">
                     <div class="p-6">
                         <div class="flex justify-between items-start mb-4">
@@ -89,7 +89,7 @@
                     </div>
                 </a>
 
-                <!-- 5. Empresas (CompanyController) -->
+                
                 <a href="{{ route('companies.index') }}" class="group block bg-white dark:bg-gray-800 overflow-hidden shadow-md sm:rounded-2xl border border-gray-100 dark:border-gray-700 hover:border-blue-500/50 dark:hover:border-blue-500/50 hover:-translate-y-1 transition-all duration-300">
                     <div class="p-6">
                         <div class="flex justify-between items-start mb-4">
@@ -104,7 +104,7 @@
                     </div>
                 </a>
 
-                <!-- 6. Solicitudes de Contacto (Contact_requestController) -->
+                
                 <a href="{{ route('contact_requests.index') }}" class="group block bg-white dark:bg-gray-800 overflow-hidden shadow-md sm:rounded-2xl border border-gray-100 dark:border-gray-700 hover:border-pink-500/50 dark:hover:border-pink-500/50 hover:-translate-y-1 transition-all duration-300">
                     <div class="p-6">
                         <div class="flex justify-between items-start mb-4">
@@ -119,7 +119,7 @@
                     </div>
                 </a>
 
-                <!-- 7. Favoritos (FavoriteController) -->
+                
                 <a href="{{ route('favorites.index') }}" class="group block bg-white dark:bg-gray-800 overflow-hidden shadow-md sm:rounded-2xl border border-gray-100 dark:border-gray-700 hover:border-yellow-500/50 dark:hover:border-yellow-500/50 hover:-translate-y-1 transition-all duration-300">
                     <div class="p-6">
                         <div class="flex justify-between items-start mb-4">
@@ -134,7 +134,7 @@
                     </div>
                 </a>
 
-                <!-- 8. Inventarios (InventoryController) -->
+                
                 <a href="{{ route('inventories.index') }}" class="group block bg-white dark:bg-gray-800 overflow-hidden shadow-md sm:rounded-2xl border border-gray-100 dark:border-gray-700 hover:border-amber-500/50 dark:hover:border-amber-500/50 hover:-translate-y-1 transition-all duration-300">
                     <div class="p-6">
                         <div class="flex justify-between items-start mb-4">
@@ -149,7 +149,7 @@
                     </div>
                 </a>
 
-                <!-- 9. Ofertas (OfferController) -->
+                
                 <a href="{{ route('offers.index') }}" class="group block bg-white dark:bg-gray-800 overflow-hidden shadow-md sm:rounded-2xl border border-gray-100 dark:border-gray-700 hover:border-orange-500/50 dark:hover:border-orange-500/50 hover:-translate-y-1 transition-all duration-300">
                     <div class="p-6">
                         <div class="flex justify-between items-start mb-4">
@@ -164,7 +164,7 @@
                     </div>
                 </a>
 
-                <!-- 10. Pedidos (OrderController) -->
+                
                 <a href="{{ route('orders.index') }}" class="group block bg-white dark:bg-gray-800 overflow-hidden shadow-md sm:rounded-2xl border border-gray-100 dark:border-gray-700 hover:border-green-500/50 dark:hover:border-green-500/50 hover:-translate-y-1 transition-all duration-300">
                     <div class="p-6">
                         <div class="flex justify-between items-start mb-4">
@@ -209,7 +209,7 @@
                     </div>
                 </a>
 
-                <!-- 13. Roles (RoleController) -->
+                
                 <a href="{{ route('roles.index') }}" class="group block bg-white dark:bg-gray-800 overflow-hidden shadow-md sm:rounded-2xl border border-gray-100 dark:border-gray-700 hover:border-cyan-500/50 dark:hover:border-cyan-500/50 hover:-translate-y-1 transition-all duration-300">
                     <div class="p-6">
                         <div class="flex justify-between items-start mb-4">
@@ -224,7 +224,7 @@
                     </div>
                 </a>
 
-                <!-- 14. Proveedores (SupplierController) -->
+                
                 <a href="{{ route('suppliers.index') }}" class="group block bg-white dark:bg-gray-800 overflow-hidden shadow-md sm:rounded-2xl border border-gray-100 dark:border-gray-700 hover:border-purple-500/50 dark:hover:border-purple-500/50 hover:-translate-y-1 transition-all duration-300">
                     <div class="p-6">
                         <div class="flex justify-between items-start mb-4">
@@ -239,7 +239,7 @@
                     </div>
                 </a>
 
-                <!-- 15. Transacciones (TradeController) -->
+                
                 <a href="{{ route('trades.index') }}" class="group block bg-white dark:bg-gray-800 overflow-hidden shadow-md sm:rounded-2xl border border-gray-100 dark:border-gray-700 hover:border-lime-500/50 dark:hover:border-lime-500/50 hover:-translate-y-1 transition-all duration-300">
                     <div class="p-6">
                         <div class="flex justify-between items-start mb-4">
