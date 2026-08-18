@@ -9,7 +9,7 @@ class Offer extends Model
 {
     use HasFactory;
 
-    protected $table = 'offer';
+    protected $table = 'offers';
 
         protected $fillable = [
         'title',
@@ -19,8 +19,8 @@ class Offer extends Model
         'product_id',
     ];
 
-    public function products()
+    public function product()
     {
-        return $this->hasMany(Product::class);
+        return $this->belongsTo(Product::class);
     }
 }
