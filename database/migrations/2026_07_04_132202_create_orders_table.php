@@ -22,6 +22,9 @@ return new class extends Migration
             $table->unsignedBigInteger("user_id");
             $table->foreign("user_id")->references("id")->on("users")->onDelete("cascade")->onUpdate("cascade");
 
+            $table->unsignedBigInteger("buy_verifications_id");
+            $table->foreign("buy_verifications_id")->references("id")->on("buy_verifications")->onDelete("cascade")->onUpdate("cascade");
+
             $table->timestamps();
         });
     }

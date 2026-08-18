@@ -9,7 +9,7 @@ class Buy_verification extends Model
 {
     use HasFactory;
 
-    protected $table = 'buy_verification';
+    protected $table = 'buy_verifications';
 
         protected $fillable = [
         'quantity',
