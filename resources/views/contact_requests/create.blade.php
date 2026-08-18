@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-2xl text-gray-800 dark:text-gray-100">
-            Crear ContactRequest
+            Crear Solicitud de Contacto
         </h2>
     </x-slot>
 
@@ -40,7 +40,7 @@
                         @enderror
                     </div>
                     <div class="mb-4">
-                        <label for="company_id" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Company id</label>
+                        <label for="company_id" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Empresa</label>
                         <select name="company_id" id="company_id" class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
                             <option value="">Seleccione una opción</option>
                             @foreach($companies as $item)
