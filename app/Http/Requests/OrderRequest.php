@@ -18,7 +18,7 @@ class OrderRequest extends FormRequest
             'price' => 'required|numeric',
             'cost' => 'required|numeric',
             'date_delivery' => 'required|date',
-            'buy_verification_id' => 'required|integer|exists:buy_verifications,id',
+            'buy_verifications_id' => 'nullable|integer|exists:buy_verifications,id',
             'user_id' => 'required|integer|exists:users,id',
         ];
     }

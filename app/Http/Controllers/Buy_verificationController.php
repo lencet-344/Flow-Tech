@@ -43,8 +43,10 @@ class Buy_verificationController extends Controller
      */
     public function show(Buy_verification $buy_verification)
     {
+    
         $buy_verification = Buy_verification::with('order')->findOrFail($buy_verification->id);
-        return view("buy_verifications.show", compact('order'));
+        return view("buy_verifications.show", compact('buy_verification'));  
+    
     }
 
     /**

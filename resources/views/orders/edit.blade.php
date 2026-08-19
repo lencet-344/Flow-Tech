@@ -41,11 +41,11 @@
                         @enderror
                     </div>
                     <div class="mb-4">
-                        <label for="buy_verification_id" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Buy verification id</label>
-                        <select name="buy_verification_id" id="buy_verification_id" class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                        <label for="buy_verifications_id" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Verificación de Compra</label>
+                        <select name="buy_verifications_id" id="buy_verifications_id" class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
                             <option value="">Seleccione una opción</option>
                             @foreach($buy_verifications as $item)
-                                <option value="{{ $item->id }}" {{ old('buy_verification_id', $order->buy_verification_id) == $item->id ? 'selected' : '' }}>{{ $item->name ?? $item->title ?? $item->id }}</option>
+                                <option value="{{ $item->id }}" {{ old('buy_verifications_id', $order->buy_verifications_id) == $item->id ? 'selected' : '' }}>{{ $item->name ?? $item->title ?? $item->id }}</option>
                             @endforeach
                         </select>
                         @error('buy_verification_id')

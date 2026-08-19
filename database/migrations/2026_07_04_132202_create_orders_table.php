@@ -18,12 +18,18 @@ return new class extends Migration
             $table->decimal("cost", 8, 2);
             $table->date("date_delivery");
 
-
+            
             $table->unsignedBigInteger("user_id");
             $table->foreign("user_id")->references("id")->on("users")->onDelete("cascade")->onUpdate("cascade");
 
-            $table->unsignedBigInteger("buy_verifications_id");
-            $table->foreign("buy_verifications_id")->references("id")->on("buy_verifications")->onDelete("cascade")->onUpdate("cascade");
+            $table->unsignedBigInteger("buy_verifications_id")->nullable();
+            
+            
+            $table->foreign("buy_verifications_id")
+                  ->references("id")
+                  ->on("buy_verifications")
+                  ->onDelete("set null")
+                  ->onUpdate("cascade");
 
             $table->timestamps();
         });
