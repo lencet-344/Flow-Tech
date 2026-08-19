@@ -9,7 +9,7 @@ class Trade extends Model
 {
     use HasFactory;
 
-    protected $table = 'trade';
+    protected $table = 'trades';
 
         protected $fillable = [
         'name',
