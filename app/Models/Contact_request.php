@@ -5,11 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class ContactRequest extends Model
+class Contact_request extends Model
 {
     use HasFactory;
 
-    protected $table = 'contact_request';
+    protected $table = 'contact_requests';
 
         protected $fillable = [
         'name',

@@ -5,11 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class BuyVerification extends Model
+class Buy_verification extends Model
 {
     use HasFactory;
 
-    protected $table = 'buy_verification';
+    protected $table = 'buy_verifications';
 
         protected $fillable = [
         'quantity',

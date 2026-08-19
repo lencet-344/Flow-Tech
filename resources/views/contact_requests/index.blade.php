@@ -25,34 +25,34 @@
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-gray-200 dark:divide-gray-700">
-                            @forelse ($contactRequests as $contactRequest)
+                            @forelse ($contact_requests as $contact_request)
                                 <tr class="group hover:bg-gray-50/50 dark:hover:bg-gray-700/50 transition-colors bg-white dark:bg-gray-800">
                                     <td class="px-6 py-4">
-                                        <div class="text-sm font-semibold text-gray-900 dark:text-white">{{ $contactRequest->name }}</div>
-                                        <div class="text-xs text-gray-500 dark:text-gray-400 mt-1">{{ $contactRequest->email }}</div>
+                                        <div class="text-sm font-semibold text-gray-900 dark:text-white">{{ $contact_request->name }}</div>
+                                        <div class="text-xs text-gray-500 dark:text-gray-400 mt-1">{{ $contact_request->email }}</div>
                                     </td>
                                     <td class="px-6 py-4">
                                         <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400">
-                                            {{ $contactRequest->company->name ?? 'N/A' }}
+                                            {{ $contact_request->company->name ?? 'N/A' }}
                                         </span>
                                     </td>
                                     <td class="px-6 py-4">
-                                        <div class="text-sm text-gray-800 dark:text-gray-200">{{ $contactRequest->location }}</div>
-                                        <div class="text-xs text-gray-500 dark:text-gray-400 mt-1">Tel: {{ $contactRequest->telephone }}</div>
+                                        <div class="text-sm text-gray-800 dark:text-gray-200">{{ $contact_request->location }}</div>
+                                        <div class="text-xs text-gray-500 dark:text-gray-400 mt-1">Tel: {{ $contact_request->telephone }}</div>
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-right">
                                         <div class="flex justify-end items-center space-x-3 opacity-0 group-hover:opacity-100 transition-opacity">
-                                            <a href="{{ route('contact_requests.show', $contactRequest) }}" class="text-blue-500 hover:text-blue-700 transition-colors" title="Ver">
+                                            <a href="{{ route('contact_requests.show', $contact_request) }}" class="text-blue-500 hover:text-blue-700 transition-colors" title="Ver">
                                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
                                             </a>
-                                            <a href="{{ route('contact_requests.edit', $contactRequest) }}" class="text-amber-500 hover:text-amber-700 transition-colors" title="Editar">
+                                            <a href="{{ route('contact_requests.edit', $contact_request) }}" class="text-amber-500 hover:text-amber-700 transition-colors" title="Editar">
                                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
                                             </a>
-                                            <form id="form-delete-{{ $contactRequest->id }}" action="{{ route('contact_requests.destroy', $contactRequest) }}" method="POST" class="hidden">
+                                            <form id="form-delete-{{ $contact_request->id }}" action="{{ route('contact_requests.destroy', $contact_request) }}" method="POST" class="hidden">
                                                 @csrf
                                                 @method('DELETE')
                                             </form>
-                                            <button type="button" onclick="confirmarEliminacion({{ $contactRequest->id }})" class="text-red-500 hover:text-red-700 transition-colors" title="Eliminar">
+                                            <button type="button" onclick="confirmarEliminacion({{ $contact_request->id }})" class="text-red-500 hover:text-red-700 transition-colors" title="Eliminar">
                                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
                                             </button>
                                         </div>
@@ -72,9 +72,9 @@
                     </table>
                 </div>
                 
-                @if (method_exists($contactRequests, 'hasPages') && $contactRequests->hasPages())
+                @if (method_exists($contact_requests, 'hasPages') && $contact_requests->hasPages())
                     <div class="px-6 py-4 border-t border-gray-200 dark:border-gray-700 bg-gray-50/50 dark:bg-gray-800/50">
-                        {{ $contactRequests->links() }}
+                        {{ $contact_requests->links() }}
                     </div>
                 @endif
             </div>

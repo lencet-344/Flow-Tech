@@ -11,8 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('pruebas', function (Blueprint $table) {
-            $table->id();
+        Schema::create('buy_verifications', function (Blueprint $table) {
+            $table->increments("id");
+            $table->integer("quantity");
+            $table->date("date_buy");
+            $table->decimal("iva", 8, 2);
+            $table->decimal("cost_total", 8, 2);
+
+            
+
             $table->timestamps();
         });
     }
@@ -22,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('pruebas');
+        Schema::dropIfExists('buy_verifications');
     }
 };

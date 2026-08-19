@@ -12,21 +12,21 @@
                     @csrf
                     
                     <div class="mb-4">
-                        <label for="title" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Title</label>
+                        <label for="title" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Titulo</label>
                         <input type="text" name="title" id="title" value="{{ old('title') }}" class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
                         @error('title')
                             <p class="mt-2 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
                         @enderror
                     </div>
                     <div class="mb-4">
-                        <label for="type_offer" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Type offer</label>
+                        <label for="type_offer" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Tipo de Oferta</label>
                         <input type="text" name="type_offer" id="type_offer" value="{{ old('type_offer') }}" class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
                         @error('type_offer')
                             <p class="mt-2 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
                         @enderror
                     </div>
                     <div class="mb-4">
-                        <label for="discount" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Discount</label>
+                        <label for="discount" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Descuento</label>
                         <input type="text" name="discount" id="discount" value="{{ old('discount') }}" class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
                         @error('discount')
                             <p class="mt-2 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
@@ -40,7 +40,7 @@
                         @enderror
                     </div>
                     <div class="mb-4">
-                        <label for="product_id" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Product id</label>
+                        <label for="product_id" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Producto</label>
                         <select name="product_id" id="product_id" class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
                             <option value="">Seleccione una opción</option>
                             @foreach($products as $item)

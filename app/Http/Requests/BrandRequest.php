@@ -15,8 +15,8 @@ class BrandRequest extends FormRequest
     {
         return [
             'name' => 'required|string|max:30',
-            'logo' => 'required|string|max:100',
-            'country_origin' => 'required|string|max:30',
+            'logo' => 'nullable|string|max:100',
+            'country_origin' => 'required|string|max:100',
             'industry' => 'required|string|max:30',
             'description' => 'required|string|max:100',
             'product_id' => 'required|integer|exists:products,id',
@@ -26,19 +26,19 @@ class BrandRequest extends FormRequest
         public function messages(): array
     {
         return [
-            'name.required' => 'El campo name es requerido',
-            'name.max' => 'El campo name no debe exceder los 30 caracteres',
-            'logo.required' => 'El campo logo es requerido',
+            'name.required' => 'El campo nombre es requerido',
+            'name.max' => 'El campo nombre no debe exceder los 30 caracteres',
+            'logo.nullable' => 'El campo logo es opcional',
             'logo.max' => 'El campo logo no debe exceder los 100 caracteres',
-            'country_origin.required' => 'El campo country origin es requerido',
-            'country_origin.max' => 'El campo country origin no debe exceder los 30 caracteres',
-            'industry.required' => 'El campo industry es requerido',
-            'industry.max' => 'El campo industry no debe exceder los 30 caracteres',
-            'description.required' => 'El campo description es requerido',
-            'description.max' => 'El campo description no debe exceder los 100 caracteres',
-            'product_id.required' => 'El campo product id es requerido',
-            'product_id.integer' => 'El campo product id debe ser un número entero',
-            'product_id.exists' => 'La referencia seleccionada en product id no existe',
+            'country_origin.required' => 'El campo país de origen es requerido',
+            'country_origin.max' => 'El campo país de origen no debe exceder los 100 caracteres',
+            'industry.required' => 'El campo industria es requerido',
+            'industry.max' => 'El campo industria no debe exceder los 30 caracteres',
+            'description.required' => 'El campo descripcion es requerido',
+            'description.max' => 'El campo descripcion no debe exceder los 100 caracteres',
+            'product_id.required' => 'El campo producto es requerido',
+            'product_id.integer' => 'El campo producto debe ser un número entero',
+            'product_id.exists' => 'La referencia seleccionada en producto no existe',
         ];
     }
 }

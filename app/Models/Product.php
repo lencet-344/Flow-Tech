@@ -42,4 +42,9 @@ class Product extends Model
     {
         return $this->belongsToMany(User::class, 'favorite', 'product_id', 'user_id');
     }
+
+    public function offers()
+    {
+        return $this->hasMany(Offer::class);
+    }
 }

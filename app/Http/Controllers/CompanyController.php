@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Http\Request\CompanyRequest;
+use App\Http\Requests\CompanyRequest;
 use App\Models\Company;
 
 
@@ -23,7 +23,7 @@ class CompanyController extends Controller
      */
     public function create()
     {
-        $companies = new Company::all();
+        $companies = new Company();
         return view("companies.create", compact("companies"));
     }
 

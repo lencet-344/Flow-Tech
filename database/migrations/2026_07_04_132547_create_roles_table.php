@@ -12,12 +12,12 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('roles', function (Blueprint $table) {
-            $table->increments("id");
+            $table->id();
             $table->string("name",30);
             $table->string("type",30);
             $table->string("description",100);
 
-            $table->integer("user_id")->unsigned();
+            $table->unsignedBigInteger("user_id");
             $table->foreign("user_id")->references("id")->on("users")->onDelete("cascade")->onUpdate("cascade");
 
             $table->timestamps();

@@ -13,48 +13,49 @@
                     
                     <div class="mb-4">
                         <label for="quantity" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Cantidad</label>
-                        <input type="text" name="quantity" id="quantity" value="{{ old('quantity') }}" class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                        <input type="number" name="quantity" id="quantity" value="{{ old('quantity') }}" class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
                         @error('quantity')
                             <p class="mt-2 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
                         @enderror
                     </div>
                     <div class="mb-4">
                         <label for="price" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Precio</label>
-                        <input type="text" name="price" id="price" value="{{ old('price') }}" class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                        <input type="number" step="0.01" name="price" id="price" value="{{ old('price') }}" class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
                         @error('price')
                             <p class="mt-2 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
                         @enderror
                     </div>
                     <div class="mb-4">
                         <label for="cost" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Costo</label>
-                        <input type="text" name="cost" id="cost" value="{{ old('cost') }}" class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                        <input type="number" step="0.01" name="cost" id="cost" value="{{ old('cost') }}" class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
                         @error('cost')
                             <p class="mt-2 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
                         @enderror
                     </div>
                     <div class="mb-4">
-                        <label for="date_delivery" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Date delivery</label>
-                        <input type="text" name="date_delivery" id="date_delivery" value="{{ old('date_delivery') }}" class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                        <label for="date_delivery" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Fecha de Entrega</label>
+                        <input type="date" name="date_delivery" id="date_delivery" value="{{ old('date_delivery') }}" class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
                         @error('date_delivery')
                             <p class="mt-2 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
                         @enderror
                     </div>
                     <div class="mb-4">
-                        <label for="buy_verification_id" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Buy verification id</label>
-                        <select name="buy_verification_id" id="buy_verification_id" class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
-                            <option value="">Seleccione una opción</option>
+                        <!-- Corregido a "buy_verifications_id" (plural) para coincidir con la base de datos -->
+                        <label for="buy_verifications_id" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Verificación de Compra (Opcional)</label>
+                        <select name="buy_verifications_id" id="buy_verifications_id" class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                            <option value="">-- Sin verificación por ahora --</option>
                             @foreach($buy_verifications as $item)
-                                <option value="{{ $item->id }}" {{ old('buy_verification_id') == $item->id ? 'selected' : '' }}>{{ $item->name ?? $item->title ?? $item->id }}</option>
+                                <option value="{{ $item->id }}" {{ old('buy_verifications_id') == $item->id ? 'selected' : '' }}>{{ $item->name ?? $item->title ?? $item->id }}</option>
                             @endforeach
                         </select>
-                        @error('buy_verification_id')
+                        @error('buy_verifications_id')
                             <p class="mt-2 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
                         @enderror
                     </div>
                     <div class="mb-4">
-                        <label for="user_id" class="block text-sm font-medium text-gray-700 dark:text-gray-300">User id</label>
+                        <label for="user_id" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Usuario</label>
                         <select name="user_id" id="user_id" class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
-                            <option value="">Seleccione una opción</option>
+                            <option value="">Seleccione un usuario</option>
                             @foreach($users as $item)
                                 <option value="{{ $item->id }}" {{ old('user_id') == $item->id ? 'selected' : '' }}>{{ $item->name ?? $item->title ?? $item->id }}</option>
                             @endforeach

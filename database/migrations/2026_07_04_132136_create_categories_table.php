@@ -15,7 +15,7 @@ return new class extends Migration
             $table->increments("id");
             $table->string("name",30);
             $table->string("type",20);
-            $table->integer("quantity",20);
+            $table->integer("quantity");
             $table->string("description",100);
             
             $table->timestamps();

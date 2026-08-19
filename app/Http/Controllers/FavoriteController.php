@@ -3,6 +3,11 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Http\Requests\FavoriteRequest;
+use App\Models\Favorite;
+use App\Models\User;
+use App\Models\Product;
+use Illuminate\view\view;
 
 class FavoriteController extends Controller
 {
@@ -11,7 +16,8 @@ class FavoriteController extends Controller
      */
     public function index()
     {
-        //
+        $favorites = Favorite::with("product")->get();
+        return view("favorites.index", compact("favorites"));
     }
 
     /**
@@ -19,23 +25,29 @@ class FavoriteController extends Controller
      */
     public function create()
     {
-        //
+        $favorite = new Favorite();
+        $users = User::all();
+        $products = Product::all();
+        return view('favorites.create',compact('favorite','users', 'products'));
+
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(FavoriteRequest $request)
     {
-        //
+        Favorite::create($request->validated());
+        return redirect()->route('favorites.index')->with('success', 'favoritos a sido creada correctamente.');
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Favorite $favorite)
     {
-        //
+        $favorite = Favorite::with('product')->findOrFail($favorite->id);
+        return view('favorites.show', compact('favorite'));
     }
 
     /**
@@ -43,15 +55,20 @@ class FavoriteController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $favorite = Favorite::with('product')->findOrFail($id);
+        $users = User::all();
+        $products = Product::all();
+        return view('favorites.edit', compact('favorite', 'users', 'products'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(FavoriteRequest $request, string $id)
     {
-        //
+        $favorite = Favorite::with('product')->findOrFail($id);
+        $favorite->update($request->validated());
+        return redirect()->route('favorites.index')->with('success', 'Favoritos a sido actualizada correctamente.');
     }
 
     /**
@@ -59,6 +76,8 @@ class FavoriteController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $favorite = Favorite::with('product')->findOrFail($id);
+        $favorite->delete();
+        return redirect()->route('favorites.index')->with('success', 'Favoritos a sido eliminada correctamente.');
     }
 }

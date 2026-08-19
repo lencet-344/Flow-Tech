@@ -12,13 +12,13 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('contact_requests', function (Blueprint $table) {
-            $table->increments("id");
+            $table->id();
             $table->string("name", 30);
             $table->string("email", 30)->unique();
-            $table->integer("telephone", 8)->unique();
+            $table->integer("telephone")->unique();
             $table->string("location", 30);
 
-            $table->integer("company_id")->unsigned();
+            $table->unsignedBigInteger("company_id");
             $table->foreign("company_id")->references("id")->on("companies")->onDelete("cascade")->onUpdate("cascade");
 
 

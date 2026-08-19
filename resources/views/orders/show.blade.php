@@ -24,15 +24,15 @@
                         <p class="mt-1 text-lg text-gray-900 dark:text-gray-100">{{ $order->cost }}</p>
                     </div>
                     <div class="mb-4">
-                        <label class="block text-sm font-medium text-gray-500 dark:text-gray-400">Date delivery</label>
+                        <label class="block text-sm font-medium text-gray-500 dark:text-gray-400">Fecha de Entrega</label>
                         <p class="mt-1 text-lg text-gray-900 dark:text-gray-100">{{ $order->date_delivery }}</p>
                     </div>
                     <div class="mb-4">
-                        <label class="block text-sm font-medium text-gray-500 dark:text-gray-400">Buy verification id</label>
+                        <label class="block text-sm font-medium text-gray-500 dark:text-gray-400">Verificación de Compra</label>
                         <p class="mt-1 text-lg text-gray-900 dark:text-gray-100">{{ $order->buy_verification->name ?? $order->buy_verification->title ?? $order->buy_verification->id ?? 'N/A' }}</p>
                     </div>
                     <div class="mb-4">
-                        <label class="block text-sm font-medium text-gray-500 dark:text-gray-400">User id</label>
+                        <label class="block text-sm font-medium text-gray-500 dark:text-gray-400">Usuario</label>
                         <p class="mt-1 text-lg text-gray-900 dark:text-gray-100">{{ $order->user->name ?? $order->user->title ?? $order->user->id ?? 'N/A' }}</p>
                     </div>
                 </div>

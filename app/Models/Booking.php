@@ -9,7 +9,7 @@ class Booking extends Model
 {
     use HasFactory;
 
-    protected $table = 'booking';
+    protected $table = 'bookings';
 
         protected $fillable = [
         'date_booking',
@@ -20,8 +20,8 @@ class Booking extends Model
         'supplier_id',
     ];
 
-    public function suppliers()
+    public function supplier()
     {
-        return $this->hasMany(Supplier::class);
+        return $this->belongsTo(Supplier::class);
     }
 }

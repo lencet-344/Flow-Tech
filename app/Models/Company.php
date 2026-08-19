@@ -9,7 +9,7 @@ class Company extends Model
 {
     use HasFactory;
 
-    protected $table = 'company';
+    protected $table = 'companies';
 
     protected $fillable = [
         'name',
@@ -25,8 +25,8 @@ class Company extends Model
         return $this->hasMany(Product::class);
     }
 
-    public function contactRequests()
+    public function contact_requests()
     {
-        return $this->hasMany(ContactRequest::class);
+        return $this->hasMany(Contact_request::class);
     }
 }
