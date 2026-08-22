@@ -13,10 +13,12 @@ class Contact_requestRequest extends FormRequest
 
         public function rules(): array
     {
+        $id = $this->route('contact_request') ? ($this->route('contact_request')->id ?? $this->route('contact_request')) : null;
+
         return [
             'name' => 'required|string|max:30',
-            'email' => 'required|string|email|max:30|unique:contact_requests,email',
-            'telephone' => 'required|integer|unique:contact_requests,telephone',
+            'email' => 'required|string|email|max:30|unique:contact_requests,email,' . $id,
+            'telephone' => 'required|integer|unique:contact_requests,telephone,' . $id,
             'location' => 'required|string|max:30',
             'company_id' => 'required|integer|exists:companies,id',
         ];

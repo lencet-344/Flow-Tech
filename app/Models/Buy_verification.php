@@ -11,16 +11,15 @@ class Buy_verification extends Model
 
     protected $table = 'buy_verifications';
 
-        protected $fillable = [
+    protected $fillable = [
         'quantity',
         'date_buy',
         'iva',
         'cost_total',
-        'order_id',
     ];
 
     public function order()
     {
-        return $this->belongsTo(Order::class);
+        return $this->hasOne(Order::class, 'buy_verifications_id');
     }
 }

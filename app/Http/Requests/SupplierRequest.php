@@ -13,17 +13,18 @@ class SupplierRequest extends FormRequest
 
     public function rules(): array
     {
+        $id = $this->route('supplier') ? ($this->route('supplier')->id ?? $this->route('supplier')) : null;
         return [
             'name' => 'required|string|max:50',
             'age' => 'required|integer',
             'gender' => 'required|string|max:10',
             'address' => 'required|string|max:100',
-            'email' => 'required|string|email|max:50|unique:suppliers,email',
-            'telephone' => 'required|integer|unique:suppliers,telephone',
-            'identification_card' => 'required|string|max:20|unique:suppliers,identification_card',
+            'email' => 'required|string|email|max:50|unique:suppliers,email,' . $id,
+            'telephone' => 'required|integer|unique:suppliers,telephone,' . $id,
+            'identification_card' => 'required|string|max:20|unique:suppliers,identification_card,' . $id,
             'company' => 'required|string|max:50',
             'code_company' => 'required|string|max:20',
-            'No_INSS' => 'required|string|max:20|unique:suppliers,No_INSS',
+            'No_INSS' => 'required|string|max:20|unique:suppliers,No_INSS,' . $id,
         ];
     }
 

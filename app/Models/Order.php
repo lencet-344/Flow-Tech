@@ -16,7 +16,7 @@ class Order extends Model
         'price',
         'cost',
         'date_delivery',
-        'buy_verification_id',
+        'buy_verifications_id',
         'user_id',
     ];
 
@@ -32,6 +32,6 @@ class Order extends Model
 
     public function buy_verification()
     {
-        return $this->hasOne(Buy_verification::class);
+        return $this->belongsTo(\App\Models\Buy_verification::class, 'buy_verifications_id');
     }
 }
