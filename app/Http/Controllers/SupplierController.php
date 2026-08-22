@@ -35,7 +35,9 @@ class SupplierController extends Controller
      */
     public function store(SupplierRequest $request)
     {
-        Supplier::create($request->validated());
+        $data = $request->validated();
+        $data['code_company'] = 'SUP-' . strtoupper(\Illuminate\Support\Str::random(6));
+        Supplier::create($data);
         return redirect()->route("suppliers.index")->with("success", "Proveedor a sido creado correctamente.");
     }
 

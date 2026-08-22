@@ -13,9 +13,10 @@ class UserRequest extends FormRequest
 
         public function rules(): array
     {
+        $id = $this->route('user') ? ($this->route('user')->id ?? $this->route('user')) : null;
         return [
             'name' => 'required|string',
-            'email' => 'required|string|email|unique:users,email',
+            'email' => 'required|string|email|unique:users,email,' . $id,
             'password' => 'required|string',
         ];
     }

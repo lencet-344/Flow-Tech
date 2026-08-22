@@ -21,6 +21,9 @@ class ProductRequest extends FormRequest
             'presentation' => 'required|string|max:50',
             'state' => 'required|string|max:30',
             'code_bar' => 'required|string|max:30',
+            'brand_id' => 'required|integer|exists:brands,id',
+            'category_id' => 'required|integer|exists:categories,id',
+            'supplier_id' => 'required|exists:suppliers,id',
         ];
     }
 

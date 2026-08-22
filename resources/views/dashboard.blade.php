@@ -60,7 +60,7 @@
                 </a>
 
                 
-                <a href="{{ route('buy_verifications.index') }}" class="group block bg-white dark:bg-gray-800 overflow-hidden shadow-md sm:rounded-2xl border border-gray-100 dark:border-gray-700 hover:border-red-500/50 dark:hover:border-red-500/50 hover:-translate-y-1 transition-all duration-300">
+                <a href="{{ route('buy-verifications.index') }}" class="group block bg-white dark:bg-gray-800 overflow-hidden shadow-md sm:rounded-2xl border border-gray-100 dark:border-gray-700 hover:border-red-500/50 dark:hover:border-red-500/50 hover:-translate-y-1 transition-all duration-300">
                     <div class="p-6">
                         <div class="flex justify-between items-start mb-4">
                             <div>
@@ -105,7 +105,7 @@
                 </a>
 
                 
-                <a href="{{ route('contact_requests.index') }}" class="group block bg-white dark:bg-gray-800 overflow-hidden shadow-md sm:rounded-2xl border border-gray-100 dark:border-gray-700 hover:border-pink-500/50 dark:hover:border-pink-500/50 hover:-translate-y-1 transition-all duration-300">
+                <a href="{{ route('contact-requests.index') }}" class="group block bg-white dark:bg-gray-800 overflow-hidden shadow-md sm:rounded-2xl border border-gray-100 dark:border-gray-700 hover:border-pink-500/50 dark:hover:border-pink-500/50 hover:-translate-y-1 transition-all duration-300">
                     <div class="p-6">
                         <div class="flex justify-between items-start mb-4">
                             <div>

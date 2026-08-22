@@ -11,15 +11,12 @@ class BrandRequest extends FormRequest
         return true;
     }
 
-        public function rules(): array
+    public function rules(): array
     {
         return [
-            'name' => 'required|string|max:30',
-            'logo' => 'nullable|string|max:100',
-            'country_origin' => 'required|string|max:100',
-            'industry' => 'required|string|max:30',
-            'description' => 'required|string|max:100',
-            'product_id' => 'required|integer|exists:products,id',
+            'name' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'category_id' => 'required|exists:categories,id',
         ];
     }
 
@@ -36,9 +33,8 @@ class BrandRequest extends FormRequest
             'industry.max' => 'El campo industria no debe exceder los 30 caracteres',
             'description.required' => 'El campo descripcion es requerido',
             'description.max' => 'El campo descripcion no debe exceder los 100 caracteres',
-            'product_id.required' => 'El campo producto es requerido',
-            'product_id.integer' => 'El campo producto debe ser un número entero',
-            'product_id.exists' => 'La referencia seleccionada en producto no existe',
+            'category_id.required' => 'El campo categoría es requerido',
+            'category_id.exists' => 'La categoría seleccionada no es válida',
         ];
     }
 }
