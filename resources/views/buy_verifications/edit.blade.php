@@ -4,7 +4,7 @@
             <h2 class="font-semibold text-2xl text-gray-800 dark:text-gray-100 leading-tight tracking-tight">
                 {{ __('Editar Verificación de Compra') }}
             </h2>
-            <a href="{{ route('buy-verifications.index') }}" class="text-sm text-gray-500 hover:text-indigo-600 dark:text-gray-400 dark:hover:text-indigo-400 transition-colors font-medium">
+            <a href="{{ route('buy_verifications.index') }}" class="text-sm text-gray-500 hover:text-indigo-600 dark:text-gray-400 dark:hover:text-indigo-400 transition-colors font-medium">
                 &larr; Volver a la lista
             </a>
         </div>

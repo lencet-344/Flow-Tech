@@ -28,7 +28,7 @@
                         {{ __('Categorías') }}
                     </x-nav-link>
 
-                    <x-nav-link :href="route('buy-verifications.index')" :active="request()->routeIs('buy-verifications.*')">
+                    <x-nav-link :href="route('buy_verifications.index')" :active="request()->routeIs('buy-verifications.*')">
                         {{ __('Verificaciones de Compra') }}
                     </x-nav-link>
 
@@ -64,7 +64,7 @@
                         {{ __('Ofertas') }}
                     </x-nav-link>
 
-                    <x-nav-link :href="route('contact-requests.index')" :active="request()->routeIs('contact-requests.*')">
+                    <x-nav-link :href="route('contact_requests.index')" :active="request()->routeIs('contact-requests.*')">
                         {{ __('Solicitudes de Contacto') }}
                     </x-nav-link>
 
@@ -147,7 +147,7 @@
                 {{ __('Categorías') }}
             </x-responsive-nav-link>
 
-            <x-responsive-nav-link :href="route('buy-verifications.index')" :active="request()->routeIs('buy-verifications.*')">
+            <x-responsive-nav-link :href="route('buy_verifications.index')" :active="request()->routeIs('buy-verifications.*')">
                 {{ __('Verificaciones de Compra') }}
             </x-responsive-nav-link>
 
@@ -183,7 +183,7 @@
                 {{ __('Ofertas') }}
             </x-responsive-nav-link>
 
-            <x-responsive-nav-link :href="route('contact-requests.index')" :active="request()->routeIs('contact-requests.*')">
+            <x-responsive-nav-link :href="route('contact_requests.index')" :active="request()->routeIs('contact-requests.*')">
                 {{ __('Solicitudes de Contacto') }}
             </x-responsive-nav-link>
 
