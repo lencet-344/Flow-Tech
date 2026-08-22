@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('buy_verifications', function (Blueprint $table) {
-            $table->increments("id");
+            $table->id();
             $table->integer("quantity");
             $table->date("date_buy");
             $table->decimal("iva", 8, 2);
