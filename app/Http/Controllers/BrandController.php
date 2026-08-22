@@ -15,56 +15,39 @@ class BrandController extends Controller
      */
     public function index()
     {
-        $brands = Brand::with("product")->get();
+        $brands = Brand::with("category")->get();
         return view("brands.index", compact("brands"));
     }
 
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
-    {
-        $brand = new Brand();
-        $products = Product::all();
-        return view("brands.create", compact("brand", "products"));
+    public function create() {
+        $categories = \App\Models\Category::all();
+        return view('brands.create', compact('categories'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(BrandRequest $request)
-    {
+    public function store(BrandRequest $request) {
         Brand::create($request->validated());
-        return redirect()->route("brands.index")->with("success", "Marca a sido creada correctamente.");
+        return redirect()->route('brands.index')->with('success', 'Marca creada exitosamente.');
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(Brand $brand)
     {
-        $brand = Brand::with("product")->findOrFail($brand->id);
+        $brand = Brand::with("category")->findOrFail($brand->id);
         return view("brands.show", compact("brand"));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        $brand = Brand::with("product")->findOrFail($id);
-        $products = Product::all();
-        return view("brands.edit", compact("brand", "products"));
+    public function edit($id) {
+        $brand = Brand::findOrFail($id);
+        $categories = \App\Models\Category::all();
+        return view('brands.edit', compact('brand', 'categories'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(BrandRequest $request, string $id) 
-    {
-        $brand = Brand::with("product")->findOrFail($id);
+    public function update(BrandRequest $request, $id) {
+        $brand = Brand::findOrFail($id);
         $brand->update($request->validated());
-        return redirect()->route("brands.index")->with("success", "Marca a sido actualizada correctamente.");
+        return redirect()->route('brands.index')->with('success', 'Marca actualizada exitosamente.');
     }
     
     /**
@@ -72,7 +55,7 @@ class BrandController extends Controller
      */
     public function destroy(string $id)
     {
-        $brand = Brand::with("product")->findOrFail($id);
+        $brand = Brand::findOrFail($id);
         $brand->delete();
         return redirect()->route("brands.index")->with("success", "Marca a sido eliminada correctamente.");
     }

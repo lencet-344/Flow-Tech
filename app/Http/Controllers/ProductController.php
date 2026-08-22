@@ -23,7 +23,10 @@ class ProductController extends Controller
     public function create()
     {
         $products = new Product();
-        return view("products.create", compact("products"));
+        $brands = \App\Models\Brand::all();
+        $categories = \App\Models\Category::all();
+        $suppliers = \App\Models\Supplier::all();
+        return view("products.create", compact("products", "brands", "categories", "suppliers"));
     }
 
     /**
@@ -31,7 +34,16 @@ class ProductController extends Controller
      */
     public function store(ProductRequest $request)
     {
-        Product::create($request->validated());
+        $data = $request->validated();
+        $data['code_bar'] = 'PRD-' . strtoupper(\Illuminate\Support\Str::random(6));
+        $data['state'] = 'Activo';
+        
+        
+        unset($data['brand_id']); 
+        unset($data['category_id']);
+        unset($data['supplier_id']); 
+        
+        Product::create($data);
         return redirect()->route("products.index")->with("success", "Producto a sido creado correctamente.");
     }
 
@@ -50,7 +62,10 @@ class ProductController extends Controller
     public function edit(string $id)
     {
         $product = Product::findOrFail($id);
-        return view("products.edit", compact("product"));
+        $brands = \App\Models\Brand::all();
+        $categories = \App\Models\Category::all();
+        $suppliers = \App\Models\Supplier::all();
+        return view("products.edit", compact("product", "brands", "categories", "suppliers"));
     }
 
     /**
@@ -58,7 +73,14 @@ class ProductController extends Controller
      */
     public function update(ProductRequest $request, Product $product)
     {
-        $product->update($request->validated());
+        $data = $request->validated();
+        
+        
+        unset($data['brand_id']); 
+        unset($data['category_id']);
+        unset($data['supplier_id']); 
+        
+        $product->update($data);
         return redirect()->route("products.index")->with("success", "Producto a sido actualizado correctamente.");
     }
 
