@@ -11,15 +11,23 @@ class Brand extends Model
 
     protected $table = 'brands';
 
-        protected $fillable = [
+    protected $fillable = [
         'name',
-        'logo',
-        'country_origin',
-        'industry',
         'description',
-        'product_id',
+        'category_id',
     ];
 
+    protected $attributes = [
+        'logo' => '',
+        'country_origin' => '',
+        'industry' => '',
+    ];
+
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
+    }
+    
     public function products()
     {
         return $this->hasMany(Product::class);

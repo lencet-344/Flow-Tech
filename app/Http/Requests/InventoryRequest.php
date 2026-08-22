@@ -22,7 +22,7 @@ class InventoryRequest extends FormRequest
             'update_restock' => 'required|date',
             'product_id' => 'required|integer|exists:products,id',
             'supplier_id' => 'required|integer|exists:suppliers,id',
-            'order_detail_id' => 'required|integer|exists:order_details,id',
+
         ];
     }
 
@@ -47,9 +47,9 @@ class InventoryRequest extends FormRequest
             'supplier_id.required' => 'El campo supplier id es requerido',
             'supplier_id.integer' => 'El campo supplier id debe ser un número entero',
             'supplier_id.exists' => 'La referencia seleccionada en supplier id no existe',
-            'order_detail_id.required' => 'El campo order detail id es requerido',
-            'order_detail_id.integer' => 'El campo order detail id debe ser un número entero',
-            'order_detail_id.exists' => 'La referencia seleccionada en order detail id no existe',
+
+
+
         ];
     }
 }

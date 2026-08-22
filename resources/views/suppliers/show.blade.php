@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-2xl text-gray-800 dark:text-gray-100">
-            Detalle de Supplier
+            Detalle de Proveedor
         </h2>
     </x-slot>
 
@@ -20,7 +20,7 @@
                         <p class="mt-1 text-lg text-gray-900 dark:text-gray-100">{{ $supplier->age }}</p>
                     </div>
                     <div class="mb-4">
-                        <label class="block text-sm font-medium text-gray-500 dark:text-gray-400">Gender</label>
+                        <label class="block text-sm font-medium text-gray-500 dark:text-gray-400">Género</label>
                         <p class="mt-1 text-lg text-gray-900 dark:text-gray-100">{{ $supplier->gender }}</p>
                     </div>
                     <div class="mb-4">
@@ -36,7 +36,7 @@
                         <p class="mt-1 text-lg text-gray-900 dark:text-gray-100">{{ $supplier->telephone }}</p>
                     </div>
                     <div class="mb-4">
-                        <label class="block text-sm font-medium text-gray-500 dark:text-gray-400">Identification_card</label>
+                        <label class="block text-sm font-medium text-gray-500 dark:text-gray-400">Cédula de Identidad</label>
                         <p class="mt-1 text-lg text-gray-900 dark:text-gray-100">{{ $supplier->identification_card }}</p>
                     </div>
                     <div class="mb-4">
@@ -44,11 +44,11 @@
                         <p class="mt-1 text-lg text-gray-900 dark:text-gray-100">{{ $supplier->company }}</p>
                     </div>
                     <div class="mb-4">
-                        <label class="block text-sm font-medium text-gray-500 dark:text-gray-400">Code_company</label>
+                        <label class="block text-sm font-medium text-gray-500 dark:text-gray-400">Código de Empresa</label>
                         <p class="mt-1 text-lg text-gray-900 dark:text-gray-100">{{ $supplier->code_company }}</p>
                     </div>
                     <div class="mb-4">
-                        <label class="block text-sm font-medium text-gray-500 dark:text-gray-400">No_inss</label>
+                        <label class="block text-sm font-medium text-gray-500 dark:text-gray-400">No. INSS</label>
                         <p class="mt-1 text-lg text-gray-900 dark:text-gray-100">{{ $supplier->No_INSS }}</p>
                     </div>
                 </div>

@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-2xl text-gray-800 dark:text-gray-100">
-            Detalle de Product
+            Detalles de Producto
         </h2>
     </x-slot>
 
@@ -38,6 +38,10 @@
                     <div class="mb-4">
                         <label class="block text-sm font-medium text-gray-500 dark:text-gray-400">Code_bar</label>
                         <p class="mt-1 text-lg text-gray-900 dark:text-gray-100">{{ $product->code_bar }}</p>
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium text-gray-500 dark:text-gray-400">Proveedor</label>
+                        <p class="mt-1 text-lg text-gray-900 dark:text-gray-100">{{ $product->supplier?->name ?? 'Sin Proveedor' }}</p>
                     </div>
                 </div>
 

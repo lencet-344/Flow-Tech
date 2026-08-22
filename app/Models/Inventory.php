@@ -20,7 +20,6 @@ class Inventory extends Model
         'update_restock',
         'product_id',
         'supplier_id',
-        'order_detail_id',
     ];
 
     public function product()

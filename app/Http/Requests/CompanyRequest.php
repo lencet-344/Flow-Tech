@@ -13,11 +13,13 @@ class CompanyRequest extends FormRequest
 
     public function rules(): array
     {
+        $id = $this->route('company') ? ($this->route('company')->id ?? $this->route('company')) : null;
+        
         return [
             'name' => 'required|string|max:30',
-            'email' => 'required|string|email|max:50|unique:companies,email',
+            'email' => 'required|string|email|max:50|unique:companies,email,' . $id,
             'address' => 'required|string|max:100',
-            'telephone' => 'required|integer|unique:companies,telephone',
+            'telephone' => 'required|integer|unique:companies,telephone,' . $id,
             'type_product' => 'required|string|max:30',
         ];
     }

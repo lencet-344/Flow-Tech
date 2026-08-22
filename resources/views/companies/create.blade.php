@@ -40,7 +40,7 @@
                         @enderror
                     </div>
                     <div class="mb-4">
-                        <label for="type_product" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Type_product</label>
+                        <label for="type_product" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Tipo de Producto</label>
                         <input type="text" name="type_product" id="type_product" value="{{ old('type_product') }}" class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
                         @error('type_product')
                             <p class="mt-2 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>

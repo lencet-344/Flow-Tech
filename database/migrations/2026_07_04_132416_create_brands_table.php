@@ -19,8 +19,8 @@ return new class extends Migration
             $table->string("industry",30);
             $table->string("description",100);
 
-            $table->unsignedBigInteger("product_id");
-            $table->foreign("product_id")->references("id")->on("products")->onDelete("cascade")->onUpdate("cascade");
+            $table->unsignedInteger("category_id");
+            $table->foreign("category_id")->references("id")->on("categories")->onDelete("cascade")->onUpdate("cascade");
 
             $table->timestamps();
         });

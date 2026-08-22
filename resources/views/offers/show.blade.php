@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-2xl text-gray-800 dark:text-gray-100">
-            Detalle de Offer
+            Detalles de Oferta
         </h2>
     </x-slot>
 
@@ -12,7 +12,7 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     
                     <div class="mb-4">
-                        <label class="block text-sm font-medium text-gray-500 dark:text-gray-400">Title</label>
+                        <label class="block text-sm font-medium text-gray-500 dark:text-gray-400">Título</label>
                         <p class="mt-1 text-lg text-gray-900 dark:text-gray-100">{{ $offer->title }}</p>
                     </div>
                     <div class="mb-4">

@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-2xl text-gray-800 dark:text-gray-100">
-            Detalle de Company
+            Detalles de Empresa
         </h2>
     </x-slot>
 
@@ -28,7 +28,7 @@
                         <p class="mt-1 text-lg text-gray-900 dark:text-gray-100">{{ $company->telephone }}</p>
                     </div>
                     <div class="mb-4">
-                        <label class="block text-sm font-medium text-gray-500 dark:text-gray-400">Type_product</label>
+                        <label class="block text-sm font-medium text-gray-500 dark:text-gray-400">Tipo de Producto</label>
                         <p class="mt-1 text-lg text-gray-900 dark:text-gray-100">{{ $company->type_product }}</p>
                     </div>
                 </div>

@@ -36,7 +36,10 @@ class InventoryController extends Controller
      */
     public function store(InventoryRequest $request)
     {
-        Inventory::create($request->validated());
+        $data = $request->validated();
+        $data['batch_number'] = rand(100000, 999999);
+        $data['status'] = 'Activo';
+        Inventory::create($data);
         return redirect()->route("inventories.index")->with("success", "Inventario a sido creado correctamente.");
     }
 

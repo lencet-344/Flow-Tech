@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-2xl text-gray-800 dark:text-gray-100">
-            Editar Supplier
+            Editar Proveedor
         </h2>
     </x-slot>
 
@@ -27,7 +27,7 @@
                         @enderror
                     </div>
                     <div class="mb-4">
-                        <label for="gender" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Gender</label>
+                        <label for="gender" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Género</label>
                         <input type="text" name="gender" id="gender" value="{{ old('gender', $supplier->gender) }}" class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
                         @error('gender')
                             <p class="mt-2 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
@@ -55,7 +55,7 @@
                         @enderror
                     </div>
                     <div class="mb-4">
-                        <label for="identification_card" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Identification_card</label>
+                        <label for="identification_card" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Cédula de Identidad</label>
                         <input type="text" name="identification_card" id="identification_card" value="{{ old('identification_card', $supplier->identification_card) }}" class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
                         @error('identification_card')
                             <p class="mt-2 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
@@ -69,14 +69,14 @@
                         @enderror
                     </div>
                     <div class="mb-4">
-                        <label for="code_company" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Code_company</label>
+                        <label for="code_company" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Código de Empresa</label>
                         <input type="text" name="code_company" id="code_company" value="{{ old('code_company', $supplier->code_company) }}" class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
                         @error('code_company')
                             <p class="mt-2 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
                         @enderror
                     </div>
                     <div class="mb-4">
-                        <label for="No_INSS" class="block text-sm font-medium text-gray-700 dark:text-gray-300">No_inss</label>
+                        <label for="No_INSS" class="block text-sm font-medium text-gray-700 dark:text-gray-300">No. INSS</label>
                         <input type="text" name="No_INSS" id="No_INSS" value="{{ old('No_INSS', $supplier->No_INSS) }}" class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
                         @error('No_INSS')
                             <p class="mt-2 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>

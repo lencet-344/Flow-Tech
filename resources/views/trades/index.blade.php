@@ -65,7 +65,7 @@
                                         </div>
                                     </td>
 
-                                    <td class="px-6 py-4">
+                                    <td class="px-6 py-4 max-w-xs whitespace-normal break-words">
                                         <div class="text-sm font-semibold text-gray-900 dark:text-white">
                                             {{ $trade->description }}
                                         </div>
@@ -76,7 +76,7 @@
                                             {{ $trade->product->name ?? 'Sin producto' }}
                                         </span>
                                     </td>
-                                    <td class="px-6 py-4 text-right">
+                                    <td class="px-6 py-4 min-w-[120px] whitespace-nowrap text-right text-sm font-medium">
                                         <div class="flex justify-end items-center space-x-3 opacity-0 group-hover:opacity-100 transition-opacity">
                                             <a href="{{ route('trades.show', $trade) }}" class="text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors" title="Ver">
                                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
