@@ -30,20 +30,20 @@
                                     <td class="px-6 py-4 text-sm text-gray-600 dark:text-gray-400 font-medium">#{{ $user->id }}</td>
                                     <td class="px-6 py-4 text-sm text-gray-900 dark:text-gray-200 font-semibold">{{ $user->name }}</td>
                                     <td class="px-6 py-4 text-sm text-gray-600 dark:text-gray-400">{{ $user->email }}</td>
-                                    <td class="px-6 py-4 text-right space-x-2">
+                                    <td class="px-6 py-4 space-x-2 min-w-[120px] whitespace-nowrap text-right text-sm font-medium">
                                         <a href="{{ route('users.show', $user) }}" class="inline-flex items-center px-3 py-1.5 bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 rounded-lg hover:bg-blue-100 dark:hover:bg-blue-900/50 transition-colors text-xs font-medium">
                                             Ver
                                         </a>
                                         <a href="{{ route('users.edit', $user) }}" class="inline-flex items-center px-3 py-1.5 bg-amber-50 dark:bg-amber-900/30 text-amber-600 dark:text-amber-400 rounded-lg hover:bg-amber-100 dark:hover:bg-amber-900/50 transition-colors text-xs font-medium">
                                             Editar
                                         </a>
-                                        <form id="form-delete-{{ $user->id }}" action="{{ route('users.destroy', $user) }}" method="POST" class="inline">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="button" onclick="confirmarEliminacion({{ $user->id }})" class="inline-flex items-center px-3 py-1.5 bg-red-50 dark:bg-red-900/30 text-red-600 dark:text-red-400 rounded-lg hover:bg-red-100 dark:hover:bg-red-900/50 transition-colors text-xs font-medium">
-                                                Eliminar
-                                            </button>
-                                        </form>
+                                        <form id="form-delete-{{ $user->id }}" action="{{ route('users.destroy', $user) }}" method="POST" class="inline-block">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="inline-flex items-center px-3 py-1.5 bg-red-50 dark:bg-red-900/30 text-red-600 dark:text-red-400 rounded-lg hover:bg-red-100 dark:hover:bg-red-900/50 transition-colors text-xs font-medium btn-delete" onclick="eliminarRegistro(event, this)">
+                                                    Eliminar
+                                                </button>
+                                            </form>
                                     </td>
                                 </tr>
                             @empty

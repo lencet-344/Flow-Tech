@@ -28,7 +28,7 @@
                         {{ __('Categorías') }}
                     </x-nav-link>
 
-                    <x-nav-link :href="route('buy_verifications.index')" :active="request()->routeIs('buy_verifications.*')">
+                    <x-nav-link :href="route('buy-verifications.index')" :active="request()->routeIs('buy-verifications.*')">
                         {{ __('Verificaciones de Compra') }}
                     </x-nav-link>
 
@@ -37,7 +37,7 @@
                     </x-nav-link>
 
                     <x-nav-link :href="route('trades.index')" :active="request()->routeIs('trades.*')">
-                        {{ __('Trades') }}
+                        {{ __('Intercambios') }}
                     </x-nav-link>
 
                     <x-nav-link :href="route('brands.index')" :active="request()->routeIs('brands.*')">
@@ -64,7 +64,7 @@
                         {{ __('Ofertas') }}
                     </x-nav-link>
 
-                    <x-nav-link :href="route('contact_requests.index')" :active="request()->routeIs('contact_requests.*')">
+                    <x-nav-link :href="route('contact-requests.index')" :active="request()->routeIs('contact-requests.*')">
                         {{ __('Solicitudes de Contacto') }}
                     </x-nav-link>
 
@@ -147,7 +147,7 @@
                 {{ __('Categorías') }}
             </x-responsive-nav-link>
 
-            <x-responsive-nav-link :href="route('buy_verifications.index')" :active="request()->routeIs('buy_verifications.*')">
+            <x-responsive-nav-link :href="route('buy-verifications.index')" :active="request()->routeIs('buy-verifications.*')">
                 {{ __('Verificaciones de Compra') }}
             </x-responsive-nav-link>
 
@@ -183,7 +183,7 @@
                 {{ __('Ofertas') }}
             </x-responsive-nav-link>
 
-            <x-responsive-nav-link :href="route('contact_requests.index')" :active="request()->routeIs('contact_requests.*')">
+            <x-responsive-nav-link :href="route('contact-requests.index')" :active="request()->routeIs('contact-requests.*')">
                 {{ __('Solicitudes de Contacto') }}
             </x-responsive-nav-link>
 
