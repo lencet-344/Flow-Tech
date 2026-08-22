@@ -41,9 +41,10 @@ class Contact_requestController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Contact_requestRequest $contact_request)
+    
+    public function show(string $id)
     {
-        $contact_request = Contact_request::with('company')->findOrFail($contact_request->id);
+        $contact_request = Contact_request::with('company')->findOrFail($id);
         return view('contact_requests.show', compact('contact_request'));
     }
 
