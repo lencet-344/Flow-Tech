@@ -3,23 +3,35 @@
 namespace Database\Seeders;
 
 use App\Models\User;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Hash;
 
 class DatabaseSeeder extends Seeder
 {
-    use WithoutModelEvents;
-
-    /**
-     * Seed the application's database.
-     */
     public function run(): void
     {
-        // User::factory(10)->create();
+        // 1. Creamos al Administrador
+        User::create([
+            'name' => 'Admin Principal',
+            'email' => 'admin@flowtech.com',
+            'password' => Hash::make('password'),
+            'role' => 'administrador',
+        ]);
 
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
+        // 2. Creamos al Proveedor
+        User::create([
+            'name' => 'Proveedor de Prueba',
+            'email' => 'proveedor@flowtech.com',
+            'password' => Hash::make('password'),
+            'role' => 'proveedor',
+        ]);
+
+        // 3. Creamos al Usuario normal (Comprador/Verificador)
+        User::create([
+            'name' => 'Usuario Normal',
+            'email' => 'usuario@flowtech.com',
+            'password' => Hash::make('password'),
+            'role' => 'usuario',
         ]);
     }
 }
