@@ -17,38 +17,56 @@ use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\TradeController;
 
-
-
 Route::get('/', function () {
     return view('welcome');
 });
 
+// ==========================================
+// RUTAS GENERALES (Para cualquier usuario logueado)
+// ==========================================
 Route::middleware(['auth', 'verified', 'prevent-back-history'])->group(function() {
-    
     Route::get('/dashboard', function () {
         return view('dashboard');
     })->name('dashboard');
 
-    Route::resource('bookings', BookingController::class);
-    Route::resource('brands', BrandController::class);
-    Route::resource('buy_verifications', Buy_verificationController::class);
-    Route::resource('categories', CategoryController::class);
-    Route::resource('companies', CompanyController::class);
-    Route::resource('contact_requests', Contact_requestController::class);
-    Route::resource('favorites', FavoriteController::class);
-    Route::resource('inventories', InventoryController::class);
-    Route::resource('offers', OfferController::class);
-    Route::resource('orders', OrderController::class);
-    Route::resource('products', ProductController::class);
-    Route::resource('roles', RoleController::class);
-    Route::resource('suppliers', SupplierController::class);
-    Route::resource('trades', TradeController::class);
-    
-    
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-    
+});
+
+
+// ==========================================
+// 1. RUTAS DEL ADMINISTRADOR (Control total)
+// ==========================================
+Route::middleware(['auth', 'verified', 'prevent-back-history', 'role:administrador'])->group(function() {
+    Route::resource('roles', RoleController::class);
+    Route::resource('companies', CompanyController::class);
+    Route::resource('categories', CategoryController::class);
+    Route::resource('brands', BrandController::class);
+});
+
+
+// ==========================================
+// 2. RUTAS DEL PROVEEDOR (Gestión de oferta comercial)
+// ==========================================
+Route::middleware(['auth', 'verified', 'prevent-back-history', 'role:proveedor'])->group(function() {
+    Route::resource('products', ProductController::class);
+    Route::resource('inventories', InventoryController::class);
+    Route::resource('offers', OfferController::class);
+    Route::resource('suppliers', SupplierController::class);
+});
+
+
+// ==========================================
+// 3. RUTAS DEL USUARIO / COMPRADOR 
+// ==========================================
+Route::middleware(['auth', 'verified', 'prevent-back-history', 'role:usuario'])->group(function() {
+    Route::resource('orders', OrderController::class);
+    Route::resource('buy_verifications', Buy_verificationController::class);
+    Route::resource('bookings', BookingController::class);
+    Route::resource('contact_requests', Contact_requestController::class);
+    Route::resource('favorites', FavoriteController::class);
+    Route::resource('trades', TradeController::class);
 });
 
 require __DIR__.'/auth.php';
