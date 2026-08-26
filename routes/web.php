@@ -18,6 +18,7 @@ use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\TradeController;
 
 
+
 Route::get('/', function () {
     return view('welcome');
 });
@@ -30,10 +31,10 @@ Route::middleware(['auth', 'verified', 'prevent-back-history'])->group(function(
 
     Route::resource('bookings', BookingController::class);
     Route::resource('brands', BrandController::class);
-    Route::resource('buy-verifications', Buy_verificationController::class);
+    Route::resource('buy_verifications', Buy_verificationController::class);
     Route::resource('categories', CategoryController::class);
     Route::resource('companies', CompanyController::class);
-    Route::resource('contact-requests', Contact_requestController::class);
+    Route::resource('contact_requests', Contact_requestController::class);
     Route::resource('favorites', FavoriteController::class);
     Route::resource('inventories', InventoryController::class);
     Route::resource('offers', OfferController::class);
@@ -43,9 +44,11 @@ Route::middleware(['auth', 'verified', 'prevent-back-history'])->group(function(
     Route::resource('suppliers', SupplierController::class);
     Route::resource('trades', TradeController::class);
     
+    
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    
 });
 
 require __DIR__.'/auth.php';
