@@ -17,13 +17,19 @@ use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\TradeController;
 
+//La APi de Mapa//
+
+Route::get('/mapa', function () {
+    return view('mapa');
+});
+
 Route::get('/', function () {
     return view('welcome');
 });
 
-// ==========================================
+
 // RUTAS GENERALES (Para cualquier usuario logueado)
-// ==========================================
+
 Route::middleware(['auth', 'verified', 'prevent-back-history'])->group(function() {
     Route::get('/dashboard', function () {
         return view('dashboard');
@@ -35,9 +41,9 @@ Route::middleware(['auth', 'verified', 'prevent-back-history'])->group(function(
 });
 
 
-// ==========================================
+
 // 1. RUTAS DEL ADMINISTRADOR (Control total)
-// ==========================================
+
 Route::middleware(['auth', 'verified', 'prevent-back-history', 'role:administrador'])->group(function() {
     Route::resource('roles', RoleController::class);
     Route::resource('companies', CompanyController::class);
@@ -46,9 +52,9 @@ Route::middleware(['auth', 'verified', 'prevent-back-history', 'role:administrad
 });
 
 
-// ==========================================
+
 // 2. RUTAS DEL PROVEEDOR (Gestión de oferta comercial)
-// ==========================================
+
 Route::middleware(['auth', 'verified', 'prevent-back-history', 'role:proveedor'])->group(function() {
     Route::resource('products', ProductController::class);
     Route::resource('inventories', InventoryController::class);
