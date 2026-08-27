@@ -17,6 +17,8 @@ use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\TradeController;
 
+use App\Http\Controllers\GeminiController;
+
 //La APi de Mapa//
 
 Route::get('/mapa', function () {
@@ -74,5 +76,9 @@ Route::middleware(['auth', 'verified', 'prevent-back-history', 'role:usuario'])-
     Route::resource('favorites', FavoriteController::class);
     Route::resource('trades', TradeController::class);
 });
+
+// Api de gemini
+Route::get('/chat', [GeminiController::class, 'index']);
+Route::post('/chat/ask', [GeminiController::class, 'ask'])->name('chat.ask');
 
 require __DIR__.'/auth.php';
