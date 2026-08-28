@@ -8,7 +8,6 @@
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
             
-            
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-xl sm:rounded-2xl border border-gray-100 dark:border-gray-700 p-8 relative">
                 <div class="absolute top-0 right-0 -mt-4 -mr-4 w-32 h-32 bg-indigo-500 opacity-10 rounded-full blur-3xl"></div>
                 <div class="flex items-center gap-6 relative z-10">
@@ -26,10 +25,23 @@
                 </div>
             </div>
 
-            
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
 
-                
+                <!-- Asistente IA (GeminiController) -->
+                <a href="{{ route('chat.index') }}" class="group block bg-white dark:bg-gray-800 overflow-hidden shadow-md sm:rounded-2xl border border-gray-100 dark:border-gray-700 hover:border-violet-500/50 dark:hover:border-violet-500/50 hover:-translate-y-1 transition-all duration-300">
+                    <div class="p-6">
+                        <div class="flex justify-between items-start mb-4">
+                            <div>
+                                <h4 class="text-lg font-bold text-gray-900 dark:text-white mb-1 group-hover:text-violet-600 dark:group-hover:text-violet-400">Asistente IA</h4>
+                                <p class="text-xs text-gray-500 dark:text-gray-400">Consulta logística y automatización de procesos.</p>
+                            </div>
+                            <div class="p-2 bg-violet-50 dark:bg-violet-900/30 rounded-lg text-violet-600 dark:text-violet-400 group-hover:scale-110 transition-transform duration-300">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 00-2.456 2.456zM16.894 20.567L16.5 21.75l-.394-1.183a2.25 2.25 0 00-1.423-1.423L13.5 18.75l1.183-.394a2.25 2.25 0 001.423-1.423l.394-1.183.394 1.183a2.25 2.25 0 001.423 1.423l1.183.394-1.183.394a2.25 2.25 0 00-1.423 1.423z"></path></svg>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+
                 <a href="{{ route('bookings.index') }}" class="group block bg-white dark:bg-gray-800 overflow-hidden shadow-md sm:rounded-2xl border border-gray-100 dark:border-gray-700 hover:border-teal-500/50 dark:hover:border-teal-500/50 hover:-translate-y-1 transition-all duration-300">
                     <div class="p-6">
                         <div class="flex justify-between items-start mb-4">
@@ -44,7 +56,6 @@
                     </div>
                 </a>
 
-                
                 <a href="{{ route('brands.index') }}" class="group block bg-white dark:bg-gray-800 overflow-hidden shadow-md sm:rounded-2xl border border-gray-100 dark:border-gray-700 hover:border-indigo-500/50 dark:hover:border-indigo-500/50 hover:-translate-y-1 transition-all duration-300">
                     <div class="p-6">
                         <div class="flex justify-between items-start mb-4">
@@ -59,7 +70,6 @@
                     </div>
                 </a>
 
-                
                 <a href="{{ route('buy_verifications.index') }}" class="group block bg-white dark:bg-gray-800 overflow-hidden shadow-md sm:rounded-2xl border border-gray-100 dark:border-gray-700 hover:border-red-500/50 dark:hover:border-red-500/50 hover:-translate-y-1 transition-all duration-300">
                     <div class="p-6">
                         <div class="flex justify-between items-start mb-4">
@@ -74,7 +84,6 @@
                     </div>
                 </a>
 
-                
                 <a href="{{ route('categories.index') }}" class="group block bg-white dark:bg-gray-800 overflow-hidden shadow-md sm:rounded-2xl border border-gray-100 dark:border-gray-700 hover:border-emerald-500/50 dark:hover:border-emerald-500/50 hover:-translate-y-1 transition-all duration-300">
                     <div class="p-6">
                         <div class="flex justify-between items-start mb-4">
@@ -89,7 +98,6 @@
                     </div>
                 </a>
 
-                
                 <a href="{{ route('companies.index') }}" class="group block bg-white dark:bg-gray-800 overflow-hidden shadow-md sm:rounded-2xl border border-gray-100 dark:border-gray-700 hover:border-blue-500/50 dark:hover:border-blue-500/50 hover:-translate-y-1 transition-all duration-300">
                     <div class="p-6">
                         <div class="flex justify-between items-start mb-4">
@@ -104,7 +112,6 @@
                     </div>
                 </a>
 
-                
                 <a href="{{ route('contact_requests.index') }}" class="group block bg-white dark:bg-gray-800 overflow-hidden shadow-md sm:rounded-2xl border border-gray-100 dark:border-gray-700 hover:border-pink-500/50 dark:hover:border-pink-500/50 hover:-translate-y-1 transition-all duration-300">
                     <div class="p-6">
                         <div class="flex justify-between items-start mb-4">
@@ -119,7 +126,6 @@
                     </div>
                 </a>
 
-                
                 <a href="{{ route('favorites.index') }}" class="group block bg-white dark:bg-gray-800 overflow-hidden shadow-md sm:rounded-2xl border border-gray-100 dark:border-gray-700 hover:border-yellow-500/50 dark:hover:border-yellow-500/50 hover:-translate-y-1 transition-all duration-300">
                     <div class="p-6">
                         <div class="flex justify-between items-start mb-4">
@@ -134,7 +140,6 @@
                     </div>
                 </a>
 
-                
                 <a href="{{ route('inventories.index') }}" class="group block bg-white dark:bg-gray-800 overflow-hidden shadow-md sm:rounded-2xl border border-gray-100 dark:border-gray-700 hover:border-amber-500/50 dark:hover:border-amber-500/50 hover:-translate-y-1 transition-all duration-300">
                     <div class="p-6">
                         <div class="flex justify-between items-start mb-4">
@@ -149,7 +154,6 @@
                     </div>
                 </a>
 
-                
                 <a href="{{ route('offers.index') }}" class="group block bg-white dark:bg-gray-800 overflow-hidden shadow-md sm:rounded-2xl border border-gray-100 dark:border-gray-700 hover:border-orange-500/50 dark:hover:border-orange-500/50 hover:-translate-y-1 transition-all duration-300">
                     <div class="p-6">
                         <div class="flex justify-between items-start mb-4">
@@ -164,7 +168,6 @@
                     </div>
                 </a>
 
-                
                 <a href="{{ route('orders.index') }}" class="group block bg-white dark:bg-gray-800 overflow-hidden shadow-md sm:rounded-2xl border border-gray-100 dark:border-gray-700 hover:border-green-500/50 dark:hover:border-green-500/50 hover:-translate-y-1 transition-all duration-300">
                     <div class="p-6">
                         <div class="flex justify-between items-start mb-4">
@@ -209,7 +212,6 @@
                     </div>
                 </a>
 
-                
                 <a href="{{ route('roles.index') }}" class="group block bg-white dark:bg-gray-800 overflow-hidden shadow-md sm:rounded-2xl border border-gray-100 dark:border-gray-700 hover:border-cyan-500/50 dark:hover:border-cyan-500/50 hover:-translate-y-1 transition-all duration-300">
                     <div class="p-6">
                         <div class="flex justify-between items-start mb-4">
@@ -224,7 +226,6 @@
                     </div>
                 </a>
 
-                
                 <a href="{{ route('suppliers.index') }}" class="group block bg-white dark:bg-gray-800 overflow-hidden shadow-md sm:rounded-2xl border border-gray-100 dark:border-gray-700 hover:border-purple-500/50 dark:hover:border-purple-500/50 hover:-translate-y-1 transition-all duration-300">
                     <div class="p-6">
                         <div class="flex justify-between items-start mb-4">
@@ -239,7 +240,6 @@
                     </div>
                 </a>
 
-                
                 <a href="{{ route('trades.index') }}" class="group block bg-white dark:bg-gray-800 overflow-hidden shadow-md sm:rounded-2xl border border-gray-100 dark:border-gray-700 hover:border-lime-500/50 dark:hover:border-lime-500/50 hover:-translate-y-1 transition-all duration-300">
                     <div class="p-6">
                         <div class="flex justify-between items-start mb-4">

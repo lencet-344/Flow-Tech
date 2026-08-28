@@ -19,9 +19,18 @@ class GeminiController extends Controller
         ]);
 
         $apiKey = config('services.gemini.key');
-        $url = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key={$apiKey}";
+
+        // Endpoint actualizado al modelo gemini-3.6-flash
+        $url = "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.6-flash:generateContent?key={$apiKey}";
 
         $response = Http::post($url, [
+            'system_instruction' => [
+                'parts' => [
+                    [
+                        'text' => 'Eres el asistente oficial de Singky B2B en Estelí, Nicaragua. Ayudas a gestionar inventarios, pedidos de supermercados y logística con proveedores. Responde de forma concisa y profesional.'
+                    ]
+                ]
+            ],
             'contents' => [
                 [
                     'parts' => [
@@ -33,10 +42,10 @@ class GeminiController extends Controller
 
         if ($response->successful()) {
             $data = $response->json();
-            $reply = $data['candidates'][0]['content']['parts'][0]['text'] ?? 'No se generó respuesta.';
+            $reply = $data['candidates'][0]['content']['parts'][0]['text'] ?? 'No se obtuvo respuesta.';
             return response()->json(['reply' => $reply]);
         }
 
-        return response()->json(['error' => 'Error al conectar con la API de Gemini.'], 500);
+        return response()->json(['error' => $response->body()], 500);
     }
 }

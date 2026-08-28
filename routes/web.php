@@ -16,11 +16,9 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\TradeController;
-
 use App\Http\Controllers\GeminiController;
 
-//La APi de Mapa//
-
+// La API de Mapa
 Route::get('/mapa', function () {
     return view('mapa');
 });
@@ -31,7 +29,6 @@ Route::get('/', function () {
 
 
 // RUTAS GENERALES (Para cualquier usuario logueado)
-
 Route::middleware(['auth', 'verified', 'prevent-back-history'])->group(function() {
     Route::get('/dashboard', function () {
         return view('dashboard');
@@ -40,12 +37,14 @@ Route::middleware(['auth', 'verified', 'prevent-back-history'])->group(function(
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+    // Rutas del Asistente IA (Disponibles para todos los usuarios logueados)
+    Route::get('/chat', [GeminiController::class, 'index'])->name('chat.index');
+    Route::post('/chat/ask', [GeminiController::class, 'ask'])->name('chat.ask');
 });
 
 
-
 // 1. RUTAS DEL ADMINISTRADOR (Control total)
-
 Route::middleware(['auth', 'verified', 'prevent-back-history', 'role:administrador'])->group(function() {
     Route::resource('roles', RoleController::class);
     Route::resource('companies', CompanyController::class);
@@ -54,9 +53,7 @@ Route::middleware(['auth', 'verified', 'prevent-back-history', 'role:administrad
 });
 
 
-
 // 2. RUTAS DEL PROVEEDOR (Gestión de oferta comercial)
-
 Route::middleware(['auth', 'verified', 'prevent-back-history', 'role:proveedor'])->group(function() {
     Route::resource('products', ProductController::class);
     Route::resource('inventories', InventoryController::class);
@@ -65,9 +62,7 @@ Route::middleware(['auth', 'verified', 'prevent-back-history', 'role:proveedor']
 });
 
 
-// ==========================================
 // 3. RUTAS DEL USUARIO / COMPRADOR 
-// ==========================================
 Route::middleware(['auth', 'verified', 'prevent-back-history', 'role:usuario'])->group(function() {
     Route::resource('orders', OrderController::class);
     Route::resource('buy_verifications', Buy_verificationController::class);
@@ -76,9 +71,5 @@ Route::middleware(['auth', 'verified', 'prevent-back-history', 'role:usuario'])-
     Route::resource('favorites', FavoriteController::class);
     Route::resource('trades', TradeController::class);
 });
-
-// Api de gemini
-Route::get('/chat', [GeminiController::class, 'index']);
-Route::post('/chat/ask', [GeminiController::class, 'ask'])->name('chat.ask');
 
 require __DIR__.'/auth.php';
