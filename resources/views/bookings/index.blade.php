@@ -1,136 +1,93 @@
-<x-app-layout>
-    <x-slot name="header">
-        <div class="flex items-center justify-between">
-            <h2 class="font-semibold text-2xl text-gray-800 dark:text-gray-100 leading-tight tracking-tight">
-                {{ __('Reservas') }}
-            </h2>
-            <a href="{{ route('bookings.create') }}" class="inline-flex items-center px-4 py-2 bg-indigo-600 border border-transparent rounded-xl font-semibold text-xs text-white uppercase tracking-widest hover:bg-indigo-700 focus:bg-indigo-700 active:bg-indigo-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition ease-in-out duration-150 shadow-lg shadow-indigo-500/30">
-                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
-                Nueva reserva
-            </a>
+@extends('layouts.admin')
+
+@section('content')
+<div class="p-8 md:p-10">
+    <!-- Cabecera -->
+    <div class="mb-8">
+        <h1 class="text-3xl font-bold text-[#040116] tracking-tight">Reservas</h1>
+        <p class="text-gray-500 text-sm mt-1">Clientes que reservaron productos agotados</p>
+    </div>
+
+    <!-- 3 Tarjetas de Resumen -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8 text-center">
+        <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex flex-col justify-center">
+            <span class="text-sm font-medium text-gray-500 mb-2">Total reservas</span>
+            <span class="text-3xl font-bold text-[#040116]">{{ $bookings->count() }}</span>
         </div>
-    </x-slot>
-
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-xl sm:rounded-2xl border border-gray-100 dark:border-gray-700">
-                <div class="overflow-x-auto shadow rounded-lg w-full">
-                    <table class="w-full text-left border-collapse">
-                        <thead>
-                            <tr class="bg-gray-50/50 dark:bg-gray-900/50 border-b border-gray-100 dark:border-gray-700">
-                                <th class="px-6 py-4 text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider w-16">#</th>
-                                <th class="px-6 py-4 text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider">fecha de reserva</th>
-                                <th class="px-6 py-4 text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Monto total</th>
-                                <th class="px-6 py-4 text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Monto del deposito</th>
-                                <th class="px-6 py-4 text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Metodo de pago</th>
-                                <th class="px-6 py-4 text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Reserva Especial</th>
-                                <th class="px-6 py-4 text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Proveedor</th>
-                                <th class="px-6 py-4 text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider text-right">Acciones</th>
-                            </tr>
-                        </thead>
-                        <tbody class="divide-y divide-gray-100 dark:divide-gray-700">
-                            @forelse ($bookings as $booking)
-                                <tr class="hover:bg-gray-50 dark:hover:bg-gray-700/30 transition-colors group">
-                                    <td class="px-6 py-4">
-                                        <span class="text-sm font-mono text-gray-400 dark:text-gray-500">{{ $booking->id }}</span>
-                                    </td>
-                                    <td class="px-6 py-4">
-                                        <div class="text-sm font-semibold text-gray-900 dark:text-white">
-                                            {{ $booking->date_booking }}
-                                        </div>
-                                    </td>
-                                    <td class="px-6 py-4">
-                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400">
-                                            {{ $booking->total_amount }}
-                                        </span>
-                                    </td>
-
-                                    <td class="px-6 py-4">
-                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400">
-                                            {{ $booking->deposit_amount }}
-                                        </span>
-                                    </td>
-
-                                    <td class="px-6 py-4">
-                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400">
-                                            {{ $booking->payment_method }}
-                                        </span>
-                                    </td>
-
-                                    <td class="px-6 py-4 max-w-[250px] whitespace-normal break-words">
-                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400">
-                                            {{ $booking->special_request ?? '-' }}
-                                        </span>
-                                    </td>
-
-                                    <td class="px-6 py-4">
-                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400">
-                                            {{ $booking->supplier->name ?? 'Sin proveedor' }}
-                                        </span>
-                                    </td>
-
-                                    <td class="px-6 py-4 min-w-[150px] whitespace-nowrap text-center text-sm font-medium">
-                                        <div class="flex justify-end items-center space-x-3 opacity-0 group-hover:opacity-100 transition-opacity">
-                                            <a href="{{ route('bookings.show', $booking) }}" class="text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors" title="Ver">
-                                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
-                                            </a>
-                                            <a href="{{ route('bookings.edit', $booking) }}" class="text-gray-400 hover:text-amber-500 transition-colors" title="Editar">
-                                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
-                                            </a>
-                                            <form action="{{ route('bookings.destroy', $booking) }}" method="POST" class="inline" id="form-delete-{{ $booking->id }}">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="button" onclick="confirmarEliminacion({{ $booking->id }})" class="text-gray-400 hover:text-red-500 transition-colors" title="Eliminar">
-                                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
-                                                </button>
-                                            </form>
-                                        </div>
-                                    </td>
-                                </tr>
-                            @empty
-                                <tr>
-                                    <td colspan="4" class="px-6 py-12 text-center">
-                                        <div class="flex flex-col items-center">
-                                            <svg class="w-12 h-12 text-gray-300 dark:text-gray-600 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
-                                            <p class="text-gray-500 dark:text-gray-400 text-lg font-medium">No hay reservas registradas</p>
-                                        </div>
-                                    </td>
-                                </tr>
-                            @endforelse
-                        </tbody>
-                    </table>
-                </div>
-
-                @if(isset($bookings) && method_exists($bookings, 'hasPages') && $bookings->hasPages())
-                    <div class="px-6 py-4 border-t border-gray-100 dark:border-gray-700 bg-gray-50/50 dark:bg-gray-900/50">
-                        {{ $bookings->links() }}
-                    </div>
-                @endif
-            </div>
+        <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex flex-col justify-center">
+            <span class="text-sm font-medium text-gray-500 mb-2">Pendientes</span>
+            <span class="text-3xl font-bold text-[#040116]">{{ $bookings->where('status', 'Pendiente')->count() }}</span>
+        </div>
+        <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex flex-col justify-center">
+            <span class="text-sm font-medium text-gray-500 mb-2">Notificados</span>
+            <span class="text-3xl font-bold text-[#040116]">{{ $bookings->where('status', 'Pendiente')->count() }}</span>
         </div>
     </div>
 
-    <script>
-        function confirmarEliminacion(id) {
-            Swal.fire({
-                title: '¿Eliminar de forma permanente?',
-                text: "Esta acción no se puede deshacer.",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#4f46e5',
-                cancelButtonColor: '#ef4444',
-                confirmButtonText: 'Sí, eliminar',
-                cancelButtonText: 'Cancelar',
-                background: '#1e293b',
-                color: '#ffffff',
-                customClass: {
-                    popup: 'rounded-2xl border border-gray-700'
-                }
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    document.getElementById('form-delete-' + id).submit();
-                }
-            })
-        }
-    </script>
-</x-app-layout>
+    <!-- Tabla Principal -->
+    <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+        <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse">
+                <thead>
+                    <tr class="border-b border-gray-100">
+                        <th class="px-6 py-4 text-xs font-bold text-gray-500 uppercase tracking-wider">Producto</th>
+                        <th class="px-6 py-4 text-xs font-bold text-gray-500 uppercase tracking-wider">Fecha</th>
+                        <th class="px-6 py-4 text-xs font-bold text-gray-500 uppercase tracking-wider">Notificación</th>
+                        <th class="px-6 py-4 text-xs font-bold text-gray-500 uppercase tracking-wider">Estado</th>
+                        <th class="px-6 py-4 text-xs font-bold text-gray-500 uppercase tracking-wider text-center">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-50">
+                    @forelse($reservas ?? [] as $reserva)
+                    <tr class="hover:bg-gray-50 transition-colors">
+                        <td class="px-6 py-4">
+                            <div class="flex items-center gap-4">
+                                <div class="w-10 h-10 bg-gray-100 rounded-lg shrink-0">
+                                    <img src="{{ $reserva->producto->img ?? 'https://via.placeholder.com/100' }}" class="w-full h-full object-cover rounded-lg">
+                                </div>
+                                <div>
+                                    <h4 class="text-sm font-bold text-[#040116]">{{ $reserva->producto->nombre ?? 'Producto no encontrado' }}</h4>
+                                    <p class="text-[13px] text-gray-500">{{ $reserva->producto->proveedor->nombre ?? 'Proveedor' }}</p>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="px-6 py-4 text-sm text-gray-600">{{ $reserva->fecha ?? date('Y-m-d') }}</td>
+                        <td class="px-6 py-4">
+                            @if(isset($reserva->notificacion) && $reserva->notificacion)
+                            <span class="inline-flex items-center gap-1 bg-green-50 border border-green-200 text-green-700 px-3 py-1 rounded-full text-xs font-semibold">
+                                <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path></svg> Activada
+                            </span>
+                            @else
+                            <span class="inline-flex items-center gap-1 bg-gray-50 border border-gray-200 text-gray-500 px-3 py-1 rounded-full text-xs font-semibold">Desactivada</span>
+                            @endif
+                        </td>
+                        <td class="px-6 py-4">
+                            @if(isset($reserva->estado) && $reserva->estado == 'Pendiente')
+                            <span class="bg-indigo-50 text-indigo-600 px-3 py-1 rounded text-xs font-semibold">Pendiente</span>
+                            @else
+                            <span class="bg-gray-100 text-gray-600 px-3 py-1 rounded text-xs font-semibold">{{ $reserva->estado ?? 'Desconocido' }}</span>
+                            @endif
+                        </td>
+                        <td class="px-6 py-4 text-center">
+                            <div class="flex items-center justify-center gap-2">
+                                <form action="{{ route('reservas.update', $reserva->id ?? 0) }}" method="POST">
+                                    @csrf
+                                    @method('PUT')
+                                    <input type="hidden" name="estado" value="Disponible">
+                                    <button type="submit" class="bg-[#2563eb] hover:bg-blue-700 text-white text-xs font-medium px-4 py-2 rounded-lg transition-colors">Marcar disponible</button>
+                                </form>
+                                <a href="{{ route('productos.show', $reserva->producto_id ?? 0) }}" class="bg-white hover:bg-gray-50 text-gray-700 border border-gray-200 text-xs font-medium px-4 py-2 rounded-lg transition-colors">Ver producto</a>
+                            </div>
+                        </td>
+                    </tr>
+                    @empty
+                    <tr>
+                        <td colspan="5" class="px-6 py-8 text-center text-gray-500">No hay reservas</td>
+                    </tr>
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+@endsection

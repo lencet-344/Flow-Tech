@@ -15,9 +15,9 @@
                 <p class="text-gray-600 text-sm">Gestiona las ofertas y promociones de tu negocio</p>
             </div>
         </div>
-        <button class="bg-[#2563eb] text-white font-medium px-5 py-2.5 rounded-xl text-sm shadow-sm transition-colors flex items-center gap-2">
+        <a href="{{ route('offers.create') }}" class="bg-[#2563eb] text-white font-medium px-5 py-2.5 rounded-xl text-sm shadow-sm transition-colors flex items-center gap-2">
             + Nueva oferta
-        </button>
+        </a>
     </div>
 
     <!-- LISTA DE OFERTAS -->

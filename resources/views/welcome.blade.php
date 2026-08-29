@@ -102,7 +102,7 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center h-20">
             
             <div class="flex items-center gap-2">
-                <a href="/" class="flex items-center gap-2">
+                <a href="{{ route('products.index') }}" class="flex items-center gap-2">
                     <img src="{{ asset('images/LogoBlanco.png') }}" alt="Logo SINGKI" class="h-8 w-auto">
                     <span class="font-black text-2xl text-[#3b82f6] tracking-tight">SINGKI</span>
                 </a>
@@ -117,7 +117,7 @@
                 
                 <!-- Solo visible para invitados (sin sesión) -->
                 @guest
-                    <a href="{{ url('/registro-tipo') }}" class="text-[#0f172a] font-medium text-base hover:text-[#2563eb] transition-colors">Explorar</a>
+                    <a href="{{ route('categories.index') }}" class="text-[#0f172a] font-medium text-base hover:text-[#2563eb] transition-colors">Explorar</a>
                 @endguest
             </nav>
             
@@ -170,10 +170,10 @@
                         <p class="text-blue-100 text-[14px] font-light">¿Qué estás buscando hoy?</p>
                     </div>
                     <div class="w-full md:w-1/2 flex justify-start md:justify-end">
-                        <div class="relative w-full max-w-lg bg-white rounded-full flex items-center p-1.5 shadow-sm">
-                            <input type="text" placeholder="Busca negocios, productos o servicios..." class="w-full pl-5 pr-4 py-2 bg-transparent border-0 focus:ring-0 text-gray-700 text-sm outline-none">
-                            <button class="bg-[#3b82f6] hover:bg-[#2563eb] text-white font-medium px-8 py-2 rounded-full transition text-sm">Buscar</button>
-                        </div>
+                        <form action="{{ route('products.index') }}" method="GET" class="relative w-full max-w-lg bg-white rounded-full flex items-center p-1.5 shadow-sm">
+                            <input type="text" name="search" placeholder="Busca negocios, productos o servicios..." class="w-full pl-5 pr-4 py-2 bg-transparent border-0 focus:ring-0 text-gray-700 text-sm outline-none">
+                            <button type="submit" class="bg-[#3b82f6] hover:bg-[#2563eb] text-white font-medium px-8 py-2 rounded-full transition text-sm">Buscar</button>
+                        </form>
                     </div>
                 </div>
             </section>
@@ -181,10 +181,10 @@
             <!-- Botonera de Acción Rápida (Fondo blanco) -->
             <section class="bg-white py-5 border-b border-gray-100">
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-wrap items-center gap-3">
-                    <a href="#" class="bg-[#3b82f6] hover:bg-[#2563eb] text-white px-5 py-2.5 rounded-xl font-medium flex items-center gap-2 text-[14px] shadow-sm transition"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path></svg>Mis Favoritos</a>
+                    <a href="{{ route('favorites.index') }}" class="bg-[#3b82f6] hover:bg-[#2563eb] text-white px-5 py-2.5 rounded-xl font-medium flex items-center gap-2 text-[14px] shadow-sm transition"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path></svg>Mis Favoritos</a>
                     <a href="{{ url('/admin/reservas') }}" class="bg-[#3b82f6] hover:bg-[#2563eb] text-white px-5 py-2.5 rounded-xl font-medium flex items-center gap-2 text-[14px] shadow-sm transition"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>Mis Reservas</a>
-                    <a href="#" class="bg-[#3b82f6] hover:bg-[#2563eb] text-white px-5 py-2.5 rounded-xl font-medium flex items-center gap-2 text-[14px] shadow-sm transition"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"></path></svg>Categorías</a>
-                    <a href="#" class="bg-[#3b82f6] hover:bg-[#2563eb] text-white px-5 py-2.5 rounded-xl font-medium flex items-center gap-2 text-[14px] shadow-sm transition"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>Buscar</a>
+                    <a href="{{ route('categories.index') }}" class="bg-[#3b82f6] hover:bg-[#2563eb] text-white px-5 py-2.5 rounded-xl font-medium flex items-center gap-2 text-[14px] shadow-sm transition"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"></path></svg>Categorías</a>
+                    <a href="{{ route('products.index') }}" class="bg-[#3b82f6] hover:bg-[#2563eb] text-white px-5 py-2.5 rounded-xl font-medium flex items-center gap-2 text-[14px] shadow-sm transition"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>Buscar</a>
                     
                     <a href="{{ url('/admin/dashboard') }}" class="bg-[#020617] hover:bg-gray-900 text-white px-5 py-2.5 rounded-xl font-medium flex items-center gap-2 text-[14px] shadow-sm transition ml-0 sm:ml-3">Administrar negocio</a>
                 </div>
@@ -195,28 +195,26 @@
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <h3 class="text-[#f59e0b] font-bold text-[15px] mb-5">Tus reservas activas</h3>
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-                        <!-- Tarjeta 1 -->
+                        @forelse($reservas_activas ?? [] as $reserva)
+                        <!-- Tarjeta de Reserva -->
                         <div class="bg-white p-5 rounded-2xl border border-yellow-200 shadow-sm flex flex-col justify-between">
                             <div>
-                                <h4 class="font-bold text-[#0f172a] text-[15px] mb-1">Monitor Dell 27'' 4K</h4>
-                                <p class="text-gray-500 text-[13px] mb-6 font-light">TechSolutions GT</p>
+                                <h4 class="font-bold text-[#0f172a] text-[15px] mb-1">{{ $reserva->producto->nombre ?? 'Producto' }}</h4>
+                                <p class="text-gray-500 text-[13px] mb-6 font-light">{{ $reserva->producto->proveedor->nombre ?? 'Proveedor' }}</p>
                             </div>
                             <div class="flex justify-between items-center">
-                                <span class="bg-[#fef3c7] text-[#d97706] px-3 py-1 rounded-full text-[11px] font-bold uppercase tracking-wider">En espera</span>
-                                <a href="{{ url('/admin/reservas') }}" class="text-[#3b82f6] text-[13px] font-medium hover:underline flex items-center gap-1">Ver &rarr;</a>
-                            </div>
-                        </div>
-                        <!-- Tarjeta 2 -->
-                        <div class="bg-white p-5 rounded-2xl border border-green-200 shadow-sm flex flex-col justify-between">
-                            <div>
-                                <h4 class="font-bold text-[#0f172a] text-[15px] mb-1">Teclado Mecánico Keychron K2</h4>
-                                <p class="text-gray-500 text-[13px] mb-6 font-light">TechSolutions GT</p>
-                            </div>
-                            <div class="flex justify-between items-center">
+                                @if(isset($reserva->estado) && $reserva->estado == 'Disponible')
                                 <span class="bg-[#dcfce7] text-[#16a34a] px-3 py-1 rounded-full text-[11px] font-bold uppercase tracking-wider">Disponible</span>
+                                @else
+                                <span class="bg-[#fef3c7] text-[#d97706] px-3 py-1 rounded-full text-[11px] font-bold uppercase tracking-wider">En espera</span>
+                                @endif
                                 <a href="{{ url('/admin/reservas') }}" class="text-[#3b82f6] text-[13px] font-medium hover:underline flex items-center gap-1">Ver &rarr;</a>
                             </div>
                         </div>
+                        @empty
+                        <!-- Placeholder si no hay reservas -->
+                        <p class="text-sm text-gray-500 col-span-full">No tienes reservas activas en este momento.</p>
+                        @endforelse
                     </div>
                 </div>
             </section>
@@ -238,10 +236,7 @@
                     <p class="text-lg text-blue-100/90 mb-10 max-w-lg font-light leading-relaxed">
                         Te ayudamos a que encuentres lo que necesites de forma rápida y confiable. Negocios, proveedores, productos y servicios en un solo lugar.
                     </p>
-                    <div class="bg-white p-1.5 rounded-full flex items-center max-w-xl shadow-lg mt-8">
-                        <input type="text" placeholder="Busca negocios, productos o servicios..." class="w-full pl-6 pr-4 bg-transparent border-none focus:ring-0 text-gray-500 text-sm outline-none">
-                        <button class="bg-[#3b82f6] hover:bg-[#2563eb] text-white font-semibold px-8 py-2.5 rounded-full transition text-sm whitespace-nowrap">Buscar</button>
-                    </div>
+                    <form action="{{ route('products.index') }}" method="GET" class="bg-white p-1.5 rounded-full flex items-center max-w-xl shadow-lg mt-8"><input type="text" name="search" placeholder="Busca negocios, productos o servicios..." class="w-full pl-6 pr-4 bg-transparent border-none focus:ring-0 text-gray-500 text-sm outline-none"><button type="submit" class="bg-[#3b82f6] hover:bg-[#2563eb] text-white font-semibold px-8 py-2.5 rounded-full transition text-sm whitespace-nowrap">Buscar</button></form>
                 </div>
 
                 <!-- Imagen Chica Sonriendo -->
@@ -263,7 +258,7 @@
                 <h2 class="text-[32px] font-extrabold text-[#0f172a] mb-2 tracking-tight">Explorar por categoría</h2>
                 <p class="text-[#3b82f6] font-medium text-sm">Encuentra negocios y proveedores según lo que necesitas</p>
             </div>
-            <a href="#" class="text-[#3b82f6] font-medium hover:underline flex items-center gap-2 text-sm">Ver todas <span aria-hidden="true">&rarr;</span></a>
+            <a href="{{ route('companies.index') }}" class="text-[#3b82f6] font-medium hover:underline flex items-center gap-2 text-sm">Ver todas <span aria-hidden="true">&rarr;</span></a>
         </div>
         
         <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 md:gap-6">
@@ -455,40 +450,6 @@
    <!-- ========================================== -->
     <!-- SECCIÓN 6: NEGOCIOS DESTACADOS             -->
     <!-- ========================================== -->
-    @php
-        $negociosFigma = [
-            [
-                'nombre' => 'TechSolutions GT', 'categoria' => 'Tecnología', 
-                'desc' => 'Soluciones tecnológicas para empresas. Hardware, software y soporte técnico especializado.', 
-                'rating' => '4.8', 'reviews' => '124', 
-                'img' => 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=500&q=80', 
-                'premium' => true
-            ],
-            [
-                'nombre' => 'Distribuidora Alimentos Norte', 'categoria' => 'Alimentos', 
-                'desc' => 'Distribución mayorista de alimentos secos, enlatados y productos de limpieza a nivel nacional.', 
-                'rating' => '4.5', 'reviews' => '89', 
-                'img' => 'https://images.unsplash.com/photo-1542838132-92c53300491e?w=500&q=80', 
-                'premium' => false
-            ],
-            [
-                'nombre' => 'Construcciones Sólidas', 'categoria' => 'Construcción', 
-                'desc' => 'Materiales de construcción, ferretería industrial y herramientas profesionales.', 
-                'rating' => '4.3', 'reviews' => '57', 
-                /* NUEVO ENLACE 100% FUNCIONAL DE CONSTRUCCIÓN */
-                'img' => 'https://images.unsplash.com/photo-1531834685032-c34bf0d84c77?w=500&q=80', 
-                'premium' => false
-            ],
-            [
-                'nombre' => 'Moda Express', 'categoria' => 'Moda', 
-                'desc' => 'Ropa y accesorios al por mayor. Colecciones para dama, caballero y niños.', 
-                'rating' => '4.6', 'reviews' => '201', 
-                'img' => 'https://images.unsplash.com/photo-1441984904996-e0b6ba687e04?w=500&q=80', 
-                'premium' => true
-            ],
-        ];
-    @endphp
-
     <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 bg-white">
         <!-- Encabezado de la sección -->
         <div class="flex justify-between items-end mb-10">
@@ -496,16 +457,16 @@
                 <h2 class="text-3xl font-extrabold text-[#0f172a] mb-2 tracking-tight">Negocios destacados</h2>
                 <p class="text-gray-500 font-light text-sm">Proveedores verificados con los mejores productos y servicios</p>
             </div>
-            <a href="#" class="text-[#3b82f6] font-medium hover:underline flex items-center gap-2 text-sm">Ver todos <span aria-hidden="true">&rarr;</span></a>
+            <a href="{{ route('companies.index') }}" class="text-[#3b82f6] font-medium hover:underline flex items-center gap-2 text-sm">Ver todos <span aria-hidden="true">&rarr;</span></a>
         </div>
         
         <!-- Cuadrícula de 4 tarjetas -->
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            @foreach($negociosFigma as $negocio)
+            @forelse($negocios_destacados ?? [] as $negocio)
             <!-- Borde índigo muy fino (border-[#818cf8]) como en el Figma -->
             <div class="bg-white border border-[#818cf8] rounded-[16px] overflow-hidden hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] transition duration-300 group flex flex-col relative">
                 
-                @if($negocio['premium'])
+                @if($negocio->premium ?? false)
                     <!-- Etiqueta PREMIUM Morada -->
                     <div class="absolute top-4 left-4 bg-[#8b5cf6] text-white text-[10px] font-bold px-3 py-1.5 rounded-md z-10 flex items-center gap-1 shadow-sm tracking-wide">
                         <span class="text-yellow-300 text-xs">★</span> PREMIUM
@@ -514,7 +475,7 @@
                 
                 <!-- Imagen -->
                 <div class="h-44 w-full overflow-hidden relative bg-gray-100">
-                    <img src="{{ $negocio['img'] }}" class="w-full h-full object-cover group-hover:scale-105 transition duration-700">
+                    <img src="{{ $negocio->img ?? 'https://via.placeholder.com/500' }}" class="w-full h-full object-cover group-hover:scale-105 transition duration-700">
                 </div>
                 
                 <!-- Contenido de la Tarjeta -->
@@ -522,7 +483,7 @@
                     
                     <!-- Título y Verificado -->
                     <div class="flex justify-between items-start gap-2 mb-3">
-                        <h3 class="font-bold text-gray-900 text-[15px] leading-tight">{{ $negocio['nombre'] }}</h3>
+                        <h3 class="font-bold text-gray-900 text-[15px] leading-tight">{{ $negocio->nombre ?? 'Sin nombre' }}</h3>
                         <span class="shrink-0 inline-flex items-center gap-1 bg-[#dcfce7] text-[#16a34a] px-2 py-0.5 rounded text-[10px] font-bold border border-green-200">
                             <svg class="w-3 h-3" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path></svg>
                             Verificado
@@ -531,26 +492,30 @@
                     
                     <!-- Pastilla de Categoría Celeste -->
                     <span class="inline-block bg-[#eff6ff] text-[#3b82f6] text-[11px] font-medium px-3 py-1 rounded-full mb-3 self-start">
-                        {{ $negocio['categoria'] }}
+                        {{ $negocio->categoria ?? 'Sin categoría' }}
                     </span>
                     
-                    <!-- Descripción -->
-                    <p class="text-gray-500 text-[12px] mb-6 flex-grow leading-relaxed">
-                        {{ $negocio['desc'] }}
+                    <!-- Descripción corta -->
+                    <p class="text-gray-500 text-[13px] leading-relaxed mb-4 flex-grow font-light">
+                        {{ $negocio->descripcion ?? 'Sin descripción' }}
                     </p>
                     
-                    <!-- Footer: Rating y Ubicación -->
-                    <div class="flex justify-between items-center mt-auto pt-1">
-                        <div class="flex items-center gap-1 text-[13px]">
-                            <span class="text-yellow-400 text-sm">★</span> 
-                            <span class="font-bold text-gray-900">{{ $negocio['rating'] }}</span> 
-                            <span class="text-gray-400 font-light text-[12px]">({{ $negocio['reviews'] }})</span>
+                    <div class="w-full h-px bg-gray-100 mb-4"></div>
+                    
+                    <!-- Footer (Rating y Reseñas) -->
+                    <div class="flex items-center justify-between text-[13px]">
+                        <div class="flex items-center gap-1.5">
+                            <svg class="w-4 h-4 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+                            <span class="font-bold text-gray-900">{{ $negocio->rating ?? '0.0' }}</span>
+                            <span class="text-gray-400">({{ $negocio->reviews ?? '0' }})</span>
                         </div>
-                        <span class="text-[12px] text-[#fb923c] font-medium">Estelí</span>
+                        <a href="{{ route('companies.show', $negocio->id ?? 1) }}" class="text-[#3b82f6] font-medium hover:underline text-[13px]">Ver perfil</a>
                     </div>
                 </div>
             </div>
-            @endforeach
+            @empty
+            <div class="col-span-full text-center text-gray-500 py-8">No hay negocios destacados</div>
+            @endforelse
         </div>
     </section>
     <!-- ========================================== -->
@@ -761,16 +726,61 @@
         
         <!-- Redujimos el ancho a max-w-3xl para que no queden tan estiradas y se vean como en Figma -->
         <div class="space-y-5 max-w-3xl mx-auto">
-            @foreach($faqs as $faq)
-            <!-- Borde azul fijo y sin sombras para hacer match exacto con Figma -->
-            <div class="border border-[#2563eb] rounded-full px-8 py-[18px] flex justify-between items-center cursor-pointer hover:bg-blue-50/40 transition duration-300 text-left bg-white group">
-                <span class="font-bold text-[#0f172a] text-[15px]">{{ $faq }}</span>
+            @php
+                $faqList = [
+                    [
+                        'q' => '¿Cómo funciona SINGKI?',
+                        'a' => 'SINGKI es un ecosistema comercial que conecta usuarios con empresas locales. Puedes explorar negocios, buscar productos específicos, guardar tus favoritos y realizar reservas directamente desde nuestra plataforma.'
+                    ],
+                    [
+                        'q' => '¿Cómo busco un negocio?',
+                        'a' => 'Puedes usar la barra de búsqueda principal en el inicio o navegar a través de la sección de "Categorías". También puedes explorar el directorio completo desde el menú superior para ver todas las empresas registradas.'
+                    ],
+                    [
+                        'q' => '¿Cómo encuentro un producto?',
+                        'a' => 'Escribe el nombre del artículo que necesitas en la barra de búsqueda y presiona "Buscar". El sistema filtrará el inventario de todos los proveedores para mostrarte las mejores coincidencias y su disponibilidad.'
+                    ],
+                    [
+                        'q' => '¿Cómo contacto a un negocio?',
+                        'a' => 'Al entrar al perfil de una empresa o ver los detalles de un producto, encontrarás su información de contacto directo (como teléfono y correo), además de botones rápidos para interactuar con ellos.'
+                    ],
+                    [
+                        'q' => '¿Cómo puedo registrar mi negocio?',
+                        'a' => 'Para unirte a SINGKI como proveedor, debes crear una cuenta y luego solicitar acceso desde el Panel de Administración, o contactar a nuestro equipo para que activen tu perfil de negocio y puedas subir tu inventario.'
+                    ]
+                ];
+            @endphp
+
+            @foreach($faqList as $faq)
+            <div x-data="{ open: false }" class="border border-blue-500 rounded-2xl bg-white overflow-hidden transition-all duration-300">
+                <!-- Botón de pregunta -->
+                <button @click="open = !open" class="w-full px-8 py-[18px] flex justify-between items-center text-left hover:bg-blue-50/40 transition duration-300 group focus:outline-none">
+                    <span class="font-bold text-[#0f172a] text-[15px]">{{ $faq['q'] }}</span>
+                    
+                    <!-- Ícono animado -->
+                    <div class="shrink-0 w-7 h-7 rounded-full border-[2px] border-[#0f172a] flex items-center justify-center text-[#0f172a] group-hover:bg-[#0f172a] group-hover:text-white transition-all duration-300" :class="{'bg-[#0f172a] text-white rotate-180': open}">
+                        <!-- Icono + -->
+                        <svg x-show="!open" class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"></path>
+                        </svg>
+                        <!-- Icono - -->
+                        <svg x-show="open" class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" style="display: none;">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 12h-15"></path>
+                        </svg>
+                    </div>
+                </button>
                 
-                <!-- Ícono de círculo y cruz con trazo negro definido -->
-                <div class="shrink-0 w-7 h-7 rounded-full border-[2px] border-[#0f172a] flex items-center justify-center text-[#0f172a] group-hover:bg-[#0f172a] group-hover:text-white transition duration-300">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"></path>
-                    </svg>
+                <!-- Respuesta -->
+                <div x-show="open" 
+                     x-transition:enter="transition ease-out duration-200" 
+                     x-transition:enter-start="opacity-0 -translate-y-2" 
+                     x-transition:enter-end="opacity-100 translate-y-0" 
+                     x-transition:leave="transition ease-in duration-150" 
+                     x-transition:leave-start="opacity-100 translate-y-0" 
+                     x-transition:leave-end="opacity-0 -translate-y-2" 
+                     class="px-8 pb-6 pt-2 text-gray-600 font-light text-sm leading-relaxed" 
+                     style="display: none;">
+                    {{ $faq['a'] }}
                 </div>
             </div>
             @endforeach

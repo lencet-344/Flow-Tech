@@ -1,110 +1,72 @@
-<x-app-layout>
-    <x-slot name="header">
-        <div class="flex justify-between items-center">
-            <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-                {{ __('Ofertas') }}
-            </h2>
-            <a href="{{ route('offers.create') }}" class="inline-flex items-center px-4 py-2 bg-blue-600 border border-transparent rounded-lg font-semibold text-xs text-white uppercase tracking-widest hover:bg-blue-700 active:bg-blue-900 focus:outline-none focus:border-blue-900 focus:ring ring-blue-300 disabled:opacity-25 transition ease-in-out duration-150 shadow-sm">
-                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
-                Crear Nueva
-            </a>
-        </div>
-    </x-slot>
+@extends('layouts.admin')
 
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-xl sm:rounded-2xl border border-gray-100 dark:border-gray-700">
-                <div class="overflow-x-auto">
-                    <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-                        <thead class="text-xs text-gray-700 uppercase bg-gray-50/50 dark:bg-gray-700/50 dark:text-gray-300 border-b border-gray-200 dark:border-gray-700">
-                            <tr>
-                                <th scope="col" class="px-6 py-4 font-semibold tracking-wider">Oferta</th>
-                                <th scope="col" class="px-6 py-4 font-semibold tracking-wider">Descuento</th>
-                                <th scope="col" class="px-6 py-4 font-semibold tracking-wider">Producto Relacionado</th>
-                                <th scope="col" class="px-6 py-4 font-semibold tracking-wider text-right">Acciones</th>
-                            </tr>
-                        </thead>
-                        <tbody class="divide-y divide-gray-200 dark:divide-gray-700">
-                            @forelse ($offers as $offer)
-                                <tr class="group hover:bg-gray-50/50 dark:hover:bg-gray-700/50 transition-colors bg-white dark:bg-gray-800">
-                                    <td class="px-6 py-4 max-w-xs whitespace-normal break-words">
-                                        <div class="text-sm font-semibold text-gray-900 dark:text-white">{{ $offer->title }}</div>
-                                        <div class="text-xs text-gray-500 dark:text-gray-400 mt-1 truncate max-w-xs">{{ $offer->description }}</div>
-                                    </td>
-                                    <td class="px-6 py-4">
-                                        <div class="text-sm font-medium text-red-600 dark:text-red-400">-{{ number_format($offer->discount, 2) }}</div>
-                                        <div class="text-xs text-gray-500 dark:text-gray-400 mt-1">{{ $offer->type_offer }}</div>
-                                    </td>
-                                    <td class="px-6 py-4">
-                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400">
-                                            {{ $offer->product->name ?? 'N/A' }}
-                                        </span>
-                                    </td>
-                                    <td class="px-6 py-4 min-w-[120px] whitespace-nowrap text-right text-sm font-medium">
-                                        <div class="flex justify-end items-center space-x-3 opacity-0 group-hover:opacity-100 transition-opacity">
-                                            <a href="{{ route('offers.show', $offer) }}" class="text-blue-500 hover:text-blue-700 transition-colors" title="Ver">
-                                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
-                                            </a>
-                                            <a href="{{ route('offers.edit', $offer) }}" class="text-amber-500 hover:text-amber-700 transition-colors" title="Editar">
-                                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
-                                            </a>
-                                            <form id="form-delete-{{ $offer->id }}" action="{{ route('offers.destroy', $offer) }}" method="POST" class="inline-block">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit" class="text-red-500 hover:text-red-700 transition-colors btn-delete" onclick="eliminarRegistro(event, this)" title="Eliminar">
-                                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
-                                                </button>
-                                            </form>
-                                        </div>
-                                    </td>
-                                </tr>
-                            @empty
-                                <tr>
-                                    <td colspan="100%" class="px-6 py-12 text-center text-gray-500 dark:text-gray-400">
-                                        <div class="flex flex-col items-center justify-center">
-                                            <svg class="w-12 h-12 mb-4 text-gray-300 dark:text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"></path></svg>
-                                            <p class="text-lg font-medium">No hay registros disponibles</p>
-                                        </div>
-                                    </td>
-                                </tr>
-                            @endforelse
-                        </tbody>
-                    </table>
-                </div>
-                
-                @if (method_exists($offers, 'hasPages') && $offers->hasPages())
-                    <div class="px-6 py-4 border-t border-gray-200 dark:border-gray-700 bg-gray-50/50 dark:bg-gray-800/50">
-                        {{ $offers->links() }}
-                    </div>
-                @endif
+@section('content')
+<div class="p-8 md:p-10">
+    
+    <!-- ENCABEZADO -->
+    <div class="flex flex-col md:flex-row md:items-center justify-between mb-8 gap-4">
+        <div class="flex items-start gap-3">
+            <!-- Ícono de Ticket -->
+            <div class="text-[#2563eb] mt-1">
+                <svg class="w-8 h-8" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M16.5 6v.75m0 3v.75m0 3v.75m0 3V18m-9-5.25h5.25M7.5 15h3M3.375 5.25c-.621 0-1.125.504-1.125 1.125v3.026a2.999 2.999 0 010 5.198v3.026c0 .621.504 1.125 1.125 1.125h17.25c.621 0 1.125-.504 1.125-1.125v-3.026a2.999 2.999 0 010-5.198V6.375c0-.621-.504-1.125-1.125-1.125H3.375z"></path></svg>
             </div>
+            <div>
+                <h1 class="text-[28px] font-bold text-[#040116] tracking-tight leading-none mb-2">Ofertas</h1>
+                <p class="text-gray-600 text-sm">Gestiona las ofertas y promociones de tu negocio</p>
+            </div>
+        </div>
+        <a href="{{ route('offers.create') }}" class="bg-[#2563eb] text-white font-medium px-5 py-2.5 rounded-xl text-sm shadow-sm transition-colors flex items-center gap-2">
+            + Nueva oferta
+        </a>
+    </div>
+
+    <!-- TARJETAS DE RESUMEN -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8 text-center">
+        <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex flex-col justify-center">
+            <span class="text-sm font-medium text-gray-500 mb-2">Total</span>
+            <span class="text-4xl font-bold text-[#040116]">{{ $offers->count() }}</span>
+        </div>
+        <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex flex-col justify-center">
+            <span class="text-sm font-medium text-gray-500 mb-2">Activas</span>
+            <span class="text-4xl font-bold text-[#040116]">{{ $offers->count() }}</span>
+        </div>
+        <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex flex-col justify-center">
+            <span class="text-sm font-medium text-gray-500 mb-2">Expiradas</span>
+            <span class="text-4xl font-bold text-[#040116]">0</span>
         </div>
     </div>
 
-    @push('scripts')
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script>
-        function confirmarEliminacion(id) {
-            Swal.fire({
-                title: '¿Estás seguro?',
-                text: "¡No podrás revertir esta acción!",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#ef4444',
-                cancelButtonColor: '#6b7280',
-                confirmButtonText: 'Sí, eliminar',
-                cancelButtonText: 'Cancelar',
-                background: document.documentElement.classList.contains('dark') ? '#1f2937' : '#ffffff',
-                color: document.documentElement.classList.contains('dark') ? '#f3f4f6' : '#111827',
-                customClass: {
-                    popup: 'rounded-2xl border border-gray-200 dark:border-gray-700 shadow-xl'
-                }
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    document.getElementById('form-delete-' + id).submit();
-                }
-            })
-        }
-    </script>
-    @endpush
-</x-app-layout>
+    <!-- LISTA DE OFERTAS -->
+    <div class="flex flex-col gap-4">
+        @forelse($offers ?? [] as $offer)
+        <!-- Tarjeta de Oferta -->
+        <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 flex flex-col md:flex-row md:items-center justify-between gap-6">
+            <!-- Información -->
+            <div>
+                <div class="flex items-center gap-3 mb-2">
+                    <h3 class="text-lg font-medium text-[#040116]">{{ $offer->title ?? 'Sin título' }}</h3>
+                    <span class="bg-[#dcfce7] text-[#16a34a] px-3 py-1 rounded-full text-xs font-medium">Activa</span>
+                    <span class="bg-[#eff6ff] text-[#2563eb] px-3 py-1 rounded-full text-xs font-medium">{{ $offer->discount ?? '0' }}%</span>
+                </div>
+                <p class="text-gray-500 text-sm mb-1">{{ $offer->description ?? 'Sin descripción' }}</p>
+            </div>
+            <!-- Acciones -->
+            <div class="flex items-center gap-3 shrink-0">
+                <a href="{{ route('offers.edit', $offer->id ?? 0) }}" class="bg-white border border-gray-200 text-gray-700 font-medium px-5 py-2 rounded-xl text-sm hover:bg-gray-50 transition shadow-sm">
+                    Editar
+                </a>
+                <form action="{{ route('offers.destroy', $offer->id ?? 0) }}" method="POST">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" class="bg-red-50 text-red-500 font-medium px-5 py-2 rounded-xl text-sm hover:bg-red-100 transition shadow-sm">
+                        Eliminar
+                    </button>
+                </form>
+            </div>
+        </div>
+        @empty
+        <div class="p-8 text-center text-gray-500 bg-white rounded-2xl border border-gray-100 shadow-sm">No hay ofertas creadas</div>
+        @endforelse
+    </div>
+</div>
+@endsection

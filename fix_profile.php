@@ -1,39 +1,45 @@
-@extends('layouts.admin')
+<?php
+$content = file_get_contents('resources/views/admin/perfil.blade.php');
 
-@section('content')
-<div class="p-8 md:p-10">
-    
-    <!-- 1. CABECERA -->
-    <div class="flex flex-col md:flex-row md:items-center justify-between mb-8 gap-4">
-        <div>
-            <h1 class="text-[28px] font-bold text-[#040116] tracking-tight">Perfil Público del Negocio</h1>
-            <p class="text-gray-500 text-sm mt-1">Administra la información que ven los clientes</p>
-        </div>
-        <div class="flex items-center gap-3">
-            <a href="{{ route('companies.show', $company->id ?? 1) }}" class="bg-transparent border border-gray-800 text-[#040116] font-medium px-5 py-2.5 rounded-xl text-sm transition-colors flex items-center gap-2">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
-                Ver perfil público
-            </a>
-            <button class="bg-[#2563eb] text-white font-medium px-5 py-2.5 rounded-xl text-sm shadow-sm transition-colors flex items-center gap-2">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>
-                Editar perfil
-            </button>
+$searchMain = <<<'HTML'
+    <!-- 2. SECCI"N: FOTO DEL NEGOCIO -->
+    <div class="bg-white rounded-[20px] shadow-sm border border-gray-100 p-8 mb-8">
+        <div class="flex flex-col md:flex-row gap-8 items-start">
+            <!-- Foto Actual -->
+            <div class="shrink-0">
+                <span class="block text-[11px] font-bold text-gray-500 uppercase tracking-wider mb-3">Foto Actual</span>
+                <div class="w-32 h-32 rounded-2xl overflow-hidden bg-gray-100 border border-gray-200 shadow-inner">
+                    <img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=500&q=80" alt="Foto Actual" class="w-full h-full object-cover">
+                </div>
+            </div>
+            
+            <!-- Opciones / Subida -->
+            <div class="flex-1">
+                <span class="block text-[11px] font-bold text-gray-500 uppercase tracking-wider mb-3">Opciones</span>
+                <div class="border-2 border-dashed border-gray-200 rounded-xl p-4 flex items-center justify-center gap-3 text-gray-500 bg-gray-50/50 hover:bg-gray-50 cursor-pointer transition mb-3">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path></svg>
+                    <span class="text-sm font-medium">Subir nueva foto</span>
+                </div>
+                <p class="text-[12px] text-gray-500 mb-4">Formatos aceptados: JPG, PNG, WEBP. Tamao mǭximo: 5 MB.</p>
+                <button class="bg-[#3b82f6] text-white font-medium px-6 py-2.5 rounded-xl text-sm shadow-sm hover:bg-blue-600 transition">
+                    Guardar foto
+                </button>
+            </div>
         </div>
     </div>
-
+HTML;
+$replaceMain = <<<'HTML'
+    <div x-data="{ name: '{{ $company->name ?? 'TechSolutions GT' }}', category: '{{ $company->category->name ?? 'Tecnología' }}', desc: '{{ $company->description ?? '' }}' }">
     <!-- 2. SECCIÓN: FOTO DEL NEGOCIO -->
     <div class="bg-white rounded-[20px] shadow-sm border border-gray-100 p-8 mb-8">
-        <h2 class="text-lg font-bold text-[#040116] mb-1">Foto del negocio</h2>
-        <p class="text-gray-500 text-sm mb-6">Esta imagen aparecerá en el perfil público de tu negocio</p>
-        
-                <form action="{{ route('companies.update', $company->id ?? 1) }}" method="POST" enctype="multipart/form-data" class="flex flex-col md:flex-row gap-8">
+        <form action="{{ route('companies.update', $company->id ?? 1) }}" method="POST" enctype="multipart/form-data" class="flex flex-col md:flex-row gap-8 items-start">
             @csrf
             @method('PUT')
             
             <!-- Foto Actual -->
-            <div class="w-full md:w-48 shrink-0">
+            <div class="shrink-0">
                 <span class="block text-[11px] font-bold text-gray-500 uppercase tracking-wider mb-3">Foto Actual</span>
-                <div class="w-full h-32 rounded-xl overflow-hidden border border-gray-100">
+                <div class="w-32 h-32 rounded-2xl overflow-hidden bg-gray-100 border border-gray-200 shadow-inner">
                     <img src="{{ $company->logo ? asset('storage/' . $company->logo) : 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=500&q=80' }}" alt="Foto Actual" class="w-full h-full object-cover">
                 </div>
             </div>
@@ -41,11 +47,11 @@
             <!-- Opciones / Subida -->
             <div class="flex-1">
                 <span class="block text-[11px] font-bold text-gray-500 uppercase tracking-wider mb-3">Opciones</span>
-                <label for="logo_upload" class="cursor-pointer block border-2 border-dashed border-gray-200 rounded-xl p-4 flex items-center justify-center gap-3 text-gray-500 bg-gray-50/50 hover:bg-gray-50 transition mb-3">
-                    <input type="file" name="logo" id="logo_upload" class="hidden" accept="image/png, image/jpeg, image/webp">
+                <div class="border-2 border-dashed border-gray-200 rounded-xl p-4 flex items-center justify-center gap-3 text-gray-500 bg-gray-50/50 hover:bg-gray-50 cursor-pointer transition mb-3 relative overflow-hidden">
+                    <input type="file" name="logo" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer" accept=".jpg,.png,.webp">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path></svg>
                     <span class="text-sm font-medium">Subir nueva foto</span>
-                </label>
+                </div>
                 <p class="text-[12px] text-gray-500 mb-4">Formatos aceptados: JPG, PNG, WEBP. Tamaño máximo: 5 MB.</p>
                 <button type="submit" class="bg-[#3b82f6] text-white font-medium px-6 py-2.5 rounded-xl text-sm shadow-sm hover:bg-blue-600 transition">
                     Guardar foto
@@ -53,7 +59,21 @@
             </div>
         </form>
     </div>
+HTML;
+$content = str_replace($searchMain, $replaceMain, $content);
 
+
+// Wait, I need to match carefully for the form and preview. I will just rewrite the whole grid.
+$startGrid = strpos($content, '<!-- 3. SECCI"N: FORMULARIO Y VISTA PREVIA -->');
+if ($startGrid === false) {
+    // If charset differences broke the match:
+    $startGrid = strpos($content, '<!-- 3. SECCI');
+}
+
+$endGrid = strpos($content, '</div>', strrpos($content, '</div>', strrpos($content, '</div>', strrpos($content, '</div>') - 1) - 1) - 1);
+// Instead of risky strpos, let's just do a clean string replacement of the rest of the file since it's the bottom.
+
+$newFormSection = <<<'HTML'
     <!-- 3. SECCIÓN: FORMULARIO Y VISTA PREVIA -->
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
         
@@ -152,3 +172,11 @@
     </div> <!-- /x-data -->
 </div>
 @endsection
+HTML;
+
+$content = substr($content, 0, $startGrid) . $newFormSection;
+
+// Save file
+file_put_contents('resources/views/admin/perfil.blade.php', $content);
+echo "Profile view updated perfectly!\n";
+?>

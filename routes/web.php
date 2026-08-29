@@ -77,7 +77,7 @@ Route::middleware(['auth', 'verified', 'prevent-back-history', CheckSuperAdmin::
 Route::middleware(['auth', 'verified', 'prevent-back-history'])->group(function() {
     // Vistas de Maquetación del Proveedor
     Route::get('/admin/dashboard', function () { return view('admin.dashboard'); });
-    Route::get('/admin/perfil', function () { return view('admin.perfil'); });
+    Route::get('/admin/perfil', [\App\Http\Controllers\CompanyController::class, 'profile'])->name('admin.perfil');
     Route::get('/admin/inventario', function () { return view('admin.inventario'); });
     Route::get('/admin/ofertas', function () { return view('admin.ofertas'); });
     Route::get('/admin/comunidad', function () { return view('admin.comunidad'); });
