@@ -10,6 +10,11 @@ use Illuminate\view\View;
 
 class OfferController extends Controller
 {
+    public function success()
+    {
+        return view('offers.success');
+    }
+
     /**
      * Display a listing of the resource.
      */
