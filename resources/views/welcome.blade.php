@@ -135,6 +135,14 @@
                             <!-- Botón para Proveedores normales -->
                             <a href="{{ url('/admin/dashboard') }}" class="text-[#3b82f6] font-medium text-base hover:underline transition">Administrar negocio</a>
                         @endif
+
+                        <!-- Botón de Cerrar Sesión -->
+                        <form method="POST" action="{{ route('logout') }}" class="inline-block ml-4">
+                            @csrf
+                            <button type="submit" class="bg-[#A6F4EB] hover:bg-[#8de8df] text-[#040116] font-semibold px-6 py-2 rounded-full transition-colors shadow-sm text-[14px]">
+                                Cerrar Sesión
+                            </button>
+                        </form>
                     @else
                         <a href="{{ route('login') }}" class="text-[#3b82f6] font-medium text-base hover:underline transition">Iniciar sesión</a>
                         @if (Route::has('register'))

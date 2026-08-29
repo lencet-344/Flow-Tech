@@ -9,17 +9,7 @@
                             <img src="{{ asset('images/LogoAzul.png') }}" alt="SINGKI" class="h-10 w-auto">
                         </div>
                         
-                        <!-- Botón Cerrar Sesión (Solo visible si hay sesión) -->
-                        @auth
-                            <div class="mt-8">
-                                <form method="POST" action="{{ route('logout') }}">
-                                    @csrf
-                                    <button type="submit" class="bg-[#A6F4EB] hover:bg-[#7ce2d6] text-[#020617] font-semibold px-6 py-2 rounded-full text-sm transition-colors shadow-sm">
-                                        Cerrar Sesión
-                                    </button>
-                                </form>
-                            </div>
-                        @endauth
+
                     </div>
 
                     <!-- Columnas de Enlaces -->
