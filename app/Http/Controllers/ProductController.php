@@ -11,10 +11,15 @@ class ProductController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $products = Product::orderByDesc("id")->get();
-        return view("products.index", compact("products"));
+        $search = $request->input('search');
+        if ($search) {
+            $products = Product::where('nombre', 'like', "%$search%")->orderByDesc('id')->get();
+        } else {
+            $products = Product::orderByDesc("id")->get();
+        }
+        return view("products.index", compact("products", "search"));
     }
 
     /**

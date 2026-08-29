@@ -1,3 +1,5 @@
+<?php
+$content = <<<'HTML'
 @extends('layouts.admin')
 
 @section('content')
@@ -95,3 +97,7 @@
     </div>
 </div>
 @endsection
+HTML;
+file_put_contents('resources/views/companies/index.blade.php', $content);
+echo "Companies view updated successfully.\n";
+?>

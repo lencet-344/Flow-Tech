@@ -17,8 +17,17 @@ class Company extends Model
         'address',
         'telephone',
         'type_product',
-        
+        'logo',
+        'description',
+        'website',
+        'horario',
+        'category_id',
     ];
+
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
+    }
 
     public function products()
     {

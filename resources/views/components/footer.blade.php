@@ -16,8 +16,8 @@
                     <div class="md:col-span-2">
                         <h4 class="text-[#7dd3fc] font-bold mb-6 text-[15px] tracking-wide">Plataforma</h4>
                         <ul class="space-y-4 text-[14px] text-[#cbd5e1] font-light">
-                            <li><a href="#" class="hover:text-white transition">Categorías</a></li>
-                            <li><a href="#" class="hover:text-white transition">Explorar negocios</a></li>
+                            <li><a href="{{ route('categories.index') }}" class="hover:text-white transition">Categorías</a></li>
+                            <li><a href="{{ route('companies.index') }}" class="hover:text-white transition">Explorar negocios</a></li>
                             <li><a href="{{ route('login') }}" class="hover:text-white transition">Iniciar sesión</a></li>
                         </ul>
                     </div>
@@ -26,15 +26,15 @@
                         <h4 class="text-[#7dd3fc] font-bold mb-6 text-[15px] tracking-wide">Para negocios</h4>
                         <ul class="space-y-4 text-[14px] text-[#cbd5e1] font-light">
                             <li><a href="{{ route('register') }}" class="hover:text-white transition">Registrar mi negocio</a></li>
-                            <li><a href="#" class="hover:text-white transition">Administración</a></li>
+                            <li><a href="{{ url('/admin/dashboard') }}" class="hover:text-white transition">Administración</a></li>
                         </ul>
                     </div>
                     
                     <div class="md:col-span-3">
                         <h4 class="text-[#7dd3fc] font-bold mb-6 text-[15px] tracking-wide">Ayuda</h4>
                         <ul class="space-y-4 text-[14px] text-[#cbd5e1] font-light">
-                            <li><a href="#" class="hover:text-white transition">Centro de ayuda</a></li>
-                            <li><a href="#" class="hover:text-white transition">Contacto</a></li>
+                            <li><a href="{{ route('contact_requests.create') }}" class="hover:text-white transition">Centro de ayuda</a></li>
+                            <li><a href="{{ route('contact_requests.create') }}" class="hover:text-white transition">Contacto</a></li>
                             <li><a href="#" class="hover:text-white transition">Términos de uso</a></li>
                         </ul>
                     </div>

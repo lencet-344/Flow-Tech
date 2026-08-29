@@ -1,3 +1,5 @@
+<?php
+$content = <<<'HTML'
 @extends('layouts.admin')
 
 @section('content')
@@ -111,3 +113,7 @@
     </div>
 </div>
 @endsection
+HTML;
+file_put_contents('resources/views/inventories/index.blade.php', $content);
+echo "Restored inventories index successfully!\n";
+?>

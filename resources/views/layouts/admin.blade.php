@@ -42,9 +42,9 @@
                         <!-- Nota cómo el botón "Promocionar negocio" ahora verifica si estás en la ruta para pintarse de azul -->
                         <a href="{{ url('/admin/dashboard') }}" class="py-2 px-3 rounded-lg transition-colors {{ request()->is('admin/dashboard') ? 'bg-[#2563eb] text-white font-medium shadow-sm' : 'text-gray-300 hover:text-white hover:bg-white/5' }}">Dashboard</a>
                         <a href="{{ url('/admin/perfil') }}" class="py-2 px-3 rounded-lg transition-colors {{ request()->is('admin/perfil') ? 'bg-[#2563eb] text-white font-medium shadow-sm' : 'text-gray-300 hover:text-white hover:bg-white/5' }}">Perfil del negocio</a>
-                        <a href="{{ url('/admin/inventario') }}" class="py-2 px-3 rounded-lg transition-colors {{ request()->is('admin/inventario') ? 'bg-[#2563eb] text-white font-medium shadow-sm' : 'text-gray-300 hover:text-white hover:bg-white/5' }}">Inventario</a>
-                        <a href="{{ url('/admin/reservas') }}" class="py-2 px-3 rounded-lg transition-colors {{ request()->is('admin/reservas') ? 'bg-[#2563eb] text-white font-medium shadow-sm' : 'text-gray-300 hover:text-white hover:bg-white/5' }}">Reservas</a>
-                        <a href="{{ url('/admin/ofertas') }}" class="py-2 px-3 rounded-lg transition-colors {{ request()->is('admin/ofertas') ? 'bg-[#2563eb] text-white font-medium shadow-sm' : 'text-gray-300 hover:text-white hover:bg-white/5' }}">Ofertas</a>
+                        <a href="{{ route('inventories.index') }}" class="py-2 px-3 rounded-lg transition-colors {{ request()->routeIs('inventories.*') ? 'bg-[#2563eb] text-white font-medium shadow-sm' : 'text-gray-300 hover:text-white hover:bg-white/5' }}">Inventario</a>
+                        <a href="{{ route('bookings.index') }}" class="py-2 px-3 rounded-lg transition-colors {{ request()->routeIs('bookings.*') ? 'bg-[#2563eb] text-white font-medium shadow-sm' : 'text-gray-300 hover:text-white hover:bg-white/5' }}">Reservas</a>
+                        <a href="{{ route('offers.index') }}" class="py-2 px-3 rounded-lg transition-colors {{ request()->routeIs('offers.*') ? 'bg-[#2563eb] text-white font-medium shadow-sm' : 'text-gray-300 hover:text-white hover:bg-white/5' }}">Ofertas</a>
                         <a href="{{ url('/admin/comunidad') }}" class="py-2 px-3 rounded-lg transition-colors {{ request()->is('admin/comunidad') ? 'bg-[#2563eb] text-white font-medium shadow-sm' : 'text-gray-300 hover:text-white hover:bg-white/5' }}">Comunidad Premium</a>
                         <a href="{{ url('/admin/estadisticas') }}" class="py-2 px-3 rounded-lg transition-colors {{ request()->is('admin/estadisticas') ? 'bg-[#2563eb] text-white font-medium shadow-sm' : 'text-gray-300 hover:text-white hover:bg-white/5' }}">Estadísticas</a>
                         <a href="{{ url('/admin/promocionar') }}" class="py-2 px-3 rounded-lg transition-colors {{ request()->is('admin/promocionar*') ? 'bg-[#2563eb] text-white font-medium shadow-sm' : 'text-gray-300 hover:text-white hover:bg-white/5' }}">Promocionar negocio</a>
@@ -56,7 +56,7 @@
                     <p class="text-[#1F51FF] text-xs font-bold mb-3 uppercase">Información Pública</p>
                     <nav class="flex flex-col gap-1 text-sm text-gray-300">
                         <a href="{{ url('/admin/perfil') }}" class="py-2 px-3 hover:text-white rounded-lg transition-colors">Foto del negocio</a>
-                        <a href="{{ url('/admin/inventario') }}" class="py-2 px-3 hover:text-white rounded-lg transition-colors">Disponibilidad/Stock</a>
+                        <a href="{{ route('inventories.index') }}" class="py-2 px-3 hover:text-white rounded-lg transition-colors">Disponibilidad/Stock</a>
                         <!-- Agregamos target="_blank" opcionalmente para que la vista pública abra en otra pestaña sin sacarlo del panel -->
                         <a href="{{ url('/perfil-publico') }}" target="_blank" class="py-2 px-3 hover:text-white rounded-lg transition-colors">Info pública</a>
                     </nav>
