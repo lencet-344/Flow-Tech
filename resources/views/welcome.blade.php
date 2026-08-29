@@ -62,7 +62,7 @@
             </div>
             
             <!-- Cuerpo del Chat -->
-            <div class="p-5 bg-white">
+            <div class="p-5 bg-white overflow-y-auto max-h-96">
                 
                 <!-- Mensaje del Bot (KI) -->
                 <div class="flex gap-4 items-start mb-6">
@@ -83,7 +83,7 @@
                     <textarea id="ki-input" class="w-full text-[13px] border border-gray-200 rounded-xl p-3 focus:ring-[#2563eb] focus:border-[#2563eb] outline-none resize-none placeholder-gray-400 font-light" rows="3" placeholder="¿En qué podemos ayudarte? Escribe tu pregunta aquí..."></textarea>
                     
                     <!-- Botón Enviar (Gris claro) -->
-                    <button id="ki-send-btn" class="w-full bg-[#f1f5f9] hover:bg-[#e2e8f0] text-[#64748b] font-semibold py-3 rounded-xl mt-3 transition-colors text-[14px]">Enviar consulta</button>
+                    <button id="ki-send-btn" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-xl transition-colors w-full shadow-sm mt-3">Enviar consulta</button>
                 </div>
             </div>
             
@@ -842,6 +842,15 @@
         });
     </script>
     <script>
+        function parsearMarkdown(texto) {
+            if (!texto) return '';
+            // Convertir negritas (**texto** a <strong>texto</strong>)
+            let html = texto.replace(/\*\*(.*?)\*\*/g, '<strong class="font-bold text-gray-900">$1</strong>');
+            // Convertir saltos de línea a <br>
+            html = html.replace(/\n/g, '<br>');
+            return html;
+        }
+
         document.addEventListener('DOMContentLoaded', () => {
             const btnSend = document.getElementById('ki-send-btn');
             const inputField = document.getElementById('ki-input');
@@ -905,7 +914,7 @@
                                 </div>
                                 <div class="bg-slate-50 border border-slate-100 p-4 rounded-2xl rounded-tl-sm w-full">
                                     <h4 class="text-[#2563eb] font-bold text-[14px] mb-1">Ki</h4>
-                                    <div class="text-gray-500 text-[13px] leading-relaxed font-light prose prose-sm max-w-none">${replyText.replace(/\n/g, '<br>')}</div>
+                                    <div class="text-gray-500 text-[13px] leading-relaxed font-light prose prose-sm max-w-none">${parsearMarkdown(replyText)}</div>
                                 </div>
                             </div>
                         `;
