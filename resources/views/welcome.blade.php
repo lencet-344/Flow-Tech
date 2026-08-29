@@ -403,14 +403,14 @@
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                 
                 <!-- Tarjeta 1 -->
-                <div class="bg-white p-10 rounded-[2rem] shadow-[0_8px_30px_rgb(0,0,0,0.04)] text-left flex flex-col h-full border border-gray-50">
+                <div class="bg-white p-10 rounded-[2rem] shadow-[0_8px_30px_rgb(0,0,0,0.04)] text-left flex flex-col justify-start h-full border border-gray-50">
                     <div class="flex justify-between items-start mb-10">
                         <span class="text-[5.5rem] font-bold text-transparent bg-clip-text bg-gradient-to-r from-[#2563eb] to-[#7dd3fc] leading-none tracking-tighter">01</span>
                         <div class="w-14 h-14 bg-[#2563eb] rounded-2xl flex items-center justify-center text-white shadow-md">
                            <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"></path></svg>
                         </div>
                     </div>
-                    <div class="mt-auto">
+                    <div class="mt-8">
                         <h3 class="text-xl font-bold text-[#0f172a] mb-3">Busca o explora</h3>
                         <p class="text-gray-500 text-[15px] leading-relaxed font-light mb-10">Usa la búsqueda o explora las categorías para encontrar lo que necesitas.</p>
                         <div class="w-full h-px bg-gradient-to-r from-blue-200 to-transparent"></div>
@@ -418,14 +418,14 @@
                 </div>
 
                 <!-- Tarjeta 2 -->
-                <div class="bg-white p-10 rounded-[2rem] shadow-[0_8px_30px_rgb(0,0,0,0.04)] text-left flex flex-col h-full border border-gray-50">
+                <div class="bg-white p-10 rounded-[2rem] shadow-[0_8px_30px_rgb(0,0,0,0.04)] text-left flex flex-col justify-start h-full border border-gray-50">
                     <div class="flex justify-between items-start mb-10">
                         <span class="text-[5.5rem] font-bold text-transparent bg-clip-text bg-gradient-to-r from-[#2563eb] to-[#7dd3fc] leading-none tracking-tighter">02</span>
                         <div class="w-14 h-14 bg-[#2563eb] rounded-2xl flex items-center justify-center text-white shadow-md">
                              <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3M3 11h18M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z M9 16l2 2 4-4"></path></svg>
                         </div>
                     </div>
-                    <div class="mt-auto">
+                    <div class="mt-8">
                         <h3 class="text-xl font-bold text-[#0f172a] mb-3">Consulta y compara</h3>
                         <p class="text-gray-500 text-[15px] leading-relaxed font-light mb-10">Revisa perfiles, disponibilidad de stock, precios, reseñas y toda la información necesaria antes de elegir.</p>
                         <div class="w-full h-px bg-gradient-to-r from-blue-200 to-transparent"></div>
@@ -433,14 +433,14 @@
                 </div>
 
                 <!-- Tarjeta 3 -->
-                <div class="bg-white p-10 rounded-[2rem] shadow-[0_8px_30px_rgb(0,0,0,0.04)] text-left flex flex-col h-full border border-gray-50">
+                <div class="bg-white p-10 rounded-[2rem] shadow-[0_8px_30px_rgb(0,0,0,0.04)] text-left flex flex-col justify-start h-full border border-gray-50">
                     <div class="flex justify-between items-start mb-10">
                         <span class="text-[5.5rem] font-bold text-transparent bg-clip-text bg-gradient-to-r from-[#2563eb] to-[#7dd3fc] leading-none tracking-tighter">03</span>
                         <div class="w-14 h-14 bg-[#2563eb] rounded-2xl flex items-center justify-center text-white shadow-md">
                              <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"></path></svg>
                         </div>
                     </div>
-                    <div class="mt-auto">
+                    <div class="mt-8">
                         <h3 class="text-xl font-bold text-[#0f172a] mb-3">Conecta</h3>
                         <p class="text-gray-500 text-[15px] leading-relaxed font-light mb-10">Contacta directamente al negocio, proveedor o prestador y realiza la acción correspondiente, como reservar productos agotados o establecer una conexión.</p>
                         <div class="w-full h-px bg-gradient-to-r from-blue-200 to-transparent"></div>
