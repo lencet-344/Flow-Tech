@@ -20,7 +20,12 @@ class CompanyRequest extends FormRequest
             'email' => 'required|string|email|max:50|unique:companies,email,' . $id,
             'address' => 'required|string|max:100',
             'telephone' => 'required|integer|unique:companies,telephone,' . $id,
-            'type_product' => 'required|string|max:30',
+            'type_product' => 'nullable|string|max:30',
+            'description' => 'nullable|string',
+            'website' => 'nullable|string|max:100',
+            'horario' => 'nullable|string|max:100',
+            'category_id' => 'nullable|integer|exists:categories,id',
+            'logo' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:5120',
         ];
     }
 

@@ -12,6 +12,13 @@ class CompanyController extends Controller
     /**
      * Display a listing of the resource.
      */
+    public function profile()
+    {
+        $company = Company::first() ?? new Company();
+        $categories = \App\Models\Category::all();
+        return view('admin.perfil', compact('company', 'categories'));
+    }
+
     public function index()
     {
         $companies = Company::orderByDesc("id")->get();
@@ -59,8 +66,15 @@ class CompanyController extends Controller
      */
     public function update(CompanyRequest $request, Company $company)
     {
-        $company->update($request->validated());
-        return redirect()->route("companies.index")->with("success", "Empresa a sido actualizado correctamente.");
+        $data = $request->validated();
+        if ($request->hasFile('logo')) {
+            if ($company->logo && \Illuminate\Support\Facades\Storage::disk('public')->exists($company->logo)) {
+                \Illuminate\Support\Facades\Storage::disk('public')->delete($company->logo);
+            }
+            $data['logo'] = $request->file('logo')->store('companies', 'public');
+        }
+        $company->update($data);
+        return back()->with("success", "Empresa actualizada correctamente.");
     }
 
     /**

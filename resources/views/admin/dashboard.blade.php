@@ -51,31 +51,27 @@
         <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
             <div class="flex justify-between items-center mb-6">
                 <h3 class="font-bold text-lg text-[#040116]">Productos recientes</h3>
-                <a href="#" class="text-[#2563eb] text-sm font-medium hover:underline">Ver todos &rarr;</a>
+                <a href="{{ route('inventories.index') }}" class="text-[#2563eb] text-sm font-medium hover:underline">Ver todos &rarr;</a>
             </div>
             <div class="space-y-5">
-                <!-- Item 1 -->
+                @forelse($productos_recientes ?? [] as $producto)
                 <div class="flex items-center justify-between">
                     <div class="flex items-center gap-4">
-                        <div class="w-12 h-12 bg-gray-100 rounded-lg shrink-0 overflow-hidden"><img src="https://images.unsplash.com/photo-1531297172869-c7d69818c599?w=100&q=80" alt="Prod" class="w-full h-full object-cover"></div>
+                        <div class="w-12 h-12 bg-gray-100 rounded-lg shrink-0 overflow-hidden"><img src="{{ $producto->img ?? 'https://via.placeholder.com/100' }}" alt="Prod" class="w-full h-full object-cover"></div>
                         <div>
-                            <h4 class="text-sm font-semibold text-[#040116]">Laptop HP EliteBook 840</h4>
-                            <p class="text-xs text-gray-500">Stock: 12 · C$ 28,500</p>
+                            <h4 class="text-sm font-semibold text-[#040116]">{{ $producto->nombre ?? 'Sin nombre' }}</h4>
+                            <p class="text-xs text-gray-500">Stock: {{ $producto->stock ?? 0 }} • C$ {{ $producto->precio ?? 0 }}</p>
                         </div>
                     </div>
+                    @if(isset($producto->stock) && $producto->stock > 0)
                     <span class="text-[10px] font-bold text-green-600 bg-green-50 border border-green-100 px-2 py-1 rounded uppercase tracking-wider">Disp.</span>
-                </div>
-                <!-- Item 2 -->
-                <div class="flex items-center justify-between">
-                    <div class="flex items-center gap-4">
-                        <div class="w-12 h-12 bg-gray-100 rounded-lg shrink-0 overflow-hidden"><img src="https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?w=100&q=80" alt="Prod" class="w-full h-full object-cover"></div>
-                        <div>
-                            <h4 class="text-sm font-semibold text-[#040116]">Monitor Dell 27'' 4K</h4>
-                            <p class="text-xs text-gray-500">Stock: 0 · C$ 4200</p>
-                        </div>
-                    </div>
+                    @else
                     <span class="text-[10px] font-bold text-red-600 bg-red-50 border border-red-100 px-2 py-1 rounded uppercase tracking-wider">Agotado</span>
+                    @endif
                 </div>
+                @empty
+                <p class="text-xs text-gray-500">No hay productos recientes</p>
+                @endforelse
             </div>
         </div>
 
@@ -83,25 +79,20 @@
         <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
             <div class="flex justify-between items-center mb-6">
                 <h3 class="font-bold text-lg text-[#040116]">Reservas recientes</h3>
-                <a href="{{ url('/admin/reservas') }}" class="text-[#2563eb] text-sm font-medium hover:underline">Ver todas &rarr;</a>
+                <a href="{{ route('bookings.index') }}" class="text-[#2563eb] text-sm font-medium hover:underline">Ver todas &rarr;</a>
             </div>
             <div class="space-y-5">
-                <!-- Reserva 1 -->
+                @forelse($reservas_recientes ?? [] as $reserva)
                 <div class="flex items-center justify-between">
                     <div>
-                        <h4 class="text-sm font-semibold text-[#040116]">Monitor Dell 27'' 4K</h4>
-                        <p class="text-xs text-gray-500">2026-08-15</p>
+                        <h4 class="text-sm font-semibold text-[#040116]">{{ $reserva->producto->nombre ?? 'Producto' }}</h4>
+                        <p class="text-xs text-gray-500">{{ $reserva->fecha ?? date('Y-m-d') }}</p>
                     </div>
-                    <span class="text-[10px] font-bold text-yellow-600 bg-yellow-50 border border-yellow-100 px-2 py-1 rounded uppercase tracking-wider">Pendiente</span>
+                    <span class="text-[10px] font-bold text-yellow-600 bg-yellow-50 border border-yellow-100 px-2 py-1 rounded uppercase tracking-wider">{{ $reserva->estado ?? 'Pendiente' }}</span>
                 </div>
-                <!-- Reserva 2 -->
-                <div class="flex items-center justify-between">
-                    <div>
-                        <h4 class="text-sm font-semibold text-[#040116]">Teclado Mecánico Keychron K2</h4>
-                        <p class="text-xs text-gray-500">2026-08-01</p>
-                    </div>
-                    <span class="text-[10px] font-bold text-green-600 bg-green-50 border border-green-100 px-2 py-1 rounded uppercase tracking-wider">Notificado</span>
-                </div>
+                @empty
+                <p class="text-xs text-gray-500">No hay reservas recientes</p>
+                @endforelse
             </div>
         </div>
     </div>
@@ -116,37 +107,29 @@
         
         <!-- Bloque Azul Claro de Promedio -->
         <div class="bg-[#F4F7FF] rounded-xl p-6 flex items-center gap-6 mb-6">
-            <div class="text-5xl font-extrabold text-[#2563eb]">4.8</div>
+            <div class="text-5xl font-extrabold text-[#2563eb]">{{ $estadisticas->rating ?? '0.0' }}</div>
             <div>
-                <p class="text-sm text-gray-700 font-medium mb-1">124 reseñas totales</p>
+                <p class="text-sm text-gray-700 font-medium mb-1">{{ $estadisticas->total_reviews ?? 0 }} reseñas totales</p>
                 <div class="flex text-yellow-400 text-lg">★★★★★</div>
             </div>
         </div>
 
         <!-- Lista de Reseñas -->
         <div class="space-y-6">
-            <!-- Review 1 -->
+            @forelse($resenas_recientes ?? [] as $resena)
             <div class="flex gap-4">
-                <div class="w-10 h-10 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center font-bold text-sm shrink-0">AR</div>
+                <div class="w-10 h-10 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center font-bold text-sm shrink-0">{{ substr($resena->usuario->nombre ?? 'A', 0, 1) }}</div>
                 <div>
                     <div class="flex items-center gap-3 mb-1">
-                        <h4 class="text-sm font-bold text-[#040116]">Ana Rodríguez</h4>
+                        <h4 class="text-sm font-bold text-[#040116]">{{ $resena->usuario->nombre ?? 'Usuario' }}</h4>
                         <div class="flex text-yellow-400 text-xs">★★★★★</div>
                     </div>
-                    <p class="text-sm text-gray-600 leading-relaxed">Excelente servicio y productos de calidad. Entrega rápida y soporte técnico muy profesional.</p>
+                    <p class="text-sm text-gray-600 leading-relaxed">{{ $resena->comentario ?? 'Sin comentario' }}</p>
                 </div>
             </div>
-            <!-- Review 2 -->
-            <div class="flex gap-4">
-                <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100&q=80" class="w-10 h-10 rounded-full object-cover shrink-0">
-                <div>
-                    <div class="flex items-center gap-3 mb-1">
-                        <h4 class="text-sm font-bold text-[#040116]">Roberto Lima</h4>
-                        <div class="flex text-yellow-400 text-xs">★★★★<span class="text-gray-300">★</span></div>
-                    </div>
-                    <p class="text-sm text-gray-600 leading-relaxed">Buenos precios en equipos. El proceso de cotización es un poco lento pero el producto llegó en perfectas condiciones.</p>
-                </div>
-            </div>
+            @empty
+            <p class="text-xs text-gray-500">No hay reseñas recientes</p>
+            @endforelse
         </div>
     </div>
 </div>
