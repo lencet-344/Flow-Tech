@@ -38,12 +38,61 @@
 <body class="font-sans antialiased text-gray-900 bg-white selection:bg-[#3b82f6] selection:text-white relative">
 
     <!-- ========================================== -->
-    <!-- SECCIÓN 1: BOTÓN FLOTANTE CHATBOT (Robot)  -->
+    <!-- CHATBOT FLOTANTE Y MODAL DE AYUDA          -->
     <!-- ========================================== -->
-    <a href="/chat" class="fixed top-1/2 right-6 lg:right-32 -translate-y-1/2 z-50 bg-[#3b82f6] w-12 h-12 rounded-full shadow-[0_0_15px_rgba(59,130,246,0.5)] flex items-center justify-center hover:scale-110 transition-transform overflow-hidden border border-blue-400/30">
-        <!-- Imagen encogida (w-6 h-6) dentro del círculo (w-12 h-12) para ocultar el error del recorte -->
-        <img src="{{ asset('images/Robot.png') }}" alt="Chatbot" class="w-6 h-6 object-contain">
-    </a>
+    <div class="fixed top-32 right-6 lg:right-12 z-50 flex flex-col items-end">
+        
+        <!-- Botón Toggle Principal (Arriba del modal) -->
+        <button id="btn-chat-toggle" class="bg-[#2563eb] w-14 h-14 rounded-full shadow-xl shadow-blue-500/30 flex items-center justify-center hover:scale-105 transition-all duration-300 focus:outline-none z-50 relative">
+            <!-- Ícono Cerrado (Imagen de tu robot) -->
+            <img id="chat-icon-robot" src="{{ asset('images/Robot.png') }}" alt="Robot KI" class="w-8 h-8 object-contain transition-opacity duration-300">
+            <!-- Ícono Abierto (X blanca) - Oculto por defecto -->
+            <svg id="chat-icon-x" class="w-6 h-6 text-white absolute inset-0 m-auto opacity-0 scale-50 transition-all duration-300 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"></path></svg>
+        </button>
+
+        <!-- Ventana Modal del Chat (Despliega hacia abajo con mt-4) -->
+        <div id="chat-modal" class="hidden w-[340px] bg-white rounded-2xl shadow-[0_10px_40px_rgba(0,0,0,0.1)] border border-gray-100 overflow-hidden mt-4 transition-all duration-300 transform origin-top-right opacity-0 scale-95">
+            
+            <!-- Cabecera Azul Horizontal -->
+            <div class="bg-[#2563eb] text-white px-5 py-3.5 flex justify-between items-center">
+                <span class="font-semibold text-[14px] tracking-wide">Centro de Ayuda SINGKI</span>
+                <button id="close-chat-modal" class="text-white hover:text-gray-200 transition-colors focus:outline-none">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"></path></svg>
+                </button>
+            </div>
+            
+            <!-- Cuerpo del Chat -->
+            <div class="p-5 bg-white">
+                
+                <!-- Mensaje del Bot (KI) -->
+                <div class="flex gap-4 items-start mb-6">
+                    <!-- Ícono Cuadrado Azul -->
+                    <div class="w-12 h-12 bg-[#2563eb] rounded-xl flex items-center justify-center shrink-0 shadow-sm">
+                        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+                    </div>
+                    <!-- Burbuja de texto gris muy suave -->
+                    <div class="bg-slate-50 border border-slate-100 p-4 rounded-2xl rounded-tl-sm w-full">
+                        <h4 class="text-[#2563eb] font-bold text-[14px] mb-1">Hola, soy Ki</h4>
+                        <p class="text-gray-500 text-[13px] leading-relaxed font-light">Enviaré tu pregunta al administrador de SINGKI. Pronto recibirás una respuesta para ayudarte con tu consulta.</p>
+                    </div>
+                </div>
+                
+                <!-- Formulario -->
+                <div>
+                    <label class="block text-[13px] font-bold text-gray-700 mb-2">Escribe tu consulta</label>
+                    <textarea id="ki-input" class="w-full text-[13px] border border-gray-200 rounded-xl p-3 focus:ring-[#2563eb] focus:border-[#2563eb] outline-none resize-none placeholder-gray-400 font-light" rows="3" placeholder="¿En qué podemos ayudarte? Escribe tu pregunta aquí..."></textarea>
+                    
+                    <!-- Botón Enviar (Gris claro) -->
+                    <button id="ki-send-btn" class="w-full bg-[#f1f5f9] hover:bg-[#e2e8f0] text-[#64748b] font-semibold py-3 rounded-xl mt-3 transition-colors text-[14px]">Enviar consulta</button>
+                </div>
+            </div>
+            
+            <!-- Footer -->
+            <div class="bg-white px-4 py-3 border-t border-gray-50 text-center">
+                <span class="text-[11px] text-gray-400 font-light">SINGKI · Conectamos negocios con oportunidades</span>
+            </div>
+        </div>
+    </div>
     <!-- ========================================== -->
 
     <!-- ========================================== -->
@@ -59,16 +108,33 @@
                 </a>
             </div>
             
-            <nav class="hidden md:flex space-x-10">
-                <a href="#" class="text-[#0f172a] font-medium text-base hover:text-[#3b82f6] transition">Inicio</a>
-                <a href="#" class="text-[#0f172a] font-medium text-base hover:text-[#3b82f6] transition">Categorías</a>
-                <a href="#" class="text-[#0f172a] font-medium text-base hover:text-[#3b82f6] transition">Explorar</a>
+            <!-- Enlaces centrales -->
+            <nav class="hidden md:flex space-x-10 items-center">
+                <a href="{{ url('/') }}" class="text-[#0f172a] font-medium text-base hover:text-[#2563eb] transition-colors">Inicio</a>
+                
+                <!-- Botón de ancla hacia la sección inferior -->
+                <a href="#categorias" class="text-[#0f172a] font-medium text-base hover:text-[#2563eb] transition-colors">Categorías</a>
+                
+                <!-- Solo visible para invitados (sin sesión) -->
+                @guest
+                    <a href="{{ url('/registro-tipo') }}" class="text-[#0f172a] font-medium text-base hover:text-[#2563eb] transition-colors">Explorar</a>
+                @endguest
             </nav>
             
             <div class="hidden md:flex items-center space-x-6">
                 @if (Route::has('login'))
                     @auth
-                        <a href="{{ url('/dashboard') }}" class="text-[#3b82f6] font-medium text-base hover:underline transition">Ir al Dashboard</a>
+                        @php
+                            $superAdmins = ['isaacmeneses254@gmail.com', 'edmundo@ejemplo.com'];
+                        @endphp
+                        
+                        @if(in_array(Auth::user()->email, $superAdmins))
+                            <!-- Botón para Isaac y Edmundo -->
+                            <a href="{{ url('/superadmin/dashboard') }}" class="text-[#3b82f6] font-medium text-base hover:underline transition">Panel Super Admin</a>
+                        @else
+                            <!-- Botón para Proveedores normales -->
+                            <a href="{{ url('/admin/dashboard') }}" class="text-[#3b82f6] font-medium text-base hover:underline transition">Administrar negocio</a>
+                        @endif
                     @else
                         <a href="{{ route('login') }}" class="text-[#3b82f6] font-medium text-base hover:underline transition">Iniciar sesión</a>
                         @if (Route::has('register'))
@@ -82,44 +148,108 @@
     <!-- ========================================== -->
 
     <!-- ========================================== -->
-    <!-- SECCIÓN 3: HERO SECTION (Fondo Azul)       -->
+    <!-- 2. HERO SECTION & PANEL DE USUARIO         -->
     <!-- ========================================== -->
-    <section class="bg-gradient-to-r from-[#0a194f] via-[#163080] to-[#2563eb] pt-20 pb-28 overflow-hidden relative">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center relative z-10">
+    @auth
+        <!-- VISTA LOGUEADO (Horizontal, ultra compacta y sin foto) -->
+        <div class="flex flex-col">
             
-            <div class="lg:col-span-7 z-10">
-                <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#3b82f6]/30 text-blue-100 text-xs font-semibold mb-6 border border-blue-400/40 backdrop-blur-md">
-                    Conectamos negocios con oportunidades 
-                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"/></svg>
+            <!-- Franja Azul Superior -->
+            <section class="bg-gradient-to-r from-[#020617] via-[#0f172a] to-[#2563eb] py-8">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-6">
+                    <div class="text-white w-full md:w-1/2">
+                        <h1 class="text-[28px] font-normal tracking-wide mb-1">¡Hola, <span class="font-bold">{{ explode(' ', Auth::user()->name)[0] }}</span>!</h1>
+                        <p class="text-blue-100 text-[14px] font-light">¿Qué estás buscando hoy?</p>
+                    </div>
+                    <div class="w-full md:w-1/2 flex justify-start md:justify-end">
+                        <div class="relative w-full max-w-lg bg-white rounded-full flex items-center p-1.5 shadow-sm">
+                            <input type="text" placeholder="Busca negocios, productos o servicios..." class="w-full pl-5 pr-4 py-2 bg-transparent border-0 focus:ring-0 text-gray-700 text-sm outline-none">
+                            <button class="bg-[#3b82f6] hover:bg-[#2563eb] text-white font-medium px-8 py-2 rounded-full transition text-sm">Buscar</button>
+                        </div>
+                    </div>
                 </div>
-                <h1 class="text-5xl lg:text-[3.5rem] leading-[1.1] font-extrabold text-white mb-6 tracking-tight">
-                    Encuentra lo que tu negocio <br>
-                    <span class="text-[#38bdf8]">necesita, aquí y ahora.</span>
-                </h1>
-                <p class="text-lg text-blue-100/90 mb-10 max-w-lg font-light leading-relaxed">
-                    Te ayudamos a que encuentres lo que necesites de forma rápida y confiable. Negocios, proveedores, productos y servicios en un solo lugar.
-                </p>
-                
-                <div class="bg-white p-1 rounded-full flex items-center max-w-xl shadow-lg mt-8">
-                    <input type="text" placeholder="Busca negocios, productos o servicios..." class="w-full pl-6 pr-4 bg-transparent border-none focus:ring-0 text-gray-500 text-sm outline-none">
-                    <button class="bg-[#3b82f6] hover:bg-[#2563eb] text-white font-semibold px-6 py-2 rounded-full transition text-sm whitespace-nowrap">Buscar</button>
-                </div>
-            </div>
+            </section>
 
-            <div class="lg:col-span-5 relative z-10 hidden lg:flex justify-end pr-10">
-                <div class="w-[380px] relative drop-shadow-2xl">
-                    <img src="{{ asset('images/ChicaSonriendo.png') }}" alt="Chica Emprendedora" class="w-full h-auto object-contain">
+            <!-- Botonera de Acción Rápida (Fondo blanco) -->
+            <section class="bg-white py-5 border-b border-gray-100">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-wrap items-center gap-3">
+                    <a href="#" class="bg-[#3b82f6] hover:bg-[#2563eb] text-white px-5 py-2.5 rounded-xl font-medium flex items-center gap-2 text-[14px] shadow-sm transition"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path></svg>Mis Favoritos</a>
+                    <a href="{{ url('/admin/reservas') }}" class="bg-[#3b82f6] hover:bg-[#2563eb] text-white px-5 py-2.5 rounded-xl font-medium flex items-center gap-2 text-[14px] shadow-sm transition"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>Mis Reservas</a>
+                    <a href="#" class="bg-[#3b82f6] hover:bg-[#2563eb] text-white px-5 py-2.5 rounded-xl font-medium flex items-center gap-2 text-[14px] shadow-sm transition"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"></path></svg>Categorías</a>
+                    <a href="#" class="bg-[#3b82f6] hover:bg-[#2563eb] text-white px-5 py-2.5 rounded-xl font-medium flex items-center gap-2 text-[14px] shadow-sm transition"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>Buscar</a>
+                    
+                    <a href="{{ url('/admin/dashboard') }}" class="bg-[#020617] hover:bg-gray-900 text-white px-5 py-2.5 rounded-xl font-medium flex items-center gap-2 text-[14px] shadow-sm transition ml-0 sm:ml-3">Administrar negocio</a>
+                </div>
+            </section>
+
+            <!-- Sección de Reservas Activas (Sube de posición) -->
+            <section class="bg-[#FFF8EC] py-10 border-b border-yellow-100/50">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <h3 class="text-[#f59e0b] font-bold text-[15px] mb-5">Tus reservas activas</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+                        <!-- Tarjeta 1 -->
+                        <div class="bg-white p-5 rounded-2xl border border-yellow-200 shadow-sm flex flex-col justify-between">
+                            <div>
+                                <h4 class="font-bold text-[#0f172a] text-[15px] mb-1">Monitor Dell 27'' 4K</h4>
+                                <p class="text-gray-500 text-[13px] mb-6 font-light">TechSolutions GT</p>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="bg-[#fef3c7] text-[#d97706] px-3 py-1 rounded-full text-[11px] font-bold uppercase tracking-wider">En espera</span>
+                                <a href="{{ url('/admin/reservas') }}" class="text-[#3b82f6] text-[13px] font-medium hover:underline flex items-center gap-1">Ver &rarr;</a>
+                            </div>
+                        </div>
+                        <!-- Tarjeta 2 -->
+                        <div class="bg-white p-5 rounded-2xl border border-green-200 shadow-sm flex flex-col justify-between">
+                            <div>
+                                <h4 class="font-bold text-[#0f172a] text-[15px] mb-1">Teclado Mecánico Keychron K2</h4>
+                                <p class="text-gray-500 text-[13px] mb-6 font-light">TechSolutions GT</p>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="bg-[#dcfce7] text-[#16a34a] px-3 py-1 rounded-full text-[11px] font-bold uppercase tracking-wider">Disponible</span>
+                                <a href="{{ url('/admin/reservas') }}" class="text-[#3b82f6] text-[13px] font-medium hover:underline flex items-center gap-1">Ver &rarr;</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    @else
+        <!-- VISTA INVITADO (Hero Original con la Chica Sonriendo) -->
+        <section class="bg-gradient-to-r from-[#0a194f] via-[#163080] to-[#2563eb] pt-20 pb-28 overflow-hidden relative">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center relative z-10">
+                <!-- Textos Invitado -->
+                <div class="lg:col-span-7 z-10">
+                    <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#3b82f6]/30 text-blue-100 text-xs font-semibold mb-6 border border-blue-400/40 backdrop-blur-md">
+                        Conectamos negocios con oportunidades 
+                        <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"/></svg>
+                    </div>
+                    <h1 class="text-5xl lg:text-[3.5rem] leading-[1.1] font-extrabold text-white mb-6 tracking-tight">
+                        Encuentra lo que tu negocio <br>
+                        <span class="text-[#38bdf8]">necesita, aquí y ahora.</span>
+                    </h1>
+                    <p class="text-lg text-blue-100/90 mb-10 max-w-lg font-light leading-relaxed">
+                        Te ayudamos a que encuentres lo que necesites de forma rápida y confiable. Negocios, proveedores, productos y servicios en un solo lugar.
+                    </p>
+                    <div class="bg-white p-1.5 rounded-full flex items-center max-w-xl shadow-lg mt-8">
+                        <input type="text" placeholder="Busca negocios, productos o servicios..." class="w-full pl-6 pr-4 bg-transparent border-none focus:ring-0 text-gray-500 text-sm outline-none">
+                        <button class="bg-[#3b82f6] hover:bg-[#2563eb] text-white font-semibold px-8 py-2.5 rounded-full transition text-sm whitespace-nowrap">Buscar</button>
+                    </div>
+                </div>
+
+                <!-- Imagen Chica Sonriendo -->
+                <div class="lg:col-span-5 relative z-10 hidden lg:flex justify-end pr-10">
+                    <div class="w-[380px] relative drop-shadow-2xl">
+                        <img src="{{ asset('images/ChicaSonriendo.png') }}" alt="Chica Emprendedora" class="w-full h-auto object-contain">
+                    </div>
                 </div>
             </div>
-            
-        </div>
-    </section>
-    <!-- ========================================== -->
+        </section>
+    @endauth
 
     <!-- ========================================== -->
     <!-- SECCIÓN 4: CATEGORÍAS                      -->
     <!-- ========================================== -->
-    <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 bg-white">
+    <section id="categorias" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 bg-white">
         <div class="flex justify-between items-end mb-12">
             <div>
                 <h2 class="text-[32px] font-extrabold text-[#0f172a] mb-2 tracking-tight">Explorar por categoría</h2>
@@ -644,6 +774,7 @@
     <!-- SECCIÓN 10: FOOTER FINAL                   -->
     <!-- ========================================== -->
     <section>
+        @guest
         <!-- Bloque CTA (Fondo Blanco) -->
         <div class="bg-white py-24 text-center border-t border-gray-50">
             <h2 class="text-4xl lg:text-5xl font-extrabold text-[#2563eb] mb-4 tracking-tight">¿Listo para empezar?</h2>
@@ -653,79 +784,138 @@
                 <button class="bg-white border border-[#2563eb] text-[#2563eb] font-bold px-8 py-3 rounded-xl hover:bg-blue-50 transition text-[15px]">Explorar negocios</button>
             </div>
         </div>
+        @endguest
 
         <!-- Footer (Fondo ajustado EXACTAMENTE al código de la paleta oficial: #00003d) -->
-        <footer class="bg-[#00003d] pt-20 pb-10">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="grid grid-cols-1 md:grid-cols-12 gap-12 mb-16">
-                    
-                    <!-- Columna de Logo -->
-                    <div class="md:col-span-4">
-                        <div class="mb-6">
-                            <!-- Tu logo intacto, ahora sí se camuflará perfectamente con el fondo -->
-                            <img src="{{ asset('images/LogoAzul.png') }}" alt="SINGKI" class="h-10 w-auto">
-                        </div>
-                    </div>
-
-                    <!-- Columnas de Enlaces -->
-                    <div class="md:col-span-2">
-                        <h4 class="text-[#7dd3fc] font-bold mb-6 text-[15px] tracking-wide">Plataforma</h4>
-                        <ul class="space-y-4 text-[14px] text-[#cbd5e1] font-light">
-                            <li><a href="#" class="hover:text-white transition">Categorías</a></li>
-                            <li><a href="#" class="hover:text-white transition">Explorar negocios</a></li>
-                            <li><a href="{{ route('login') }}" class="hover:text-white transition">Iniciar sesión</a></li>
-                        </ul>
-                    </div>
-                    
-                    <div class="md:col-span-3">
-                        <h4 class="text-[#7dd3fc] font-bold mb-6 text-[15px] tracking-wide">Para negocios</h4>
-                        <ul class="space-y-4 text-[14px] text-[#cbd5e1] font-light">
-                            <li><a href="{{ route('register') }}" class="hover:text-white transition">Registrar mi negocio</a></li>
-                            <li><a href="#" class="hover:text-white transition">Administración</a></li>
-                        </ul>
-                    </div>
-                    
-                    <div class="md:col-span-3">
-                        <h4 class="text-[#7dd3fc] font-bold mb-6 text-[15px] tracking-wide">Ayuda</h4>
-                        <ul class="space-y-4 text-[14px] text-[#cbd5e1] font-light">
-                            <li><a href="#" class="hover:text-white transition">Centro de ayuda</a></li>
-                            <li><a href="#" class="hover:text-white transition">Contacto</a></li>
-                            <li><a href="#" class="hover:text-white transition">Términos de uso</a></li>
-                        </ul>
-                    </div>
-                </div>
-
-                <!-- Barra Inferior de Copyright y Redes -->
-                <div class="border-t border-[#7dd3fc]/20 pt-8 flex flex-col md:flex-row justify-between items-center text-[13px] text-[#cbd5e1] font-light">
-                    <p class="mb-6 md:mb-0">© 2026 SINGKI. Todos los derechos reservados.</p>
-                    
-                    <div class="flex items-center gap-6">
-                        <span class="hidden sm:inline-block mr-2">Encuéntranos en</span>
-                        
-                        <!-- Youtube (Ajustado al azul celeste #7dd3fc) -->
-                        <a href="#" class="text-[#7dd3fc] hover:text-white transition flex items-center gap-2 group">
-                            <svg class="w-5 h-5 transition" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M22.54 6.42a2.78 2.78 0 00-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 00-1.94 2A29 29 0 001 11.75a29 29 0 00.46 5.33 2.78 2.78 0 001.94 2c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 001.94-2 29 29 0 00.46-5.33 29 29 0 00-.46-5.33z"></path><polygon stroke-width="1.5" stroke-linejoin="round" points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02"></polygon></svg>
-                            Youtube
-                        </a>
-                        
-                        <!-- Instagram (Ajustado al azul celeste #7dd3fc) -->
-                        <a href="#" class="text-[#7dd3fc] hover:text-white transition flex items-center gap-2 group">
-                            <svg class="w-5 h-5 transition" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
-                            Instagram
-                        </a>
-
-                        <!-- TikTok (Ajustado al azul celeste #7dd3fc) -->
-                        <a href="#" class="text-[#7dd3fc] hover:text-white transition flex items-center gap-2 group">
-                            <svg class="w-5 h-5 transition" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
-                                <path d="M15 2a3 3 0 0 1 3 3 3 3 0 0 0 3 3v2a5 5 0 0 1-5-5V2h-3v14a4 4 0 1 1-4-4 4.04 4.04 0 0 1 1 .13V8.42A6 6 0 0 0 8 8a6 6 0 1 0 6 6V2Z"></path>
-                            </svg>
-                            TikTok
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </footer>
+        @include('components.footer')
     </section>
     <!-- ========================================== -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const btnToggle = document.getElementById('btn-chat-toggle');
+            const chatModal = document.getElementById('chat-modal');
+            const btnCloseModal = document.getElementById('close-chat-modal');
+            const iconRobot = document.getElementById('chat-icon-robot');
+            const iconX = document.getElementById('chat-icon-x');
+
+            function toggleChat() {
+                // Alternar visibilidad del modal con animación
+                if (chatModal.classList.contains('hidden')) {
+                    chatModal.classList.remove('hidden');
+                    // Pequeño retraso para que la animación CSS se ejecute
+                    setTimeout(() => {
+                        chatModal.classList.remove('opacity-0', 'scale-95');
+                        chatModal.classList.add('opacity-100', 'scale-100');
+                    }, 10);
+                } else {
+                    chatModal.classList.remove('opacity-100', 'scale-100');
+                    chatModal.classList.add('opacity-0', 'scale-95');
+                    setTimeout(() => {
+                        chatModal.classList.add('hidden');
+                    }, 300);
+                }
+                
+                // Alternar iconos del botón principal con opacidad y escala
+                if (iconRobot.classList.contains('opacity-0')) {
+                    iconRobot.classList.remove('opacity-0', 'scale-50');
+                    iconRobot.classList.add('opacity-100', 'scale-100');
+                    iconX.classList.remove('opacity-100', 'scale-100');
+                    iconX.classList.add('opacity-0', 'scale-50');
+                } else {
+                    iconRobot.classList.remove('opacity-100', 'scale-100');
+                    iconRobot.classList.add('opacity-0', 'scale-50');
+                    iconX.classList.remove('opacity-0', 'scale-50');
+                    iconX.classList.add('opacity-100', 'scale-100');
+                }
+            }
+
+            btnToggle.addEventListener('click', toggleChat);
+            btnCloseModal.addEventListener('click', toggleChat);
+        });
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const btnSend = document.getElementById('ki-send-btn');
+            const inputField = document.getElementById('ki-input');
+            const chatBody = inputField.closest('.p-5'); // Contenedor del chat
+
+            if(btnSend && inputField) {
+                btnSend.addEventListener('click', async (e) => {
+                    e.preventDefault();
+                    
+                    const text = inputField.value.trim();
+                    if(!text) return;
+
+                    // Cambiar estado del botón
+                    const originalText = btnSend.innerText;
+                    btnSend.innerText = 'Enviando...';
+                    btnSend.disabled = true;
+                    btnSend.classList.add('opacity-50', 'cursor-not-allowed');
+
+                    // Añadir el mensaje del usuario visualmente
+                    const userMsgHtml = `
+                        <div class="flex gap-4 items-start mb-6 flex-row-reverse">
+                            <div class="w-10 h-10 bg-gray-200 rounded-full flex items-center justify-center shrink-0">
+                                <svg class="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
+                            </div>
+                            <div class="bg-blue-50 border border-blue-100 p-3 rounded-2xl rounded-tr-sm w-full max-w-[85%]">
+                                <p class="text-gray-700 text-[13px] leading-relaxed font-light">${text}</p>
+                            </div>
+                        </div>
+                    `;
+                    // Insertarlo antes del formulario (el div que contiene textarea y label)
+                    const formContainer = inputField.parentElement;
+                    formContainer.insertAdjacentHTML('beforebegin', userMsgHtml);
+                    
+                    // Limpiar input y scroll
+                    inputField.value = '';
+                    const chatModalBody = document.querySelector('#chat-modal .bg-white.p-5');
+                    if(chatModalBody) chatModalBody.scrollTop = chatModalBody.scrollHeight;
+
+                    try {
+                        const tokenMeta = document.querySelector('meta[name="csrf-token"]');
+                        const token = tokenMeta ? tokenMeta.getAttribute('content') : '';
+
+                        const response = await fetch("{{ route('chat.ask') }}", {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRF-TOKEN': token,
+                                'Accept': 'application/json'
+                            },
+                            body: JSON.stringify({ prompt: text })
+                        });
+
+                        const data = await response.json();
+                        
+                        // Añadir respuesta de Ki
+                        const replyText = data.reply ? data.reply : (data.error || 'Error desconocido');
+                        const kiMsgHtml = `
+                            <div class="flex gap-4 items-start mb-6">
+                                <div class="w-12 h-12 bg-[#2563eb] rounded-xl flex items-center justify-center shrink-0 shadow-sm">
+                                    <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+                                </div>
+                                <div class="bg-slate-50 border border-slate-100 p-4 rounded-2xl rounded-tl-sm w-full">
+                                    <h4 class="text-[#2563eb] font-bold text-[14px] mb-1">Ki</h4>
+                                    <div class="text-gray-500 text-[13px] leading-relaxed font-light prose prose-sm max-w-none">${replyText.replace(/\n/g, '<br>')}</div>
+                                </div>
+                            </div>
+                        `;
+                        formContainer.insertAdjacentHTML('beforebegin', kiMsgHtml);
+                        
+                    } catch (error) {
+                        console.error('Error enviando consulta a Ki:', error);
+                        alert('Hubo un error al contactar al asistente. Por favor, intenta de nuevo.');
+                    } finally {
+                        // Restaurar botón
+                        btnSend.innerText = originalText;
+                        btnSend.disabled = false;
+                        btnSend.classList.remove('opacity-50', 'cursor-not-allowed');
+                        if(chatModalBody) chatModalBody.scrollTop = chatModalBody.scrollHeight;
+                    }
+                });
+            }
+        });
+    </script>
 </body>
 </html>
