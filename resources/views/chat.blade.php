@@ -1,11 +1,11 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Asistente IA - Singky B2B') }}
+            {{ __('Asistente IA - Singky ') }}
         </h2>
     </x-slot>
 
-    <!-- Librería Marked.js para interpretar Markdown -->
+    
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <style>
         .markdown-content p { margin-bottom: 0.5rem; }
@@ -24,14 +24,14 @@
                     <span class="text-xs bg-blue-100 text-blue-800 px-2.5 py-0.5 rounded-full font-medium">Gemini IA</span>
                 </div>
 
-                <!-- Área de Mensajes -->
+                
                 <div id="chat-box" class="flex-1 overflow-y-auto space-y-4 pr-2 mb-4">
                     <div class="bg-gray-100 p-3 rounded-lg text-gray-700 max-w-[80%]">
                         Hola, ¿en qué puedo ayudarte hoy con la gestión logística?
                     </div>
                 </div>
 
-                <!-- Formulario de Entrada -->
+                
                 <form id="chat-form" class="flex gap-2 border-t pt-4">
                     <input 
                         type="text" 
@@ -63,12 +63,12 @@
             const text = input.value.trim();
             if(!text) return;
 
-            // Mensaje del usuario
+            
             chatBox.innerHTML += `<div class="bg-blue-600 text-white p-3 rounded-lg max-w-[80%] ml-auto">${text}</div>`;
             input.value = '';
             chatBox.scrollTop = chatBox.scrollHeight;
 
-            // Indicador de carga
+            
             const loadingId = 'loading-' + Date.now();
             chatBox.innerHTML += `<div id="${loadingId}" class="bg-gray-200 text-gray-600 p-3 rounded-lg max-w-[80%]">Pensando...</div>`;
             chatBox.scrollTop = chatBox.scrollHeight;
