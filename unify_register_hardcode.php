@@ -1,3 +1,5 @@
+<?php
+$content = <<<'HTML'
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -178,3 +180,7 @@
 
 </body>
 </html>
+HTML;
+file_put_contents('resources/views/auth/register.blade.php', $content);
+echo "Register unified successfully with proper grid.\n";
+?>

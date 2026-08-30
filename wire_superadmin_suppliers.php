@@ -1,3 +1,7 @@
+<?php
+$file = 'resources/views/superadmin/suppliers.blade.php';
+
+$content = <<<'HTML'
 @extends('layouts.superadmin')
 
 @section('content')
@@ -44,9 +48,9 @@
                     <div>
                         <p class="text-[12px] text-gray-500 mb-1">Negocio asociado</p>
                         <h4 class="text-[16px] font-bold text-gray-900">{{ $provider->company->name }}</h4>
-                        <p class="text-[13.5px] text-gray-600 mt-0.5">{{ $provider->company->category->name ?? 'Sin categoría' }} · {{ method_exists($provider->company, 'inventories') ? $provider->company->inventories()->count() : ($provider->company->products()->count() ?? 0) }} productos</p>
+                        <p class="text-[13.5px] text-gray-600 mt-0.5">{{ $provider->company->category->name ?? 'Sin categoría' }} · {{ method_exists($provider->company, 'inventories') ? $provider->company->inventories()->count() : 0 }} productos</p>
                     </div>
-                    <a href="{{ url('/companies/' . $provider->company->id) }}" class="bg-blue-50 text-blue-600 hover:bg-blue-100 px-5 py-2.5 rounded-xl text-[13px] font-semibold transition-colors">
+                    <a href="{{ url('/perfil-publico') }}" class="bg-blue-50 text-blue-600 hover:bg-blue-100 px-5 py-2.5 rounded-xl text-[13px] font-semibold transition-colors">
                         Ver negocio
                     </a>
                 </div>
@@ -71,3 +75,7 @@
     </div>
 </div>
 @endsection
+HTML;
+
+file_put_contents($file, $content);
+?>

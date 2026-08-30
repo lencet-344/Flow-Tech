@@ -57,9 +57,28 @@ Route::middleware(['auth', 'verified', 'prevent-back-history'])->group(function(
 // 1. RUTAS DEL SUPER ADMINISTRADOR (Protegidas por Middleware VIP)
 Route::middleware(['auth', 'verified', 'prevent-back-history', CheckSuperAdmin::class])->group(function() {
     Route::get('/superadmin/dashboard', function () { return view('superadmin.dashboard'); });
-    Route::get('/superadmin/usuarios', function () { return view('superadmin.users'); })->name('superadmin.users');
+    Route::get('/superadmin/usuarios', function () { 
+        $users = \App\Models\User::orderBy('created_at', 'desc')->get();
+        return view('superadmin.users', compact('users')); 
+    })->name('superadmin.users');
+    
+    Route::patch('/superadmin/usuarios/{id}/toggle-status', function ($id) {
+        $user = \App\Models\User::findOrFail($id);
+        $user->status = $user->status === 'suspendido' ? 'activo' : 'suspendido';
+        $user->save();
+        return back()->with('success', 'Estado actualizado');
+    })->name('admin.users.toggleStatus');
     Route::get('/superadmin/proveedores', function () { return view('superadmin.suppliers'); })->name('superadmin.suppliers');
-    Route::get('/superadmin/negocios', function () { return view('superadmin.businesses'); })->name('superadmin.businesses');
+    Route::get('/superadmin/negocios', function () { 
+        return view('superadmin.businesses'); 
+    })->name('superadmin.businesses');
+
+    Route::patch('/superadmin/negocios/{id}/toggle-status', function ($id) {
+        $company = \App\Models\Company::findOrFail($id);
+        $company->status = $company->status === 'suspendido' ? 'activo' : 'suspendido';
+        $company->save();
+        return back()->with('success', 'Estado del negocio actualizado');
+    })->name('admin.companies.toggleStatus');
     Route::get('/superadmin/publicaciones', function () { return view('superadmin.publications'); })->name('superadmin.publications');
     Route::get('/superadmin/reportes', function () { return view('superadmin.reports'); })->name('superadmin.reports');
     Route::get('/superadmin/soporte', function () { return view('superadmin.support'); })->name('superadmin.support');

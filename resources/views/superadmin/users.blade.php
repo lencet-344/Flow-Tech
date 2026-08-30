@@ -40,109 +40,49 @@
                     </tr>
                 </thead>
                 <tbody class="text-[13px] text-gray-700 divide-y divide-gray-50" id="tabla-usuarios">
-                    
-                    <!-- Fila 1 -->
-                    <tr class="user-row hover:bg-gray-50/50 transition" data-rol="cliente">
+                    @forelse($users as $user)
+                    <tr class="user-row hover:bg-gray-50/50 transition" data-rol="{{ strtolower($user->role) }}">
                         <td class="px-6 py-4">
                             <div class="flex items-center gap-3">
-                                <div class="w-9 h-9 rounded-full bg-blue-50 text-blue-600 font-bold flex items-center justify-center text-sm">M</div>
-                                <span class="font-medium text-[#040116]">María González</span>
+                                <div class="w-9 h-9 rounded-full bg-blue-50 text-blue-600 font-bold flex items-center justify-center text-sm">{{ strtoupper(substr($user->name, 0, 1)) }}</div>
+                                <span class="font-medium text-[#040116]">{{ $user->name }}</span>
                             </div>
                         </td>
-                        <td class="px-6 py-4 text-gray-600">maria@correo.com</td>
-                        <td class="px-6 py-4"><span class="bg-blue-50 text-blue-600 px-4 py-1.5 rounded-full text-xs font-semibold">Cliente</span></td>
-                        <td class="px-6 py-4 text-gray-600">2026-07-12</td>
-                        <td class="px-6 py-4"><span class="bg-green-50 text-green-500 px-4 py-1.5 rounded-full text-xs font-semibold">Activo</span></td>
-                        <td class="px-6 py-4 text-right">
-                            <button class="bg-red-50 text-red-500 hover:bg-red-100 px-4 py-1.5 rounded-md text-xs font-semibold transition">Suspender</button>
-                        </td>
-                    </tr>
-
-                    <!-- Fila 2 -->
-                    <tr class="user-row hover:bg-gray-50/50 transition" data-rol="proveedor">
+                        <td class="px-6 py-4 text-gray-600">{{ $user->email }}</td>
                         <td class="px-6 py-4">
-                            <div class="flex items-center gap-3">
-                                <div class="w-9 h-9 rounded-full bg-blue-50 text-blue-600 font-bold flex items-center justify-center text-sm">C</div>
-                                <span class="font-medium text-[#040116]">Carlos Pérez</span>
-                            </div>
+                            @if(strtolower($user->role) === 'cliente')
+                                <span class="bg-blue-50 text-blue-600 px-4 py-1.5 rounded-full text-xs font-semibold">Cliente</span>
+                            @elseif(strtolower($user->role) === 'proveedor')
+                                <span class="bg-emerald-50 text-emerald-600 px-4 py-1.5 rounded-full text-xs font-semibold">Proveedor</span>
+                            @else
+                                <span class="bg-gray-50 text-gray-600 px-4 py-1.5 rounded-full text-xs font-semibold">{{ ucfirst($user->role) }}</span>
+                            @endif
                         </td>
-                        <td class="px-6 py-4 text-gray-600">carlos@techsolutions.com</td>
-                        <td class="px-6 py-4"><span class="bg-emerald-50 text-emerald-600 px-4 py-1.5 rounded-full text-xs font-semibold">Proveedor</span></td>
-                        <td class="px-6 py-4 text-gray-600">2026-06-28</td>
-                        <td class="px-6 py-4"><span class="bg-green-50 text-green-500 px-4 py-1.5 rounded-full text-xs font-semibold">Activo</span></td>
-                        <td class="px-6 py-4 text-right">
-                            <button class="bg-red-50 text-red-500 hover:bg-red-100 px-4 py-1.5 rounded-md text-xs font-semibold transition">Suspender</button>
-                        </td>
-                    </tr>
-
-                    <!-- Fila 3 -->
-                    <tr class="user-row hover:bg-gray-50/50 transition" data-rol="proveedor">
+                        <td class="px-6 py-4 text-gray-600">{{ $user->created_at ? $user->created_at->format('Y-m-d') : 'N/A' }}</td>
                         <td class="px-6 py-4">
-                            <div class="flex items-center gap-3">
-                                <div class="w-9 h-9 rounded-full bg-blue-50 text-blue-600 font-bold flex items-center justify-center text-sm">A</div>
-                                <span class="font-medium text-[#040116]">Ana Rodríguez</span>
-                            </div>
+                            @if(($user->status ?? 'activo') === 'activo')
+                                <span class="bg-green-50 text-green-500 px-4 py-1.5 rounded-full text-xs font-semibold">Activo</span>
+                            @else
+                                <span class="bg-red-50 text-red-500 px-4 py-1.5 rounded-full text-xs font-semibold">Suspendido</span>
+                            @endif
                         </td>
-                        <td class="px-6 py-4 text-gray-600">ana@modaexpress.com</td>
-                        <td class="px-6 py-4"><span class="bg-emerald-50 text-emerald-600 px-4 py-1.5 rounded-full text-xs font-semibold">Proveedor</span></td>
-                        <td class="px-6 py-4 text-gray-600">2026-07-03</td>
-                        <td class="px-6 py-4"><span class="bg-green-50 text-green-500 px-4 py-1.5 rounded-full text-xs font-semibold">Activo</span></td>
                         <td class="px-6 py-4 text-right">
-                            <button class="bg-red-50 text-red-500 hover:bg-red-100 px-4 py-1.5 rounded-md text-xs font-semibold transition">Suspender</button>
+                            <form action="{{ route('admin.users.toggleStatus', $user->id) }}" method="POST" class="inline">
+                                @csrf
+                                @method('PATCH')
+                                @if(($user->status ?? 'activo') === 'activo')
+                                    <button type="submit" class="bg-red-50 text-red-500 hover:bg-red-100 px-4 py-1.5 rounded-md text-xs font-semibold transition">Suspender</button>
+                                @else
+                                    <button type="submit" class="bg-green-50 text-green-600 hover:bg-green-100 px-4 py-1.5 rounded-md text-xs font-semibold transition">Reactivar</button>
+                                @endif
+                            </form>
                         </td>
                     </tr>
-
-                    <!-- Fila 4 -->
-                    <tr class="user-row hover:bg-gray-50/50 transition" data-rol="cliente">
-                        <td class="px-6 py-4">
-                            <div class="flex items-center gap-3">
-                                <div class="w-9 h-9 rounded-full bg-blue-50 text-blue-600 font-bold flex items-center justify-center text-sm">R</div>
-                                <span class="font-medium text-[#040116]">Roberto Lima</span>
-                            </div>
-                        </td>
-                        <td class="px-6 py-4 text-gray-600">roberto@correo.com</td>
-                        <td class="px-6 py-4"><span class="bg-blue-50 text-blue-600 px-4 py-1.5 rounded-full text-xs font-semibold">Cliente</span></td>
-                        <td class="px-6 py-4 text-gray-600">2026-08-01</td>
-                        <td class="px-6 py-4"><span class="bg-green-50 text-green-500 px-4 py-1.5 rounded-full text-xs font-semibold">Activo</span></td>
-                        <td class="px-6 py-4 text-right">
-                            <button class="bg-red-50 text-red-500 hover:bg-red-100 px-4 py-1.5 rounded-md text-xs font-semibold transition">Suspender</button>
-                        </td>
+                    @empty
+                    <tr>
+                        <td colspan="6" class="px-6 py-12 text-center text-gray-500 text-sm">No hay usuarios registrados en el sistema.</td>
                     </tr>
-
-                    <!-- Fila 5 -->
-                    <tr class="user-row hover:bg-gray-50/50 transition" data-rol="cliente">
-                        <td class="px-6 py-4">
-                            <div class="flex items-center gap-3">
-                                <div class="w-9 h-9 rounded-full bg-blue-50 text-blue-600 font-bold flex items-center justify-center text-sm">L</div>
-                                <span class="font-medium text-[#040116]">Laura Sánchez</span>
-                            </div>
-                        </td>
-                        <td class="px-6 py-4 text-gray-600">laura@correo.com</td>
-                        <td class="px-6 py-4"><span class="bg-blue-50 text-blue-600 px-4 py-1.5 rounded-full text-xs font-semibold">Cliente</span></td>
-                        <td class="px-6 py-4 text-gray-600">2026-08-10</td>
-                        <td class="px-6 py-4"><span class="bg-red-50 text-red-500 px-4 py-1.5 rounded-full text-xs font-semibold">Suspendido</span></td>
-                        <td class="px-6 py-4 text-right">
-                            <button class="bg-green-50 text-green-600 hover:bg-green-100 px-4 py-1.5 rounded-md text-xs font-semibold transition">Reactivar</button>
-                        </td>
-                    </tr>
-
-                    <!-- Fila 6 -->
-                    <tr class="user-row hover:bg-gray-50/50 transition" data-rol="proveedor">
-                        <td class="px-6 py-4">
-                            <div class="flex items-center gap-3">
-                                <div class="w-9 h-9 rounded-full bg-blue-50 text-blue-600 font-bold flex items-center justify-center text-sm">D</div>
-                                <span class="font-medium text-[#040116]">Diego Torres</span>
-                            </div>
-                        </td>
-                        <td class="px-6 py-4 text-gray-600">diego@construcciones.com</td>
-                        <td class="px-6 py-4"><span class="bg-emerald-50 text-emerald-600 px-4 py-1.5 rounded-full text-xs font-semibold">Proveedor</span></td>
-                        <td class="px-6 py-4 text-gray-600">2026-05-15</td>
-                        <td class="px-6 py-4"><span class="bg-green-50 text-green-500 px-4 py-1.5 rounded-full text-xs font-semibold">Activo</span></td>
-                        <td class="px-6 py-4 text-right">
-                            <button class="bg-red-50 text-red-500 hover:bg-red-100 px-4 py-1.5 rounded-md text-xs font-semibold transition">Suspender</button>
-                        </td>
-                    </tr>
-
+                    @endforelse
                 </tbody>
             </table>
         </div>

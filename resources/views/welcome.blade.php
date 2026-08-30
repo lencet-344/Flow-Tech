@@ -561,9 +561,9 @@
                 </ul>
                 
                 <!-- Botón más compacto -->
-                <button class="bg-white text-[#2563eb] font-bold px-8 py-2.5 rounded-full hover:bg-gray-100 transition duration-300 text-sm shadow-md">
+                <a href="{{ route('register') }}" class="inline-block bg-white text-[#2563eb] font-bold px-8 py-2.5 rounded-full hover:bg-gray-100 transition duration-300 text-sm shadow-md text-center">
                     Registrar mi negocio
-                </button>
+                </a>
             </div>
             
             <!-- Columna Derecha: Tarjetas Transparentes con bordes finos -->
@@ -620,74 +620,88 @@
         <h2 class="text-4xl lg:text-5xl font-extrabold text-[#0f172a] mb-5 tracking-tight">Experiencias de nuestra comunidad</h2>
         <p class="text-gray-500 text-[15px] mb-16 font-light max-w-xl mx-auto leading-relaxed">Clientes, emprendedores y proveedores que ya confían en SINGKI para hacer crecer sus negocios.</p>
         
-        <!-- Contenedor del Carrusel Falso (Visual) -->
-        <div class="flex justify-center items-center gap-6 lg:gap-10 mb-12 relative w-full max-w-[1200px] mx-auto">
-            
-            <!-- Tarjeta Izquierda (Atenuada) -->
-            <div class="hidden lg:block w-[300px] bg-[#2563eb] rounded-[32px] overflow-hidden opacity-40 scale-90 blur-[1px] select-none pointer-events-none">
-                <div class="h-48 relative">
-                    <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=500&q=80" class="w-full h-full object-cover grayscale">
+        <!-- Contenedor del Carrusel (Interactivo con Alpine.js) -->
+        <div x-data="{ active: 1 }" class="relative w-full max-w-[1200px] mx-auto mb-16">
+            <div class="flex flex-col md:flex-row justify-center items-center gap-6 lg:gap-10 relative">
+                
+                <!-- Tarjeta 0 (Izquierda - María) -->
+                <div @click="active = 0" 
+                     class="transition-all duration-500 ease-in-out transform cursor-pointer w-full md:w-[300px] lg:w-[320px] shrink-0 rounded-[32px] overflow-hidden"
+                     :class="active === 0 ? 'scale-100 md:scale-110 z-20 bg-[#2563eb] shadow-[0_20px_50px_rgba(37,99,235,0.3)]' : 'scale-90 z-10 bg-blue-300 opacity-60 md:opacity-50 md:blur-[1px] hover:opacity-80 hover:blur-none hidden md:block'">
+                    <div class="h-48 md:h-56 relative">
+                        <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=500&q=80" 
+                             class="w-full h-full object-cover transition-all duration-500"
+                             :class="active === 0 ? 'grayscale-0' : 'grayscale'">
+                        <div x-show="active === 0" x-transition.opacity class="absolute bottom-4 left-4 bg-slate-900/70 backdrop-blur-md text-white text-[10px] font-semibold px-4 py-1.5 rounded-full uppercase tracking-wider border border-white/10">Cliente</div>
+                    </div>
+                    <div class="p-6 md:p-8 text-left transition-all duration-500" :class="active === 0 ? 'text-white' : 'text-blue-50/80'">
+                        <div class="text-yellow-400 text-sm md:text-lg mb-3 tracking-widest">★★★★★</div>
+                        <p class="mb-4 font-light leading-relaxed text-[12px] md:text-[14px]" :class="active === 0 ? 'line-clamp-none' : 'line-clamp-3'">"Encontré exactamente lo que necesitaba en minutos. SINGKI me conectó con un proveedor confiable y el proceso fue súper sencillo."</p>
+                        <div>
+                            <p class="font-bold text-[13px] md:text-[15px]">María González</p>
+                        </div>
+                    </div>
                 </div>
-                <div class="p-6 text-left text-white h-48">
-                    <div class="text-yellow-400 text-sm mb-3">★★★★★</div>
-                    <p class="mb-4 font-light text-blue-50 text-[12px] line-clamp-3">"Encontré exactamente lo que necesitaba en minutos. SINGKI me conectó con un proveedor confiable que..."</p>
-                    <div>
-                        <p class="font-bold text-[13px]">María González</p>
+
+                <!-- Tarjeta 1 (Centro - Carlos) -->
+                <div @click="active = 1" 
+                     class="transition-all duration-500 ease-in-out transform cursor-pointer w-full md:w-[300px] lg:w-[320px] shrink-0 rounded-[32px] overflow-hidden"
+                     :class="active === 1 ? 'scale-100 md:scale-110 z-20 bg-[#2563eb] shadow-[0_20px_50px_rgba(37,99,235,0.3)]' : 'scale-90 z-10 bg-blue-300 opacity-60 md:opacity-50 md:blur-[1px] hover:opacity-80 hover:blur-none hidden md:block'">
+                    <div class="h-48 md:h-56 relative">
+                        <img src="https://images.unsplash.com/photo-1556157382-97eda2d62296?w=500&q=80" 
+                             class="w-full h-full object-cover transition-all duration-500"
+                             :class="active === 1 ? 'grayscale-0' : 'grayscale'">
+                        <div x-show="active === 1" x-transition.opacity class="absolute bottom-4 left-4 bg-slate-900/70 backdrop-blur-md text-white text-[10px] font-semibold px-4 py-1.5 rounded-full uppercase tracking-wider border border-white/10">Emprendedor</div>
+                    </div>
+                    <div class="p-6 md:p-8 text-left transition-all duration-500" :class="active === 1 ? 'text-white' : 'text-blue-50/80'">
+                        <div class="text-yellow-400 text-sm md:text-lg mb-3 tracking-widest">★★★★★</div>
+                        <p class="mb-4 font-light leading-relaxed text-[12px] md:text-[14px]" :class="active === 1 ? 'line-clamp-none' : 'line-clamp-3'">"Registré mi negocio en SINGKI y en la primera semana ya tenía consultas reales. La plataforma le da visibilidad a mi emprendimiento."</p>
+                        <div>
+                            <p class="font-bold text-[13px] md:text-[15px]">Carlos Pérez</p>
+                            <p class="text-[11px] md:text-[12px] text-blue-200 font-light mt-0.5">Estelí, Nicaragua</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tarjeta 2 (Derecha - Ana) -->
+                <div @click="active = 2" 
+                     class="transition-all duration-500 ease-in-out transform cursor-pointer w-full md:w-[300px] lg:w-[320px] shrink-0 rounded-[32px] overflow-hidden"
+                     :class="active === 2 ? 'scale-100 md:scale-110 z-20 bg-[#2563eb] shadow-[0_20px_50px_rgba(37,99,235,0.3)]' : 'scale-90 z-10 bg-blue-300 opacity-60 md:opacity-50 md:blur-[1px] hover:opacity-80 hover:blur-none hidden md:block'">
+                    <div class="h-48 md:h-56 relative">
+                        <img src="https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?w=500&q=80" 
+                             class="w-full h-full object-cover transition-all duration-500"
+                             :class="active === 2 ? 'grayscale-0' : 'grayscale'">
+                        <div x-show="active === 2" x-transition.opacity class="absolute bottom-4 left-4 bg-slate-900/70 backdrop-blur-md text-white text-[10px] font-semibold px-4 py-1.5 rounded-full uppercase tracking-wider border border-white/10">Proveedora</div>
+                    </div>
+                    <div class="p-6 md:p-8 text-left transition-all duration-500" :class="active === 2 ? 'text-white' : 'text-blue-50/80'">
+                        <div class="text-yellow-400 text-sm md:text-lg mb-3 tracking-widest">★★★★★</div>
+                        <p class="mb-4 font-light leading-relaxed text-[12px] md:text-[14px]" :class="active === 2 ? 'line-clamp-none' : 'line-clamp-3'">"El panel de administración es muy completo. Puedo gestionar mi inventario, ver reservas y chatear con los clientes fácilmente."</p>
+                        <div>
+                            <p class="font-bold text-[13px] md:text-[15px]">Ana Rodríguez</p>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Tarjeta Central (Activa y Principal) -->
-            <div class="w-full max-w-[380px] bg-[#2563eb] rounded-[32px] overflow-hidden shadow-[0_20px_50px_rgba(37,99,235,0.3)] relative z-10 transition-transform duration-300">
-                <div class="h-64 relative">
-                    <!-- Foto principal -->
-                    <img src="https://images.unsplash.com/photo-1556157382-97eda2d62296?w=500&q=80" class="w-full h-full object-cover">
-                    <!-- Etiqueta sobre la foto -->
-                    <div class="absolute bottom-4 left-4 bg-slate-900/70 backdrop-blur-md text-white text-[10px] font-semibold px-4 py-1.5 rounded-full uppercase tracking-wider border border-white/10">Emprendedor</div>
+            <!-- Controles del Carrusel (Flechas y Puntos) -->
+            <div class="flex items-center justify-center gap-6 mt-16 md:mt-12">
+                <!-- Flecha Izquierda -->
+                <button @click="active = active === 0 ? 2 : active - 1" class="w-10 h-10 rounded-full border-2 border-[#3b82f6] flex items-center justify-center text-[#3b82f6] hover:bg-[#3b82f6] hover:text-white transition duration-300">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"></path></svg>
+                </button>
+                
+                <!-- Puntos de navegación -->
+                <div class="flex items-center gap-2.5">
+                    <button @click="active = 0" :class="active === 0 ? 'w-6 bg-[#2563eb]' : 'w-2 bg-gray-300'" class="h-2 rounded-full transition-all duration-300"></button>
+                    <button @click="active = 1" :class="active === 1 ? 'w-6 bg-[#2563eb]' : 'w-2 bg-gray-300'" class="h-2 rounded-full transition-all duration-300"></button>
+                    <button @click="active = 2" :class="active === 2 ? 'w-6 bg-[#2563eb]' : 'w-2 bg-gray-300'" class="h-2 rounded-full transition-all duration-300"></button>
                 </div>
-                <div class="p-8 text-left text-white">
-                    <div class="text-yellow-400 text-lg mb-4 tracking-widest">★★★★★</div>
-                    <p class="mb-6 font-light leading-relaxed text-blue-50 text-[14px]">"Registré mi negocio en SINGKI y en la primera semana ya tenía consultas de clientes reales. La plataforma es intuitiva, profesional y le da visibilidad real a mi emprendimiento."</p>
-                    <div>
-                        <p class="font-bold text-[15px]">Carlos Pérez</p>
-                        <p class="text-[12px] text-blue-200 font-light mt-0.5">Estelí, Nicaragua</p>
-                    </div>
-                </div>
+                
+                <!-- Flecha Derecha -->
+                <button @click="active = active === 2 ? 0 : active + 1" class="w-10 h-10 rounded-full border-2 border-[#3b82f6] flex items-center justify-center text-[#3b82f6] hover:bg-[#3b82f6] hover:text-white transition duration-300">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"></path></svg>
+                </button>
             </div>
-
-            <!-- Tarjeta Derecha (Atenuada) -->
-            <div class="hidden lg:block w-[300px] bg-[#2563eb] rounded-[32px] overflow-hidden opacity-40 scale-90 blur-[1px] select-none pointer-events-none">
-                <div class="h-48 relative">
-                    <img src="https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?w=500&q=80" class="w-full h-full object-cover grayscale">
-                </div>
-                <div class="p-6 text-left text-white h-48">
-                    <div class="text-yellow-400 text-sm mb-3">★★★★★</div>
-                    <p class="mb-4 font-light text-blue-50 text-[12px] line-clamp-3">"El panel de administración es muy completo. Puedo gestionar mi inventario, ver reservas y chatear con..."</p>
-                    <div>
-                        <p class="font-bold text-[13px]">Ana Rodríguez</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Controles del Carrusel (Flechas y Puntos) -->
-        <div class="flex items-center justify-center gap-6 mb-16">
-            <!-- Flecha Izquierda -->
-            <button class="w-10 h-10 rounded-full border-2 border-[#3b82f6] flex items-center justify-center text-[#3b82f6] hover:bg-[#3b82f6] hover:text-white transition duration-300">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"></path></svg>
-            </button>
-            
-            <!-- Puntos de navegación -->
-            <div class="flex items-center gap-2.5">
-                <div class="w-2 h-2 rounded-full bg-gray-300"></div>
-                <div class="w-6 h-2 rounded-full bg-[#2563eb]"></div> <!-- Activo -->
-                <div class="w-2 h-2 rounded-full bg-gray-300"></div>
-            </div>
-            
-            <!-- Flecha Derecha -->
-            <button class="w-10 h-10 rounded-full border-2 border-[#3b82f6] flex items-center justify-center text-[#3b82f6] hover:bg-[#3b82f6] hover:text-white transition duration-300">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"></path></svg>
-            </button>
         </div>
 
         <!-- Divisor sutil -->

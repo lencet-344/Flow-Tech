@@ -1,3 +1,5 @@
+<?php
+$content = <<<'HTML'
 @extends('layouts.admin')
 
 @section('content')
@@ -191,3 +193,7 @@
 
 </div>
 @endsection
+HTML;
+file_put_contents('resources/views/admin/promocionar/configurar.blade.php', $content);
+echo "Promocionar configured completely.\n";
+?>

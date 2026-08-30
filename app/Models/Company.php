@@ -22,6 +22,7 @@ class Company extends Model
         'website',
         'horario',
         'category_id',
+        'status',
     ];
 
     public function category()
@@ -37,5 +38,15 @@ class Company extends Model
     public function contact_requests()
     {
         return $this->hasMany(Contact_request::class);
+    }
+
+    public function inventories()
+    {
+        return $this->hasMany(Inventory::class, 'supplier_id');
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'email', 'email');
     }
 }
