@@ -1,3 +1,7 @@
+<?php
+$file = 'resources/views/superadmin/suppliers.blade.php';
+
+$content = <<<'HTML'
 @extends('layouts.superadmin')
 
 @section('content')
@@ -71,3 +75,8 @@
     </div>
 </div>
 @endsection
+HTML;
+
+file_put_contents($file, $content);
+echo "View overwritten safely.\n";
+?>

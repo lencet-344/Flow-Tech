@@ -36,4 +36,9 @@ class Inventory extends Model
     {
         return $this->hasMany(OrderDetail::class);
     }
+
+    public function company()
+    {
+        return $this->belongsTo(Company::class, 'supplier_id');
+    }
 }
