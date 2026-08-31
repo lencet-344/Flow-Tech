@@ -41,8 +41,8 @@
 
     <!-- Tabla -->
     <div class="bg-white rounded-[1.2rem] shadow-sm border border-gray-100 overflow-hidden">
-        <div class="overflow-x-auto">
-            <table class="w-full text-left border-collapse">
+        <div class="overflow-x-auto w-full bg-white rounded-lg shadow">
+<table class="w-full text-left border-collapse">
                 <thead>
                     <tr class="border-b border-gray-100 text-[11.5px] font-bold text-gray-900 uppercase tracking-wider">
                         <th class="px-6 py-5">Contenido</th>
@@ -113,6 +113,7 @@
                     @endforelse
                 </tbody>
             </table>
+</div>
         </div>
     </div>
 </div>

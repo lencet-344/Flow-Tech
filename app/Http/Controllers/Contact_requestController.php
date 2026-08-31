@@ -35,7 +35,7 @@ class Contact_requestController extends Controller
     public function store(Contact_requestRequest $request)
     {
         Contact_request::create($request->validated());
-        return redirect()->route('contact_requests.index')->with('succes','Contacto a sido creada correctamente');
+        return redirect()->route('contact_requests.index')->with('success', 'Contacto ha sido creada correctamente.');
     }
 
     /**
@@ -65,7 +65,7 @@ class Contact_requestController extends Controller
     {
         $contact_request = Contact_request::with('company')->findOrFail($id);
         $contact_request->update($request->validated());
-        return redirect()->route('contact_requests.index')->with('success', 'Contacto a sido actualizada correctamente.');
+        return redirect()->route('contact_requests.index')->with('success', 'Contacto ha sido actualizada correctamente.');
     }
 
     /**
@@ -75,6 +75,6 @@ class Contact_requestController extends Controller
     {
         $contact_request = Contact_request::with('company')->findOrFail($id);
         $contact_request->delete();
-        return redirect()->route('contact_requests.index')->with('success', 'Contacto a sido eliminada correctamente.');
+        return redirect()->route('contact_requests.index')->with('success', 'Contacto ha sido eliminada correctamente.');
     }
 }

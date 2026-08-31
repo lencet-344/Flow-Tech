@@ -38,7 +38,7 @@ class FavoriteController extends Controller
     public function store(FavoriteRequest $request)
     {
         Favorite::create($request->validated());
-        return redirect()->route('favorites.index')->with('success', 'favoritos a sido creada correctamente.');
+        return redirect()->route('favorites.index')->with('success', 'Favoritos ha sido creada correctamente.');
     }
 
     /**
@@ -68,7 +68,7 @@ class FavoriteController extends Controller
     {
         $favorite = Favorite::with('product')->findOrFail($id);
         $favorite->update($request->validated());
-        return redirect()->route('favorites.index')->with('success', 'Favoritos a sido actualizada correctamente.');
+        return redirect()->route('favorites.index')->with('success', 'Favoritos ha sido actualizada correctamente.');
     }
 
     /**
@@ -78,6 +78,6 @@ class FavoriteController extends Controller
     {
         $favorite = Favorite::with('product')->findOrFail($id);
         $favorite->delete();
-        return redirect()->route('favorites.index')->with('success', 'Favoritos a sido eliminada correctamente.');
+        return redirect()->route('favorites.index')->with('success', 'Favoritos ha sido eliminada correctamente.');
     }
 }

@@ -6,10 +6,21 @@
     <title>Super Admin - SINGKI</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
-<body class="bg-[#f4f7ff] font-sans antialiased h-screen flex overflow-hidden">
+<body x-data="{ sidebarOpen: false }" class="bg-[#f4f7ff] font-sans antialiased h-screen flex flex-col md:flex-row overflow-hidden">
 
     <!-- Sidebar -->
-    <aside class="w-[280px] bg-[#00003d] text-white h-screen flex flex-col shrink-0">
+        <!-- Topbar Móvil -->
+    <div class="md:hidden bg-[#00003d] text-white flex items-center justify-between p-4 shrink-0 shadow-md z-40 relative">
+        <img src="{{ asset('images/LogoBlanco.png') }}" alt="Logo SINGKI" class="h-8 w-auto">
+        <button @click="sidebarOpen = !sidebarOpen" class="text-white focus:outline-none">
+            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+        </button>
+    </div>
+
+    <!-- Overlay Móvil -->
+    <div x-show="sidebarOpen" style="display: none;" @click="sidebarOpen = false" class="md:hidden fixed inset-0 bg-black bg-opacity-50 z-40" x-transition.opacity></div>
+
+    <aside class="w-[280px] bg-[#00003d] text-white h-screen flex flex-col shrink-0 fixed md:relative z-50 inset-y-0 left-0 transform transition-transform duration-300 md:translate-x-0" :class="sidebarOpen ? 'translate-x-0' : '-translate-x-full'">
         
         <!-- Header Sidebar -->
         <div class="p-6 flex flex-col gap-5 border-b border-white/10">
@@ -104,9 +115,20 @@
     </aside>
 
     <!-- Main Content -->
-    <main class="flex-1 overflow-y-auto">
+    <main class="flex-1 overflow-y-auto" x-data="{ mounted: false }" x-init="setTimeout(() => mounted = true, 50)" x-show="mounted" x-transition:enter="transition ease-out duration-700" x-transition:enter-start="opacity-0 translate-y-6" x-transition:enter-end="opacity-100 translate-y-0">
         @yield('content')
     </main>
 
+    <script>
+        @if(session('success'))
+            Swal.fire({ toast: true, position: 'top-end', icon: 'success', title: "{{ session('success') }}", showConfirmButton: false, timer: 3000, timerProgressBar: true });
+        @endif
+        @if(session('error'))
+            Swal.fire({ toast: true, position: 'top-end', icon: 'error', title: "{{ session('error') }}", showConfirmButton: false, timer: 4000, timerProgressBar: true });
+        @endif
+        @if(session('status'))
+            Swal.fire({ toast: true, position: 'top-end', icon: 'info', title: "{{ session('status') }}", showConfirmButton: false, timer: 3000, timerProgressBar: true });
+        @endif
+    </script>
 </body>
 </html>

@@ -35,7 +35,7 @@ class BookingController extends Controller
     public function store(BookingRequest $request)
     {
         Booking::create($request->validated());
-        return redirect()->route("bookings.index")->with("success", "Reserva a sido creada correctamente.");
+        return redirect()->route("bookings.index")->with("success", 'Reserva ha sido creada correctamente.');
     }
 
     /**
@@ -64,7 +64,7 @@ class BookingController extends Controller
     {
         $booking = Booking::with("supplier")->findOrFail($id);
         $booking->update($request->validated());
-        return redirect()->route("bookings.index")->with("success", "Reserva a sido actualizada correctamente.");
+        return redirect()->route("bookings.index")->with("success", 'Reserva ha sido actualizada correctamente.');
     }
 
     /**
@@ -74,6 +74,6 @@ class BookingController extends Controller
     {
         $booking = Booking::with("supplier")->findOrFail($id);
         $booking->delete();
-        return redirect()->route("bookings.index")->with("success", "Reserva a sido eliminada correctamente.");
+        return redirect()->route("bookings.index")->with("success", 'Reserva ha sido eliminada correctamente.');
     }
 }

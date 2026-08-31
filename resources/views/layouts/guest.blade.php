@@ -26,5 +26,16 @@
                 {{ $slot }}
             </div>
         </div>
-    </body>
+        <script>
+        @if(session('success'))
+            Swal.fire({ toast: true, position: 'top-end', icon: 'success', title: "{{ session('success') }}", showConfirmButton: false, timer: 3000, timerProgressBar: true });
+        @endif
+        @if(session('error'))
+            Swal.fire({ toast: true, position: 'top-end', icon: 'error', title: "{{ session('error') }}", showConfirmButton: false, timer: 4000, timerProgressBar: true });
+        @endif
+        @if(session('status'))
+            Swal.fire({ toast: true, position: 'top-end', icon: 'info', title: "{{ session('status') }}", showConfirmButton: false, timer: 3000, timerProgressBar: true });
+        @endif
+    </script>
+</body>
 </html>

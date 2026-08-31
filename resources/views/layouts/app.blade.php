@@ -24,7 +24,7 @@
                 </header>
             @endisset
 
-            <main>
+            <main x-data="{ mounted: false }" x-init="setTimeout(() => mounted = true, 50)" x-show="mounted" x-transition:enter="transition ease-out duration-700" x-transition:enter-start="opacity-0 translate-y-6" x-transition:enter-end="opacity-100 translate-y-0">
                 @yield('content')
                 {{ $slot ?? '' }}
             </main>
@@ -96,5 +96,16 @@
                 });
             </script>
         @endif
-    </body>
+        <script>
+        @if(session('success'))
+            Swal.fire({ toast: true, position: 'top-end', icon: 'success', title: "{{ session('success') }}", showConfirmButton: false, timer: 3000, timerProgressBar: true });
+        @endif
+        @if(session('error'))
+            Swal.fire({ toast: true, position: 'top-end', icon: 'error', title: "{{ session('error') }}", showConfirmButton: false, timer: 4000, timerProgressBar: true });
+        @endif
+        @if(session('status'))
+            Swal.fire({ toast: true, position: 'top-end', icon: 'info', title: "{{ session('status') }}", showConfirmButton: false, timer: 3000, timerProgressBar: true });
+        @endif
+    </script>
+</body>
 </html>

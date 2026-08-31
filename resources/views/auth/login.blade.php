@@ -36,6 +36,7 @@
                 <label for="email" class="block text-[13px] font-medium text-[#040116] mb-2">Correo electrónico</label>
                 <input type="email" id="email" name="email" value="{{ old('email') }}" required autofocus placeholder="correo@ejemplo.com" 
                     class="w-full border border-gray-200 rounded-xl px-4 py-3 bg-white focus:ring-[#2563eb] focus:border-[#2563eb] text-sm text-[#040116] outline-none transition-colors placeholder:text-blue-300">
+                        @error('email') <span class="text-red-500 text-sm mt-1 block">{{ $message }}</span> @enderror
             </div>
 
             <!-- Contraseña -->
@@ -43,6 +44,7 @@
                 <label for="password" class="block text-[13px] font-medium text-[#040116] mb-2">Contraseña</label>
                 <input type="password" id="password" name="password" required placeholder="••••••••" 
                     class="w-full border border-gray-200 rounded-xl px-4 py-3 bg-white focus:ring-[#2563eb] focus:border-[#2563eb] text-sm text-[#2563eb] outline-none transition-colors placeholder:text-blue-300 font-mono tracking-widest">
+                        @error('password') <span class="text-red-500 text-sm mt-1 block">{{ $message }}</span> @enderror
             </div>
 
             <!-- Olvidaste Contraseña -->
