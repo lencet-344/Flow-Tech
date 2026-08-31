@@ -125,7 +125,7 @@
                 @if (Route::has('login'))
                     @auth
                         @php
-                            $superAdmins = ['isaacmeneses254@gmail.com', 'edmundo@ejemplo.com'];
+                            $superAdmins = ['isaacmeneses254@gmail.com', 'edmundo@ejemplo.com', 'admin@sinki.com'];
                         @endphp
                         
                         @if(in_array(Auth::user()->email, $superAdmins))
