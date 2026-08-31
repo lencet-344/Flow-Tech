@@ -33,7 +33,7 @@ Route::get('/', function () {
 // RUTAS GENERALES (Para cualquier usuario logueado)
 Route::middleware(['auth', 'verified', 'prevent-back-history'])->group(function() {
     Route::get('/dashboard', function () {
-        $superAdmins = ['isaacmeneses254@gmail.com', 'edmundo@ejemplo.com'];
+        $superAdmins = ['isaacmeneses254@gmail.com', 'edmundo@ejemplo.com', 'admin@sinki.com'];
 
         // Si es Isaac o Edmundo (VIP), les permitimos ver el panel de control crudo de Laravel
         if (auth()->check() && in_array(auth()->user()->email, $superAdmins)) {
