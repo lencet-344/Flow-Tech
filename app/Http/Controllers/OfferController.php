@@ -40,7 +40,7 @@ class OfferController extends Controller
     public function store(OfferRequest $request)
     {
         Offer::create($request->validated());
-        return redirect()->route("offers.index")->with("success", "Oferta a sido creada correctamente.");
+        return redirect()->route("offers.index")->with("success", 'Oferta ha sido creada correctamente.');
     }
 
     /**
@@ -69,7 +69,7 @@ class OfferController extends Controller
     {
         $offer = Offer::with("product")->findOrFail($id);
         $offer->update($request->validated());
-        return redirect()->route("offers.index")->with("success", "Oferta a sido actualizada correctamente.");
+        return redirect()->route("offers.index")->with("success", 'Oferta ha sido actualizada correctamente.');
     }
     
 
@@ -80,6 +80,6 @@ class OfferController extends Controller
     {
         $offer = Offer::with("product")->findOrFail($id);
         $offer->delete();
-        return redirect()->route("offers.index")->with("success", "Oferta a sido eliminada correctamente.");
+        return redirect()->route("offers.index")->with("success", 'Oferta ha sido eliminada correctamente.');
     }
 }

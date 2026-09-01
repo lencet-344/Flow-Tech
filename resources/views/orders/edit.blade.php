@@ -43,6 +43,7 @@
                     <div class="mb-4">
                         <label for="buy_verifications_id" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Verificación de Compra</label>
                         <select name="buy_verifications_id" id="buy_verifications_id" class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                        @error('buy_verifications_id') <span class="text-red-500 text-sm mt-1 block">{{ $message }}</span> @enderror
                             <option value="">Seleccione una opción</option>
                             @foreach($buy_verifications as $item)
                                 <option value="{{ $item->id }}" {{ old('buy_verifications_id', $order->buy_verifications_id) == $item->id ? 'selected' : '' }}>{{ $item->name ?? $item->title ?? $item->id }}</option>

@@ -153,7 +153,7 @@
     <!-- ========================================== -->
     <!-- SECCIÓN 2: NAVBAR                          -->
     <!-- ========================================== -->
-    <header class="bg-white sticky top-0 z-40 border-b border-gray-100">
+    <header x-data="{ mobileMenuOpen: false }" class="bg-white sticky top-0 z-40 border-b border-gray-100 relative">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center h-20">
             
             <div class="flex items-center gap-2">
@@ -175,6 +175,14 @@
                     <a href="{{ route('categories.index') }}" class="text-[#0f172a] font-medium text-base hover:text-[#2563eb] transition-colors">Explorar</a>
                 @endguest
             </nav>
+            <!-- Botón Menú Móvil -->
+            <div class="flex md:hidden items-center">
+                <button @click="mobileMenuOpen = !mobileMenuOpen" class="text-gray-700 hover:text-blue-600 focus:outline-none">
+                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
+                    </svg>
+                </button>
+            </div>
             
             <div class="hidden md:flex items-center space-x-6">
                 @if (Route::has('login'))
@@ -213,29 +221,70 @@
                 @endif
             </div>
         </div>
+            <!-- Menú Móvil Desplegable -->
+        <div x-show="mobileMenuOpen" @click.away="mobileMenuOpen = false" x-transition class="md:hidden absolute top-full left-0 w-full bg-white shadow-xl border-t border-gray-100 flex flex-col p-4 gap-4 z-50">
+            <a href="{{ url('/') }}" class="text-[#0f172a] font-medium text-base hover:text-[#2563eb]">Inicio</a>
+            <a href="#categorias" class="text-[#0f172a] font-medium text-base hover:text-[#2563eb]">Categorías</a>
+            @guest
+                <a href="{{ route('categories.index') }}" class="text-[#0f172a] font-medium text-base hover:text-[#2563eb]">Explorar</a>
+                <hr class="border-gray-100">
+                <a href="{{ route('login') }}" class="text-[#3b82f6] font-medium text-base">Iniciar sesión</a>
+                @if (Route::has('register'))
+                    <a href="{{ route('register') }}" class="bg-[#3b82f6] text-white px-6 py-2.5 rounded-lg font-medium text-center text-base shadow-sm block">Registrarse</a>
+                @endif
+            @endguest
+            @auth
+                <hr class="border-gray-100">
+                @php
+                    $superAdmins = ['isaacmeneses254@gmail.com', 'edmundo@ejemplo.com'];
+                @endphp
+                @if(in_array(Auth::user()->email, $superAdmins))
+                    <a href="{{ url('/superadmin/dashboard') }}" class="text-[#3b82f6] font-medium text-base">Panel Super Admin</a>
+                @else
+                    <a href="{{ url('/admin/dashboard') }}" class="text-[#3b82f6] font-medium text-base">Administrar negocio</a>
+                @endif
+                <form method="POST" action="{{ route('logout') }}" class="w-full mt-2">
+                    @csrf
+                    <button type="submit" class="w-full bg-[#A6F4EB] text-[#040116] font-semibold px-6 py-2.5 rounded-lg shadow-sm text-center">Cerrar Sesión</button>
+                </form>
+            @endauth
+        </div>
     </header>
     <!-- ========================================== -->
 
     <!-- ========================================== -->
     <!-- ENRUTADOR VISUAL DINÁMICO POR ROL          -->
     <!-- ========================================== -->
-
-    @if(auth()->check() && auth()->user()->role == 'usuario')
-        
-        <!-- 1. FRANJA AZUL (HERO Y BUSCADOR) CON BACKGROUND FORZADO -->
-        <section style="background: linear-gradient(to right, #040116, #1F51FF);" class="w-full py-12">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-6">
-                <!-- Textos -->
-                <div class="w-full md:w-1/2">
-                    <h1 class="text-3xl font-bold text-white mb-2 tracking-tight">¡Hola, <span class="capitalize">{{ explode(' ', Auth::user()->name)[0] ?? 'Usuario' }}</span>!</h1>
-                    <p class="text-blue-100 text-sm font-light">¿Qué estás buscando hoy?</p>
+    @auth
+        <!-- VISTA LOGUEADO (Horizontal, ultra compacta y sin foto) -->
+        <div class="flex flex-col">
+            
+            <!-- Franja Azul Superior -->
+            <section class="bg-gradient-to-r from-[#020617] via-[#0f172a] to-[#2563eb] py-8">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-6">
+                    <div class="text-white w-full md:w-1/2">
+                        <h1 class="text-[28px] font-normal tracking-wide mb-1">¡Hola, <span class="font-bold">{{ explode(' ', Auth::user()->name)[0] }}</span>!</h1>
+                        <p class="text-blue-100 text-[14px] font-light">¿Qué estás buscando hoy?</p>
+                    </div>
+                    <div class="w-full md:w-1/2 flex justify-start md:justify-end">
+                        <form action="{{ route('products.index') }}" method="GET" class="relative w-full max-w-lg bg-white rounded-full flex items-center p-1.5 shadow-sm">
+                            <input type="text" name="search" placeholder="Busca negocios, productos o servicios..." class="w-full pl-5 pr-4 py-2 bg-transparent border-0 focus:ring-0 text-gray-700 text-sm outline-none">
+                        @error('search') <span class="text-red-500 text-sm mt-1 block">{{ $message }}</span> @enderror
+                            <button type="submit" class="bg-[#3b82f6] hover:bg-[#2563eb] text-white font-medium px-8 py-2 rounded-full transition text-sm">Buscar</button>
+                        </form>
+                    </div>
                 </div>
-                <!-- Buscador -->
-                <div class="w-full md:w-1/2 flex justify-end">
-                    <form action="#" method="GET" class="relative w-full max-w-lg bg-white rounded-full flex items-center p-1.5 shadow-sm">
-                        <input type="text" name="search" placeholder="Busca negocios, productos o servicios..." class="w-full pl-5 pr-4 py-2 bg-transparent border-0 focus:ring-0 text-gray-700 text-sm outline-none">
-                        <button type="submit" class="bg-[#1F51FF] hover:bg-blue-700 text-white font-medium px-8 py-2 rounded-full transition text-sm">Buscar</button>
-                    </form>
+            </section>
+
+            <!-- Botonera de Acción Rápida (Fondo blanco) -->
+            <section class="bg-white py-5 border-b border-gray-100">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-wrap items-center justify-center md:justify-start gap-3">
+                    <a href="{{ route('favorites.index') }}" class="bg-[#3b82f6] hover:bg-[#2563eb] text-white px-5 py-2.5 rounded-xl font-medium flex items-center gap-2 text-[14px] shadow-sm transition"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path></svg>Mis Favoritos</a>
+                    <a href="{{ url('/admin/reservas') }}" class="bg-[#3b82f6] hover:bg-[#2563eb] text-white px-5 py-2.5 rounded-xl font-medium flex items-center gap-2 text-[14px] shadow-sm transition"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>Mis Reservas</a>
+                    <a href="{{ route('categories.index') }}" class="bg-[#3b82f6] hover:bg-[#2563eb] text-white px-5 py-2.5 rounded-xl font-medium flex items-center gap-2 text-[14px] shadow-sm transition"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"></path></svg>Categorías</a>
+                    <a href="{{ route('products.index') }}" class="bg-[#3b82f6] hover:bg-[#2563eb] text-white px-5 py-2.5 rounded-xl font-medium flex items-center gap-2 text-[14px] shadow-sm transition"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>Buscar</a>
+                    
+                    <a href="{{ url('/admin/dashboard') }}" class="bg-[#020617] hover:bg-gray-900 text-white px-5 py-2.5 rounded-xl font-medium flex items-center gap-2 text-[14px] shadow-sm transition ml-0 sm:ml-3">Administrar negocio</a>
                 </div>
             </div>
         </section>
@@ -274,12 +323,14 @@
             </div>
         </section>
 
-        <!-- 3. FRANJA CREMA: TUS RESERVAS ACTIVAS -->
-        <section class="bg-[#FFF9E6] py-10 border-y border-yellow-100 mb-10">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <h3 class="text-[#D97706] font-bold text-sm mb-5 tracking-wide">Tus reservas activas</h3>
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-                    @forelse($mis_reservas ?? [] as $reserva)
+       
+            <!-- Sección de Reservas Activas (Sube de posición) -->
+            <section class="bg-[#FFF8EC] py-10 border-b border-yellow-100/50">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <h3 class="text-[#f59e0b] font-bold text-[15px] mb-5">Tus reservas activas</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5">
+                        @forelse($reservas_activas ?? [] as $reserva)
+                        <!-- Tarjeta de Reserva -->
                         <div class="bg-white p-5 rounded-2xl border border-yellow-200 shadow-sm flex flex-col justify-between">
                             <div>
                                 <h4 class="font-bold text-gray-900 text-sm mb-1">{{ $reserva->product->name ?? 'Producto Reservado' }}</h4>
@@ -304,9 +355,9 @@
             <p class="text-gray-500 mt-2">Dirígete a tu Panel de Control para gestionar tu cuenta.</p>
         </section>
     @else
-        <!-- 3. VISTA INVITADO (Hero Original) -->
-        <section class="bg-gradient-to-r from-[#0a194f] to-[#2563eb] py-20 lg:py-32 overflow-hidden relative">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center relative z-10">
+        <!-- VISTA INVITADO (Hero Original con la Chica Sonriendo) -->
+        <section class="bg-gradient-to-r from-[#0a194f] via-[#163080] to-[#2563eb] pt-20 pb-28 overflow-hidden relative">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-1 lg:grid-cols-12 gap-8 items-center relative z-10">
                 <!-- Textos Invitado -->
                 <div class="lg:col-span-7 z-10">
                     <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#3b82f6]/30 text-blue-100 text-xs font-semibold mb-6 border border-blue-400/40 backdrop-blur-md">
@@ -320,7 +371,8 @@
                     <p class="text-lg text-blue-100/90 mb-10 max-w-lg font-light leading-relaxed">
                         Te ayudamos a que encuentres lo que necesites de forma rápida y confiable. Negocios, proveedores, productos y servicios en un solo lugar.
                     </p>
-                    <form action="{{ route('products.index') }}" method="GET" class="bg-white p-1.5 rounded-full flex items-center max-w-xl shadow-lg mt-8"><input type="text" name="search" placeholder="Busca negocios, productos o servicios..." class="w-full pl-6 pr-4 bg-transparent border-none focus:ring-0 text-gray-500 text-sm outline-none"><button type="submit" class="bg-[#3b82f6] hover:bg-[#2563eb] text-white font-semibold px-8 py-2.5 rounded-full transition text-sm whitespace-nowrap">Buscar</button></form>
+                    <form action="{{ route('products.index') }}" method="GET" class="bg-white p-1.5 rounded-full flex items-center max-w-xl shadow-lg mt-8"><input type="text" name="search" placeholder="Busca negocios, productos o servicios..." class="w-full pl-6 pr-4 bg-transparent border-none focus:ring-0 text-gray-500 text-sm outline-none">
+                        @error('search') <span class="text-red-500 text-sm mt-1 block">{{ $message }}</span> @enderror<button type="submit" class="bg-[#3b82f6] hover:bg-[#2563eb] text-white font-semibold px-8 py-2.5 rounded-full transition text-sm whitespace-nowrap">Buscar</button></form>
                 </div>
 
                 <!-- Imagen Chica Sonriendo -->
@@ -347,7 +399,7 @@
             <a href="{{ url('/explorar') }}" class="text-[#3b82f6] font-medium hover:underline flex items-center gap-2 text-sm">Ver todas <span aria-hidden="true">&rarr;</span></a>
         </div>
         
-        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 md:gap-6">
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 md:gap-6">
             
             <!-- 1. Tecnología (Monitor suave) -->
             <a href="{{ url('/explorar?categoria=Tecnología') }}" class="bg-white border border-gray-200 rounded-[16px] py-8 px-4 text-center hover:shadow-[0_8px_30px_rgb(0,0,0,0.06)] hover:border-[#3b82f6] transition duration-300 cursor-pointer group flex flex-col items-center">
@@ -497,7 +549,7 @@
             <h2 class="text-4xl lg:text-5xl font-extrabold text-[#0f172a] mb-4 tracking-tight">¿Cómo funciona SINGKI?</h2>
             <p class="text-gray-600 text-lg mb-20 font-light">En tres simples pasos encuentra lo que tu negocio necesita</p>
             
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div class="grid grid-cols-1 md:grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
                 
                 <!-- Tarjeta 1 -->
                 <div class="bg-white p-10 rounded-[2rem] shadow-[0_8px_30px_rgb(0,0,0,0.04)] text-left flex flex-col justify-start h-full border border-gray-50">
@@ -564,7 +616,7 @@
         </div>
         
         <!-- Cuadrícula de 4 tarjetas -->
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div class="grid grid-cols-1 md:grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             @forelse($negocios_destacados ?? [] as $negocio)
             <!-- Borde índigo muy fino (border-[#818cf8]) como en el Figma -->
             <div class="bg-white border border-[#818cf8] rounded-[16px] overflow-hidden hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] transition duration-300 group flex flex-col relative">
@@ -767,7 +819,7 @@
         <p class="text-gray-500 text-[15px] mb-16 font-light max-w-xl mx-auto leading-relaxed">Clientes, emprendedores y proveedores que ya confían en SINGKI para hacer crecer sus negocios.</p>
         
         <div x-data="{ active: 1 }" class="relative w-full max-w-[1200px] mx-auto mb-16">
-            <div class="flex flex-col md:flex-row justify-center items-center gap-6 lg:gap-10 relative">
+            <div class="flex flex-col md:flex-row justify-center items-center gap-6 lg:gap-10 relative w-full overflow-hidden">
                 
                 <!-- Tarjeta 0 -->
                 <div @click="active = 0" class="transition-all duration-500 ease-in-out transform cursor-pointer w-full md:w-[300px] lg:w-[320px] shrink-0 rounded-[32px] overflow-hidden" :class="active === 0 ? 'scale-100 md:scale-110 z-20 bg-[#2563eb] shadow-[0_20px_50px_rgba(37,99,235,0.3)]' : 'scale-90 z-10 bg-blue-300 opacity-60 md:opacity-50 md:blur-[1px] hover:opacity-80 hover:blur-none hidden md:block'">

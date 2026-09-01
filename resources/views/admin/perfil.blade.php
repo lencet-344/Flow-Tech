@@ -40,6 +40,7 @@
                 <span class="block text-[11px] font-bold text-gray-500 uppercase tracking-wider mb-3">Opciones</span>
                 <label for="logo_upload" class="cursor-pointer block border-2 border-dashed border-gray-200 rounded-xl p-4 flex items-center justify-center gap-3 text-gray-500 bg-gray-50/50 hover:bg-gray-50 transition mb-3">
                     <input type="file" name="logo" id="logo_upload" class="hidden" accept="image/png, image/jpeg, image/webp">
+                        @error('logo') <span class="text-red-500 text-sm mt-1 block">{{ $message }}</span> @enderror
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path></svg>
                     <span class="text-sm font-medium">Subir nueva foto</span>
                 </label>
@@ -71,6 +72,7 @@
                         <label class="block text-[11px] font-bold text-gray-500 uppercase tracking-wider mb-2">Categoría</label>
                         <div class="relative">
                             <select name="category_id" x-model="category" class="w-full border border-gray-200 rounded-xl px-4 py-3 bg-gray-50/50 focus:ring-[#2563eb] focus:border-[#2563eb] text-sm text-[#040116] appearance-none outline-none">
+                        @error('category_id') <span class="text-red-500 text-sm mt-1 block">{{ $message }}</span> @enderror
                                 @foreach($categories as $cat)
                                     <option value="{{ $cat->id }}" {{ old('category_id', $company->category_id) == $cat->id ? 'selected' : '' }}>{{ $cat->name }}</option>
                                 @endforeach
@@ -83,32 +85,38 @@
                     <!-- Descripción -->
                     <div class="col-span-2">
                         <label class="block text-[11px] font-bold text-gray-500 uppercase tracking-wider mb-2">Descripción</label>
-                        <textarea name="description" x-model="desc" rows="3" class="w-full border border-gray-200 rounded-xl px-4 py-3 bg-gray-50/50 focus:ring-[#2563eb] focus:border-[#2563eb] text-sm text-[#040116] outline-none resize-none"></textarea>
+                        <textarea name="description" x-model="desc" rows="3" class="w-full border border-gray-200 rounded-xl px-4 py-3 bg-gray-50/50 focus:ring-[#2563eb] focus:border-[#2563eb] text-sm text-[#040116] outline-none resize-none">
+                        @error('description') <span class="text-red-500 text-sm mt-1 block">{{ $message }}</span> @enderror</textarea>
                     </div>
                     <!-- Teléfono -->
                     <div class="col-span-1">
                         <label class="block text-[11px] font-bold text-gray-500 uppercase tracking-wider mb-2">Teléfono</label>
-                        <input type="text" name="telephone" value="{{ old('telephone', $company->telephone) }}" class="w-full border border-gray-200 rounded-xl px-4 py-3 bg-gray-50/50 focus:ring-[#2563eb] focus:border-[#2563eb] text-sm text-[#040116] outline-none">
+                        <input type="text" name="telephone" value="{{ old('telephone', $company->
+                        @error('telephone') <span class="text-red-500 text-sm mt-1 block">{{ $message }}</span> @enderrortelephone) }}" class="w-full border border-gray-200 rounded-xl px-4 py-3 bg-gray-50/50 focus:ring-[#2563eb] focus:border-[#2563eb] text-sm text-[#040116] outline-none">
                     </div>
                     <!-- Correo -->
                     <div class="col-span-1">
                         <label class="block text-[11px] font-bold text-gray-500 uppercase tracking-wider mb-2">Correo electrónico</label>
-                        <input type="text" name="email" value="{{ old('email', $company->email) }}" class="w-full border border-gray-200 rounded-xl px-4 py-3 bg-gray-50/50 focus:ring-[#2563eb] focus:border-[#2563eb] text-sm text-[#040116] outline-none">
+                        <input type="text" name="email" value="{{ old('email', $company->
+                        @error('email') <span class="text-red-500 text-sm mt-1 block">{{ $message }}</span> @enderroremail) }}" class="w-full border border-gray-200 rounded-xl px-4 py-3 bg-gray-50/50 focus:ring-[#2563eb] focus:border-[#2563eb] text-sm text-[#040116] outline-none">
                     </div>
                     <!-- Ubicación -->
                     <div class="col-span-2">
                         <label class="block text-[11px] font-bold text-gray-500 uppercase tracking-wider mb-2">Ubicación</label>
-                        <input type="text" name="address" value="{{ old('address', $company->address) }}" class="w-full border border-gray-200 rounded-xl px-4 py-3 bg-gray-50/50 focus:ring-[#2563eb] focus:border-[#2563eb] text-sm text-[#040116] outline-none">
+                        <input type="text" name="address" value="{{ old('address', $company->
+                        @error('address') <span class="text-red-500 text-sm mt-1 block">{{ $message }}</span> @enderroraddress) }}" class="w-full border border-gray-200 rounded-xl px-4 py-3 bg-gray-50/50 focus:ring-[#2563eb] focus:border-[#2563eb] text-sm text-[#040116] outline-none">
                     </div>
                     <!-- Sitio Web -->
                     <div class="col-span-1">
                         <label class="block text-[11px] font-bold text-gray-500 uppercase tracking-wider mb-2">Sitio Web</label>
-                        <input type="text" name="website" value="{{ old('website', $company->website) }}" class="w-full border border-gray-200 rounded-xl px-4 py-3 bg-gray-50/50 focus:ring-[#2563eb] focus:border-[#2563eb] text-sm text-[#040116] outline-none">
+                        <input type="text" name="website" value="{{ old('website', $company->
+                        @error('website') <span class="text-red-500 text-sm mt-1 block">{{ $message }}</span> @enderrorwebsite) }}" class="w-full border border-gray-200 rounded-xl px-4 py-3 bg-gray-50/50 focus:ring-[#2563eb] focus:border-[#2563eb] text-sm text-[#040116] outline-none">
                     </div>
                     <!-- Horario -->
                     <div class="col-span-1">
                         <label class="block text-[11px] font-bold text-gray-500 uppercase tracking-wider mb-2">Horario de Atención</label>
-                        <input type="text" name="horario" value="{{ old('horario', $company->horario) }}" class="w-full border border-gray-200 rounded-xl px-4 py-3 bg-gray-50/50 focus:ring-[#2563eb] focus:border-[#2563eb] text-sm text-[#040116] outline-none">
+                        <input type="text" name="horario" value="{{ old('horario', $company->
+                        @error('horario') <span class="text-red-500 text-sm mt-1 block">{{ $message }}</span> @enderrorhorario) }}" class="w-full border border-gray-200 rounded-xl px-4 py-3 bg-gray-50/50 focus:ring-[#2563eb] focus:border-[#2563eb] text-sm text-[#040116] outline-none">
                     </div>
                 </div>
                 <div class="mt-6 flex justify-end">

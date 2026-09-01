@@ -49,7 +49,7 @@ class ProductController extends Controller
         unset($data['supplier_id']); 
         
         Product::create($data);
-        return redirect()->route("products.index")->with("success", "Producto a sido creado correctamente.");
+        return redirect()->route("products.index")->with("success", 'Producto ha sido creado correctamente.');
     }
 
     /**
@@ -86,7 +86,7 @@ class ProductController extends Controller
         unset($data['supplier_id']); 
         
         $product->update($data);
-        return redirect()->route("products.index")->with("success", "Producto a sido actualizado correctamente.");
+        return redirect()->route("products.index")->with("success", 'Producto ha sido actualizado correctamente.');
     }
 
 
@@ -97,6 +97,6 @@ class ProductController extends Controller
     {
         $product = Product::findOrFail($id);
         $product->delete();
-        return redirect()->route("products.index")->with("success", "Producto a sido eliminado correctamente.");
+        return redirect()->route("products.index")->with("success", 'Producto ha sido eliminado correctamente.');
     }
 }

@@ -40,7 +40,7 @@ class CompanyController extends Controller
     public function store(CompanyRequest $request)
     {
         Company::create($request->validated());
-        return redirect()->route("companies.index")->with("success", "Empresa a sido creado correctamente.");
+        return redirect()->route("companies.index")->with("success", 'Empresa ha sido creado correctamente.');
     }
 
     /**
@@ -84,6 +84,6 @@ class CompanyController extends Controller
     {
         $company = Company::findOrFail($id);
         $company->delete();
-        return redirect()->route("companies.index")->with("success", "Empresa a sido eliminado correctamente.");
+        return redirect()->route("companies.index")->with("success", 'Empresa ha sido eliminado correctamente.');
     }
 }

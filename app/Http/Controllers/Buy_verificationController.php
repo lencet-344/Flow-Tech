@@ -44,7 +44,7 @@ class Buy_verificationController extends Controller
             }
         }
 
-        return redirect()->route("buy_verifications.index")->with('succes', 'Verificacion de compra a sido creada correctamente');
+        return redirect()->route("buy_verifications.index")->with('success', 'Verificacion de compra ha sido creada correctamente.');
     }
 
     /**
@@ -96,7 +96,7 @@ class Buy_verificationController extends Controller
             }
         }
 
-        return redirect()->route('buy_verifications.index')->with('succes', 'Verificacion de compra a sido actualizada correctamente');
+        return redirect()->route('buy_verifications.index')->with('success', 'Verificacion de compra ha sido actualizada correctamente.');
     }
 
     /**
@@ -106,6 +106,6 @@ class Buy_verificationController extends Controller
     {
         $buy_verification = Buy_verification::with('order')->findOrFail($id);
         $buy_verification->delete();
-        return redirect()->route('buy_verifications.index')->with('succes', 'Verificacion de compra a sido eliminada correctamente');
+        return redirect()->route('buy_verifications.index')->with('success', 'Verificacion de compra ha sido eliminada correctamente.');
     }
 }
