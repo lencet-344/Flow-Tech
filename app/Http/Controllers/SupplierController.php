@@ -38,7 +38,7 @@ class SupplierController extends Controller
         $data = $request->validated();
         $data['code_company'] = 'SUP-' . strtoupper(\Illuminate\Support\Str::random(6));
         Supplier::create($data);
-        return redirect()->route("suppliers.index")->with("success", "Proveedor a sido creado correctamente.");
+        return redirect()->route("suppliers.index")->with("success", 'Proveedor ha sido creado correctamente.');
     }
 
     /**
@@ -65,7 +65,7 @@ class SupplierController extends Controller
     public function update(SupplierRequest $request, Supplier $supplier)
     {
         $supplier->update($request->validated());
-        return redirect()->route("suppliers.index")->with("success", "Proveedor a sido actualizado correctamente.");
+        return redirect()->route("suppliers.index")->with("success", 'Proveedor ha sido actualizado correctamente.');
     }
 
 
@@ -76,6 +76,6 @@ class SupplierController extends Controller
     {
         $supplier = Supplier::findOrFail($id);
         $supplier->delete();
-        return redirect()->route("suppliers.index")->with("success", "Proveedor a sido eliminado correctamente.");
+        return redirect()->route("suppliers.index")->with("success", 'Proveedor ha sido eliminado correctamente.');
     }
 }

@@ -29,13 +29,68 @@
 
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+  
 <head>
+      <link rel="icon" type="image/png" href="{{ asset('images/favicon.png') }}">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{{ config('app.name', 'SINGKI - Conectamos negocios') }}</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 </head>
 <body class="font-sans antialiased text-gray-900 bg-white selection:bg-[#3b82f6] selection:text-white relative">
+
+    <!-- ========================================== -->
+    <!-- SPLASH SCREEN OFICIAL (SOLO INVITADOS)     -->
+    <!-- ========================================== -->
+    @guest
+    <div x-data="{ showSplash: !sessionStorage.getItem('singki_visited') }"
+         x-init="if(showSplash) { 
+                    /* Bloqueamos el scroll mientras dura la animación */
+                    document.body.style.overflow = 'hidden';
+                    setTimeout(() => { 
+                        showSplash = false; 
+                        /* Guardamos en la memoria para que no vuelva a salir hoy */
+                        sessionStorage.setItem('singki_visited', 'true'); 
+                        document.body.style.overflow = 'auto';
+                    }, 3500); 
+                 }"
+         x-show="showSplash"
+         x-transition:leave="transition ease-in-out duration-1000"
+         x-transition:leave-start="opacity-100"
+         x-transition:leave-end="opacity-0"
+         class="fixed inset-0 z-[9999] bg-white flex flex-col items-center justify-center overflow-hidden"
+         style="display: none;">
+         
+         <!-- Mancha Celeste Esquina Superior Izquierda -->
+         <svg class="absolute top-0 left-0 w-64 md:w-96 text-blue-50" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" style="transform: rotate(0deg) translate(-20%, -20%);">
+            <path fill="currentColor" d="M45.7,-76.4C58.9,-69.3,69,-55.4,76.5,-40.8C84,-26.2,88.9,-10.9,87.3,4C85.7,18.9,77.6,33.5,66.6,44.7C55.6,55.9,41.7,63.7,26.9,70.5C12.1,77.3,-3.8,83,-19.6,81C-35.4,79.1,-50.4,69.4,-61.8,56.8C-73.2,44.1,-81,28.6,-83.4,12.3C-85.7,-4,-82.6,-21.2,-73.9,-35.1C-65.2,-49,-50.9,-59.7,-36.5,-66.2C-22.1,-72.7,-7.8,-75,8.1,-77.3C24,-79.6,48,-81.9,45.7,-76.4Z" transform="translate(100 100)" />
+         </svg>
+
+         <!-- Mancha Celeste Esquina Inferior Derecha -->
+         <svg class="absolute bottom-0 right-0 w-64 md:w-96 text-blue-50" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" style="transform: rotate(180deg) translate(-20%, -20%);">
+            <path fill="currentColor" d="M45.7,-76.4C58.9,-69.3,69,-55.4,76.5,-40.8C84,-26.2,88.9,-10.9,87.3,4C85.7,18.9,77.6,33.5,66.6,44.7C55.6,55.9,41.7,63.7,26.9,70.5C12.1,77.3,-3.8,83,-19.6,81C-35.4,79.1,-50.4,69.4,-61.8,56.8C-73.2,44.1,-81,28.6,-83.4,12.3C-85.7,-4,-82.6,-21.2,-73.9,-35.1C-65.2,-49,-50.9,-59.7,-36.5,-66.2C-22.1,-72.7,-7.8,-75,8.1,-77.3C24,-79.6,48,-81.9,45.7,-76.4Z" transform="translate(100 100)" />
+         </svg>
+
+         <!-- El Cubo Central: Video Animación de Paola -->
+         <div class="relative z-10 flex flex-col items-center justify-center w-full px-6">
+             <video autoplay muted playsinline class="w-64 h-64 md:w-[400px] md:h-[400px] object-contain pointer-events-none">
+                 <source src="{{ asset('images/bienvenida.mp4') }}" type="video/mp4">
+             </video>
+         </div>
+
+         <!-- Redes Sociales y Texto Inferior -->
+         <div class="absolute bottom-10 left-0 right-0 flex flex-col items-center justify-center z-10 gap-5">
+             <div class="flex items-center gap-6 text-[#1e293b]">
+                 <svg class="w-6 h-6 hover:text-blue-600 transition-colors cursor-pointer" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M22.54 6.42a2.78 2.78 0 00-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 00-1.94 2A29 29 0 001 11.75a29 29 0 00.46 5.33 2.78 2.78 0 001.94 2c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 001.94-2 29 29 0 00.46-5.33 29 29 0 00-.46-5.33z"></path><polygon stroke-width="1.5" stroke-linejoin="round" points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02"></polygon></svg>
+                 <svg class="w-6 h-6 hover:text-pink-600 transition-colors cursor-pointer" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+                 <svg class="w-6 h-6 hover:text-black transition-colors cursor-pointer" fill="currentColor" viewBox="0 0 24 24"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-5.2 1.74 2.89 2.89 0 012.31-4.64 2.93 2.93 0 01.88.13V9.4a6.84 6.84 0 00-1-.05A6.33 6.33 0 005 15.68a6.32 6.32 0 006.33 6.33 6.33 6.33 0 006.33-6.33V11.1a8.2 8.2 0 003.93 1.01V8.66a5.53 5.53 0 01-2-1.97z"/></svg>
+             </div>
+             <h2 class="font-extrabold text-[#0f172a] tracking-widest text-[20px]">SINGKI</h2>
+         </div>
+    </div>
+    @endguest
+    <!-- ========================================== -->
 
     <!-- ========================================== -->
     <!-- CHATBOT FLOTANTE Y MODAL DE AYUDA          -->
@@ -98,7 +153,7 @@
     <!-- ========================================== -->
     <!-- SECCIÓN 2: NAVBAR                          -->
     <!-- ========================================== -->
-    <header class="bg-white sticky top-0 z-40 border-b border-gray-100">
+    <header x-data="{ mobileMenuOpen: false }" class="bg-white sticky top-0 z-40 border-b border-gray-100 relative">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center h-20">
             
             <div class="flex items-center gap-2">
@@ -120,24 +175,38 @@
                     <a href="{{ route('categories.index') }}" class="text-[#0f172a] font-medium text-base hover:text-[#2563eb] transition-colors">Explorar</a>
                 @endguest
             </nav>
+            <!-- Botón Menú Móvil -->
+            <div class="flex md:hidden items-center">
+                <button @click="mobileMenuOpen = !mobileMenuOpen" class="text-gray-700 hover:text-blue-600 focus:outline-none">
+                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
+                    </svg>
+                </button>
+            </div>
             
             <div class="hidden md:flex items-center space-x-6">
                 @if (Route::has('login'))
                     @auth
                         @php
-                            $superAdmins = ['isaacmeneses254@gmail.com', 'edmundo@ejemplo.com'];
+                            $superAdmins = ['isaacmeneses254@gmail.com', 'edmundo@ejemplo.com', 'admin@sinki.com'];
                         @endphp
+
+                        <!-- Avatar y Nombre -->
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center font-bold text-lg">
+                                {{ strtoupper(substr(Auth::user()->name, 0, 1)) }}
+                            </div>
+                            <span class="font-medium text-gray-700">{{ explode(' ', Auth::user()->name)[0] }}</span>
+                        </div>
                         
                         @if(in_array(Auth::user()->email, $superAdmins))
-                            <!-- Botón para Isaac y Edmundo -->
-                            <a href="{{ url('/superadmin/dashboard') }}" class="text-[#3b82f6] font-medium text-base hover:underline transition">Panel Super Admin</a>
-                        @else
-                            <!-- Botón para Proveedores normales -->
-                            <a href="{{ url('/admin/dashboard') }}" class="text-[#3b82f6] font-medium text-base hover:underline transition">Administrar negocio</a>
+                            <a href="{{ url('/superadmin/dashboard') }}" class="text-[#3b82f6] font-medium text-sm hover:underline transition">Panel Super Admin</a>
+                        @elseif(in_array(Auth::user()->role, ['proveedor', 'servicios', 'administrador']))
+                            <a href="{{ url('/admin/dashboard') }}" class="text-[#3b82f6] font-medium text-sm hover:underline transition">Administrar negocio</a>
                         @endif
 
                         <!-- Botón de Cerrar Sesión -->
-                        <form method="POST" action="{{ route('logout') }}" class="inline-block ml-4">
+                        <form method="POST" action="{{ route('logout') }}" class="inline-block">
                             @csrf
                             <button type="submit" class="bg-[#A6F4EB] hover:bg-[#8de8df] text-[#040116] font-semibold px-6 py-2 rounded-full transition-colors shadow-sm text-[14px]">
                                 Cerrar Sesión
@@ -152,11 +221,39 @@
                 @endif
             </div>
         </div>
+            <!-- Menú Móvil Desplegable -->
+        <div x-show="mobileMenuOpen" @click.away="mobileMenuOpen = false" x-transition class="md:hidden absolute top-full left-0 w-full bg-white shadow-xl border-t border-gray-100 flex flex-col p-4 gap-4 z-50">
+            <a href="{{ url('/') }}" class="text-[#0f172a] font-medium text-base hover:text-[#2563eb]">Inicio</a>
+            <a href="#categorias" class="text-[#0f172a] font-medium text-base hover:text-[#2563eb]">Categorías</a>
+            @guest
+                <a href="{{ route('categories.index') }}" class="text-[#0f172a] font-medium text-base hover:text-[#2563eb]">Explorar</a>
+                <hr class="border-gray-100">
+                <a href="{{ route('login') }}" class="text-[#3b82f6] font-medium text-base">Iniciar sesión</a>
+                @if (Route::has('register'))
+                    <a href="{{ route('register') }}" class="bg-[#3b82f6] text-white px-6 py-2.5 rounded-lg font-medium text-center text-base shadow-sm block">Registrarse</a>
+                @endif
+            @endguest
+            @auth
+                <hr class="border-gray-100">
+                @php
+                    $superAdmins = ['isaacmeneses254@gmail.com', 'edmundo@ejemplo.com'];
+                @endphp
+                @if(in_array(Auth::user()->email, $superAdmins))
+                    <a href="{{ url('/superadmin/dashboard') }}" class="text-[#3b82f6] font-medium text-base">Panel Super Admin</a>
+                @else
+                    <a href="{{ url('/admin/dashboard') }}" class="text-[#3b82f6] font-medium text-base">Administrar negocio</a>
+                @endif
+                <form method="POST" action="{{ route('logout') }}" class="w-full mt-2">
+                    @csrf
+                    <button type="submit" class="w-full bg-[#A6F4EB] text-[#040116] font-semibold px-6 py-2.5 rounded-lg shadow-sm text-center">Cerrar Sesión</button>
+                </form>
+            @endauth
+        </div>
     </header>
     <!-- ========================================== -->
 
     <!-- ========================================== -->
-    <!-- 2. HERO SECTION & PANEL DE USUARIO         -->
+    <!-- ENRUTADOR VISUAL DINÁMICO POR ROL          -->
     <!-- ========================================== -->
     @auth
         <!-- VISTA LOGUEADO (Horizontal, ultra compacta y sin foto) -->
@@ -172,6 +269,7 @@
                     <div class="w-full md:w-1/2 flex justify-start md:justify-end">
                         <form action="{{ route('products.index') }}" method="GET" class="relative w-full max-w-lg bg-white rounded-full flex items-center p-1.5 shadow-sm">
                             <input type="text" name="search" placeholder="Busca negocios, productos o servicios..." class="w-full pl-5 pr-4 py-2 bg-transparent border-0 focus:ring-0 text-gray-700 text-sm outline-none">
+                        @error('search') <span class="text-red-500 text-sm mt-1 block">{{ $message }}</span> @enderror
                             <button type="submit" class="bg-[#3b82f6] hover:bg-[#2563eb] text-white font-medium px-8 py-2 rounded-full transition text-sm">Buscar</button>
                         </form>
                     </div>
@@ -180,7 +278,7 @@
 
             <!-- Botonera de Acción Rápida (Fondo blanco) -->
             <section class="bg-white py-5 border-b border-gray-100">
-                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-wrap items-center gap-3">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-wrap items-center justify-center md:justify-start gap-3">
                     <a href="{{ route('favorites.index') }}" class="bg-[#3b82f6] hover:bg-[#2563eb] text-white px-5 py-2.5 rounded-xl font-medium flex items-center gap-2 text-[14px] shadow-sm transition"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path></svg>Mis Favoritos</a>
                     <a href="{{ url('/admin/reservas') }}" class="bg-[#3b82f6] hover:bg-[#2563eb] text-white px-5 py-2.5 rounded-xl font-medium flex items-center gap-2 text-[14px] shadow-sm transition"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>Mis Reservas</a>
                     <a href="{{ route('categories.index') }}" class="bg-[#3b82f6] hover:bg-[#2563eb] text-white px-5 py-2.5 rounded-xl font-medium flex items-center gap-2 text-[14px] shadow-sm transition"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"></path></svg>Categorías</a>
@@ -188,55 +286,93 @@
                     
                     <a href="{{ url('/admin/dashboard') }}" class="bg-[#020617] hover:bg-gray-900 text-white px-5 py-2.5 rounded-xl font-medium flex items-center gap-2 text-[14px] shadow-sm transition ml-0 sm:ml-3">Administrar negocio</a>
                 </div>
-            </section>
+            </div>
+        </section>
 
+        <!-- 2. FRANJA BLANCA (PÍLDORAS DE ACCIÓN) -->
+        <section class="w-full bg-white py-5">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-wrap gap-3">
+                <a href="{{ route('favorites.index') }}" class="bg-[#1F51FF] text-white px-6 py-2.5 rounded-full font-medium flex items-center gap-2 text-sm shadow-sm hover:opacity-90">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path></svg>
+                    Mis Favoritos
+                </a>
+                <a href="{{ route('bookings.index') }}" class="bg-[#1F51FF] text-white px-6 py-2.5 rounded-full font-medium flex items-center gap-2 text-sm shadow-sm hover:opacity-90">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                    Mis Reservas
+                </a>
+                <a href="#categorias" class="bg-[#1F51FF] text-white px-6 py-2.5 rounded-full font-medium flex items-center gap-2 text-sm shadow-sm hover:opacity-90">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"></path></svg>
+                    Categorías
+                </a>
+                <a href="#" class="bg-[#1F51FF] text-white px-6 py-2.5 rounded-full font-medium flex items-center gap-2 text-sm shadow-sm hover:opacity-90">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                    Buscar
+                </a>
+
+                <!-- 🚀 BOTÓN NEGRO RECUPERADO Y MEJORADO 🚀 -->
+                @php
+                    $isSuperAdmin = in_array(Auth::user()->email ?? '', ['isaacmeneses254@gmail.com', 'edmundo@ejemplo.com', 'admin@sinki.com']);
+                    $hasAdminRole = in_array(Auth::user()->role ?? '', ['proveedor', 'servicios', 'administrador', 'super_admin']);
+                @endphp
+
+                @if($isSuperAdmin || $hasAdminRole)
+                    <a href="{{ url('/admin/dashboard') }}" class="bg-[#0f172a] text-white px-6 py-2.5 rounded-full font-medium flex items-center gap-2 text-sm shadow-sm hover:bg-gray-800 transition duration-300">
+                        Administrar negocio
+                    </a>
+                @endif
+            </div>
+        </section>
+
+       
             <!-- Sección de Reservas Activas (Sube de posición) -->
             <section class="bg-[#FFF8EC] py-10 border-b border-yellow-100/50">
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <h3 class="text-[#f59e0b] font-bold text-[15px] mb-5">Tus reservas activas</h3>
-                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+                    <div class="grid grid-cols-1 md:grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5">
                         @forelse($reservas_activas ?? [] as $reserva)
                         <!-- Tarjeta de Reserva -->
                         <div class="bg-white p-5 rounded-2xl border border-yellow-200 shadow-sm flex flex-col justify-between">
                             <div>
-                                <h4 class="font-bold text-[#0f172a] text-[15px] mb-1">{{ $reserva->producto->nombre ?? 'Producto' }}</h4>
-                                <p class="text-gray-500 text-[13px] mb-6 font-light">{{ $reserva->producto->proveedor->nombre ?? 'Proveedor' }}</p>
+                                <h4 class="font-bold text-gray-900 text-sm mb-1">{{ $reserva->product->name ?? 'Producto Reservado' }}</h4>
+                                <p class="text-gray-500 text-xs mb-4">{{ $reserva->supplier->name ?? 'Negocio' }}</p>
                             </div>
                             <div class="flex justify-between items-center">
-                                @if(isset($reserva->estado) && $reserva->estado == 'Disponible')
-                                <span class="bg-[#dcfce7] text-[#16a34a] px-3 py-1 rounded-full text-[11px] font-bold uppercase tracking-wider">Disponible</span>
-                                @else
-                                <span class="bg-[#fef3c7] text-[#d97706] px-3 py-1 rounded-full text-[11px] font-bold uppercase tracking-wider">En espera</span>
-                                @endif
-                                <a href="{{ url('/admin/reservas') }}" class="text-[#3b82f6] text-[13px] font-medium hover:underline flex items-center gap-1">Ver &rarr;</a>
+                                <span class="bg-yellow-50 text-yellow-600 border border-yellow-200 px-3 py-1 rounded text-[10px] font-bold uppercase">En espera</span>
+                                <a href="#" class="text-[#1F51FF] text-xs font-medium hover:underline">Ver &rarr;</a>
                             </div>
                         </div>
-                        @empty
-                        <!-- Placeholder si no hay reservas -->
-                        <p class="text-sm text-gray-500 col-span-full">No tienes reservas activas en este momento.</p>
-                        @endforelse
-                    </div>
+                    @empty
+                        <p class="text-gray-500 text-sm">No tienes reservas activas.</p>
+                    @endforelse
                 </div>
-            </section>
-        </div>
+            </div>
+        </section>
+
+    @elseif(auth()->check() && in_array(auth()->user()->role, ['proveedor', 'administrador', 'super_admin']))
+        <!-- 2. VISTA EXCLUSIVA: ADMIN / PROVEEDOR (Banner simplificado) -->
+        <section class="py-20 text-center">
+            <h2 class="text-3xl font-bold text-[#040116]">¡Bienvenido de vuelta, {{ explode(' ', Auth::user()->name)[0] }}!</h2>
+            <p class="text-gray-500 mt-2">Dirígete a tu Panel de Control para gestionar tu cuenta.</p>
+        </section>
     @else
         <!-- VISTA INVITADO (Hero Original con la Chica Sonriendo) -->
         <section class="bg-gradient-to-r from-[#0a194f] via-[#163080] to-[#2563eb] pt-20 pb-28 overflow-hidden relative">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center relative z-10">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-1 lg:grid-cols-12 gap-8 items-center relative z-10">
                 <!-- Textos Invitado -->
                 <div class="lg:col-span-7 z-10">
                     <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#3b82f6]/30 text-blue-100 text-xs font-semibold mb-6 border border-blue-400/40 backdrop-blur-md">
-                        Conectamos negocios con oportunidades 
+                        Conectamos negocios con oportunidades
                         <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"/></svg>
                     </div>
-                    <h1 class="text-5xl lg:text-[3.5rem] leading-[1.1] font-extrabold text-white mb-6 tracking-tight">
+                    <h1 class="font-ragick font-normal text-3xl md:text-5xl lg:text-[3.5rem] leading-[1.1] text-white mb-6 tracking-tight">
                         Encuentra lo que tu negocio <br>
                         <span class="text-[#38bdf8]">necesita, aquí y ahora.</span>
                     </h1>
                     <p class="text-lg text-blue-100/90 mb-10 max-w-lg font-light leading-relaxed">
                         Te ayudamos a que encuentres lo que necesites de forma rápida y confiable. Negocios, proveedores, productos y servicios en un solo lugar.
                     </p>
-                    <form action="{{ route('products.index') }}" method="GET" class="bg-white p-1.5 rounded-full flex items-center max-w-xl shadow-lg mt-8"><input type="text" name="search" placeholder="Busca negocios, productos o servicios..." class="w-full pl-6 pr-4 bg-transparent border-none focus:ring-0 text-gray-500 text-sm outline-none"><button type="submit" class="bg-[#3b82f6] hover:bg-[#2563eb] text-white font-semibold px-8 py-2.5 rounded-full transition text-sm whitespace-nowrap">Buscar</button></form>
+                    <form action="{{ route('products.index') }}" method="GET" class="bg-white p-1.5 rounded-full flex items-center max-w-xl shadow-lg mt-8"><input type="text" name="search" placeholder="Busca negocios, productos o servicios..." class="w-full pl-6 pr-4 bg-transparent border-none focus:ring-0 text-gray-500 text-sm outline-none">
+                        @error('search') <span class="text-red-500 text-sm mt-1 block">{{ $message }}</span> @enderror<button type="submit" class="bg-[#3b82f6] hover:bg-[#2563eb] text-white font-semibold px-8 py-2.5 rounded-full transition text-sm whitespace-nowrap">Buscar</button></form>
                 </div>
 
                 <!-- Imagen Chica Sonriendo -->
@@ -247,9 +383,11 @@
                 </div>
             </div>
         </section>
-    @endauth
-
+    @endif
     <!-- ========================================== -->
+
+
+   <!-- ========================================== -->
     <!-- SECCIÓN 4: CATEGORÍAS                      -->
     <!-- ========================================== -->
     <section id="categorias" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 bg-white">
@@ -258,132 +396,148 @@
                 <h2 class="text-[32px] font-extrabold text-[#0f172a] mb-2 tracking-tight">Explorar por categoría</h2>
                 <p class="text-[#3b82f6] font-medium text-sm">Encuentra negocios y proveedores según lo que necesitas</p>
             </div>
-            <a href="{{ route('companies.index') }}" class="text-[#3b82f6] font-medium hover:underline flex items-center gap-2 text-sm">Ver todas <span aria-hidden="true">&rarr;</span></a>
+            <a href="{{ url('/explorar') }}" class="text-[#3b82f6] font-medium hover:underline flex items-center gap-2 text-sm">Ver todas <span aria-hidden="true">&rarr;</span></a>
         </div>
         
-        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 md:gap-6">
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 md:gap-6">
             
-            <!-- 1. Tecnología -->
-            <div class="bg-white border border-gray-200 rounded-[16px] py-8 px-4 text-center hover:shadow-[0_8px_30px_rgb(0,0,0,0.06)] hover:border-[#3b82f6] transition duration-300 cursor-pointer group flex flex-col items-center">
+            <!-- 1. Tecnología (Monitor suave) -->
+            <a href="{{ url('/explorar?categoria=Tecnología') }}" class="bg-white border border-gray-200 rounded-[16px] py-8 px-4 text-center hover:shadow-[0_8px_30px_rgb(0,0,0,0.06)] hover:border-[#3b82f6] transition duration-300 cursor-pointer group flex flex-col items-center">
                 <div class="mb-4 text-[#2563eb] group-hover:-translate-y-1 transition duration-300">
-                    <svg class="w-10 h-10 mx-auto" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 14h16M4 6a2 2 0 012-2h12a2 2 0 012 2v8a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM8 18h8M12 18v3M8 21h8"/></svg>
+                    <svg class="w-10 h-10 mx-auto" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><path d="M8 21h8"/><path d="M12 17v4"/></svg>
                 </div>
                 <h3 class="font-bold text-gray-900 text-[15px] mb-1">Tecnología</h3>
                 <p class="text-[13px] text-[#3b82f6]">48 negocios</p>
-            </div>
+            </a>
 
-            <!-- 2. Alimentos -->
-            <div class="bg-white border border-gray-200 rounded-[16px] py-8 px-4 text-center hover:shadow-[0_8px_30px_rgb(0,0,0,0.06)] hover:border-[#3b82f6] transition duration-300 cursor-pointer group flex flex-col items-center">
+            <!-- 2. Alimentos (Taza y humo ondulado) -->
+            <a href="{{ url('/explorar?categoria=Alimentos') }}" class="bg-white border border-gray-200 rounded-[16px] py-8 px-4 text-center hover:shadow-[0_8px_30px_rgb(0,0,0,0.06)] hover:border-[#3b82f6] transition duration-300 cursor-pointer group flex flex-col items-center">
                 <div class="mb-4 text-[#2563eb] group-hover:-translate-y-1 transition duration-300">
-                    <svg class="w-10 h-10 mx-auto" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 8h12v7a5 5 0 01-5 5H9a5 5 0 01-5-5V8zM16 10h1.5a2.5 2.5 0 012.5 2.5v0a2.5 2.5 0 01-2.5 2.5H16M6 4h8"/></svg>
+                    <svg class="w-10 h-10 mx-auto" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M17 8h1a4 4 0 1 1 0 8h-1"/><path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4V8z"/><path d="M6 2c0 1.5-1.5 1.5-1.5 3s1.5 1.5 1.5 3"/><path d="M10 2c0 1.5-1.5 1.5-1.5 3s1.5 1.5 1.5 3"/><path d="M14 2c0 1.5-1.5 1.5-1.5 3s1.5 1.5 1.5 3"/></svg>
                 </div>
                 <h3 class="font-bold text-gray-900 text-[15px] mb-1">Alimentos</h3>
                 <p class="text-[13px] text-[#3b82f6]">132 negocios</p>
-            </div>
+            </a>
 
-            <!-- 3. Construcción -->
-            <div class="bg-white border border-gray-200 rounded-[16px] py-8 px-4 text-center hover:shadow-[0_8px_30px_rgb(0,0,0,0.06)] hover:border-[#3b82f6] transition duration-300 cursor-pointer group flex flex-col items-center">
+            <!-- 3. Construcción (Camión de carga puro) -->
+            <a href="{{ url('/explorar?categoria=Construcción') }}" class="bg-white border border-gray-200 rounded-[16px] py-8 px-4 text-center hover:shadow-[0_8px_30px_rgb(0,0,0,0.06)] hover:border-[#3b82f6] transition duration-300 cursor-pointer group flex flex-col items-center">
                 <div class="mb-4 text-[#2563eb] group-hover:-translate-y-1 transition duration-300">
-                    <svg class="w-10 h-10 mx-auto" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 5h11v12H3V5z M14 8h4l3 4v5h-7V8z M7 17a2 2 0 1 0 0 4 2 2 0 0 0 0-4z M17 17a2 2 0 1 0 0 4 2 2 0 0 0 0-4z"/></svg>
+                    <svg class="w-10 h-10 mx-auto" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11h1"/><path d="M15 18H9"/><path d="M19 18h2v-6l-3.4-4.5A2 2 0 0 0 16.1 5H14v13"/><circle cx="6" cy="18" r="2"/><circle cx="17" cy="18" r="2"/></svg>
                 </div>
                 <h3 class="font-bold text-gray-900 text-[15px] mb-1">Construcción</h3>
                 <p class="text-[13px] text-[#3b82f6]">67 negocios</p>
-            </div>
+            </a>
 
-            <!-- 4. Salud -->
-            <div class="bg-white border border-gray-200 rounded-[16px] py-8 px-4 text-center hover:shadow-[0_8px_30px_rgb(0,0,0,0.06)] hover:border-[#3b82f6] transition duration-300 cursor-pointer group flex flex-col items-center">
+            <!-- 4. Salud (Cruz médica perfecta) -->
+            <a href="{{ url('/explorar?categoria=Salud') }}" class="bg-white border border-gray-200 rounded-[16px] py-8 px-4 text-center hover:shadow-[0_8px_30px_rgb(0,0,0,0.06)] hover:border-[#3b82f6] transition duration-300 cursor-pointer group flex flex-col items-center">
                 <div class="mb-4 text-[#2563eb] group-hover:-translate-y-1 transition duration-300">
-                    <svg class="w-10 h-10 mx-auto" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10 3h4v7h7v4h-7v7h-4v-7H3v-4h7V3z"/></svg>
+                    <svg class="w-10 h-10 mx-auto" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M10 3h4v6h6v4h-6v6h-4v-6h-6v-4h6z"/></svg>
                 </div>
                 <h3 class="font-bold text-gray-900 text-[15px] mb-1">Salud</h3>
                 <p class="text-[13px] text-[#3b82f6]">54 negocios</p>
-            </div>
+            </a>
 
-            <!-- 5. Moda (Camiseta Simple Corregida) -->
-            <div class="bg-white border border-gray-200 rounded-[16px] py-8 px-4 text-center hover:shadow-[0_8px_30px_rgb(0,0,0,0.06)] hover:border-[#3b82f6] transition duration-300 cursor-pointer group flex flex-col items-center">
+            <!-- 5. Moda (T-Shirt) -->
+            <a href="{{ url('/explorar?categoria=Moda') }}" class="bg-white border border-gray-200 rounded-[16px] py-8 px-4 text-center hover:shadow-[0_8px_30px_rgb(0,0,0,0.06)] hover:border-[#3b82f6] transition duration-300 cursor-pointer group flex flex-col items-center">
                 <div class="mb-4 text-[#2563eb] group-hover:-translate-y-1 transition duration-300">
-                    <svg class="w-10 h-10 mx-auto" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
-                        <path d="M9 4c0 2.5 6 2.5 6 0h2.5l4 2.5-2 3.5-3-1.5v12h-9v-12l-3 1.5-2-3.5 4-2.5H9z"/>
-                    </svg>
+                    <svg class="w-10 h-10 mx-auto" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M20.38 3.46L16 2a4 4 0 0 1-8 0L3.62 3.46a2 2 0 0 0-1.34 2.23l.58 3.47a1 1 0 0 0 .99.84H6v10c0 1.1.9 2 2 2h8a2 2 0 0 0 2-2V10h2.15a1 1 0 0 0 .99-.84l.58-3.47a2 2 0 0 0-1.34-2.23z"/></svg>
                 </div>
                 <h3 class="font-bold text-gray-900 text-[15px] mb-1">Moda</h3>
                 <p class="text-[13px] text-[#3b82f6]">89 negocios</p>
-            </div>
+            </a>
 
-            <!-- 6. Hogar -->
-            <div class="bg-white border border-gray-200 rounded-[16px] py-8 px-4 text-center hover:shadow-[0_8px_30px_rgb(0,0,0,0.06)] hover:border-[#3b82f6] transition duration-300 cursor-pointer group flex flex-col items-center">
+            <!-- 6. Hogar (Casa con puerta de arco) -->
+            <a href="{{ url('/explorar?categoria=Hogar') }}" class="bg-white border border-gray-200 rounded-[16px] py-8 px-4 text-center hover:shadow-[0_8px_30px_rgb(0,0,0,0.06)] hover:border-[#3b82f6] transition duration-300 cursor-pointer group flex flex-col items-center">
                 <div class="mb-4 text-[#2563eb] group-hover:-translate-y-1 transition duration-300">
-                    <svg class="w-10 h-10 mx-auto" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z M9 22V12h6v10"/></svg>
+                    <svg class="w-10 h-10 mx-auto" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M9 22V12a3 3 0 0 1 6 0v10"/></svg>
                 </div>
                 <h3 class="font-bold text-gray-900 text-[15px] mb-1">Hogar</h3>
                 <p class="text-[13px] text-[#3b82f6]">74 negocios</p>
-            </div>
+            </a>
 
-            <!-- 7. Servicios -->
-            <div class="bg-white border border-gray-200 rounded-[16px] py-8 px-4 text-center hover:shadow-[0_8px_30px_rgb(0,0,0,0.06)] hover:border-[#3b82f6] transition duration-300 cursor-pointer group flex flex-col items-center">
+            <!-- 7. Servicios (Engranaje) -->
+            <a href="{{ url('/explorar?categoria=Servicios') }}" class="bg-white border border-gray-200 rounded-[16px] py-8 px-4 text-center hover:shadow-[0_8px_30px_rgb(0,0,0,0.06)] hover:border-[#3b82f6] transition duration-300 cursor-pointer group flex flex-col items-center">
                 <div class="mb-4 text-[#2563eb] group-hover:-translate-y-1 transition duration-300">
-                    <svg class="w-10 h-10 mx-auto" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6z M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+                    <svg class="w-10 h-10 mx-auto" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1Z"/></svg>
                 </div>
                 <h3 class="font-bold text-gray-900 text-[15px] mb-1">Servicios</h3>
                 <p class="text-[13px] text-[#3b82f6]">103 negocios</p>
-            </div>
+            </a>
 
-            <!-- 8. Educación -->
-            <div class="bg-white border border-gray-200 rounded-[16px] py-8 px-4 text-center hover:shadow-[0_8px_30px_rgb(0,0,0,0.06)] hover:border-[#3b82f6] transition duration-300 cursor-pointer group flex flex-col items-center">
+            <!-- 8. Educación (Libro Abierto) -->
+            <a href="{{ url('/explorar?categoria=Educación') }}" class="bg-white border border-gray-200 rounded-[16px] py-8 px-4 text-center hover:shadow-[0_8px_30px_rgb(0,0,0,0.06)] hover:border-[#3b82f6] transition duration-300 cursor-pointer group flex flex-col items-center">
                 <div class="mb-4 text-[#2563eb] group-hover:-translate-y-1 transition duration-300">
-                    <svg class="w-10 h-10 mx-auto" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+                    <svg class="w-10 h-10 mx-auto" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
                 </div>
                 <h3 class="font-bold text-gray-900 text-[15px] mb-1">Educación</h3>
                 <p class="text-[13px] text-[#3b82f6]">41 negocios</p>
-            </div>
+            </a>
 
-            <!-- 9. Automoción -->
-            <div class="bg-white border border-gray-200 rounded-[16px] py-8 px-4 text-center hover:shadow-[0_8px_30px_rgb(0,0,0,0.06)] hover:border-[#3b82f6] transition duration-300 cursor-pointer group flex flex-col items-center">
+            <!-- 9. Automotriz (Silueta de Auto) -->
+            <a href="{{ url('/explorar?categoria=Automotriz') }}" class="bg-white border border-gray-200 rounded-[16px] py-8 px-4 text-center hover:shadow-[0_8px_30px_rgb(0,0,0,0.06)] hover:border-[#3b82f6] transition duration-300 cursor-pointer group flex flex-col items-center">
                 <div class="mb-4 text-[#2563eb] group-hover:-translate-y-1 transition duration-300">
-                    <svg class="w-10 h-10 mx-auto" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.4 2.9A3.7 3.7 0 0 0 2 12v4c0 .6.4 1 1 1h2 M7 17a2 2 0 1 0 0 4 2 2 0 0 0 0-4z M17 17a2 2 0 1 0 0 4 2 2 0 0 0 0-4z M7 17h10"/></svg>
+                    <svg class="w-10 h-10 mx-auto" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+                        <path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.4 2.9A3.7 3.7 0 0 0 2 12v4c0 .6.4 1 1 1h2"/>
+                        <circle cx="7" cy="17" r="2"/>
+                        <circle cx="17" cy="17" r="2"/>
+                    </svg>
                 </div>
-                <h3 class="font-bold text-gray-900 text-[15px] mb-1">Automoción</h3>
+                <!-- Cambiado de Automoción a Automotriz -->
+                <h3 class="font-bold text-gray-900 text-[15px] mb-1">Automotriz</h3>
                 <p class="text-[13px] text-[#3b82f6]">56 negocios</p>
-            </div>
+            </a>
 
-            <!-- 10. Arte -->
-            <div class="bg-white border border-gray-200 rounded-[16px] py-8 px-4 text-center hover:shadow-[0_8px_30px_rgb(0,0,0,0.06)] hover:border-[#3b82f6] transition duration-300 cursor-pointer group flex flex-col items-center">
+           <!-- 10. Arte (Pincel de base plana perfecto) -->
+            <a href="{{ url('/explorar?categoria=Arte') }}" class="bg-white border border-gray-200 rounded-[16px] py-8 px-4 text-center hover:shadow-[0_8px_30px_rgb(0,0,0,0.06)] hover:border-[#3b82f6] transition duration-300 cursor-pointer group flex flex-col items-center">
                 <div class="mb-4 text-[#2563eb] group-hover:-translate-y-1 transition duration-300">
-                    <svg class="w-10 h-10 mx-auto" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 21a9 9 0 1 1 0-18 9 9 0 0 1 9 9c0 1.5-1 2-2 2h-1c-1 0-2 1-2 2s1 2 1 3c0 1.1-.9 2-2 2z M7 9h.01 M10 6h.01 M14 6h.01 M17 9h.01"/></svg>
+                    <svg class="w-10 h-10 mx-auto" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+                        <path d="M 15 15 C 17 16 16 20 13 20 H 5 A 2 2 0 0 1 3 18 V 15 C 3 9 8 8 11 11 L 13 9 L 17 5 A 2.828 2.828 0 0 1 21 9 L 17 13 L 15 15 Z" />
+                        <path d="M11 11 L15 15" />
+                        <path d="M13 9 L17 13" />
+                    </svg>
                 </div>
                 <h3 class="font-bold text-gray-900 text-[15px] mb-1">Arte</h3>
                 <p class="text-[13px] text-[#3b82f6]">29 negocios</p>
-            </div>
+            </a>
 
-            <!-- 11. Deporte -->
-            <div class="bg-white border border-gray-200 rounded-[16px] py-8 px-4 text-center hover:shadow-[0_8px_30px_rgb(0,0,0,0.06)] hover:border-[#3b82f6] transition duration-300 cursor-pointer group flex flex-col items-center">
+            <!-- 11. Deporte (Balón de baloncesto real) -->
+           
+            <a href="{{ url('/explorar?categoria=Deporte') }}" class="bg-white border border-gray-200 rounded-[16px] py-8 px-4 text-center hover:shadow-[0_8px_30px_rgb(0,0,0,0.06)] hover:border-[#3b82f6] transition duration-300 cursor-pointer group flex flex-col items-center">
                 <div class="mb-4 text-[#2563eb] group-hover:-translate-y-1 transition duration-300">
-                    <svg class="w-10 h-10 mx-auto" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
-                        <circle cx="12" cy="12" r="9"/>
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v18M3 12h18M7.5 4.2c2.5 3 2.5 12.6 0 15.6M16.5 4.2c-2.5 3-2.5 12.6 0 15.6"/>
+                    <svg class="w-10 h-10 mx-auto" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+                        <circle cx="12" cy="12" r="10"/>
+                        <path d="M12 2v20"/>
+                        <path d="M2 12h20"/>
+                        <path d="M6 4c3 3 3 13 0 16"/>
+                        <path d="M18 4c-3 3-3 13 0 16"/>
                     </svg>
                 </div>
                 <h3 class="font-bold text-gray-900 text-[15px] mb-1">Deporte</h3>
                 <p class="text-[13px] text-[#3b82f6]">63 negocios</p>
-            </div>
+            </a>
 
-            <!-- 12. Belleza -->
-            <div class="bg-white border border-gray-200 rounded-[16px] py-8 px-4 text-center hover:shadow-[0_8px_30px_rgb(0,0,0,0.06)] hover:border-[#3b82f6] transition duration-300 cursor-pointer group flex flex-col items-center">
+            <!-- 12. Belleza (Vestido exacto al Figma) -->
+            <a href="{{ url('/explorar?categoria=Belleza') }}" class="bg-white border border-gray-200 rounded-[16px] py-8 px-4 text-center hover:shadow-[0_8px_30px_rgb(0,0,0,0.06)] hover:border-[#3b82f6] transition duration-300 cursor-pointer group flex flex-col items-center">
                 <div class="mb-4 text-[#2563eb] group-hover:-translate-y-1 transition duration-300">
-                    <svg class="w-10 h-10 mx-auto" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
-                        <path d="M8.5 3.5c1.5 2 5.5 2 7 0l2 5.5-3.5 3h-4l-3.5-3z" />
-                        <path d="M10 12l-4 9h12l-4-9" />
+                    <svg class="w-10 h-10 mx-auto" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+                        <!-- Corpiño y tirantes -->
+                        <path d="M9 4v3L7 10l2 2h6l2-2-2-3V4"/>
+                        <!-- Escote en U -->
+                        <path d="M9 7q3 3 6 0"/>
+                        <!-- Falda corte A -->
+                        <path d="M9 12l-3 8h12l-3-8"/>
                     </svg>
                 </div>
                 <h3 class="font-bold text-gray-900 text-[15px] mb-1">Belleza</h3>
                 <p class="text-[13px] text-[#3b82f6]">71 negocios</p>
-            </div>
+            </a>
 
         </div>
     </section>
     <!-- ========================================== -->
 
-   <!-- ========================================== -->
+    @guest
+    <!-- ========================================== -->
     <!-- SECCIÓN 5: CÓMO FUNCIONA                   -->
     <!-- ========================================== -->
     <!-- Fondo celeste ligeramente más marcado (bg-[#ebf4ff]) -->
@@ -395,7 +549,7 @@
             <h2 class="text-4xl lg:text-5xl font-extrabold text-[#0f172a] mb-4 tracking-tight">¿Cómo funciona SINGKI?</h2>
             <p class="text-gray-600 text-lg mb-20 font-light">En tres simples pasos encuentra lo que tu negocio necesita</p>
             
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div class="grid grid-cols-1 md:grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
                 
                 <!-- Tarjeta 1 -->
                 <div class="bg-white p-10 rounded-[2rem] shadow-[0_8px_30px_rgb(0,0,0,0.04)] text-left flex flex-col justify-start h-full border border-gray-50">
@@ -445,9 +599,10 @@
             </div>
         </div>
     </section>
+    @endguest
     <!-- ========================================== -->
 
-   <!-- ========================================== -->
+    <!-- ========================================== -->
     <!-- SECCIÓN 6: NEGOCIOS DESTACADOS             -->
     <!-- ========================================== -->
     <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 bg-white">
@@ -461,7 +616,7 @@
         </div>
         
         <!-- Cuadrícula de 4 tarjetas -->
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div class="grid grid-cols-1 md:grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             @forelse($negocios_destacados ?? [] as $negocio)
             <!-- Borde índigo muy fino (border-[#818cf8]) como en el Figma -->
             <div class="bg-white border border-[#818cf8] rounded-[16px] overflow-hidden hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] transition duration-300 group flex flex-col relative">
@@ -521,26 +676,88 @@
     <!-- ========================================== -->
 
     <!-- ========================================== -->
+    <!-- SECCIÓN PRODUCTOS DISPONIBLES              -->
+    <!-- ========================================== -->
+    <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 bg-[#f8fafc]">
+        <!-- Encabezado de la sección -->
+        <div class="flex justify-between items-end mb-10">
+            <div>
+                <h2 class="text-3xl font-extrabold text-[#0f172a] mb-2 tracking-tight">Productos disponibles</h2>
+                <p class="text-gray-500 font-light text-sm">Explora lo más reciente en nuestro catálogo</p>
+            </div>
+            <a href="{{ route('products.index') }}" class="text-[#3b82f6] font-medium hover:underline flex items-center gap-2 text-sm">Ver todos <span aria-hidden="true">&rarr;</span></a>
+        </div>
+        
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-5">
+            @forelse($productos ?? [] as $producto)
+                @php $stock = $producto->quantity ?? $producto->stock ?? 0; @endphp
+                <div class="bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden flex flex-col h-full hover:shadow-md transition-shadow relative group">
+                    
+                    <div class="relative h-40 bg-gray-50 flex items-center justify-center p-3">
+                        <img src="{{ $producto->image_url ?? asset('images/placeholder.png') }}" class="object-contain max-h-full">
+                        @if($stock > 0)
+                            <span class="absolute top-3 right-3 bg-green-50 text-green-500 border border-green-100 px-2 py-0.5 rounded-full text-[10px] font-bold">Disponible</span>
+                        @else
+                            <span class="absolute top-3 right-3 bg-red-50 text-red-500 border border-red-100 px-2 py-0.5 rounded-full text-[10px] font-bold">Agotado</span>
+                        @endif
+                    </div>
+
+                    <div class="p-4 flex-1 flex flex-col justify-between">
+                        <div>
+                            <p class="text-[10px] text-gray-400 uppercase mb-1">{{ $producto->brand->name ?? $producto->supplier->name ?? 'SINGKI' }}</p>
+                            <h4 class="text-xs font-bold text-gray-900 mb-2 leading-tight">{{ $producto->name }}</h4>
+                            <p class="text-sm font-bold text-[#1F51FF] mb-3">C$ {{ number_format($producto->cost ?? $producto->price ?? 0, 0) }}</p>
+                        </div>
+                        
+                        @if($stock <= 0)
+                            <a href="{{ url('/producto/'.$producto->id.'/reservar') }}" class="w-full bg-[#1F51FF] hover:bg-blue-700 text-white text-center py-2.5 rounded-lg text-xs font-medium transition-colors mt-auto opacity-0 group-hover:opacity-100 absolute bottom-0 left-0">
+                                Reservar cuando esté disponible
+                            </a>
+                        @endif
+                    </div>
+                </div>
+            @empty
+                <p class="text-gray-500 text-sm">No hay productos.</p>
+            @endforelse
+
+            <!-- PRODUCTO ESTÁTICO (DEMO AGOTADO PARA PRESENTACIÓN) -->
+            <div class="group relative bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden flex flex-col h-full hover:shadow-md transition-all duration-300 pb-2">
+                
+                <div class="relative h-40 bg-gray-50 flex items-center justify-center p-3">
+                    <img src="https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?w=300&q=80" alt="Monitor Dell 27 4K" class="object-contain max-h-full">
+                    <span class="absolute top-3 right-3 bg-red-50 text-red-500 border border-red-100 px-2 py-0.5 rounded-full text-[10px] font-bold tracking-wide">Agotado</span>
+                </div>
+
+                <div class="p-4 flex-1 flex flex-col bg-white">
+                    <p class="text-[10px] text-gray-400 uppercase tracking-wider mb-1">Dell</p>
+                    <h4 class="text-xs font-bold text-[#040116] leading-tight mb-2">Monitor Dell 27" 4K</h4>
+                    <p class="text-sm font-bold text-[#1F51FF] mt-auto">C$ 4,200</p>
+                </div>
+                
+                <!-- Botón Hover Anclado Abajo -->
+                <a href="{{ url('/producto/agotado/reservar') }}" class="absolute bottom-0 left-0 w-full bg-[#1F51FF] hover:bg-blue-700 text-white text-center py-2.5 text-xs font-medium opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-20">
+                    Reservar cuando esté disponible
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========================================== -->
     <!-- SECCIÓN 7: BANNER CALL TO ACTION           -->
     <!-- ========================================== -->
     <section class="bg-gradient-to-r from-[#46a8ff] to-[#2b5bf4] text-white">
-        <!-- Redujimos el padding vertical (py-16 en lugar de py-24) para hacerlo menos alto -->
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
             
             <!-- Columna Izquierda -->
             <div>
-                <!-- Etiqueta superior delgada y transparente -->
                 <span class="border border-white/40 rounded-full px-4 py-1 text-[10px] font-semibold tracking-wide uppercase mb-6 inline-block text-white/90">
                     Para emprendedores y proveedores
                 </span>
-                
-                <h2 class="text-3xl lg:text-4xl font-extrabold mb-4 tracking-tight">Impulsa tu negocio con SINGKI</h2>
-                
+                <h2 class="font-ragick font-normal text-3xl lg:text-4xl mb-4 tracking-tight">Impulsa tu negocio con SINGKI</h2>
                 <p class="mb-6 text-white/90 text-sm font-light leading-relaxed max-w-md">
                     Registra tu negocio, publica tu catálogo de productos o servicios, gestiona tu inventario y conecta con clientes que están buscando exactamente lo que tú ofreces.
                 </p>
                 
-                <!-- Lista con checks de SVG sutiles y menos espaciado (mb-8 en lugar de mb-12) -->
                 <ul class="space-y-3 mb-8 text-[13px] font-light text-white/90">
                     <li class="flex items-center gap-2">
                         <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path></svg> 
@@ -560,152 +777,125 @@
                     </li>
                 </ul>
                 
-                <!-- Botón más compacto -->
-                <button class="bg-white text-[#2563eb] font-bold px-8 py-2.5 rounded-full hover:bg-gray-100 transition duration-300 text-sm shadow-md">
+                <a href="{{ route('register') }}" class="inline-block bg-white text-[#2563eb] font-bold px-8 py-2.5 rounded-full hover:bg-gray-100 transition duration-300 text-sm shadow-md text-center">
                     Registrar mi negocio
-                </button>
+                </a>
             </div>
             
-            <!-- Columna Derecha: Tarjetas Transparentes con bordes finos -->
+            <!-- Columna Derecha -->
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                
-                <!-- Tarjeta 1: Caja (Gestión de inventario) -->
                 <div class="border border-white/30 rounded-[12px] p-5 hover:border-white/60 transition">
-                    <svg class="w-6 h-6 text-white mb-3" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M20 7.5v9l-8 4.5-8-4.5v-9l8-4.5 8 4.5zM12 12l8-4.5M12 12v9M12 12L4 7.5"></path>
-                    </svg>
+                    <svg class="w-6 h-6 text-white mb-3" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M20 7.5v9l-8 4.5-8-4.5v-9l8-4.5 8 4.5zM12 12l8-4.5M12 12v9M12 12L4 7.5"></path></svg>
                     <h4 class="font-bold mb-1 text-[14px] leading-tight text-white">Gestión de inventario</h4>
                     <p class="text-[11px] text-white/70 font-light">Controla stock y disponibilidad</p>
                 </div>
-
-                <!-- Tarjeta 2: Usuarios (Conexión clientes) -->
                 <div class="border border-white/30 rounded-[12px] p-5 hover:border-white/60 transition">
-                    <svg class="w-6 h-6 text-white mb-3" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path>
-                    </svg>
+                    <svg class="w-6 h-6 text-white mb-3" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
                     <h4 class="font-bold mb-1 text-[14px] leading-tight text-white">Conexión con clientes</h4>
                     <p class="text-[11px] text-white/70 font-light">Chat y contacto directo</p>
                 </div>
-
-                <!-- Tarjeta 3: Flecha (Visibilidad) -->
                 <div class="border border-white/30 rounded-[12px] p-5 hover:border-white/60 transition">
-                    <svg class="w-6 h-6 text-white mb-3" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
-                    </svg>
+                    <svg class="w-6 h-6 text-white mb-3" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path></svg>
                     <h4 class="font-bold mb-1 text-[14px] leading-tight text-white">Visibilidad</h4>
                     <p class="text-[11px] text-white/70 font-light">Perfil público completo</p>
                 </div>
-
-                <!-- Tarjeta 4: Campana (Notificaciones) -->
                 <div class="border border-white/30 rounded-[12px] p-5 hover:border-white/60 transition">
-                    <svg class="w-6 h-6 text-white mb-3" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path>
-                    </svg>
+                    <svg class="w-6 h-6 text-white mb-3" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path></svg>
                     <h4 class="font-bold mb-1 text-[14px] leading-tight text-white">Notificaciones</h4>
                     <p class="text-[11px] text-white/70 font-light">Alertas de reservas y pedidos</p>
                 </div>
-
             </div>
         </div>
     </section>
     <!-- ========================================== -->
 
+    @guest
     <!-- ========================================== -->
     <!-- SECCIÓN 8: EXPERIENCIAS COMUNIDAD          -->
     <!-- ========================================== -->
     <section class="max-w-7xl mx-auto px-4 py-24 text-center bg-[#f8fafc] overflow-hidden">
-        
-        <!-- Encabezado -->
         <span class="px-5 py-1.5 rounded-full border border-blue-200 text-[#2563eb] text-[10px] font-bold tracking-[0.2em] uppercase mb-8 inline-block bg-transparent shadow-sm">COMUNIDAD SINGKI</span>
         <h2 class="text-4xl lg:text-5xl font-extrabold text-[#0f172a] mb-5 tracking-tight">Experiencias de nuestra comunidad</h2>
         <p class="text-gray-500 text-[15px] mb-16 font-light max-w-xl mx-auto leading-relaxed">Clientes, emprendedores y proveedores que ya confían en SINGKI para hacer crecer sus negocios.</p>
         
-        <!-- Contenedor del Carrusel Falso (Visual) -->
-        <div class="flex justify-center items-center gap-6 lg:gap-10 mb-12 relative w-full max-w-[1200px] mx-auto">
-            
-            <!-- Tarjeta Izquierda (Atenuada) -->
-            <div class="hidden lg:block w-[300px] bg-[#2563eb] rounded-[32px] overflow-hidden opacity-40 scale-90 blur-[1px] select-none pointer-events-none">
-                <div class="h-48 relative">
-                    <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=500&q=80" class="w-full h-full object-cover grayscale">
+        <div x-data="{ active: 1 }" class="relative w-full max-w-[1200px] mx-auto mb-16">
+            <div class="flex flex-col md:flex-row justify-center items-center gap-6 lg:gap-10 relative w-full overflow-hidden">
+                
+                <!-- Tarjeta 0 -->
+                <div @click="active = 0" class="transition-all duration-500 ease-in-out transform cursor-pointer w-full md:w-[300px] lg:w-[320px] shrink-0 rounded-[32px] overflow-hidden" :class="active === 0 ? 'scale-100 md:scale-110 z-20 bg-[#2563eb] shadow-[0_20px_50px_rgba(37,99,235,0.3)]' : 'scale-90 z-10 bg-blue-300 opacity-60 md:opacity-50 md:blur-[1px] hover:opacity-80 hover:blur-none hidden md:block'">
+                    <div class="h-48 md:h-56 relative">
+                        <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=500&q=80" class="w-full h-full object-cover transition-all duration-500" :class="active === 0 ? 'grayscale-0' : 'grayscale'">
+                        <div x-show="active === 0" x-transition.opacity class="absolute bottom-4 left-4 bg-slate-900/70 backdrop-blur-md text-white text-[10px] font-semibold px-4 py-1.5 rounded-full uppercase tracking-wider border border-white/10">Cliente</div>
+                    </div>
+                    <div class="p-6 md:p-8 text-left transition-all duration-500" :class="active === 0 ? 'text-white' : 'text-blue-50/80'">
+                        <div class="text-yellow-400 text-sm md:text-lg mb-3 tracking-widest">★★★★★</div>
+                        <p class="mb-4 font-light leading-relaxed text-[12px] md:text-[14px]" :class="active === 0 ? 'line-clamp-none' : 'line-clamp-3'">"Encontré exactamente lo que necesitaba en minutos. SINGKI me conectó con un proveedor confiable y el proceso fue súper sencillo."</p>
+                        <div>
+                            <p class="font-bold text-[13px] md:text-[15px]">María González</p>
+                        </div>
+                    </div>
                 </div>
-                <div class="p-6 text-left text-white h-48">
-                    <div class="text-yellow-400 text-sm mb-3">★★★★★</div>
-                    <p class="mb-4 font-light text-blue-50 text-[12px] line-clamp-3">"Encontré exactamente lo que necesitaba en minutos. SINGKI me conectó con un proveedor confiable que..."</p>
-                    <div>
-                        <p class="font-bold text-[13px]">María González</p>
+
+                <!-- Tarjeta 1 -->
+                <div @click="active = 1" class="transition-all duration-500 ease-in-out transform cursor-pointer w-full md:w-[300px] lg:w-[320px] shrink-0 rounded-[32px] overflow-hidden" :class="active === 1 ? 'scale-100 md:scale-110 z-20 bg-[#2563eb] shadow-[0_20px_50px_rgba(37,99,235,0.3)]' : 'scale-90 z-10 bg-blue-300 opacity-60 md:opacity-50 md:blur-[1px] hover:opacity-80 hover:blur-none hidden md:block'">
+                    <div class="h-48 md:h-56 relative">
+                        <img src="https://images.unsplash.com/photo-1556157382-97eda2d62296?w=500&q=80" class="w-full h-full object-cover transition-all duration-500" :class="active === 1 ? 'grayscale-0' : 'grayscale'">
+                        <div x-show="active === 1" x-transition.opacity class="absolute bottom-4 left-4 bg-slate-900/70 backdrop-blur-md text-white text-[10px] font-semibold px-4 py-1.5 rounded-full uppercase tracking-wider border border-white/10">Emprendedor</div>
+                    </div>
+                    <div class="p-6 md:p-8 text-left transition-all duration-500" :class="active === 1 ? 'text-white' : 'text-blue-50/80'">
+                        <div class="text-yellow-400 text-sm md:text-lg mb-3 tracking-widest">★★★★★</div>
+                        <p class="mb-4 font-light leading-relaxed text-[12px] md:text-[14px]" :class="active === 1 ? 'line-clamp-none' : 'line-clamp-3'">"Registré mi negocio en SINGKI y en la primera semana ya tenía consultas reales. La plataforma le da visibilidad a mi emprendimiento."</p>
+                        <div>
+                            <p class="font-bold text-[13px] md:text-[15px]">Carlos Pérez</p>
+                            <p class="text-[11px] md:text-[12px] text-blue-200 font-light mt-0.5">Estelí, Nicaragua</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tarjeta 2 -->
+                <div @click="active = 2" class="transition-all duration-500 ease-in-out transform cursor-pointer w-full md:w-[300px] lg:w-[320px] shrink-0 rounded-[32px] overflow-hidden" :class="active === 2 ? 'scale-100 md:scale-110 z-20 bg-[#2563eb] shadow-[0_20px_50px_rgba(37,99,235,0.3)]' : 'scale-90 z-10 bg-blue-300 opacity-60 md:opacity-50 md:blur-[1px] hover:opacity-80 hover:blur-none hidden md:block'">
+                    <div class="h-48 md:h-56 relative">
+                        <img src="https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?w=500&q=80" class="w-full h-full object-cover transition-all duration-500" :class="active === 2 ? 'grayscale-0' : 'grayscale'">
+                        <div x-show="active === 2" x-transition.opacity class="absolute bottom-4 left-4 bg-slate-900/70 backdrop-blur-md text-white text-[10px] font-semibold px-4 py-1.5 rounded-full uppercase tracking-wider border border-white/10">Proveedora</div>
+                    </div>
+                    <div class="p-6 md:p-8 text-left transition-all duration-500" :class="active === 2 ? 'text-white' : 'text-blue-50/80'">
+                        <div class="text-yellow-400 text-sm md:text-lg mb-3 tracking-widest">★★★★★</div>
+                        <p class="mb-4 font-light leading-relaxed text-[12px] md:text-[14px]" :class="active === 2 ? 'line-clamp-none' : 'line-clamp-3'">"El panel de administración es muy completo. Puedo gestionar mi inventario, ver reservas y chatear con los clientes fácilmente."</p>
+                        <div>
+                            <p class="font-bold text-[13px] md:text-[15px]">Ana Rodríguez</p>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Tarjeta Central (Activa y Principal) -->
-            <div class="w-full max-w-[380px] bg-[#2563eb] rounded-[32px] overflow-hidden shadow-[0_20px_50px_rgba(37,99,235,0.3)] relative z-10 transition-transform duration-300">
-                <div class="h-64 relative">
-                    <!-- Foto principal -->
-                    <img src="https://images.unsplash.com/photo-1556157382-97eda2d62296?w=500&q=80" class="w-full h-full object-cover">
-                    <!-- Etiqueta sobre la foto -->
-                    <div class="absolute bottom-4 left-4 bg-slate-900/70 backdrop-blur-md text-white text-[10px] font-semibold px-4 py-1.5 rounded-full uppercase tracking-wider border border-white/10">Emprendedor</div>
+            <!-- Controles -->
+            <div class="flex items-center justify-center gap-6 mt-16 md:mt-12">
+                <button @click="active = active === 0 ? 2 : active - 1" class="w-10 h-10 rounded-full border-2 border-[#3b82f6] flex items-center justify-center text-[#3b82f6] hover:bg-[#3b82f6] hover:text-white transition duration-300">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"></path></svg>
+                </button>
+                <div class="flex items-center gap-2.5">
+                    <button @click="active = 0" :class="active === 0 ? 'w-6 bg-[#2563eb]' : 'w-2 bg-gray-300'" class="h-2 rounded-full transition-all duration-300"></button>
+                    <button @click="active = 1" :class="active === 1 ? 'w-6 bg-[#2563eb]' : 'w-2 bg-gray-300'" class="h-2 rounded-full transition-all duration-300"></button>
+                    <button @click="active = 2" :class="active === 2 ? 'w-6 bg-[#2563eb]' : 'w-2 bg-gray-300'" class="h-2 rounded-full transition-all duration-300"></button>
                 </div>
-                <div class="p-8 text-left text-white">
-                    <div class="text-yellow-400 text-lg mb-4 tracking-widest">★★★★★</div>
-                    <p class="mb-6 font-light leading-relaxed text-blue-50 text-[14px]">"Registré mi negocio en SINGKI y en la primera semana ya tenía consultas de clientes reales. La plataforma es intuitiva, profesional y le da visibilidad real a mi emprendimiento."</p>
-                    <div>
-                        <p class="font-bold text-[15px]">Carlos Pérez</p>
-                        <p class="text-[12px] text-blue-200 font-light mt-0.5">Estelí, Nicaragua</p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Tarjeta Derecha (Atenuada) -->
-            <div class="hidden lg:block w-[300px] bg-[#2563eb] rounded-[32px] overflow-hidden opacity-40 scale-90 blur-[1px] select-none pointer-events-none">
-                <div class="h-48 relative">
-                    <img src="https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?w=500&q=80" class="w-full h-full object-cover grayscale">
-                </div>
-                <div class="p-6 text-left text-white h-48">
-                    <div class="text-yellow-400 text-sm mb-3">★★★★★</div>
-                    <p class="mb-4 font-light text-blue-50 text-[12px] line-clamp-3">"El panel de administración es muy completo. Puedo gestionar mi inventario, ver reservas y chatear con..."</p>
-                    <div>
-                        <p class="font-bold text-[13px]">Ana Rodríguez</p>
-                    </div>
-                </div>
+                <button @click="active = active === 2 ? 0 : active + 1" class="w-10 h-10 rounded-full border-2 border-[#3b82f6] flex items-center justify-center text-[#3b82f6] hover:bg-[#3b82f6] hover:text-white transition duration-300">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"></path></svg>
+                </button>
             </div>
         </div>
 
-        <!-- Controles del Carrusel (Flechas y Puntos) -->
-        <div class="flex items-center justify-center gap-6 mb-16">
-            <!-- Flecha Izquierda -->
-            <button class="w-10 h-10 rounded-full border-2 border-[#3b82f6] flex items-center justify-center text-[#3b82f6] hover:bg-[#3b82f6] hover:text-white transition duration-300">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"></path></svg>
-            </button>
-            
-            <!-- Puntos de navegación -->
-            <div class="flex items-center gap-2.5">
-                <div class="w-2 h-2 rounded-full bg-gray-300"></div>
-                <div class="w-6 h-2 rounded-full bg-[#2563eb]"></div> <!-- Activo -->
-                <div class="w-2 h-2 rounded-full bg-gray-300"></div>
-            </div>
-            
-            <!-- Flecha Derecha -->
-            <button class="w-10 h-10 rounded-full border-2 border-[#3b82f6] flex items-center justify-center text-[#3b82f6] hover:bg-[#3b82f6] hover:text-white transition duration-300">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"></path></svg>
-            </button>
-        </div>
-
-        <!-- Divisor sutil -->
         <div class="max-w-4xl mx-auto h-px bg-gradient-to-r from-transparent via-blue-200 to-transparent mb-16"></div>
 
         <!-- Estadísticas -->
         <div class="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-10">
-            <!-- Estadística 1 -->
             <div>
                 <div class="text-[40px] font-extrabold text-[#0f172a] mb-1 tracking-tight">1,200<span class="text-[#2563eb] font-black">+</span></div>
                 <div class="text-[13px] text-[#3b82f6] font-medium">Negocios registrados</div>
             </div>
-            <!-- Estadística 2 -->
             <div>
                 <div class="text-[40px] font-extrabold text-[#0f172a] mb-1 tracking-tight">8,500<span class="text-[#2563eb] font-black">+</span></div>
                 <div class="text-[13px] text-[#3b82f6] font-medium">Usuarios activos</div>
             </div>
-            <!-- Estadística 3 -->
             <div>
                 <div class="text-[40px] font-extrabold text-[#0f172a] mb-1 tracking-tight flex items-center justify-center gap-1">
                     4.9 <span class="text-[#2563eb] text-3xl -mt-1">★</span>
@@ -713,7 +903,6 @@
                 <div class="text-[13px] text-[#3b82f6] font-medium">Calificación promedio</div>
             </div>
         </div>
-        
     </section>
     <!-- ========================================== -->
 
@@ -724,7 +913,6 @@
         <h2 class="text-4xl lg:text-5xl font-extrabold text-[#0f172a] mb-4 tracking-tight">Preguntas frecuentes</h2>
         <p class="text-gray-500 text-lg mb-14 font-light">Respuestas a las dudas más comunes sobre SINGKI</p>
         
-        <!-- Redujimos el ancho a max-w-3xl para que no queden tan estiradas y se vean como en Figma -->
         <div class="space-y-5 max-w-3xl mx-auto">
             @php
                 $faqList = [
@@ -753,24 +941,17 @@
 
             @foreach($faqList as $faq)
             <div x-data="{ open: false }" class="border border-blue-500 rounded-2xl bg-white overflow-hidden transition-all duration-300">
-                <!-- Botón de pregunta -->
                 <button @click="open = !open" class="w-full px-8 py-[18px] flex justify-between items-center text-left hover:bg-blue-50/40 transition duration-300 group focus:outline-none">
                     <span class="font-bold text-[#0f172a] text-[15px]">{{ $faq['q'] }}</span>
-                    
-                    <!-- Ícono animado -->
                     <div class="shrink-0 w-7 h-7 rounded-full border-[2px] border-[#0f172a] flex items-center justify-center text-[#0f172a] group-hover:bg-[#0f172a] group-hover:text-white transition-all duration-300" :class="{'bg-[#0f172a] text-white rotate-180': open}">
-                        <!-- Icono + -->
                         <svg x-show="!open" class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"></path>
                         </svg>
-                        <!-- Icono - -->
                         <svg x-show="open" class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" style="display: none;">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 12h-15"></path>
                         </svg>
                     </div>
                 </button>
-                
-                <!-- Respuesta -->
                 <div x-show="open" 
                      x-transition:enter="transition ease-out duration-200" 
                      x-transition:enter-start="opacity-0 -translate-y-2" 
@@ -792,7 +973,6 @@
     <!-- SECCIÓN 10: FOOTER FINAL                   -->
     <!-- ========================================== -->
     <section>
-        @guest
         <!-- Bloque CTA (Fondo Blanco) -->
         <div class="bg-white py-24 text-center border-t border-gray-50">
             <h2 class="text-4xl lg:text-5xl font-extrabold text-[#2563eb] mb-4 tracking-tight">¿Listo para empezar?</h2>
@@ -804,7 +984,7 @@
         </div>
         @endguest
 
-        <!-- Footer (Fondo ajustado EXACTAMENTE al código de la paleta oficial: #00003d) -->
+        <!-- Footer -->
         @include('components.footer')
     </section>
     <!-- ========================================== -->

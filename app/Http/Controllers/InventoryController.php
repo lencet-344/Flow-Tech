@@ -40,7 +40,7 @@ class InventoryController extends Controller
         $data['batch_number'] = rand(100000, 999999);
         $data['status'] = 'Activo';
         Inventory::create($data);
-        return redirect()->route("inventories.index")->with("success", "Inventario a sido creado correctamente.");
+        return redirect()->route("inventories.index")->with("success", 'Inventario ha sido creado correctamente.');
     }
 
     /**
@@ -70,7 +70,7 @@ class InventoryController extends Controller
     {
         $inventory = Inventory::with("product")->findOrFail($id);
         $inventory->update($request->validated());
-        return redirect()->route("inventories.index")->with("success", "Inventario a sido actualizado correctamente.");
+        return redirect()->route("inventories.index")->with("success", 'Inventario ha sido actualizado correctamente.');
     }
 
     /**
@@ -80,6 +80,6 @@ class InventoryController extends Controller
     {
         $inventory = Inventory::with("product")->findOrFail($id);
         $inventory->delete();
-        return redirect()->route("inventories.index")->with("success", "Inventario a sido eliminado correctamente.");
+        return redirect()->route("inventories.index")->with("success", 'Inventario ha sido eliminado correctamente.');
     }
 }

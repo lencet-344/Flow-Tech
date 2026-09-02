@@ -15,7 +15,8 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        'role'
+        'role',
+        'status'
     ];
 
     public function role()
@@ -31,5 +32,10 @@ class User extends Authenticatable
     public function favorites()
     {
         return $this->belongsToMany(Product::class, 'favorite', 'user_id', 'product_id');
+    }
+
+    public function company()
+    {
+        return $this->hasOne(Company::class, 'email', 'email');
     }
 }

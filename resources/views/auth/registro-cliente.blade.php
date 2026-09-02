@@ -34,11 +34,13 @@
                 <div>
                     <label for="name" class="block text-sm font-semibold text-[#040116] mb-1.5">Nombre</label>
                     <input type="text" id="name" name="name" placeholder="Ej. Juan" class="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-[#1F51FF] focus:ring-1 focus:ring-[#1F51FF] text-[#1F51FF] font-medium placeholder-[#8FA9FF]" required>
+                        @error('name') <span class="text-red-500 text-sm mt-1 block">{{ $message }}</span> @enderror
                 </div>
                 <!-- Columna 2 -->
                 <div>
                     <label for="last_name" class="block text-sm font-semibold text-[#040116] mb-1.5">Apellidos</label>
                     <input type="text" id="last_name" name="last_name" placeholder="Ej. Pérez" class="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-[#1F51FF] focus:ring-1 focus:ring-[#1F51FF] text-[#1F51FF] font-medium placeholder-[#8FA9FF]" required>
+                        @error('last_name') <span class="text-red-500 text-sm mt-1 block">{{ $message }}</span> @enderror
                 </div>
             </div>
 
@@ -46,29 +48,34 @@
             <div class="mb-4">
                 <label for="email" class="block text-sm font-semibold text-[#040116] mb-1.5">Correo electrónico</label>
                 <input type="email" id="email" name="email" placeholder="correo@ejemplo.com" class="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-[#1F51FF] focus:ring-1 focus:ring-[#1F51FF] text-[#1F51FF] font-medium placeholder-[#8FA9FF]" required>
+                        @error('email') <span class="text-red-500 text-sm mt-1 block">{{ $message }}</span> @enderror
             </div>
 
             <!-- Fila 3 -->
             <div class="mb-4">
                 <label for="phone" class="block text-sm font-semibold text-[#040116] mb-1.5">Número de Teléfono</label>
                 <input type="tel" id="phone" name="phone" placeholder="8888-0000" class="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-[#1F51FF] focus:ring-1 focus:ring-[#1F51FF] text-[#1F51FF] font-medium placeholder-[#8FA9FF]" required>
+                        @error('phone') <span class="text-red-500 text-sm mt-1 block">{{ $message }}</span> @enderror
             </div>
 
             <!-- Fila 4 -->
             <div class="mb-4">
                 <label for="password" class="block text-sm font-semibold text-[#040116] mb-1.5">Contraseña</label>
                 <input type="password" id="password" name="password" placeholder="Mínimo 8 caracteres" class="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-[#1F51FF] focus:ring-1 focus:ring-[#1F51FF] text-[#1F51FF] font-medium placeholder-[#8FA9FF]" required>
+                        @error('password') <span class="text-red-500 text-sm mt-1 block">{{ $message }}</span> @enderror
             </div>
 
             <!-- Fila 5 -->
             <div class="mb-6">
                 <label for="password_confirmation" class="block text-sm font-semibold text-[#040116] mb-1.5">Repite tu contraseña</label>
                 <input type="password" id="password_confirmation" name="password_confirmation" placeholder="Repite tu contraseña" class="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-[#1F51FF] focus:ring-1 focus:ring-[#1F51FF] text-[#1F51FF] font-medium placeholder-[#8FA9FF]" required>
+                        @error('password_confirmation') <span class="text-red-500 text-sm mt-1 block">{{ $message }}</span> @enderror
             </div>
 
             <!-- Checkbox -->
             <div class="flex items-center gap-2 mb-6 text-sm text-gray-700">
                 <input type="checkbox" id="terms" name="terms" class="rounded border-gray-300 text-[#1F51FF] focus:ring-[#1F51FF]" required>
+                        @error('terms') <span class="text-red-500 text-sm mt-1 block">{{ $message }}</span> @enderror
                 <label for="terms">Acepto los Términos de uso y la Política de privacidad</label>
             </div>
 

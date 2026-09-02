@@ -12,7 +12,10 @@ export default {
     theme: {
         extend: {
             fontFamily: {
-                sans: ['Figtree', ...defaultTheme.fontFamily.sans],
+                // Manrope reemplaza a la fuente por defecto de todo el sitio
+                sans: ['Manrope', ...defaultTheme.fontFamily.sans],
+                // Registramos Ragick por si queremos usar la clase font-ragick manualmente
+                ragick: ['"Ragick"', 'sans-serif'],
             },
         },
     },

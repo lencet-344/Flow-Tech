@@ -1,6 +1,126 @@
 @extends('layouts.admin')
 
 @section('content')
+
+@if(auth()->check() && (optional(auth()->user())->is_premium || request()->has('premium')))
+<!-- VISTA: COMUNIDAD (MODO PREMIUM DESBLOQUEADO) -->
+<div class="max-w-5xl mx-auto p-6 bg-[#f8fafc] min-h-screen">
+    
+    <!-- Header -->
+    <div class="flex justify-between items-center mb-8">
+        <div>
+            <h2 class="text-3xl font-extrabold text-[#0f172a] flex items-center gap-3 tracking-tight">
+                Comunidad de Crecimiento 
+                <span class="bg-[#8b5cf6] text-white text-[10px] px-2.5 py-1 rounded-md font-bold uppercase tracking-wider flex items-center gap-1 shadow-sm"><span class="text-yellow-300 text-xs">★</span> Premium</span>
+            </h2>
+            <p class="text-gray-500 text-sm mt-1">Resuelve dudas de tu negocio con apoyo oficial de SINGKI</p>
+        </div>
+        <button class="bg-[#8b5cf6] hover:bg-purple-600 text-white font-bold px-6 py-2.5 rounded-lg text-sm transition shadow-md flex items-center gap-2">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>
+            Publicar pregunta
+        </button>
+    </div>
+
+    <!-- Cuadrícula de Categorías Premium -->
+    <div class="bg-white border-2 border-[#e9d5ff] rounded-2xl p-6 shadow-sm mb-6">
+        <h3 class="font-bold text-[#0f172a] text-lg mb-4">¿Qué necesitas resolver hoy?</h3>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <button class="border border-[#e9d5ff] bg-[#faf5ff] rounded-xl p-5 flex flex-col items-center text-center hover:bg-[#f3e8ff] transition-colors group">
+                <svg class="w-8 h-8 text-[#8b5cf6] mb-3 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01"></path></svg>
+                <span class="text-xs font-semibold text-[#6b21a8]">Diseño e identidad visual</span>
+            </button>
+            <button class="border border-[#e9d5ff] bg-[#faf5ff] rounded-xl p-5 flex flex-col items-center text-center hover:bg-[#f3e8ff] transition-colors group">
+                <svg class="w-8 h-8 text-[#8b5cf6] mb-3 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>
+                <span class="text-xs font-semibold text-[#6b21a8]">Marketing y redes sociales</span>
+            </button>
+            <button class="border border-[#e9d5ff] bg-[#faf5ff] rounded-xl p-5 flex flex-col items-center text-center hover:bg-[#f3e8ff] transition-colors group">
+                <svg class="w-8 h-8 text-[#8b5cf6] mb-3 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                <span class="text-xs font-semibold text-[#6b21a8]">Precios y finanzas</span>
+            </button>
+            <button class="border border-[#e9d5ff] bg-[#faf5ff] rounded-xl p-5 flex flex-col items-center text-center hover:bg-[#f3e8ff] transition-colors group">
+                <svg class="w-8 h-8 text-[#8b5cf6] mb-3 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
+                <span class="text-xs font-semibold text-[#6b21a8]">Ventas y clientes</span>
+            </button>
+            <!-- Añade el resto de botones de tu grid de la misma manera -->
+        </div>
+    </div>
+
+    <!-- Alerta Informativa -->
+    <div class="bg-white border border-[#e9d5ff] rounded-xl p-4 flex gap-4 items-start shadow-sm mb-6">
+        <div class="w-8 h-8 bg-[#e9d5ff] rounded-lg flex items-center justify-center shrink-0">
+            <svg class="w-5 h-5 text-[#6b21a8]" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path></svg>
+        </div>
+        <p class="text-sm text-gray-700 leading-relaxed font-medium mt-1">
+            Las preguntas son revisadas y respondidas únicamente por el equipo de SINGKI. Las respuestas aparecen como <strong>"Respuesta oficial de SINGKI"</strong> y forman una biblioteca de conocimiento para emprendedores Premium.
+        </p>
+    </div>
+
+    <!-- Pestañas (Tabs) -->
+    <div class="flex gap-2 mb-6">
+        <button class="bg-[#8b5cf6] text-white px-5 py-2 rounded-full text-sm font-bold shadow-sm">Todas</button>
+        <button class="bg-blue-600 text-white px-5 py-2 rounded-full text-sm font-bold shadow-sm">En revisión</button>
+        <button class="bg-blue-600 text-white px-5 py-2 rounded-full text-sm font-bold shadow-sm">Respondidas</button>
+    </div>
+
+    <!-- Feed de Preguntas y Respuestas -->
+    <div class="space-y-6">
+        
+        <!-- Tarjeta de Pregunta 1 -->
+        <div class="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm">
+            <div class="flex justify-between items-center mb-3">
+                <div class="flex gap-2">
+                    <span class="bg-[#a855f7] text-white text-[10px] px-3 py-1 rounded-full font-bold uppercase tracking-wider">Marketing</span> 
+                    <span class="border border-green-200 bg-green-50 text-green-600 text-[10px] px-3 py-1 rounded-full font-bold uppercase tracking-wider">Respondida</span>
+                </div>
+                <span class="text-xs text-gray-400 font-medium">2026-08-20</span>
+            </div>
+            <h4 class="font-bold text-[#0f172a] text-[15px] mb-1">¿Cuál es la mejor estrategia para dar a conocer mi negocio en SINGKI y atraer más clientes?</h4>
+            <p class="text-[11px] text-gray-500 mb-5 font-medium">TechSolutions GT</p>
+            
+            <!-- Caja de Respuesta Oficial -->
+            <div class="border border-[#e9d5ff] rounded-xl p-5 bg-[#faf5ff]">
+                <div class="flex justify-between items-center mb-3">
+                    <div class="flex items-center gap-2">
+                        <div class="w-7 h-7 bg-[#8b5cf6] text-white rounded-full flex items-center justify-center text-xs font-bold shadow-sm">S</div>
+                        <span class="font-bold text-sm text-[#0f172a]">Respuesta oficial de SINGKI</span>
+                    </div>
+                    <span class="text-[11px] text-gray-400 font-medium">2026-08-21</span>
+                </div>
+                <p class="text-[13px] text-gray-700 leading-relaxed font-medium">
+                    Te recomendamos mantener tu perfil completo y actualizado, subir fotos de calidad de tus productos y responder rápidamente los chats. Publicar ofertas periódicas también aumenta tu visibilidad en los resultados de búsqueda.
+                </p>
+            </div>
+        </div>
+
+        <!-- Tarjeta de Pregunta 2 -->
+        <div class="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm">
+            <div class="flex justify-between items-center mb-3">
+                <div class="flex gap-2">
+                    <span class="bg-[#a855f7] text-white text-[10px] px-3 py-1 rounded-full font-bold uppercase tracking-wider">Precios</span> 
+                    <span class="border border-green-200 bg-green-50 text-green-600 text-[10px] px-3 py-1 rounded-full font-bold uppercase tracking-wider">Respondida</span>
+                </div>
+                <span class="text-xs text-gray-400 font-medium">2026-08-21</span>
+            </div>
+            <h4 class="font-bold text-[#0f172a] text-[15px] mb-1">¿Cómo establezco precios competitivos cuando hay otros negocios del mismo rubro con precios muy bajos?</h4>
+            <p class="text-[11px] text-gray-500 mb-5 font-medium">Moda Express</p>
+            
+            <div class="border border-[#e9d5ff] rounded-xl p-5 bg-[#faf5ff]">
+                <div class="flex justify-between items-center mb-3">
+                    <div class="flex items-center gap-2">
+                        <div class="w-7 h-7 bg-[#8b5cf6] text-white rounded-full flex items-center justify-center text-xs font-bold shadow-sm">S</div>
+                        <span class="font-bold text-sm text-[#0f172a]">Respuesta oficial de SINGKI</span>
+                    </div>
+                    <span class="text-[11px] text-gray-400 font-medium">2026-08-22</span>
+                </div>
+                <p class="text-[13px] text-gray-700 leading-relaxed font-medium">
+                    Diferenciarte por valor es clave. Destaca la calidad, el servicio al cliente y la confiabilidad. Evita competir solo por precio; en cambio, asegúrate de que tu propuesta de valor sea clara en tu perfil y descripción de productos.
+                </p>
+            </div>
+        </div>
+        
+    </div>
+</div>
+@else
 <div class="p-8 md:p-10 max-w-5xl mx-auto">
     
     <!-- 1. BANNER HEADER -->
@@ -94,10 +214,12 @@
             </li>
         </ul>
 
-        <button class="w-full bg-[#8b5cf6] hover:bg-[#7c3aed] text-white font-semibold py-4 rounded-xl transition-colors shadow-md flex items-center justify-center gap-2">
+        <a href="{{ url('/admin/premium/planes') }}" class="w-full bg-[#8b5cf6] hover:bg-[#7c3aed] text-white font-semibold py-4 rounded-xl transition-colors shadow-md flex items-center justify-center gap-2">
             <span class="text-yellow-300">⭐</span> Obtener Premium — desde C$199/mes
-        </button>
+        </a>
     </div>
 
 </div>
+@endif
+
 @endsection

@@ -10,7 +10,7 @@
     </div>
 
     <!-- 1. GRID DE MÉTRICAS (5 Columnas) -->
-    <div class="grid grid-cols-1 md:grid-cols-3 xl:grid-cols-5 gap-6 mb-8">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
         <!-- Usuarios -->
         <a href="{{ route('superadmin.users') }}" class="block bg-white border border-blue-400 rounded-xl p-5 shadow-sm hover:shadow-md transition cursor-pointer hover:-translate-y-1 hover:bg-blue-50/50">
             <svg class="w-6 h-6 text-blue-500 mb-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>

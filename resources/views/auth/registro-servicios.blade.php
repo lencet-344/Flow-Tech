@@ -53,26 +53,31 @@
                     <div>
                         <label for="name" class="block text-sm font-semibold text-[#040116] mb-1.5">Nombre</label>
                         <input type="text" id="name" name="name" placeholder="Ej. Juan" class="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-[#1F51FF] focus:ring-1 focus:ring-[#1F51FF] text-[#1F51FF] font-medium placeholder-[#8FA9FF]" required>
+                        @error('name') <span class="text-red-500 text-sm mt-1 block">{{ $message }}</span> @enderror
                     </div>
                     <div>
                         <label for="last_name" class="block text-sm font-semibold text-[#040116] mb-1.5">Apellidos</label>
                         <input type="text" id="last_name" name="last_name" placeholder="Ej. Pérez" class="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-[#1F51FF] focus:ring-1 focus:ring-[#1F51FF] text-[#1F51FF] font-medium placeholder-[#8FA9FF]" required>
+                        @error('last_name') <span class="text-red-500 text-sm mt-1 block">{{ $message }}</span> @enderror
                     </div>
                 </div>
 
                 <div class="mb-4">
                     <label for="email" class="block text-sm font-semibold text-[#040116] mb-1.5">Correo electrónico</label>
                     <input type="email" id="email" name="email" placeholder="servicios@correo.com" class="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-[#1F51FF] focus:ring-1 focus:ring-[#1F51FF] text-[#1F51FF] font-medium placeholder-[#8FA9FF]" required>
+                        @error('email') <span class="text-red-500 text-sm mt-1 block">{{ $message }}</span> @enderror
                 </div>
 
                 <div class="mb-4">
                     <label for="cedula" class="block text-sm font-semibold text-[#040116] mb-1.5">Cédula</label>
                     <input type="text" id="cedula" name="cedula" placeholder="Ej. 001-000000-0000A" class="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-[#1F51FF] focus:ring-1 focus:ring-[#1F51FF] text-[#1F51FF] font-medium placeholder-[#8FA9FF]" required>
+                        @error('cedula') <span class="text-red-500 text-sm mt-1 block">{{ $message }}</span> @enderror
                 </div>
 
                 <div class="mb-4">
                     <label for="password" class="block text-sm font-semibold text-[#040116] mb-1.5">Contraseña</label>
                     <input type="password" id="password" name="password" placeholder="Mínimo 8 caracteres" class="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-[#1F51FF] focus:ring-1 focus:ring-[#1F51FF] text-[#1F51FF] font-medium placeholder-[#8FA9FF]" required>
+                        @error('password') <span class="text-red-500 text-sm mt-1 block">{{ $message }}</span> @enderror
                 </div>
 
                 <button type="button" id="btn-siguiente" class="w-full bg-[#1F51FF] hover:bg-blue-700 text-white font-semibold py-3.5 rounded-xl mt-4 transition-colors">Siguiente &rarr;</button>
@@ -87,11 +92,13 @@
                 <div class="mb-4">
                     <label for="company_name" class="block text-sm font-semibold text-[#040116] mb-1.5">Nombre del negocio *</label>
                     <input type="text" id="company_name" name="company_name" placeholder="Ej. TechSolutions GT" class="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-[#1F51FF] focus:ring-1 focus:ring-[#1F51FF] text-[#1F51FF] font-medium placeholder-[#8FA9FF]" required>
+                        @error('company_name') <span class="text-red-500 text-sm mt-1 block">{{ $message }}</span> @enderror
                 </div>
 
                 <div class="mb-4">
                     <label for="category_id" class="block text-sm font-semibold text-[#040116] mb-1.5">Categoría *</label>
                     <select id="category_id" name="category_id" class="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-[#1F51FF] focus:ring-1 focus:ring-[#1F51FF] text-[#1F51FF] font-medium placeholder-[#8FA9FF]" required>
+                        @error('category_id') <span class="text-red-500 text-sm mt-1 block">{{ $message }}</span> @enderror
                         <option value="">Selecciona una categoría</option>
                         @foreach($categories ?? [] as $category)
                             <option value="{{ $category->id }}">{{ $category->name }}</option>
@@ -102,11 +109,13 @@
                 <div class="mb-4">
                     <label for="description" class="block text-sm font-semibold text-[#040116] mb-1.5">Descripción *</label>
                     <input type="text" id="description" name="description" placeholder="Describe brevemente tu negocio o servicio..." class="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-[#1F51FF] focus:ring-1 focus:ring-[#1F51FF] text-[#1F51FF] font-medium placeholder-[#8FA9FF]" required>
+                        @error('description') <span class="text-red-500 text-sm mt-1 block">{{ $message }}</span> @enderror
                 </div>
 
                 <div class="mb-4">
                     <label for="address" class="block text-sm font-semibold text-[#040116] mb-1.5">Ubicación</label>
                     <input type="text" id="address" name="address" placeholder="Dirección" class="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-[#1F51FF] focus:ring-1 focus:ring-[#1F51FF] text-[#1F51FF] font-medium placeholder-[#8FA9FF]">
+                        @error('address') <span class="text-red-500 text-sm mt-1 block">{{ $message }}</span> @enderror
                 </div>
 
                 <div class="mb-4">
