@@ -73,9 +73,9 @@ Route::middleware(['auth', 'verified', 'prevent-back-history', CheckSuperAdmin::
 });
 
 
-// 2. RUTAS DEL PROVEEDOR / ADMIN (Recuperamos la seguridad original)
+
 Route::middleware(['auth', 'verified', 'prevent-back-history'])->group(function() {
-    // Vistas de Maquetación del Proveedor
+    
     Route::get('/admin/dashboard', function () { return view('admin.dashboard'); });
     Route::get('/admin/perfil', [\App\Http\Controllers\CompanyController::class, 'profile'])->name('admin.perfil');
     Route::get('/admin/inventario', function () { return view('admin.inventario'); });
@@ -84,7 +84,7 @@ Route::middleware(['auth', 'verified', 'prevent-back-history'])->group(function(
     Route::get('/admin/estadisticas', function () { return view('admin.estadisticas'); });
     Route::get('/admin/comunidad-premium', function () { return view('admin.comunidad-premium'); });
     
-    // Controladores Reales
+    
     Route::resource('products', ProductController::class);
     Route::resource('inventories', InventoryController::class);
     Route::get('/offers/success', [OfferController::class, 'success'])->name('offers.success');
@@ -93,7 +93,7 @@ Route::middleware(['auth', 'verified', 'prevent-back-history'])->group(function(
 });
 
 
-// 3. RUTAS DEL USUARIO / COMPRADOR 
+
 Route::middleware(['auth', 'verified', 'prevent-back-history'])->group(function() {
     Route::resource('orders', OrderController::class);
     Route::resource('buy_verifications', Buy_verificationController::class);
@@ -104,7 +104,7 @@ Route::middleware(['auth', 'verified', 'prevent-back-history'])->group(function(
     Route::get('/premium/success', [PremiumController::class, 'success'])->name('premium.success');
 });
 
-// Rutas públicas y de registro
+
 Route::get('/admin/promocionar', function () { return view('admin.promocionar.configurar'); });
 Route::get('/admin/promocionar/confirmar', function () { return view('admin.promocionar.confirmar'); });
 Route::get('/admin/reservas', function () { return view('admin.reservas'); });
