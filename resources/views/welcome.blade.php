@@ -123,7 +123,7 @@
                 <div class="flex gap-4 items-start mb-6">
                     <!-- Ícono Cuadrado Azul -->
                     <div class="w-12 h-12 bg-[#2563eb] rounded-xl flex items-center justify-center shrink-0 shadow-sm">
-                        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+                        <img src="{{ asset('images/Robot.png') }}" alt="Ki" class="w-7 h-7 object-contain scale-110">
                     </div>
                     <!-- Burbuja de texto gris muy suave -->
                     <div class="bg-slate-50 border border-slate-100 p-4 rounded-2xl rounded-tl-sm w-full">
@@ -276,18 +276,7 @@
                 </div>
             </section>
 
-            <!-- Botonera de Acción Rápida (Fondo blanco) -->
-            <section class="bg-white py-5 border-b border-gray-100">
-                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-wrap items-center justify-center md:justify-start gap-3">
-                    <a href="{{ route('favorites.index') }}" class="bg-[#3b82f6] hover:bg-[#2563eb] text-white px-5 py-2.5 rounded-xl font-medium flex items-center gap-2 text-[14px] shadow-sm transition"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path></svg>Mis Favoritos</a>
-                    <a href="{{ url('/admin/reservas') }}" class="bg-[#3b82f6] hover:bg-[#2563eb] text-white px-5 py-2.5 rounded-xl font-medium flex items-center gap-2 text-[14px] shadow-sm transition"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>Mis Reservas</a>
-                    <a href="{{ route('categories.index') }}" class="bg-[#3b82f6] hover:bg-[#2563eb] text-white px-5 py-2.5 rounded-xl font-medium flex items-center gap-2 text-[14px] shadow-sm transition"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"></path></svg>Categorías</a>
-                    <a href="{{ route('products.index') }}" class="bg-[#3b82f6] hover:bg-[#2563eb] text-white px-5 py-2.5 rounded-xl font-medium flex items-center gap-2 text-[14px] shadow-sm transition"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>Buscar</a>
-                    
-                    <a href="{{ url('/admin/dashboard') }}" class="bg-[#020617] hover:bg-gray-900 text-white px-5 py-2.5 rounded-xl font-medium flex items-center gap-2 text-[14px] shadow-sm transition ml-0 sm:ml-3">Administrar negocio</a>
-                </div>
-            </div>
-        </section>
+            
 
         <!-- 2. FRANJA BLANCA (PÍLDORAS DE ACCIÓN) -->
         <section class="w-full bg-white py-5">
@@ -304,7 +293,7 @@
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"></path></svg>
                     Categorías
                 </a>
-                <a href="#" class="bg-[#1F51FF] text-white px-6 py-2.5 rounded-full font-medium flex items-center gap-2 text-sm shadow-sm hover:opacity-90">
+                <a href="{{ route('explorar.index') }}" class="bg-[#1F51FF] text-white px-6 py-2.5 rounded-full font-medium flex items-center gap-2 text-sm shadow-sm hover:opacity-90">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
                     Buscar
                 </a>
@@ -366,7 +355,7 @@
                     </div>
                     <h1 class="font-ragick font-normal text-3xl md:text-5xl lg:text-[3.5rem] leading-[1.1] text-white mb-6 tracking-tight">
                         Encuentra lo que tu negocio <br>
-                        <span class="text-[#38bdf8]">necesita, aquí y ahora.</span>
+                        <span class="text-[#adfeff]">necesita, aquí y ahora.</span>
                     </h1>
                     <p class="text-lg text-blue-100/90 mb-10 max-w-lg font-light leading-relaxed">
                         Te ayudamos a que encuentres lo que necesites de forma rápida y confiable. Negocios, proveedores, productos y servicios en un solo lugar.
@@ -1100,7 +1089,7 @@
                         const kiMsgHtml = `
                             <div class="flex gap-4 items-start mb-6">
                                 <div class="w-12 h-12 bg-[#2563eb] rounded-xl flex items-center justify-center shrink-0 shadow-sm">
-                                    <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+                                    <img src="{{ asset('images/Robot.png') }}" alt="Ki" class="w-7 h-7 object-contain scale-110">
                                 </div>
                                 <div class="bg-slate-50 border border-slate-100 p-4 rounded-2xl rounded-tl-sm w-full">
                                     <h4 class="text-[#2563eb] font-bold text-[14px] mb-1">Ki</h4>

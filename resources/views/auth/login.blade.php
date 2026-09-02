@@ -14,7 +14,7 @@
             <img src="{{ asset('images/LogoBlanco.png') }}" alt="Logo SINGKI" class="h-10 w-auto object-contain">
             <span class="font-black text-3xl text-[#2563eb] tracking-tighter">SINGKI</span>
         </a>
-        <h1 class="text-[28px] font-extrabold text-[#040116] tracking-tight">Bienvenido de nuevo</h1>
+        <h1 class="font-sans text-[28px] font-extrabold text-[#040116] tracking-tight">Bienvenido de nuevo</h1>
         <p class="text-gray-500 text-[15px] mt-1 font-light">Ingresa a tu cuenta para continuar</p>
     </div>
 
