@@ -37,7 +37,7 @@ class OrderController extends Controller
     public function store(OrderRequest $request)
     {
         Order::create($request->validated());
-        return redirect()->route('orders.index')->with('success', 'ordenes a sido creada correctamente.');
+        return redirect()->route('orders.index')->with('success', 'Ordenes ha sido creada correctamente.');
     }
 
     /**
@@ -67,7 +67,7 @@ class OrderController extends Controller
     {
         $order = Order::with('user')->findOrFail($id);
         $order->update($request->validated());
-        return redirect()->route('orders.index')->with('success', 'ordenes a sido actualizada correctamente.');
+        return redirect()->route('orders.index')->with('success', 'Ordenes ha sido actualizada correctamente.');
     }
 
     /**
@@ -77,6 +77,6 @@ class OrderController extends Controller
     {
         $order = Order::with('user')->findOrFail($id);
         $order->delete();
-        return redirect()->route('orders.index')->with('success', 'ordenes a sido eliminada correctamente.');
+        return redirect()->route('orders.index')->with('success', 'Ordenes ha sido eliminada correctamente.');
     }
 }

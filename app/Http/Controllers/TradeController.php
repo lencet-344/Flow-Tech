@@ -35,7 +35,7 @@ class TradeController extends Controller
     public function store(TradeRequest $request)
     {
         Trade::create($request->validated());
-        return redirect()->route("trades.index")->with("success", "Comercio a sido creado correctamente.");
+        return redirect()->route("trades.index")->with("success", 'Comercio ha sido creado correctamente.');
     }
 
     /**
@@ -65,7 +65,7 @@ class TradeController extends Controller
     {
         $trade = Trade::with("product")->findOrFail($id);
         $trade->update($request->validated());
-        return redirect()->route("trades.index")->with("success", "Comercio a sido actualizado correctamente.");
+        return redirect()->route("trades.index")->with("success", 'Comercio ha sido actualizado correctamente.');
     }
     
 
@@ -76,6 +76,6 @@ class TradeController extends Controller
     {
         $trade = Trade::with("product")->findOrFail($id);
         $trade->delete();
-        return redirect()->route("trades.index")->with("success", "Comercio a sido eliminado correctamente.");
+        return redirect()->route("trades.index")->with("success", 'Comercio ha sido eliminado correctamente.');
     }
 }

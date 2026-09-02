@@ -36,7 +36,7 @@ class RoleController extends Controller
     public function store(RoleRequest $request)
     {
         Role::create($request->validated());
-        return redirect()->route("roles.index")->with("success", "Rol a sido creado correctamente.");
+        return redirect()->route("roles.index")->with("success", 'Rol ha sido creado correctamente.');
     }
 
     /**
@@ -65,7 +65,7 @@ class RoleController extends Controller
     {
         $role = Role::with('user')->findOrFail($id);
         $role->update($request->validated());
-        return redirect()->route('roles.index')->with('success', 'Rol a sido actualizada correctamente.');
+        return redirect()->route('roles.index')->with('success', 'Rol ha sido actualizada correctamente.');
     }
 
     /**
@@ -75,6 +75,6 @@ class RoleController extends Controller
     {
         $role = Role::with('user')->findOrFail($id);
         $role->delete();
-        return redirect()->route('roles.index')->with('success', 'Roles a sido eliminada correctamente.');
+        return redirect()->route('roles.index')->with('success', 'Roles ha sido eliminada correctamente.');
     }
 }

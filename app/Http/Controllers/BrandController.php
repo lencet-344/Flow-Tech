@@ -57,6 +57,6 @@ class BrandController extends Controller
     {
         $brand = Brand::findOrFail($id);
         $brand->delete();
-        return redirect()->route("brands.index")->with("success", "Marca a sido eliminada correctamente.");
+        return redirect()->route("brands.index")->with("success", 'Marca ha sido eliminada correctamente.');
     }
 }

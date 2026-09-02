@@ -1,6 +1,10 @@
 @extends('layouts.superadmin')
 
 @section('content')
+@php
+    $companies = \App\Models\Company::with('user')->withCount('inventories')->orderBy('created_at', 'desc')->get();
+@endphp
+
 <div class="p-8 md:p-10 bg-[#f4f7ff] min-h-screen">
     
     <!-- Encabezado -->
@@ -22,8 +26,8 @@
 
     <!-- Tabla -->
     <div class="bg-white rounded-[1.5rem] shadow-sm border border-gray-100 overflow-hidden">
-        <div class="overflow-x-auto">
-            <table class="w-full text-left border-collapse">
+        <div class="overflow-x-auto w-full bg-white rounded-lg shadow">
+<table class="w-full text-left border-collapse">
                 <thead>
                     <tr class="border-b border-gray-100 text-[11px] font-bold text-gray-500 uppercase tracking-wider">
                         <th class="px-6 py-5">Negocio</th>
@@ -36,85 +40,48 @@
                     </tr>
                 </thead>
                 <tbody class="text-[13.5px] text-gray-700 divide-y divide-gray-50" id="tabla-negocios">
-                    
-                    <!-- Fila 1 -->
-                    <tr class="business-row hover:bg-gray-50/50 transition" data-estado="activo">
-                        <td class="px-6 py-4 font-medium text-[#040116]">TechSolutions GT</td>
-                        <td class="px-6 py-4 text-gray-600">Carlos Pérez</td>
-                        <td class="px-6 py-4 text-gray-600">Tecnología</td>
-                        <td class="px-6 py-4 font-medium">6</td>
+                    @forelse ($companies as $company)
+                    <tr class="business-row hover:bg-gray-50/50 transition" data-estado="{{ strtolower($company->status ?? 'activo') }}">
+                        <td class="px-6 py-4 font-medium text-[#040116]">{{ $company->name }}</td>
+                        <td class="px-6 py-4 text-gray-600">{{ $company->user->name ?? 'Sin propietario' }}</td>
+                        <td class="px-6 py-4 text-gray-600">{{ $company->category->name ?? 'Sin categoría' }}</td>
+                        <td class="px-6 py-4 font-medium">{{ $company->inventories_count ?? 0 }}</td>
                         <td class="px-6 py-4 text-gray-400">—</td>
                         <td class="px-6 py-4">
-                            <span class="bg-green-50 text-green-500 px-5 py-1.5 rounded-full text-[11.5px] font-bold tracking-wide w-24 inline-block text-center">Activo</span>
+                            @if(($company->status ?? 'activo') === 'activo')
+                                <span class="bg-green-50 text-green-500 px-5 py-1.5 rounded-full text-[11.5px] font-bold tracking-wide w-24 inline-block text-center">Activo</span>
+                            @elseif(($company->status ?? 'activo') === 'pendiente')
+                                <span class="bg-yellow-50 text-yellow-600 px-5 py-1.5 rounded-full text-[11.5px] font-bold tracking-wide w-24 inline-block text-center">Pendiente</span>
+                            @else
+                                <span class="bg-gray-50 text-gray-600 px-5 py-1.5 rounded-full text-[11.5px] font-bold tracking-wide w-24 inline-block text-center">Suspendido</span>
+                            @endif
                         </td>
                         <td class="px-6 py-4 text-right">
                             <div class="flex items-center justify-end gap-2">
-                                <button class="bg-gray-50 text-gray-600 hover:bg-gray-100 px-3 py-1.5 rounded-md text-xs font-semibold transition border border-gray-200">Ver</button>
-                                <button class="bg-red-50 text-red-500 hover:bg-red-100 px-3 py-1.5 rounded-md text-xs font-semibold transition">Suspender</button>
+                                <a href="{{ url('/companies/' . $company->id) }}" target="_blank" class="bg-gray-50 text-gray-600 hover:bg-gray-100 px-3 py-1.5 rounded-md text-xs font-semibold transition border border-gray-200">Ver</a>
+                                
+                                <form action="{{ route('admin.companies.toggleStatus', $company->id) }}" method="POST" class="inline">
+                                    @csrf
+                                    @method('PATCH')
+                                    @if(($company->status ?? 'activo') === 'activo' || ($company->status ?? 'activo') === 'pendiente')
+                                        <button type="submit" class="bg-red-50 text-red-500 hover:bg-red-100 px-3 py-1.5 rounded-md text-xs font-semibold transition">Suspender</button>
+                                    @else
+                                        <button type="submit" class="bg-green-50 text-green-600 hover:bg-green-100 px-4 py-1.5 rounded-md text-xs font-semibold transition">Activar</button>
+                                    @endif
+                                </form>
                             </div>
                         </td>
                     </tr>
-
-                    <!-- Fila 2 -->
-                    <tr class="business-row hover:bg-gray-50/50 transition" data-estado="activo">
-                        <td class="px-6 py-4 font-medium text-[#040116]">Distribuidora Alimentos Norte</td>
-                        <td class="px-6 py-4 text-gray-600">Ana Rodríguez</td>
-                        <td class="px-6 py-4 text-gray-600">Alimentos</td>
-                        <td class="px-6 py-4 font-medium">14</td>
-                        <td class="px-6 py-4">
-                            <span class="bg-red-50 text-red-500 px-3 py-1 rounded-md text-[12px] font-bold inline-block w-14 text-left">1</span>
-                        </td>
-                        <td class="px-6 py-4">
-                            <span class="bg-green-50 text-green-500 px-5 py-1.5 rounded-full text-[11.5px] font-bold tracking-wide w-24 inline-block text-center">Activo</span>
-                        </td>
-                        <td class="px-6 py-4 text-right">
-                            <div class="flex items-center justify-end gap-2">
-                                <button class="bg-gray-50 text-gray-600 hover:bg-gray-100 px-3 py-1.5 rounded-md text-xs font-semibold transition border border-gray-200">Ver</button>
-                                <button class="bg-red-50 text-red-500 hover:bg-red-100 px-3 py-1.5 rounded-md text-xs font-semibold transition">Suspender</button>
-                            </div>
+                    @empty
+                    <tr>
+                        <td colspan="7" class="px-6 py-12">
+                            <div class="text-center text-gray-500">No hay negocios registrados aún.</div>
                         </td>
                     </tr>
-
-                    <!-- Fila 3 -->
-                    <tr class="business-row hover:bg-gray-50/50 transition" data-estado="pendiente">
-                        <td class="px-6 py-4 font-medium text-[#040116]">Construcciones Sólidas</td>
-                        <td class="px-6 py-4 text-gray-600">Diego Torres</td>
-                        <td class="px-6 py-4 text-gray-600">Construcción</td>
-                        <td class="px-6 py-4 font-medium">8</td>
-                        <td class="px-6 py-4 text-gray-400">—</td>
-                        <td class="px-6 py-4">
-                            <span class="bg-yellow-50 text-yellow-600 px-5 py-1.5 rounded-full text-[11.5px] font-bold tracking-wide w-24 inline-block text-center">Pendiente</span>
-                        </td>
-                        <td class="px-6 py-4 text-right">
-                            <div class="flex items-center justify-end gap-2">
-                                <button class="bg-gray-50 text-gray-600 hover:bg-gray-100 px-3 py-1.5 rounded-md text-xs font-semibold transition border border-gray-200">Ver</button>
-                                <button class="bg-green-50 text-green-600 hover:bg-green-100 px-4 py-1.5 rounded-md text-xs font-semibold transition">Activar</button>
-                            </div>
-                        </td>
-                    </tr>
-
-                    <!-- Fila 4 -->
-                    <tr class="business-row hover:bg-gray-50/50 transition" data-estado="activo">
-                        <td class="px-6 py-4 font-medium text-[#040116]">Moda Express</td>
-                        <td class="px-6 py-4 text-gray-600">Sofía Mejía</td>
-                        <td class="px-6 py-4 text-gray-600">Moda</td>
-                        <td class="px-6 py-4 font-medium">23</td>
-                        <td class="px-6 py-4">
-                            <span class="bg-red-50 text-red-500 px-3 py-1 rounded-md text-[12px] font-bold inline-block w-14 text-left">2</span>
-                        </td>
-                        <td class="px-6 py-4">
-                            <span class="bg-green-50 text-green-500 px-5 py-1.5 rounded-full text-[11.5px] font-bold tracking-wide w-24 inline-block text-center">Activo</span>
-                        </td>
-                        <td class="px-6 py-4 text-right">
-                            <div class="flex items-center justify-end gap-2">
-                                <button class="bg-gray-50 text-gray-600 hover:bg-gray-100 px-3 py-1.5 rounded-md text-xs font-semibold transition border border-gray-200">Ver</button>
-                                <button class="bg-red-50 text-red-500 hover:bg-red-100 px-3 py-1.5 rounded-md text-xs font-semibold transition">Suspender</button>
-                            </div>
-                        </td>
-                    </tr>
-
+                    @endforelse
                 </tbody>
             </table>
+</div>
         </div>
     </div>
 </div>
