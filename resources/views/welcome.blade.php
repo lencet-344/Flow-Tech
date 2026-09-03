@@ -975,9 +975,9 @@
         <div class="bg-white py-24 text-center border-t border-gray-50">
             <h2 class="text-4xl lg:text-5xl font-extrabold text-[#2563eb] mb-4 tracking-normal">¿Listo para empezar?</h2>
             <p class="text-[#3b82f6] text-[15px] font-light mb-10 max-w-2xl mx-auto">Únete a la plataforma que conecta negocios con oportunidades.</p>
-            <div class="flex flex-col sm:flex-row justify-center gap-4">
-                <button class="bg-[#2563eb] text-white font-bold px-8 py-3 rounded-xl hover:bg-[#1d4ed8] transition shadow-sm text-[15px]">Crear cuenta gratis</button>
-                <button class="bg-white border border-[#2563eb] text-[#2563eb] font-bold px-8 py-3 rounded-xl hover:bg-blue-50 transition text-[15px]">Explorar negocios</button>
+            <div class="flex flex-col sm:flex-row gap-4 items-center justify-center mt-6 w-full px-6 sm:px-0">
+                <button class="w-full sm:w-auto bg-[#2563eb] text-white font-bold px-8 py-3 rounded-xl hover:bg-[#1d4ed8] transition shadow-sm text-[15px]">Crear cuenta gratis</button>
+                <button class="w-full sm:w-auto bg-white border border-[#2563eb] text-[#2563eb] font-bold px-8 py-3 rounded-xl hover:bg-blue-50 transition text-[15px]">Explorar negocios</button>
             </div>
         </div>
         @endguest
