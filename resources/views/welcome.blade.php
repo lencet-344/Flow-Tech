@@ -610,7 +610,7 @@
                 <h2 class="text-3xl font-extrabold text-[#0f172a] mb-2 tracking-normal">Negocios destacados</h2>
                 <p class="text-gray-500 font-light text-sm">Proveedores verificados con los mejores productos y servicios</p>
             </div>
-            <a href="{{ route('companies.index') }}" class="text-[#3b82f6] font-medium hover:underline flex items-center gap-2 text-sm">Ver todos <span aria-hidden="true">&rarr;</span></a>
+            <a href="{{ route('explorar.index') }}" class="text-[#3b82f6] font-medium hover:underline flex items-center gap-2 text-sm">Ver todos <span aria-hidden="true">&rarr;</span></a>
         </div>
         
         <!-- Cuadrícula de 4 tarjetas -->
@@ -662,7 +662,7 @@
                             <span class="font-bold text-gray-900">{{ $negocio->rating ?? '0.0' }}</span>
                             <span class="text-gray-400">({{ $negocio->reviews ?? '0' }})</span>
                         </div>
-                        <a href="{{ route('companies.show', $negocio->id ?? 1) }}" class="text-[#3b82f6] font-medium hover:underline text-[13px]">Ver perfil</a>
+                        href="{{ url('/perfil-publico') }}" class="text-[#3b82f6] font-medium hover:underline text-[13px]">Ver perfil</a>
                     </div>
                 </div>
             </div>
