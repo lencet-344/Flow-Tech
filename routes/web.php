@@ -212,9 +212,10 @@ Route::get('/registro-tipo', function () { return view('auth.tipo-cuenta'); });
 Route::get('/registro/cliente', function () { return view('auth.registro-cliente'); });
 Route::get('/registro/proveedor', function () { return view('auth.registro-proveedor'); });
 Route::get('/registro/servicios', function () { return view('auth.registro-servicios'); });
-Route::get('/perfil-publico', function () { return view('public.profile'); });
+
+// Aquí está la ruta corregida que acepta el ID opcional
+Route::get('/perfil-publico/{id?}', function () { return view('public.profile'); });
 
 require __DIR__.'/auth.php';
-Route::get('/perfil-publico', function () { return view('public.profile'); });
 
 Route::get('/chat-negocio', function () { return view('chat-negocio'); });
