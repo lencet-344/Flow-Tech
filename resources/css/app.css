@@ -52,5 +52,6 @@
     /* Títulos grandes con Ragick */
     h1, h2 {
         @apply font-ragick tracking-normal;
+        letter-spacing: 0px !important;
     }
 }
