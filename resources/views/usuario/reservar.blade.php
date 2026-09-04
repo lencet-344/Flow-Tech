@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Reservar Producto - SINGKI</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+<link rel="icon" type="image/png" href="{{ asset('images/favicon.png') }}">
 </head>
 <body class="bg-slate-50 font-sans antialiased min-h-screen flex flex-col">
     
