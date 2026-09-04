@@ -12,7 +12,7 @@
             <h2 class="text-3xl font-extrabold text-[#0f172a] flex items-center gap-3 tracking-tight">
                 <svg class="w-8 h-8 text-[#0f172a]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg>
                 Estadísticas 
-                <span class="bg-[#8b5cf6] text-white text-[10px] px-2.5 py-1 rounded-md font-bold uppercase tracking-wider flex items-center gap-1 shadow-sm"><span class="text-yellow-300 text-xs">★</span> Premium</span>
+                <span class="bg-[#8b5cf6] text-white text-[10px] px-2.5 py-1 rounded-md font-bold uppercase tracking-wider flex items-center gap-1 shadow-sm"><svg class="w-4 h-4 text-yellow-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.006 5.404.434c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.434 2.082-5.006z" clip-rule="evenodd" /></svg> Premium</span>
             </h2>
             <p class="text-gray-500 text-sm mt-1">Rendimiento de tu negocio en los últimos 7 días</p>
         </div>
@@ -166,7 +166,7 @@
 
         <!-- Botón CTA -->
         <a href="{{ url('/admin/premium/planes') }}" class="w-full bg-[#7c3aed] hover:bg-[#6d28d9] text-white font-medium py-3.5 rounded-2xl transition-colors shadow-sm text-[15px] flex items-center justify-center gap-2">
-            <span class="text-yellow-400 text-lg">⭐</span> Obtener Premium
+            <svg class="w-4 h-4 text-yellow-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.006 5.404.434c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.434 2.082-5.006z" clip-rule="evenodd" /></svg> Obtener Premium
         </a>
         
     </div>

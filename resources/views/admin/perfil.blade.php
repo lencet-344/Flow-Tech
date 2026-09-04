@@ -72,13 +72,13 @@
                     <div class="col-span-2">
                         <label class="block text-[11px] font-bold text-gray-500 uppercase tracking-wider mb-2">Categoría</label>
                         <div class="relative">
-                            <select name="category_id" x-model="category" class="w-full border border-gray-200 rounded-xl px-4 py-3 bg-gray-50/50 focus:ring-[#2563eb] focus:border-[#2563eb] text-sm text-[#040116] appearance-none outline-none">
+                           <select name="category_id" style="background-image: none;" x-model="category" onfocus="document.getElementById('cat-arrow').classList.add('rotate-180')" onblur="document.getElementById('cat-arrow').classList.remove('rotate-180')" onchange="document.getElementById('cat-arrow').classList.remove('rotate-180')" class="w-full border border-gray-200 rounded-xl px-4 py-3 bg-gray-50/50 focus:ring-[#2563eb] focus:border-[#2563eb] text-sm text-[#040116] appearance-none outline-none">
                                 @foreach($categories as $cat)
                                     <option value="{{ $cat->id }}" {{ old('category_id', $company->category_id ?? '') == $cat->id ? 'selected' : '' }}>{{ $cat->name }}</option>
                                 @endforeach
                             </select>
                             <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-gray-500">
-                                <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                                <svg id="cat-arrow" class="h-4 w-4 pointer-events-none transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
                             </div>
                         </div>
                         @error('category_id') <span class="text-red-500 text-sm mt-1 block">{{ $message }}</span> @enderror

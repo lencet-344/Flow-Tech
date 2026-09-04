@@ -9,7 +9,8 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>Mis Favoritos - SINGKI</title>
         @vite(['resources/css/app.css', 'resources/js/app.js'])
-    </head>
+    <link rel="icon" type="image/png" href="{{ asset('images/favicon.png') }}">
+</head>
     <body class="bg-[#F4F7FF] font-sans antialiased min-h-screen flex flex-col">
         
         <!-- Navbar Reciclado (Blanco y Limpio) -->

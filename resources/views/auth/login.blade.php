@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SINGKI - Iniciar Sesión</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+<link rel="icon" type="image/png" href="{{ asset('images/favicon.png') }}">
 </head>
 <body class="bg-[#f4f7ff] font-sans min-h-screen flex flex-col items-center justify-center p-4">
 

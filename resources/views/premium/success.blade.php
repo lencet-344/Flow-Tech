@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Premium Activado - SINGKI</title>
     <script src="https://cdn.tailwindcss.com"></script>
+<link rel="icon" type="image/png" href="{{ asset('images/favicon.png') }}">
 </head>
 <body class="bg-[#f0f4f8] font-sans antialiased text-[#0f172a] flex flex-col min-h-screen">
 

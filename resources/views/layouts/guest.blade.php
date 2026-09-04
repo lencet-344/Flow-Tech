@@ -11,7 +11,8 @@
         <link href="https://fonts.bunny.net/css?family=inter:400,500,600,700&display=swap" rel="stylesheet" />
 
         @vite(['resources/css/app.css', 'resources/js/app.js'])
-    </head>
+    <link rel="icon" type="image/png" href="{{ asset('images/favicon.png') }}">
+</head>
     <body class="font-sans text-gray-900 antialiased selection:bg-indigo-500 selection:text-white">
         <div class="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0 bg-gray-50 dark:bg-[#0f172a]">
             <div>
