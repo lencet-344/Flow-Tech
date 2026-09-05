@@ -24,24 +24,25 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate(); 
 
-        
         $user = Auth::user(); 
         
         $code = random_int(100000, 999999);
-        
         
         $user->two_factor_code = $code;
         $user->two_factor_expires_at = now()->addMinutes(10);
         $user->save(); 
 
         
-        Mail::raw("Tu código de acceso para Singky es: {$code}", function ($message) use ($user) {
-            $message->to($user->email)->subject('Código de Verificación 2FA');
+        \Illuminate\Support\Facades\Mail::send('emails.verificacion_code', [
+            'code' => $code, 
+            'name' => $user->name
+        ], function ($message) use ($user) {
+            $message->to($user->email)
+                    ->subject('Tu código de acceso único - SINGKI');
         });
 
         return redirect()->route('2fa.index');
     }
-
     
     public function destroy(Request $request): RedirectResponse
     {
