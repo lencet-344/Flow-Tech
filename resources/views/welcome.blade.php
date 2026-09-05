@@ -130,14 +130,19 @@
                     <!-- Burbuja de texto gris muy suave -->
                     <div class="bg-slate-50 border border-slate-100 p-4 rounded-2xl rounded-tl-sm w-full">
                         <h4 class="text-[#2563eb] font-bold text-[14px] mb-1">Hola, soy Ki</h4>
-                        <p class="text-gray-500 text-[13px] leading-relaxed font-light">Enviaré tu pregunta al administrador de SINGKI. Pronto recibirás una respuesta para ayudarte con tu consulta.</p>
+                        <p class="text-gray-700 text-[13px] leading-relaxed font-light">Enviaré tu pregunta al administrador de SINGKI. Pronto recibirás una respuesta para ayudarte con tu consulta.</p>
                     </div>
                 </div>
                 
                 <!-- Formulario -->
                 <div>
+                    <div class="flex flex-wrap gap-1.5 mb-3">
+        <button type="button" onclick="sendQuickPrompt('¿Qué productos hay disponibles?')" class="text-[11px] bg-blue-50 text-blue-700 hover:bg-blue-100 px-2.5 py-1 rounded-full font-medium transition border border-blue-200">📦 Productos</button>
+        <button type="button" onclick="sendQuickPrompt('¿Qué categorias manejan?')" class="text-[11px] bg-blue-50 text-blue-700 hover:bg-blue-100 px-2.5 py-1 rounded-full font-medium transition border border-blue-200">📂 Categorías</button>
+        <button type="button" onclick="sendQuickPrompt('¿Cómo puedo registrar mi negocio como proveedor?')" class="text-[11px] bg-blue-50 text-blue-700 hover:bg-blue-100 px-2.5 py-1 rounded-full font-medium transition border border-blue-200">🏪 Proveedor</button>
+                </div>
                     <label class="block text-[13px] font-bold text-gray-700 mb-2">Escribe tu consulta</label>
-                    <textarea id="ki-input" class="w-full text-[13px] border border-gray-200 rounded-xl p-3 focus:ring-[#2563eb] focus:border-[#2563eb] outline-none resize-none placeholder-gray-400 font-light" rows="3" placeholder="¿En qué podemos ayudarte? Escribe tu pregunta aquí..."></textarea>
+                    <textarea id="ki-input" class="w-full text-[13px] border border-gray-700 rounded-xl p-3 focus:ring-[#2563eb] focus:border-[#2563eb] outline-none resize-none placeholder-gray-700 font-light" rows="3" placeholder="¿En qué podemos ayudarte? Escribe tu pregunta aquí..."></textarea>
                     
                     <!-- Botón Enviar (Gris claro) -->
                     <button id="ki-send-btn" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-xl transition-colors w-full shadow-sm mt-3">Enviar consulta</button>
@@ -146,7 +151,7 @@
             
             <!-- Footer -->
             <div class="bg-white px-4 py-3 border-t border-gray-50 text-center">
-                <span class="text-[11px] text-gray-400 font-light">SINGKI · Conectamos negocios con oportunidades</span>
+                <span class="text-[11px] text-gray-800 font-light">SINGKI · Conectamos negocios con oportunidades</span>
             </div>
         </div>
     </div>
@@ -1122,5 +1127,15 @@
             }
         });
     </script>
+    <script>
+    function sendQuickPrompt(text) {
+        const input = document.getElementById('ki-input');
+        const sendBtn = document.getElementById('ki-send-btn');
+        if (input && sendBtn) {
+            input.value = text;
+            sendBtn.click();
+        }
+    }
+</script>
 </body>
 </html>
