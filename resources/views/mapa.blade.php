@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mapa Singky</title>
-    <!-- Estilos básicos y Tailwind CSS si lo estás usando -->
+    
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         #map {
@@ -22,23 +22,23 @@
         <h1 class="text-2xl font-bold text-gray-800 mb-2">Ubicación de Proveedores y Puntos de Entrega</h1>
         <p class="text-gray-600 mb-6">Mapa interactivo de la red logística en Estelí.</p>
 
-        <!-- Contenedor donde se cargará el mapa de Google -->
+        
         <div id="map"></div>
     </div>
 
-    <!-- Script de Google Maps API pasando la llave desde config/services.php -->
+    
     <script>
         function initMap() {
-            // Coordenadas centrales: Estelí, Nicaragua
+            
             const esteli = { lat: 13.0918, lng: -86.3538 };
 
-            // Inicializar el mapa
+            
             const map = new google.maps.Map(document.getElementById("map"), {
                 zoom: 14,
                 center: esteli,
             });
 
-            // Lista de puntos de ejemplo (puedes pasar esto dinámicamente desde Laravel)
+            
             const puntosLogistics = [
                 {
                     titulo: "Supermercado",
@@ -54,7 +54,7 @@
                 }
             ];
 
-            // Crear marcadores e InfoWindows para cada punto
+            
             puntosLogistics.forEach(punto => {
                 const marker = new google.maps.Marker({
                     position: { lat: punto.lat, lng: punto.lng },
@@ -78,7 +78,7 @@
         }
     </script>
 
-    <!-- Carga diferida del script de Google Maps usando tu API Key configurada -->
+    
     <script 
         src="https://maps.googleapis.com/maps/api/js?key={{ config('services.google_maps.key') }}&callback=initMap" 
         async 

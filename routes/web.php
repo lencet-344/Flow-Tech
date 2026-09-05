@@ -106,9 +106,9 @@ Route::middleware(['auth', 'verified', 'prevent-back-history', CheckSuperAdmin::
 });
 
 
-// 2. RUTAS DEL PROVEEDOR / ADMIN (Recuperamos la seguridad original)
+
 Route::middleware(['auth', 'verified', 'prevent-back-history'])->group(function() {
-    // Vistas de Maquetación del Proveedor
+    
     Route::get('/admin/dashboard', function () { return view('admin.dashboard'); });
     Route::get('/admin/perfil', [\App\Http\Controllers\CompanyController::class, 'profile'])->name('admin.perfil');
     Route::put('/admin/perfil/actualizar/{company}', [\App\Http\Controllers\CompanyController::class, 'update'])->name('admin.perfil.update');
@@ -121,7 +121,7 @@ Route::middleware(['auth', 'verified', 'prevent-back-history'])->group(function(
     Route::get('/admin/premium/checkout', function () { return view('admin.premium.checkout'); })->name('premium.checkout');
     Route::get('/admin/premium/success', function () { return view('admin.premium.success'); })->name('premium.success');
     
-    // Controladores Reales
+    
     Route::resource('products', ProductController::class);
     Route::resource('inventories', InventoryController::class);
     Route::get('/offers/success', [OfferController::class, 'success'])->name('offers.success');
@@ -130,7 +130,7 @@ Route::middleware(['auth', 'verified', 'prevent-back-history'])->group(function(
 });
 
 
-// 3. RUTAS DEL USUARIO / COMPRADOR 
+
 Route::middleware(['auth', 'verified', 'prevent-back-history'])->group(function() {
 
     // ── Flujo de reserva de producto agotado ──────────────────────────────────
@@ -204,7 +204,7 @@ Route::middleware(['auth', 'verified', 'prevent-back-history'])->group(function(
     Route::get('/premium/success', [PremiumController::class, 'success'])->name('premium.success');
 });
 
-// Rutas públicas y de registro
+
 Route::get('/admin/promocionar', function () { return view('admin.promocionar.configurar'); });
 Route::get('/admin/promocionar/confirmar', function () { return view('admin.promocionar.confirmar'); });
 Route::get('/admin/reservas', function () { return view('admin.reservas'); });
