@@ -1,12 +1,54 @@
 {
   "resources/css/app.css": {
-    "file": "assets/app-BbF0PXQ6.css",
+    "file": "assets/app-CgVX3jNW.css",
     "name": "app",
     "names": [
       "app.css"
     ],
     "src": "resources/css/app.css",
-    "isEntry": true
+    "isEntry": true,
+    "assets": [
+      "assets/ragick-BwaT5tjm.otf",
+      "assets/Manrope-ExtraLight-CiGAGPkO.ttf",
+      "assets/Manrope-Light-tnotZ_2w.ttf",
+      "assets/Manrope-Regular-Dy0jyoUL.ttf",
+      "assets/Manrope-Medium-Bgh4Ro6H.ttf",
+      "assets/Manrope-SemiBold-CJD5SYW-.ttf",
+      "assets/Manrope-Bold-DEjRF1uU.ttf",
+      "assets/Manrope-ExtraBold-zk22q0YZ.ttf"
+    ]
+  },
+  "resources/css/fonts/Manrope-Bold.ttf": {
+    "file": "assets/Manrope-Bold-DEjRF1uU.ttf",
+    "src": "resources/css/fonts/Manrope-Bold.ttf"
+  },
+  "resources/css/fonts/Manrope-ExtraBold.ttf": {
+    "file": "assets/Manrope-ExtraBold-zk22q0YZ.ttf",
+    "src": "resources/css/fonts/Manrope-ExtraBold.ttf"
+  },
+  "resources/css/fonts/Manrope-ExtraLight.ttf": {
+    "file": "assets/Manrope-ExtraLight-CiGAGPkO.ttf",
+    "src": "resources/css/fonts/Manrope-ExtraLight.ttf"
+  },
+  "resources/css/fonts/Manrope-Light.ttf": {
+    "file": "assets/Manrope-Light-tnotZ_2w.ttf",
+    "src": "resources/css/fonts/Manrope-Light.ttf"
+  },
+  "resources/css/fonts/Manrope-Medium.ttf": {
+    "file": "assets/Manrope-Medium-Bgh4Ro6H.ttf",
+    "src": "resources/css/fonts/Manrope-Medium.ttf"
+  },
+  "resources/css/fonts/Manrope-Regular.ttf": {
+    "file": "assets/Manrope-Regular-Dy0jyoUL.ttf",
+    "src": "resources/css/fonts/Manrope-Regular.ttf"
+  },
+  "resources/css/fonts/Manrope-SemiBold.ttf": {
+    "file": "assets/Manrope-SemiBold-CJD5SYW-.ttf",
+    "src": "resources/css/fonts/Manrope-SemiBold.ttf"
+  },
+  "resources/css/fonts/ragick.otf": {
+    "file": "assets/ragick-BwaT5tjm.otf",
+    "src": "resources/css/fonts/ragick.otf"
   },
   "resources/js/app.js": {
     "file": "assets/app-Cna13UPV.js",

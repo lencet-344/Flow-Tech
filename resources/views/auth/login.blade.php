@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SINGKI - Iniciar Sesión</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+<link rel="icon" type="image/png" href="{{ asset('images/favicon.png') }}">
 </head>
 <body class="bg-[#f4f7ff] font-sans min-h-screen flex flex-col items-center justify-center p-4">
 
@@ -14,7 +15,7 @@
             <img src="{{ asset('images/LogoBlanco.png') }}" alt="Logo SINGKI" class="h-10 w-auto object-contain">
             <span class="font-black text-3xl text-[#2563eb] tracking-tighter">SINGKI</span>
         </a>
-        <h1 class="text-[28px] font-extrabold text-[#040116] tracking-tight">Bienvenido de nuevo</h1>
+        <h1 class="font-sans text-[28px] font-extrabold text-[#040116] tracking-tight">Bienvenido de nuevo</h1>
         <p class="text-gray-500 text-[15px] mt-1 font-light">Ingresa a tu cuenta para continuar</p>
     </div>
 

@@ -9,6 +9,7 @@
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
         body { font-family: 'Inter', sans-serif; }
     </style>
+<link rel="icon" type="image/png" href="{{ asset('images/favicon.png') }}">
 </head>
 <body class="bg-[#F4F7FF] min-h-screen antialiased text-gray-800 selection:bg-blue-100 selection:text-blue-900">
 
