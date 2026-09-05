@@ -33,5 +33,9 @@ class DatabaseSeeder extends Seeder
             'password' => Hash::make('password'),
             'role' => 'usuario',
         ]);
+
+        
+        $this->call(ProductSeeder::class);
     }
+    
 }
