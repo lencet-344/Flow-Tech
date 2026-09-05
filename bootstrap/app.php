@@ -14,6 +14,9 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->alias([
             'prevent-back-history' => \App\Http\Middleware\PreventBackHistory::class,
             'role' => \App\Http\Middleware\CheckRole::class,
+
+            
+            '2fa_verified' => \App\Http\Middleware\EnsureTwoFactorIsVerified::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
