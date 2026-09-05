@@ -105,6 +105,7 @@
     <title>Perfil Público - {{ $perfil['nombre'] }}</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+<link rel="icon" type="image/png" href="{{ asset('images/favicon.png') }}">
 </head>
 <body class="bg-[#F4F7FF] font-sans antialiased min-h-screen flex flex-col">
     
@@ -235,7 +236,7 @@
             </div>
 
             <div class="border-t border-gray-100 pt-5 flex flex-wrap justify-between items-center gap-4 text-xs font-medium text-gray-600">
-                <div class="flex items-center gap-6">
+                <div class="flex flex-wrap items-center gap-4 md:gap-6">
                     <div class="flex items-center gap-1"><span class="text-yellow-400 text-base">★</span> <span class="text-[#0f172a] font-bold">{{ $perfil['rating'] }}</span> <span class="font-light">({{ $perfil['reviews_count'] }} reseñas)</span></div>
                     <div class="flex items-center gap-1.5"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path></svg> {{ $perfil['ubicacion_corta'] }}</div>
                     <div class="flex items-center gap-1.5"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg> {{ $perfil['horario'] }}</div>
@@ -246,7 +247,7 @@
         </div>
 
         <!-- PESTAÑAS -->
-        <div class="flex gap-3 mb-8">
+        <div class="flex flex-wrap gap-3 mb-8">
             <button @click="tab = 'productos'" :class="tab === 'productos' ? 'bg-[#2563eb] text-white border-[#2563eb] shadow-md' : 'bg-white text-gray-600 border-gray-200 hover:bg-gray-50'" class="px-6 py-2.5 rounded-full font-bold text-sm border transition flex items-center gap-2">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path></svg> Productos y Stock
             </button>
@@ -269,7 +270,9 @@
             </div>
 
             <div class="bg-white rounded-[24px] shadow-sm border border-gray-100 overflow-hidden">
-                <div class="grid grid-cols-6 gap-4 p-4 border-b border-gray-100 text-xs font-bold text-gray-500 tracking-wider">
+                <div class="overflow-x-auto w-full pb-4 scrollbar-hide">
+                    <div class="min-w-[700px] md:min-w-0">
+                        <div class="grid grid-cols-6 gap-4 p-4 border-b border-gray-100 text-xs font-bold text-gray-500 tracking-wider">
                     <div class="col-span-2">PRODUCTO</div>
                     <div>MARCA</div>
                     <div class="text-center">STOCK</div>

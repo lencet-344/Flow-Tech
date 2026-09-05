@@ -1,60 +1,78 @@
-<x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-2xl text-gray-800 dark:text-gray-100">
-            Detalles de Inventario
-        </h2>
-    </x-slot>
+@extends('layouts.admin')
 
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-xl sm:rounded-2xl border border-gray-100 dark:border-gray-700 p-8">
-                
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    
-                    <div class="mb-4">
-                        <label class="block text-sm font-medium text-gray-500 dark:text-gray-400">Cantidad</label>
-                        <p class="mt-1 text-lg text-gray-900 dark:text-gray-100">{{ $inventory->quantity }}</p>
-                    </div>
-                    <div class="mb-4">
-                        <label class="block text-sm font-medium text-gray-500 dark:text-gray-400">Batch number</label>
-                        <p class="mt-1 text-lg text-gray-900 dark:text-gray-100">{{ $inventory->batch_number }}</p>
-                    </div>
-                    <div class="mb-4">
-                        <label class="block text-sm font-medium text-gray-500 dark:text-gray-400">Unit cost</label>
-                        <p class="mt-1 text-lg text-gray-900 dark:text-gray-100">{{ $inventory->unit_cost }}</p>
-                    </div>
-                    <div class="mb-4">
-                        <label class="block text-sm font-medium text-gray-500 dark:text-gray-400">Estado</label>
-                        <p class="mt-1 text-lg text-gray-900 dark:text-gray-100">{{ $inventory->status }}</p>
-                    </div>
-                    <div class="mb-4">
-                        <label class="block text-sm font-medium text-gray-500 dark:text-gray-400">Last restock</label>
-                        <p class="mt-1 text-lg text-gray-900 dark:text-gray-100">{{ $inventory->last_restock }}</p>
-                    </div>
-                    <div class="mb-4">
-                        <label class="block text-sm font-medium text-gray-500 dark:text-gray-400">Update restock</label>
-                        <p class="mt-1 text-lg text-gray-900 dark:text-gray-100">{{ $inventory->update_restock }}</p>
-                    </div>
-                    <div class="mb-4">
-                        <label class="block text-sm font-medium text-gray-500 dark:text-gray-400">Product id</label>
-                        <p class="mt-1 text-lg text-gray-900 dark:text-gray-100">{{ $inventory->product->name ?? $inventory->product->title ?? $inventory->product->id ?? 'N/A' }}</p>
-                    </div>
-                    <div class="mb-4">
-                        <label class="block text-sm font-medium text-gray-500 dark:text-gray-400">Supplier id</label>
-                        <p class="mt-1 text-lg text-gray-900 dark:text-gray-100">{{ $inventory->supplier->name ?? $inventory->supplier->title ?? $inventory->supplier->id ?? 'N/A' }}</p>
-                    </div>
-                    <div class="mb-4">
-                        <label class="block text-sm font-medium text-gray-500 dark:text-gray-400">Order detail id</label>
-                        <p class="mt-1 text-lg text-gray-900 dark:text-gray-100">{{ $inventory->order_detail->name ?? $inventory->order_detail->title ?? $inventory->order_detail->id ?? 'N/A' }}</p>
-                    </div>
-                </div>
+@section('content')
+<div class="p-8 md:p-10 bg-[#F4F7FF] min-h-screen">
+    <!-- Cabecera -->
+    <div class="mb-8 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+        <div>
+            <h1 class="text-3xl font-bold text-[#040116] tracking-tight">Detalles de Inventario</h1>
+            <p class="text-gray-500 text-sm mt-1">Información técnica y existencias del lote</p>
+        </div>
+        <a href="{{ route('inventories.index') }}" class="px-6 py-2 bg-white border border-gray-200 text-gray-700 font-medium rounded-lg hover:bg-gray-50 transition-colors text-sm shadow-sm flex items-center gap-2">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
+            Regresar
+        </a>
+    </div>
 
-                <div class="flex justify-end mt-6">
-                    <a href="{{ route('inventories.index') }}" class="inline-flex items-center px-4 py-2 bg-indigo-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-indigo-700 active:bg-indigo-900 focus:outline-none focus:border-indigo-900 focus:ring ring-indigo-300 disabled:opacity-25 transition ease-in-out duration-150">
-                        Volver
-                    </a>
-                </div>
+    <!-- Contenedor -->
+    <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-8 max-w-4xl">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+            
+            <!-- Producto -->
+            <div class="bg-gray-50 p-4 rounded-xl border border-gray-100">
+                <label class="block text-[11px] font-bold text-gray-400 uppercase tracking-wider mb-1">Producto</label>
+                <p class="text-gray-800 font-medium text-[15px]">{{ $inventory->product->name ?? $inventory->product->title ?? $inventory->product->id ?? 'N/A' }}</p>
             </div>
+
+            <!-- Proveedor -->
+            <div class="bg-gray-50 p-4 rounded-xl border border-gray-100">
+                <label class="block text-[11px] font-bold text-gray-400 uppercase tracking-wider mb-1">Proveedor</label>
+                <p class="text-gray-800 font-medium text-[15px]">{{ $inventory->supplier->name ?? $inventory->supplier->title ?? $inventory->supplier->id ?? 'N/A' }}</p>
+            </div>
+
+            <!-- Cantidad -->
+            <div class="bg-gray-50 p-4 rounded-xl border border-gray-100">
+                <label class="block text-[11px] font-bold text-gray-400 uppercase tracking-wider mb-1">Cantidad (Stock)</label>
+                <p class="text-gray-800 font-medium text-[15px]">{{ $inventory->quantity ?? 'N/A' }}</p>
+            </div>
+
+            <!-- Costo Unitario -->
+            <div class="bg-gray-50 p-4 rounded-xl border border-gray-100">
+                <label class="block text-[11px] font-bold text-gray-400 uppercase tracking-wider mb-1">Costo Unitario ($)</label>
+                <p class="text-gray-800 font-medium text-[15px]">{{ $inventory->unit_cost ?? 'N/A' }}</p>
+            </div>
+
+            <!-- Fecha Entrada -->
+            <div class="bg-gray-50 p-4 rounded-xl border border-gray-100">
+                <label class="block text-[11px] font-bold text-gray-400 uppercase tracking-wider mb-1">Fecha de Entrada (Last Restock)</label>
+                <p class="text-gray-800 font-medium text-[15px]">{{ $inventory->last_restock ?? 'N/A' }}</p>
+            </div>
+
+            <!-- Próxima Revisión -->
+            <div class="bg-gray-50 p-4 rounded-xl border border-gray-100">
+                <label class="block text-[11px] font-bold text-gray-400 uppercase tracking-wider mb-1">Próxima Revisión (Update Restock)</label>
+                <p class="text-gray-800 font-medium text-[15px]">{{ $inventory->update_restock ?? 'N/A' }}</p>
+            </div>
+
+            <!-- Número de Lote -->
+            <div class="bg-gray-50 p-4 rounded-xl border border-gray-100">
+                <label class="block text-[11px] font-bold text-gray-400 uppercase tracking-wider mb-1">Número de Lote</label>
+                <p class="text-gray-800 font-medium text-[15px]">{{ $inventory->batch_number ?? 'N/A' }}</p>
+            </div>
+
+            <!-- Estado -->
+            <div class="bg-gray-50 p-4 rounded-xl border border-gray-100">
+                <label class="block text-[11px] font-bold text-gray-400 uppercase tracking-wider mb-1">Estado</label>
+                <p class="text-gray-800 font-medium text-[15px] capitalize">{{ $inventory->status ?? 'N/A' }}</p>
+            </div>
+            
+            <!-- Order Detail -->
+            <div class="bg-gray-50 p-4 rounded-xl border border-gray-100 md:col-span-2">
+                <label class="block text-[11px] font-bold text-gray-400 uppercase tracking-wider mb-1">Order Detail ID</label>
+                <p class="text-gray-800 font-medium text-[15px]">{{ $inventory->order_detail->name ?? $inventory->order_detail->title ?? $inventory->order_detail->id ?? 'N/A' }}</p>
+            </div>
+
         </div>
     </div>
-</x-app-layout>
+</div>
+@endsection

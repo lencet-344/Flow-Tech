@@ -127,6 +127,7 @@ Route::middleware(['auth', '2fa_verified', 'verified', 'prevent-back-history', C
 Route::middleware(['auth', '2fa_verified', 'verified', 'prevent-back-history'])->group(function() {
     Route::get('/admin/dashboard', function () { return view('admin.dashboard'); });
     Route::get('/admin/perfil', [\App\Http\Controllers\CompanyController::class, 'profile'])->name('admin.perfil');
+    Route::put('/admin/perfil/actualizar/{company}', [\App\Http\Controllers\CompanyController::class, 'update'])->name('admin.perfil.update');
     Route::get('/admin/inventario', function () { return view('admin.inventario'); });
     Route::get('/admin/ofertas', function () { return view('admin.ofertas'); });
     Route::get('/admin/comunidad', function () { return view('admin.comunidad'); });
@@ -203,4 +204,18 @@ Route::middleware(['auth', '2fa_verified', 'verified', 'prevent-back-history'])-
     Route::get('/premium/success', [PremiumController::class, 'success'])->name('premium.success');
 });
 
+
+Route::get('/admin/promocionar', function () { return view('admin.promocionar.configurar'); });
+Route::get('/admin/promocionar/confirmar', function () { return view('admin.promocionar.confirmar'); });
+Route::get('/admin/reservas', function () { return view('admin.reservas'); });
+Route::get('/registro-tipo', function () { return view('auth.tipo-cuenta'); });
+Route::get('/registro/cliente', function () { return view('auth.registro-cliente'); });
+Route::get('/registro/proveedor', function () { return view('auth.registro-proveedor'); });
+Route::get('/registro/servicios', function () { return view('auth.registro-servicios'); });
+
+// Aquí está la ruta corregida que acepta el ID opcional
+Route::get('/perfil-publico/{id?}', function () { return view('public.profile'); });
+
 require __DIR__.'/auth.php';
+
+Route::get('/chat-negocio', function () { return view('chat-negocio'); });

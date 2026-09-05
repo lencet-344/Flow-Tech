@@ -11,7 +11,7 @@
         <div>
             <h2 class="text-3xl font-extrabold text-[#0f172a] flex items-center gap-3 tracking-tight">
                 Comunidad de Crecimiento 
-                <span class="bg-[#8b5cf6] text-white text-[10px] px-2.5 py-1 rounded-md font-bold uppercase tracking-wider flex items-center gap-1 shadow-sm"><span class="text-yellow-300 text-xs">★</span> Premium</span>
+                <span class="bg-[#8b5cf6] text-white text-[10px] px-2.5 py-1 rounded-md font-bold uppercase tracking-wider flex items-center gap-1 shadow-sm"><svg class="w-4 h-4 text-yellow-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.006 5.404.434c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.434 2.082-5.006z" clip-rule="evenodd" /></svg> Premium</span>
             </h2>
             <p class="text-gray-500 text-sm mt-1">Resuelve dudas de tu negocio con apoyo oficial de SINGKI</p>
         </div>
@@ -127,7 +127,7 @@
     <div class="bg-gradient-to-br from-[#6d28d9] to-[#312e81] rounded-3xl p-10 mb-8 shadow-lg relative overflow-hidden">
         <div class="relative z-10">
             <span class="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full border border-white/30 bg-white/10 text-white text-xs font-bold uppercase tracking-wider mb-6 backdrop-blur-sm">
-                <span class="text-yellow-400 text-sm">⭐</span> Premium exclusivo
+                <svg class="w-4 h-4 text-yellow-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.006 5.404.434c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.434 2.082-5.006z" clip-rule="evenodd" /></svg> Premium exclusivo
             </span>
             <h1 class="text-3xl md:text-4xl font-extrabold text-white mb-4 tracking-tight">Comunidad de Crecimiento</h1>
             <p class="text-indigo-100 text-[15px] max-w-2xl font-light leading-relaxed">
@@ -215,7 +215,7 @@
         </ul>
 
         <a href="{{ url('/admin/premium/planes') }}" class="w-full bg-[#8b5cf6] hover:bg-[#7c3aed] text-white font-semibold py-4 rounded-xl transition-colors shadow-md flex items-center justify-center gap-2">
-            <span class="text-yellow-300">⭐</span> Obtener Premium — desde C$199/mes
+            <svg class="w-4 h-4 text-yellow-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.006 5.404.434c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.434 2.082-5.006z" clip-rule="evenodd" /></svg> Obtener Premium — desde C$199/mes
         </a>
     </div>
 

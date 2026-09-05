@@ -5,24 +5,53 @@
 /* Carga de la fuente Ragick (Para Títulos) */
 @font-face {
     font-family: 'Ragick';
-    src: url('/fonts/ragick.otf') format('opentype');
+    src: url('./fonts/ragick.otf') format('opentype');
     font-weight: normal;
     font-style: normal;
 }
 
 /* Carga de la familia Manrope (Estática) */
-@font-face { font-family: 'Manrope'; src: url('/fonts/Manrope-ExtraLight.ttf') format('truetype'); font-weight: 200; }
-@font-face { font-family: 'Manrope'; src: url('/fonts/Manrope-Light.ttf') format('truetype'); font-weight: 300; }
-@font-face { font-family: 'Manrope'; src: url('/fonts/Manrope-Regular.ttf') format('truetype'); font-weight: 400; }
-@font-face { font-family: 'Manrope'; src: url('/fonts/Manrope-Medium.ttf') format('truetype'); font-weight: 500; }
-@font-face { font-family: 'Manrope'; src: url('/fonts/Manrope-SemiBold.ttf') format('truetype'); font-weight: 600; }
-@font-face { font-family: 'Manrope'; src: url('/fonts/Manrope-Bold.ttf') format('truetype'); font-weight: 700; }
-@font-face { font-family: 'Manrope'; src: url('/fonts/Manrope-ExtraBold.ttf') format('truetype'); font-weight: 800; }
+@font-face { 
+    font-family: 'Manrope'; 
+    src: url('./fonts/Manrope-ExtraLight.ttf') format('truetype'); 
+    font-weight: 200; 
+}
+@font-face { 
+    font-family: 'Manrope'; 
+    src: url('./fonts/Manrope-Light.ttf') format('truetype'); 
+    font-weight: 300; 
+}
+@font-face { 
+    font-family: 'Manrope'; 
+    src: url('./fonts/Manrope-Regular.ttf') format('truetype'); 
+    font-weight: 400; 
+}
+@font-face { 
+    font-family: 'Manrope'; 
+    src: url('./fonts/Manrope-Medium.ttf') format('truetype'); 
+    font-weight: 500; 
+}
+@font-face { 
+    font-family: 'Manrope'; 
+    src: url('./fonts/Manrope-SemiBold.ttf') format('truetype'); 
+    font-weight: 600; 
+}
+@font-face { 
+    font-family: 'Manrope'; 
+    src: url('./fonts/Manrope-Bold.ttf') format('truetype'); 
+    font-weight: 700; 
+}
+@font-face { 
+    font-family: 'Manrope'; 
+    src: url('./fonts/Manrope-ExtraBold.ttf') format('truetype'); 
+    font-weight: 800; 
+}
 
 /* Aplicación automática e inteligente */
 @layer base {
     /* Títulos grandes con Ragick */
     h1, h2 {
         @apply font-ragick tracking-normal;
+        letter-spacing: 0px !important;
     }
 }

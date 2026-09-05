@@ -44,14 +44,14 @@
     <!-- SPLASH SCREEN OFICIAL (SOLO INVITADOS)     -->
     <!-- ========================================== -->
     @guest
-    <div x-data="{ showSplash: !sessionStorage.getItem('singki_visited') }"
+    <div id="singki-loader" x-data="{ showSplash: !sessionStorage.getItem('singki_visited') }"
          x-init="if(showSplash) { 
                     /* Bloqueamos el scroll mientras dura la animación */
                     document.body.style.overflow = 'hidden';
                     setTimeout(() => { 
                         showSplash = false; 
                         /* Guardamos en la memoria para que no vuelva a salir hoy */
-                        sessionStorage.setItem('singki_visited', 'true'); 
+                        sessionStorage.setItem('singki_visited', 'true');
                         document.body.style.overflow = 'auto';
                     }, 3500); 
                  }"
@@ -59,35 +59,37 @@
          x-transition:leave="transition ease-in-out duration-1000"
          x-transition:leave-start="opacity-100"
          x-transition:leave-end="opacity-0"
-         class="fixed inset-0 z-[9999] bg-white flex flex-col items-center justify-center overflow-hidden"
+         class="fixed inset-0 z-[100] bg-[#f8fafc] flex flex-col items-center justify-between py-12 overflow-hidden"
          style="display: none;">
-         
-         <!-- Mancha Celeste Esquina Superior Izquierda -->
-         <svg class="absolute top-0 left-0 w-64 md:w-96 text-blue-50" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" style="transform: rotate(0deg) translate(-20%, -20%);">
-            <path fill="currentColor" d="M45.7,-76.4C58.9,-69.3,69,-55.4,76.5,-40.8C84,-26.2,88.9,-10.9,87.3,4C85.7,18.9,77.6,33.5,66.6,44.7C55.6,55.9,41.7,63.7,26.9,70.5C12.1,77.3,-3.8,83,-19.6,81C-35.4,79.1,-50.4,69.4,-61.8,56.8C-73.2,44.1,-81,28.6,-83.4,12.3C-85.7,-4,-82.6,-21.2,-73.9,-35.1C-65.2,-49,-50.9,-59.7,-36.5,-66.2C-22.1,-72.7,-7.8,-75,8.1,-77.3C24,-79.6,48,-81.9,45.7,-76.4Z" transform="translate(100 100)" />
-         </svg>
 
-         <!-- Mancha Celeste Esquina Inferior Derecha -->
-         <svg class="absolute bottom-0 right-0 w-64 md:w-96 text-blue-50" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" style="transform: rotate(180deg) translate(-20%, -20%);">
-            <path fill="currentColor" d="M45.7,-76.4C58.9,-69.3,69,-55.4,76.5,-40.8C84,-26.2,88.9,-10.9,87.3,4C85.7,18.9,77.6,33.5,66.6,44.7C55.6,55.9,41.7,63.7,26.9,70.5C12.1,77.3,-3.8,83,-19.6,81C-35.4,79.1,-50.4,69.4,-61.8,56.8C-73.2,44.1,-81,28.6,-83.4,12.3C-85.7,-4,-82.6,-21.2,-73.9,-35.1C-65.2,-49,-50.9,-59.7,-36.5,-66.2C-22.1,-72.7,-7.8,-75,8.1,-77.3C24,-79.6,48,-81.9,45.7,-76.4Z" transform="translate(100 100)" />
-         </svg>
+        <div class="absolute top-0 left-0 w-[500px] h-[500px] bg-[#adfeff] opacity-60 rounded-full blur-[100px] -translate-x-1/3 -translate-y-1/3 pointer-events-none"></div>
 
-         <!-- El Cubo Central: Video Animación de Paola -->
-         <div class="relative z-10 flex flex-col items-center justify-center w-full px-6">
-             <video autoplay muted playsinline class="w-64 h-64 md:w-[400px] md:h-[400px] object-contain pointer-events-none">
-                 <source src="{{ asset('images/bienvenida.mp4') }}" type="video/mp4">
-             </video>
-         </div>
+        <div class="absolute bottom-0 right-0 w-[500px] h-[500px] bg-[#adfeff] opacity-60 rounded-full blur-[100px] translate-x-1/3 translate-y-1/3 pointer-events-none"></div>
 
-         <!-- Redes Sociales y Texto Inferior -->
-         <div class="absolute bottom-10 left-0 right-0 flex flex-col items-center justify-center z-10 gap-5">
-             <div class="flex items-center gap-6 text-[#1e293b]">
-                 <svg class="w-6 h-6 hover:text-blue-600 transition-colors cursor-pointer" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M22.54 6.42a2.78 2.78 0 00-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 00-1.94 2A29 29 0 001 11.75a29 29 0 00.46 5.33 2.78 2.78 0 001.94 2c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 001.94-2 29 29 0 00.46-5.33 29 29 0 00-.46-5.33z"></path><polygon stroke-width="1.5" stroke-linejoin="round" points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02"></polygon></svg>
-                 <svg class="w-6 h-6 hover:text-pink-600 transition-colors cursor-pointer" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
-                 <svg class="w-6 h-6 hover:text-black transition-colors cursor-pointer" fill="currentColor" viewBox="0 0 24 24"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-5.2 1.74 2.89 2.89 0 012.31-4.64 2.93 2.93 0 01.88.13V9.4a6.84 6.84 0 00-1-.05A6.33 6.33 0 005 15.68a6.32 6.32 0 006.33 6.33 6.33 6.33 0 006.33-6.33V11.1a8.2 8.2 0 003.93 1.01V8.66a5.53 5.53 0 01-2-1.97z"/></svg>
-             </div>
-             <h2 class="font-extrabold text-[#0f172a] tracking-widest text-[20px]">SINGKI</h2>
-         </div>
+        <div class="h-10"></div>
+
+        <div class="relative z-10 flex flex-col items-center justify-center">
+            <img src="{{ asset('images/logo-animado.gif') }}" alt="Cargando SINGKI" class="w-64 md:w-80 h-auto object-contain">
+        </div>
+
+        <div class="relative z-10 flex flex-wrap items-center justify-center gap-6 md:gap-10 text-[#2563eb] font-bold text-[13px] tracking-wide uppercase">
+            
+            <div class="flex items-center gap-2">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"></path><path stroke-linecap="round" stroke-linejoin="round" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                <span>@SINGKI_NI</span>
+            </div>
+            
+            <div class="flex items-center gap-2">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z"></path><circle cx="4" cy="4" r="2" stroke="none" fill="currentColor"></circle></svg>
+                <span>@SINGKI.OFICIAL</span>
+            </div>
+            
+            <div class="flex items-center gap-2">
+                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"></path></svg>
+                <span>@SINGKI.NIC</span>
+            </div>
+
+        </div>
     </div>
     @endguest
     <!-- ========================================== -->
@@ -123,7 +125,7 @@
                 <div class="flex gap-4 items-start mb-6">
                     <!-- Ícono Cuadrado Azul -->
                     <div class="w-12 h-12 bg-[#2563eb] rounded-xl flex items-center justify-center shrink-0 shadow-sm">
-                        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+                        <img src="{{ asset('images/Robot.png') }}" alt="Ki" class="w-7 h-7 object-contain scale-110">
                     </div>
                     <!-- Burbuja de texto gris muy suave -->
                     <div class="bg-slate-50 border border-slate-100 p-4 rounded-2xl rounded-tl-sm w-full">
@@ -191,7 +193,16 @@
                             $superAdmins = ['isaacmeneses254@gmail.com', 'edmundo@ejemplo.com', 'admin@sinki.com'];
                         @endphp
 
+                        <!-- Botón Premium (Oculto para clientes/usuarios comunes) -->
+                        @if(!in_array(Auth::user()->role ?? '', ['cliente', 'usuario']))
+                            <a href="{{ url('/admin/premium/planes') }}" class="bg-gradient-to-r from-[#8b5cf6] to-[#7c3aed] hover:opacity-90 text-white text-[13px] font-bold py-1.5 px-4 rounded-full flex items-center gap-1.5 transition-opacity shadow-sm mr-2">
+                                <span class="text-yellow-300 text-sm">★</span> Hazte Premium
+                            </a>
+                        @endif
+
                         <!-- Avatar y Nombre -->
+
+
                         <div class="flex items-center gap-3">
                             <div class="w-10 h-10 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center font-bold text-lg">
                                 {{ strtoupper(substr(Auth::user()->name, 0, 1)) }}
@@ -199,10 +210,8 @@
                             <span class="font-medium text-gray-700">{{ explode(' ', Auth::user()->name)[0] }}</span>
                         </div>
                         
-                        @if(in_array(Auth::user()->email, $superAdmins))
+                      @if(in_array(Auth::user()->email, $superAdmins))
                             <a href="{{ url('/superadmin/dashboard') }}" class="text-[#3b82f6] font-medium text-sm hover:underline transition">Panel Super Admin</a>
-                        @elseif(in_array(Auth::user()->role, ['proveedor', 'servicios', 'administrador']))
-                            <a href="{{ url('/admin/dashboard') }}" class="text-[#3b82f6] font-medium text-sm hover:underline transition">Administrar negocio</a>
                         @endif
 
                         <!-- Botón de Cerrar Sesión -->
@@ -267,7 +276,7 @@
                         <p class="text-blue-100 text-[14px] font-light">¿Qué estás buscando hoy?</p>
                     </div>
                     <div class="w-full md:w-1/2 flex justify-start md:justify-end">
-                        <form action="{{ route('products.index') }}" method="GET" class="relative w-full max-w-lg bg-white rounded-full flex items-center p-1.5 shadow-sm">
+                        <form action="{{ route('explorar.index') }}" method="GET" class="relative w-full max-w-lg bg-white rounded-full flex items-center p-1.5 shadow-sm">
                             <input type="text" name="search" placeholder="Busca negocios, productos o servicios..." class="w-full pl-5 pr-4 py-2 bg-transparent border-0 focus:ring-0 text-gray-700 text-sm outline-none">
                         @error('search') <span class="text-red-500 text-sm mt-1 block">{{ $message }}</span> @enderror
                             <button type="submit" class="bg-[#3b82f6] hover:bg-[#2563eb] text-white font-medium px-8 py-2 rounded-full transition text-sm">Buscar</button>
@@ -276,18 +285,7 @@
                 </div>
             </section>
 
-            <!-- Botonera de Acción Rápida (Fondo blanco) -->
-            <section class="bg-white py-5 border-b border-gray-100">
-                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-wrap items-center justify-center md:justify-start gap-3">
-                    <a href="{{ route('favorites.index') }}" class="bg-[#3b82f6] hover:bg-[#2563eb] text-white px-5 py-2.5 rounded-xl font-medium flex items-center gap-2 text-[14px] shadow-sm transition"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path></svg>Mis Favoritos</a>
-                    <a href="{{ url('/admin/reservas') }}" class="bg-[#3b82f6] hover:bg-[#2563eb] text-white px-5 py-2.5 rounded-xl font-medium flex items-center gap-2 text-[14px] shadow-sm transition"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>Mis Reservas</a>
-                    <a href="{{ route('categories.index') }}" class="bg-[#3b82f6] hover:bg-[#2563eb] text-white px-5 py-2.5 rounded-xl font-medium flex items-center gap-2 text-[14px] shadow-sm transition"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"></path></svg>Categorías</a>
-                    <a href="{{ route('products.index') }}" class="bg-[#3b82f6] hover:bg-[#2563eb] text-white px-5 py-2.5 rounded-xl font-medium flex items-center gap-2 text-[14px] shadow-sm transition"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>Buscar</a>
-                    
-                    <a href="{{ url('/admin/dashboard') }}" class="bg-[#020617] hover:bg-gray-900 text-white px-5 py-2.5 rounded-xl font-medium flex items-center gap-2 text-[14px] shadow-sm transition ml-0 sm:ml-3">Administrar negocio</a>
-                </div>
-            </div>
-        </section>
+            
 
         <!-- 2. FRANJA BLANCA (PÍLDORAS DE ACCIÓN) -->
         <section class="w-full bg-white py-5">
@@ -304,7 +302,7 @@
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"></path></svg>
                     Categorías
                 </a>
-                <a href="#" class="bg-[#1F51FF] text-white px-6 py-2.5 rounded-full font-medium flex items-center gap-2 text-sm shadow-sm hover:opacity-90">
+                <a href="{{ route('explorar.index') }}" class="bg-[#1F51FF] text-white px-6 py-2.5 rounded-full font-medium flex items-center gap-2 text-sm shadow-sm hover:opacity-90">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
                     Buscar
                 </a>
@@ -364,9 +362,9 @@
                         Conectamos negocios con oportunidades
                         <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"/></svg>
                     </div>
-                    <h1 class="font-ragick font-normal text-3xl md:text-5xl lg:text-[3.5rem] leading-[1.1] text-white mb-6 tracking-tight">
+                    <h1 class="font-ragick font-normal text-3xl md:text-5xl lg:text-[3.5rem] leading-[1.1] text-white mb-6 tracking-normal">
                         Encuentra lo que tu negocio <br>
-                        <span class="text-[#38bdf8]">necesita, aquí y ahora.</span>
+                        <span class="text-[#adfeff]">necesita, aquí y ahora.</span>
                     </h1>
                     <p class="text-lg text-blue-100/90 mb-10 max-w-lg font-light leading-relaxed">
                         Te ayudamos a que encuentres lo que necesites de forma rápida y confiable. Negocios, proveedores, productos y servicios en un solo lugar.
@@ -393,7 +391,7 @@
     <section id="categorias" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 bg-white">
         <div class="flex justify-between items-end mb-12">
             <div>
-                <h2 class="text-[32px] font-extrabold text-[#0f172a] mb-2 tracking-tight">Explorar por categoría</h2>
+                <h2 class="text-[32px] font-extrabold text-[#0f172a] mb-2 tracking-normal">Explorar por categoría</h2>
                 <p class="text-[#3b82f6] font-medium text-sm">Encuentra negocios y proveedores según lo que necesitas</p>
             </div>
             <a href="{{ url('/explorar') }}" class="text-[#3b82f6] font-medium hover:underline flex items-center gap-2 text-sm">Ver todas <span aria-hidden="true">&rarr;</span></a>
@@ -546,7 +544,7 @@
             
             <span class="px-5 py-1.5 rounded-full border border-[#3b82f6] text-[#3b82f6] text-[11px] font-bold tracking-[0.15em] uppercase mb-6 inline-block bg-transparent">Simple y rápido</span>
             
-            <h2 class="text-4xl lg:text-5xl font-extrabold text-[#0f172a] mb-4 tracking-tight">¿Cómo funciona SINGKI?</h2>
+            <h2 class="text-4xl lg:text-5xl font-extrabold text-[#0f172a] mb-4 tracking-normal">¿Cómo funciona SINGKI?</h2>
             <p class="text-gray-600 text-lg mb-20 font-light">En tres simples pasos encuentra lo que tu negocio necesita</p>
             
             <div class="grid grid-cols-1 md:grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
@@ -609,10 +607,10 @@
         <!-- Encabezado de la sección -->
         <div class="flex justify-between items-end mb-10">
             <div>
-                <h2 class="text-3xl font-extrabold text-[#0f172a] mb-2 tracking-tight">Negocios destacados</h2>
+                <h2 class="text-3xl font-extrabold text-[#0f172a] mb-2 tracking-normal">Negocios destacados</h2>
                 <p class="text-gray-500 font-light text-sm">Proveedores verificados con los mejores productos y servicios</p>
             </div>
-            <a href="{{ route('companies.index') }}" class="text-[#3b82f6] font-medium hover:underline flex items-center gap-2 text-sm">Ver todos <span aria-hidden="true">&rarr;</span></a>
+            <a href="{{ route('explorar.index') }}" class="text-[#3b82f6] font-medium hover:underline flex items-center gap-2 text-sm">Ver todos <span aria-hidden="true">&rarr;</span></a>
         </div>
         
         <!-- Cuadrícula de 4 tarjetas -->
@@ -664,7 +662,7 @@
                             <span class="font-bold text-gray-900">{{ $negocio->rating ?? '0.0' }}</span>
                             <span class="text-gray-400">({{ $negocio->reviews ?? '0' }})</span>
                         </div>
-                        <a href="{{ route('companies.show', $negocio->id ?? 1) }}" class="text-[#3b82f6] font-medium hover:underline text-[13px]">Ver perfil</a>
+                        href="{{ url('/perfil-publico') }}" class="text-[#3b82f6] font-medium hover:underline text-[13px]">Ver perfil</a>
                     </div>
                 </div>
             </div>
@@ -682,7 +680,7 @@
         <!-- Encabezado de la sección -->
         <div class="flex justify-between items-end mb-10">
             <div>
-                <h2 class="text-3xl font-extrabold text-[#0f172a] mb-2 tracking-tight">Productos disponibles</h2>
+                <h2 class="text-3xl font-extrabold text-[#0f172a] mb-2 tracking-normal">Productos disponibles</h2>
                 <p class="text-gray-500 font-light text-sm">Explora lo más reciente en nuestro catálogo</p>
             </div>
             <a href="{{ route('products.index') }}" class="text-[#3b82f6] font-medium hover:underline flex items-center gap-2 text-sm">Ver todos <span aria-hidden="true">&rarr;</span></a>
@@ -753,7 +751,7 @@
                 <span class="border border-white/40 rounded-full px-4 py-1 text-[10px] font-semibold tracking-wide uppercase mb-6 inline-block text-white/90">
                     Para emprendedores y proveedores
                 </span>
-                <h2 class="font-ragick font-normal text-3xl lg:text-4xl mb-4 tracking-tight">Impulsa tu negocio con SINGKI</h2>
+                <h2 class="font-ragick font-normal text-3xl lg:text-4xl mb-4 tracking-normal">Impulsa tu negocio con SINGKI</h2>
                 <p class="mb-6 text-white/90 text-sm font-light leading-relaxed max-w-md">
                     Registra tu negocio, publica tu catálogo de productos o servicios, gestiona tu inventario y conecta con clientes que están buscando exactamente lo que tú ofreces.
                 </p>
@@ -815,7 +813,7 @@
     <!-- ========================================== -->
     <section class="max-w-7xl mx-auto px-4 py-24 text-center bg-[#f8fafc] overflow-hidden">
         <span class="px-5 py-1.5 rounded-full border border-blue-200 text-[#2563eb] text-[10px] font-bold tracking-[0.2em] uppercase mb-8 inline-block bg-transparent shadow-sm">COMUNIDAD SINGKI</span>
-        <h2 class="text-4xl lg:text-5xl font-extrabold text-[#0f172a] mb-5 tracking-tight">Experiencias de nuestra comunidad</h2>
+        <h2 class="text-4xl lg:text-5xl font-extrabold text-[#0f172a] mb-5 tracking-normal">Experiencias de nuestra comunidad</h2>
         <p class="text-gray-500 text-[15px] mb-16 font-light max-w-xl mx-auto leading-relaxed">Clientes, emprendedores y proveedores que ya confían en SINGKI para hacer crecer sus negocios.</p>
         
         <div x-data="{ active: 1 }" class="relative w-full max-w-[1200px] mx-auto mb-16">
@@ -910,7 +908,7 @@
     <!-- SECCIÓN 9: PREGUNTAS FRECUENTES            -->
     <!-- ========================================== -->
     <section class="max-w-4xl mx-auto px-4 py-24 text-center">
-        <h2 class="text-4xl lg:text-5xl font-extrabold text-[#0f172a] mb-4 tracking-tight">Preguntas frecuentes</h2>
+        <h2 class="text-4xl lg:text-5xl font-extrabold text-[#0f172a] mb-4 tracking-normal">Preguntas frecuentes</h2>
         <p class="text-gray-500 text-lg mb-14 font-light">Respuestas a las dudas más comunes sobre SINGKI</p>
         
         <div class="space-y-5 max-w-3xl mx-auto">
@@ -975,11 +973,11 @@
     <section>
         <!-- Bloque CTA (Fondo Blanco) -->
         <div class="bg-white py-24 text-center border-t border-gray-50">
-            <h2 class="text-4xl lg:text-5xl font-extrabold text-[#2563eb] mb-4 tracking-tight">¿Listo para empezar?</h2>
+            <h2 class="text-4xl lg:text-5xl font-extrabold text-[#2563eb] mb-4 tracking-normal">¿Listo para empezar?</h2>
             <p class="text-[#3b82f6] text-[15px] font-light mb-10 max-w-2xl mx-auto">Únete a la plataforma que conecta negocios con oportunidades.</p>
-            <div class="flex flex-col sm:flex-row justify-center gap-4">
-                <button class="bg-[#2563eb] text-white font-bold px-8 py-3 rounded-xl hover:bg-[#1d4ed8] transition shadow-sm text-[15px]">Crear cuenta gratis</button>
-                <button class="bg-white border border-[#2563eb] text-[#2563eb] font-bold px-8 py-3 rounded-xl hover:bg-blue-50 transition text-[15px]">Explorar negocios</button>
+            <div class="flex flex-col sm:flex-row gap-4 items-center justify-center mt-6 w-full px-6 sm:px-0">
+                <button class="w-full sm:w-auto bg-[#2563eb] text-white font-bold px-8 py-3 rounded-xl hover:bg-[#1d4ed8] transition shadow-sm text-[15px]">Crear cuenta gratis</button>
+                <button class="w-full sm:w-auto bg-white border border-[#2563eb] text-[#2563eb] font-bold px-8 py-3 rounded-xl hover:bg-blue-50 transition text-[15px]">Explorar negocios</button>
             </div>
         </div>
         @endguest
@@ -1100,7 +1098,7 @@
                         const kiMsgHtml = `
                             <div class="flex gap-4 items-start mb-6">
                                 <div class="w-12 h-12 bg-[#2563eb] rounded-xl flex items-center justify-center shrink-0 shadow-sm">
-                                    <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+                                    <img src="{{ asset('images/Robot.png') }}" alt="Ki" class="w-7 h-7 object-contain scale-110">
                                 </div>
                                 <div class="bg-slate-50 border border-slate-100 p-4 rounded-2xl rounded-tl-sm w-full">
                                     <h4 class="text-[#2563eb] font-bold text-[14px] mb-1">Ki</h4>
