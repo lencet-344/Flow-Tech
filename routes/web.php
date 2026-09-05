@@ -22,14 +22,6 @@ use App\Http\Middleware\CheckSuperAdmin;
 use App\Http\Controllers\TwoFactorController;
 
 // ── RUTAS PÚBLICAS ──────────────────────────────────────────────────────────
-Route::get('/mapa', function () {
-    return view('mapa');
-});
-
-Route::get('/explorar', function () {
-    return view('usuario.explorar'); 
-})->name('explorar.index');
-
 Route::get('/', function () {
     $categorias = \App\Models\Category::take(8)->get(); 
     $negocios_destacados = \App\Models\Company::where('status', 'activo')->take(4)->get();
@@ -43,18 +35,23 @@ Route::get('/', function () {
     return view('welcome', compact('categorias', 'negocios_destacados', 'productos', 'mis_reservas'));
 })->name('welcome');
 
-Route::get('/admin/promocionar', function () { return view('admin.promocionar.configurar'); });
-Route::get('/admin/promocionar/confirmar', function () { return view('admin.promocionar.confirmar'); });
-Route::get('/admin/reservas', function () { return view('admin.reservas'); });
+Route::get('/mapa', function () { return view('mapa'); });
+Route::get('/explorar', function () { return view('usuario.explorar'); })->name('explorar.index');
 Route::get('/registro-tipo', function () { return view('auth.tipo-cuenta'); });
 Route::get('/registro/cliente', function () { return view('auth.registro-cliente'); });
 Route::get('/registro/proveedor', function () { return view('auth.registro-proveedor'); });
 Route::get('/registro/servicios', function () { return view('auth.registro-servicios'); });
-Route::get('/perfil-publico', function () { return view('public.profile'); });
 Route::get('/chat-negocio', function () { return view('chat-negocio'); });
 
+// Ruta corregida del compañero (con ID opcional)
+Route::get('/perfil-publico/{id?}', function () { return view('public.profile'); });
 
-// ── RUTAS DE 2FA (Requieren estar logueado, pero NO requieren tener el 2FA verificado aún) ──
+// Rutas públicas del Asistente IA "Ki" (movidas aquí para acceso libre de invitados)
+Route::get('/chat', [GeminiController::class, 'index'])->name('chat.index');
+Route::post('/chat/ask', [GeminiController::class, 'ask'])->name('chat.ask');
+
+
+// ── RUTAS DE 2FA (Requieren login, pero NO 2FA verificado) ──────────────────
 Route::middleware(['auth'])->group(function () {
     Route::get('/verificacion-2fa', [TwoFactorController::class, 'index'])->name('2fa.index');
     Route::post('/verificacion-2fa', [TwoFactorController::class, 'verify'])->name('2fa.verify');
@@ -76,14 +73,10 @@ Route::middleware(['auth', '2fa_verified', 'verified', 'prevent-back-history'])-
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-
-    // Rutas del Asistente IA "Ki"
-    Route::get('/chat', [GeminiController::class, 'index'])->name('chat.index');
-    Route::post('/chat/ask', [GeminiController::class, 'ask'])->name('chat.ask');
 });
 
 
-// ── 1. RUTAS DEL SUPER ADMINISTRADOR (Protegidas por 2FA + Middleware VIP) ──
+// ── 1. RUTAS DEL SUPER ADMINISTRADOR (Protegidas por 2FA + CheckSuperAdmin) ─
 Route::middleware(['auth', '2fa_verified', 'verified', 'prevent-back-history', CheckSuperAdmin::class])->group(function() {
     Route::get('/superadmin/dashboard', function () { return view('superadmin.dashboard'); });
     Route::get('/superadmin/usuarios', function () { 
@@ -99,9 +92,7 @@ Route::middleware(['auth', '2fa_verified', 'verified', 'prevent-back-history', C
     })->name('admin.users.toggleStatus');
     
     Route::get('/superadmin/proveedores', function () { return view('superadmin.suppliers'); })->name('superadmin.suppliers');
-    Route::get('/superadmin/negocios', function () { 
-        return view('superadmin.businesses'); 
-    })->name('superadmin.businesses');
+    Route::get('/superadmin/negocios', function () { return view('superadmin.businesses'); })->name('superadmin.businesses');
 
     Route::patch('/superadmin/negocios/{id}/toggle-status', function ($id) {
         $company = \App\Models\Company::findOrFail($id);
@@ -128,6 +119,7 @@ Route::middleware(['auth', '2fa_verified', 'verified', 'prevent-back-history'])-
     Route::get('/admin/dashboard', function () { return view('admin.dashboard'); });
     Route::get('/admin/perfil', [\App\Http\Controllers\CompanyController::class, 'profile'])->name('admin.perfil');
     Route::put('/admin/perfil/actualizar/{company}', [\App\Http\Controllers\CompanyController::class, 'update'])->name('admin.perfil.update');
+    
     Route::get('/admin/inventario', function () { return view('admin.inventario'); });
     Route::get('/admin/ofertas', function () { return view('admin.ofertas'); });
     Route::get('/admin/comunidad', function () { return view('admin.comunidad'); });
@@ -136,6 +128,9 @@ Route::middleware(['auth', '2fa_verified', 'verified', 'prevent-back-history'])-
     Route::get('/admin/premium/planes', function () { return view('admin.premium.planes'); })->name('premium.planes');
     Route::get('/admin/premium/checkout', function () { return view('admin.premium.checkout'); })->name('premium.checkout');
     Route::get('/admin/premium/success', function () { return view('admin.premium.success'); })->name('premium.success');
+    Route::get('/admin/promocionar', function () { return view('admin.promocionar.configurar'); });
+    Route::get('/admin/promocionar/confirmar', function () { return view('admin.promocionar.confirmar'); });
+    Route::get('/admin/reservas', function () { return view('admin.reservas'); });
     
     Route::resource('products', ProductController::class);
     Route::resource('inventories', InventoryController::class);
@@ -193,10 +188,7 @@ Route::middleware(['auth', '2fa_verified', 'verified', 'prevent-back-history'])-
 
     Route::resource('orders', OrderController::class);
     Route::resource('buy_verifications', Buy_verificationController::class);
-    Route::get('/chat/proveedor', function () {
-        return view('usuario.chat');
-    })->name('usuario.chat.proveedor');
-
+    Route::get('/chat/proveedor', function () { return view('usuario.chat'); })->name('usuario.chat.proveedor');
     Route::resource('bookings', BookingController::class);
     Route::resource('contact_requests', Contact_requestController::class);
     Route::resource('favorites', FavoriteController::class);
@@ -204,18 +196,4 @@ Route::middleware(['auth', '2fa_verified', 'verified', 'prevent-back-history'])-
     Route::get('/premium/success', [PremiumController::class, 'success'])->name('premium.success');
 });
 
-
-Route::get('/admin/promocionar', function () { return view('admin.promocionar.configurar'); });
-Route::get('/admin/promocionar/confirmar', function () { return view('admin.promocionar.confirmar'); });
-Route::get('/admin/reservas', function () { return view('admin.reservas'); });
-Route::get('/registro-tipo', function () { return view('auth.tipo-cuenta'); });
-Route::get('/registro/cliente', function () { return view('auth.registro-cliente'); });
-Route::get('/registro/proveedor', function () { return view('auth.registro-proveedor'); });
-Route::get('/registro/servicios', function () { return view('auth.registro-servicios'); });
-
-// Aquí está la ruta corregida que acepta el ID opcional
-Route::get('/perfil-publico/{id?}', function () { return view('public.profile'); });
-
 require __DIR__.'/auth.php';
-
-Route::get('/chat-negocio', function () { return view('chat-negocio'); });
