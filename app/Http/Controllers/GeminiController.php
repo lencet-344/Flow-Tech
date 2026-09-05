@@ -83,6 +83,11 @@ class GeminiController extends Controller
                 "Sé amable, conciso, profesional y céntrate en el mercado de Estelí.";
 
             $history = session()->get('gemini_chat_history', []);
+            
+            if (!empty($history) && $history[0]['role'] !== 'user') {
+                array_shift($history);
+            }
+
             $currentMessage = [
                 'role' => 'user',
                 'parts' => [['text' => $promptText]]
@@ -98,18 +103,11 @@ class GeminiController extends Controller
                 'contents' => $contents
             ];
 
-            // Lista de modelos alternativos en caso de que uno falle por saturación (503)
-            $models = ['gemini-1.5-flash', 'gemini-2.5-flash', 'gemini-1.5-pro'];
-            $response = null;
-
-            foreach ($models as $modelName) {
-                $url = "https://generativelanguage.googleapis.com/v1beta/models/{$modelName}:generateContent?key={$apiKey}";
-                $response = Http::post($url, $payload);
-                
-                if ($response->successful()) {
-                    break; // Si uno responde con éxito, salimos del ciclo
-                }
-            }
+            // Usamos el modelo exacto que indicó el mensaje de error de Google
+            $modelName = 'gemini-3.6-flash';
+            $url = "https://generativelanguage.googleapis.com/v1beta/models/{$modelName}:generateContent?key={$apiKey}";
+            
+            $response = Http::withoutVerifying()->post($url, $payload);
 
             if ($response && $response->successful()) {
                 $data = $response->json();
@@ -130,8 +128,10 @@ class GeminiController extends Controller
                 return response()->json(['reply' => $reply]);
             }
 
+            $apiError = $response ? $response->json() : 'No se pudo conectar con Google';
+            
             return response()->json([
-                'reply' => 'Los servidores de IA están ocupados temporalmente. Por favor, intenta de nuevo en unos segundos.'
+                'reply' => '⚠️ ERROR DETALLADO DE GEMINI: ' . json_encode($apiError)
             ], 500);
 
         } catch (Exception $e) {

@@ -11,7 +11,7 @@
             <td align="center">
                 <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="600" style="background-color: #ffffff; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);">
                     
-                    
+                    <!-- Header con Logo y Título -->
                     <tr>
                         <td style="background-color: #0f172a; padding: 30px 40px; text-align: left;">
                             <img src="{{ $message->embed(public_path('images/LogoAzul.png')) }}" alt="SINGKI" height="60" style="margin-bottom: 20px; display: block; border: none; outline: none;">
@@ -19,7 +19,7 @@
                         </td>
                     </tr>
 
-                    
+                    <!-- Cuerpo del Mensaje -->
                     <tr>
                         <td style="padding: 40px; color: #334155;">
                             <p style="font-size: 16px; margin-top: 0; margin-bottom: 20px; font-weight: 600;">
@@ -29,7 +29,7 @@
                                 Para completar tu acción o acceso en tu cuenta de SINGKI, introduce el siguiente código de verificación (OTP):
                             </p>
 
-                            
+                            <!-- Caja del Código -->
                             <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%">
                                <tr>
                                    <td align="left" style="background-color: #f8fafc; border-left: 4px solid #2563eb; padding: 20px; border-radius: 4px;">
@@ -45,7 +45,7 @@
                         </td>
                     </tr>
 
-                    
+                    <!-- Pie de página -->
                     <tr>
                         <td style="background-color: #f8fafc; padding: 30px 40px; border-top: 1px solid #e2e8f0; color: #94a3b8; font-size: 12px; line-height: 1.5;">
                             <p style="margin: 0 0 10px 0;">
