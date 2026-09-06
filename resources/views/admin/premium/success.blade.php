@@ -16,8 +16,6 @@
     </div>
     
     <!-- Importante: Ajusta esta URL a tu dashboard de administrador -->
-    <a href="{{ url('/admin/dashboard') }}" class="block w-full bg-[#8b5cf6] text-white font-bold py-3.5 rounded-xl hover:bg-[#7c3aed] transition text-sm">
-        Ir a mi panel Premium
-    </a>
+    <a href="{{ url('/admin/estadisticas?premium=true') }}" class="block text-center w-full bg-[#7c3aed] hover:bg-[#6d28d9] text-white font-medium py-3.5 rounded-[12px] transition-colors shadow-sm text-[15px]">Ir a mi panel Premium</a>
 </div>
 @endsection
