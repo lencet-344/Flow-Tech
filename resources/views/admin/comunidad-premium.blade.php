@@ -1,6 +1,7 @@
 @extends('layouts.admin')
 
 @section('content')
+@if(session('is_premium') || request()->has('premium'))
 <div class="p-8 md:p-10 max-w-5xl mx-auto">
 
     <!-- HEADER -->
@@ -130,4 +131,22 @@
 
     </div>
 </div>
+@else
+<div class="p-8 md:p-10 flex items-center justify-center min-h-[calc(100vh-80px)]">
+    <div class="bg-white rounded-[24px] shadow-sm max-w-lg w-full p-10 md:p-12 text-center border border-gray-100">
+        <div class="w-20 h-20 bg-[#f5f3ff] rounded-[20px] flex items-center justify-center mx-auto mb-8">
+            <svg class="w-10 h-10 text-[#7c3aed]" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
+            </svg>
+        </div>
+        <h2 class="text-2xl font-bold text-[#0f172a] mb-4 tracking-tight">Comunidad Premium - Accede a la biblioteca de conocimiento</h2>
+        <p class="text-[#475569] text-[15px] mb-8 font-light leading-relaxed px-2">
+            Únete a la comunidad exclusiva y resuelve todas las dudas de tu negocio con <span class="text-[#7c3aed] font-medium">SINGKI Premium</span>.
+        </p>
+        <a href="{{ url('/admin/premium/planes') }}" class="w-full bg-[#7c3aed] hover:bg-[#6d28d9] text-white font-medium py-3.5 rounded-2xl transition-colors shadow-sm text-[15px] flex items-center justify-center gap-2">
+            <svg class="w-4 h-4 text-yellow-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.006 5.404.434c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.434 2.082-5.006z" clip-rule="evenodd" /></svg> Obtener Premium
+        </a>
+    </div>
+</div>
+@endif
 @endsection
