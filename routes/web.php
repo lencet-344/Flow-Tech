@@ -23,7 +23,7 @@ use App\Http\Controllers\TwoFactorController;
 
 // ── RUTAS PÚBLICAS ──────────────────────────────────────────────────────────
 Route::get('/', function () {
-    $categorias = \App\Models\Category::take(8)->get(); 
+    $categorias = \App\Models\Category::withCount('companies')->take(8)->get(); 
     $negocios_destacados = \App\Models\Company::where('status', 'activo')->take(4)->get();
     $productos = \App\Models\Product::with('supplier')->latest()->take(6)->get();
     $mis_reservas = collect();
