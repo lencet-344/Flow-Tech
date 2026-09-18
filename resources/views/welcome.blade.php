@@ -1,31 +1,3 @@
-@php
-    // ==========================================
-    // DATOS TEMPORALES (SIMULANDO BASE DE DATOS)
-    // ==========================================
-    $categorias = [
-        ['nombre' => 'Tecnología', 'icono' => '💻', 'negocios' => 48],
-        ['nombre' => 'Alimentos', 'icono' => '☕', 'negocios' => 132],
-        ['nombre' => 'Construcción', 'icono' => '🏗️', 'negocios' => 67],
-        ['nombre' => 'Salud', 'icono' => '🏥', 'negocios' => 54],
-        ['nombre' => 'Moda', 'icono' => '👕', 'negocios' => 89],
-        ['nombre' => 'Hogar', 'icono' => '🏠', 'negocios' => 74],
-        ['nombre' => 'Servicios', 'icono' => '⚙️', 'negocios' => 103],
-        ['nombre' => 'Educación', 'icono' => '📚', 'negocios' => 41],
-        ['nombre' => 'Automoción', 'icono' => '🚗', 'negocios' => 56],
-        ['nombre' => 'Arte', 'icono' => '🎨', 'negocios' => 29],
-    ];
-
-    $negociosDestacados = [
-        ['nombre' => 'TechSolutions GT', 'categoria' => 'Tecnología', 'desc' => 'Soluciones tecnológicas para empresas. Hardware y soporte.', 'rating' => 4.8, 'img' => 'https://images.unsplash.com/photo-1519389953888-91237a72c1c6?w=500&q=80', 'premium' => true],
-        ['nombre' => 'Distribuidora Alimentos Norte', 'categoria' => 'Alimentos', 'desc' => 'Distribución mayorista de alimentos secos y enlatados.', 'rating' => 4.5, 'img' => 'https://images.unsplash.com/photo-1542838132-92c53300491e?w=500&q=80', 'premium' => false],
-        ['nombre' => 'Construcciones Sólidas', 'categoria' => 'Construcción', 'desc' => 'Materiales de construcción, ferretería industrial.', 'rating' => 4.3, 'img' => 'https://images.unsplash.com/photo-1504307651254-35680f356f58?w=500&q=80', 'premium' => false],
-        ['nombre' => 'Moda Express', 'categoria' => 'Moda', 'desc' => 'Ropa y accesorios al por mayor. Colecciones para dama y caballero.', 'rating' => 4.6, 'img' => 'https://images.unsplash.com/photo-1441984904996-e0b6ba687e04?w=500&q=80', 'premium' => true],
-    ];
-
-    $faqs = [
-        '¿Cómo funciona SINGKI?', '¿Cómo busco un negocio?', '¿Cómo encuentro un producto?', '¿Cómo contacto a un negocio?', '¿Cómo puedo registrar mi negocio?'
-    ];
-@endphp
 
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
@@ -402,141 +374,29 @@
             <a href="{{ url('/explorar') }}" class="text-[#3b82f6] font-medium hover:underline flex items-center gap-2 text-sm">Ver todas <span aria-hidden="true">&rarr;</span></a>
         </div>
         
-        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 md:gap-6">
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 md:gap-6">
             
-            <!-- 1. Tecnología (Monitor suave) -->
-            <a href="{{ url('/explorar?categoria=Tecnología') }}" class="bg-white border border-gray-200 rounded-[16px] py-8 px-4 text-center hover:shadow-[0_8px_30px_rgb(0,0,0,0.06)] hover:border-[#3b82f6] transition duration-300 cursor-pointer group flex flex-col items-center">
+            <!-- CICLO DINÁMICO DESDE LA BASE DE DATOS -->
+            @foreach($categorias as $categoria)
+            <a href="{{ url('/explorar?categoria=' . urlencode($categoria->name)) }}" class="bg-white border border-gray-200 rounded-[16px] py-8 px-4 text-center hover:shadow-[0_8px_30px_rgb(0,0,0,0.06)] hover:border-[#3b82f6] transition duration-300 cursor-pointer group flex flex-col items-center">
                 <div class="mb-4 text-[#2563eb] group-hover:-translate-y-1 transition duration-300">
-                    <svg class="w-10 h-10 mx-auto" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><path d="M8 21h8"/><path d="M12 17v4"/></svg>
-                </div>
-                <h3 class="font-bold text-gray-900 text-[15px] mb-1">Tecnología</h3>
-                <p class="text-[13px] text-[#3b82f6]">48 negocios</p>
-            </a>
-
-            <!-- 2. Alimentos (Taza y humo ondulado) -->
-            <a href="{{ url('/explorar?categoria=Alimentos') }}" class="bg-white border border-gray-200 rounded-[16px] py-8 px-4 text-center hover:shadow-[0_8px_30px_rgb(0,0,0,0.06)] hover:border-[#3b82f6] transition duration-300 cursor-pointer group flex flex-col items-center">
-                <div class="mb-4 text-[#2563eb] group-hover:-translate-y-1 transition duration-300">
-                    <svg class="w-10 h-10 mx-auto" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M17 8h1a4 4 0 1 1 0 8h-1"/><path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4V8z"/><path d="M6 2c0 1.5-1.5 1.5-1.5 3s1.5 1.5 1.5 3"/><path d="M10 2c0 1.5-1.5 1.5-1.5 3s1.5 1.5 1.5 3"/><path d="M14 2c0 1.5-1.5 1.5-1.5 3s1.5 1.5 1.5 3"/></svg>
-                </div>
-                <h3 class="font-bold text-gray-900 text-[15px] mb-1">Alimentos</h3>
-                <p class="text-[13px] text-[#3b82f6]">132 negocios</p>
-            </a>
-
-            <!-- 3. Construcción (Camión de carga puro) -->
-            <a href="{{ url('/explorar?categoria=Construcción') }}" class="bg-white border border-gray-200 rounded-[16px] py-8 px-4 text-center hover:shadow-[0_8px_30px_rgb(0,0,0,0.06)] hover:border-[#3b82f6] transition duration-300 cursor-pointer group flex flex-col items-center">
-                <div class="mb-4 text-[#2563eb] group-hover:-translate-y-1 transition duration-300">
-                    <svg class="w-10 h-10 mx-auto" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11h1"/><path d="M15 18H9"/><path d="M19 18h2v-6l-3.4-4.5A2 2 0 0 0 16.1 5H14v13"/><circle cx="6" cy="18" r="2"/><circle cx="17" cy="18" r="2"/></svg>
-                </div>
-                <h3 class="font-bold text-gray-900 text-[15px] mb-1">Construcción</h3>
-                <p class="text-[13px] text-[#3b82f6]">67 negocios</p>
-            </a>
-
-            <!-- 4. Salud (Cruz médica perfecta) -->
-            <a href="{{ url('/explorar?categoria=Salud') }}" class="bg-white border border-gray-200 rounded-[16px] py-8 px-4 text-center hover:shadow-[0_8px_30px_rgb(0,0,0,0.06)] hover:border-[#3b82f6] transition duration-300 cursor-pointer group flex flex-col items-center">
-                <div class="mb-4 text-[#2563eb] group-hover:-translate-y-1 transition duration-300">
-                    <svg class="w-10 h-10 mx-auto" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M10 3h4v6h6v4h-6v6h-4v-6h-6v-4h6z"/></svg>
-                </div>
-                <h3 class="font-bold text-gray-900 text-[15px] mb-1">Salud</h3>
-                <p class="text-[13px] text-[#3b82f6]">54 negocios</p>
-            </a>
-
-            <!-- 5. Moda (T-Shirt) -->
-            <a href="{{ url('/explorar?categoria=Moda') }}" class="bg-white border border-gray-200 rounded-[16px] py-8 px-4 text-center hover:shadow-[0_8px_30px_rgb(0,0,0,0.06)] hover:border-[#3b82f6] transition duration-300 cursor-pointer group flex flex-col items-center">
-                <div class="mb-4 text-[#2563eb] group-hover:-translate-y-1 transition duration-300">
-                    <svg class="w-10 h-10 mx-auto" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M20.38 3.46L16 2a4 4 0 0 1-8 0L3.62 3.46a2 2 0 0 0-1.34 2.23l.58 3.47a1 1 0 0 0 .99.84H6v10c0 1.1.9 2 2 2h8a2 2 0 0 0 2-2V10h2.15a1 1 0 0 0 .99-.84l.58-3.47a2 2 0 0 0-1.34-2.23z"/></svg>
-                </div>
-                <h3 class="font-bold text-gray-900 text-[15px] mb-1">Moda</h3>
-                <p class="text-[13px] text-[#3b82f6]">89 negocios</p>
-            </a>
-
-            <!-- 6. Hogar (Casa con puerta de arco) -->
-            <a href="{{ url('/explorar?categoria=Hogar') }}" class="bg-white border border-gray-200 rounded-[16px] py-8 px-4 text-center hover:shadow-[0_8px_30px_rgb(0,0,0,0.06)] hover:border-[#3b82f6] transition duration-300 cursor-pointer group flex flex-col items-center">
-                <div class="mb-4 text-[#2563eb] group-hover:-translate-y-1 transition duration-300">
-                    <svg class="w-10 h-10 mx-auto" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M9 22V12a3 3 0 0 1 6 0v10"/></svg>
-                </div>
-                <h3 class="font-bold text-gray-900 text-[15px] mb-1">Hogar</h3>
-                <p class="text-[13px] text-[#3b82f6]">74 negocios</p>
-            </a>
-
-            <!-- 7. Servicios (Engranaje) -->
-            <a href="{{ url('/explorar?categoria=Servicios') }}" class="bg-white border border-gray-200 rounded-[16px] py-8 px-4 text-center hover:shadow-[0_8px_30px_rgb(0,0,0,0.06)] hover:border-[#3b82f6] transition duration-300 cursor-pointer group flex flex-col items-center">
-                <div class="mb-4 text-[#2563eb] group-hover:-translate-y-1 transition duration-300">
-                    <svg class="w-10 h-10 mx-auto" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1Z"/></svg>
-                </div>
-                <h3 class="font-bold text-gray-900 text-[15px] mb-1">Servicios</h3>
-                <p class="text-[13px] text-[#3b82f6]">103 negocios</p>
-            </a>
-
-            <!-- 8. Educación (Libro Abierto) -->
-            <a href="{{ url('/explorar?categoria=Educación') }}" class="bg-white border border-gray-200 rounded-[16px] py-8 px-4 text-center hover:shadow-[0_8px_30px_rgb(0,0,0,0.06)] hover:border-[#3b82f6] transition duration-300 cursor-pointer group flex flex-col items-center">
-                <div class="mb-4 text-[#2563eb] group-hover:-translate-y-1 transition duration-300">
-                    <svg class="w-10 h-10 mx-auto" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
-                </div>
-                <h3 class="font-bold text-gray-900 text-[15px] mb-1">Educación</h3>
-                <p class="text-[13px] text-[#3b82f6]">41 negocios</p>
-            </a>
-
-            <!-- 9. Automotriz (Silueta de Auto) -->
-            <a href="{{ url('/explorar?categoria=Automotriz') }}" class="bg-white border border-gray-200 rounded-[16px] py-8 px-4 text-center hover:shadow-[0_8px_30px_rgb(0,0,0,0.06)] hover:border-[#3b82f6] transition duration-300 cursor-pointer group flex flex-col items-center">
-                <div class="mb-4 text-[#2563eb] group-hover:-translate-y-1 transition duration-300">
+                    <!-- Ícono genérico (puedes guardar íconos en tu base de datos más adelante) -->
                     <svg class="w-10 h-10 mx-auto" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
-                        <path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.4 2.9A3.7 3.7 0 0 0 2 12v4c0 .6.4 1 1 1h2"/>
-                        <circle cx="7" cy="17" r="2"/>
-                        <circle cx="17" cy="17" r="2"/>
+                        <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path>
                     </svg>
                 </div>
-                <!-- Cambiado de Automoción a Automotriz -->
-                <h3 class="font-bold text-gray-900 text-[15px] mb-1">Automotriz</h3>
-                <p class="text-[13px] text-[#3b82f6]">56 negocios</p>
+                
+                <!-- Nombre real de la base de datos -->
+                <h3 class="font-bold text-gray-900 text-[15px] mb-1">{{ $categoria->name }}</h3>
+                
+                <!-- Conteo real de empresas en esta categoría -->
+                <p class="text-[13px] text-[#3b82f6]">{{ $categoria->companies_count ?? 0 }} negocios</p>
             </a>
-
-           <!-- 10. Arte (Pincel de base plana perfecto) -->
-            <a href="{{ url('/explorar?categoria=Arte') }}" class="bg-white border border-gray-200 rounded-[16px] py-8 px-4 text-center hover:shadow-[0_8px_30px_rgb(0,0,0,0.06)] hover:border-[#3b82f6] transition duration-300 cursor-pointer group flex flex-col items-center">
-                <div class="mb-4 text-[#2563eb] group-hover:-translate-y-1 transition duration-300">
-                    <svg class="w-10 h-10 mx-auto" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
-                        <path d="M 15 15 C 17 16 16 20 13 20 H 5 A 2 2 0 0 1 3 18 V 15 C 3 9 8 8 11 11 L 13 9 L 17 5 A 2.828 2.828 0 0 1 21 9 L 17 13 L 15 15 Z" />
-                        <path d="M11 11 L15 15" />
-                        <path d="M13 9 L17 13" />
-                    </svg>
-                </div>
-                <h3 class="font-bold text-gray-900 text-[15px] mb-1">Arte</h3>
-                <p class="text-[13px] text-[#3b82f6]">29 negocios</p>
-            </a>
-
-            <!-- 11. Deporte (Balón de baloncesto real) -->
-           
-            <a href="{{ url('/explorar?categoria=Deporte') }}" class="bg-white border border-gray-200 rounded-[16px] py-8 px-4 text-center hover:shadow-[0_8px_30px_rgb(0,0,0,0.06)] hover:border-[#3b82f6] transition duration-300 cursor-pointer group flex flex-col items-center">
-                <div class="mb-4 text-[#2563eb] group-hover:-translate-y-1 transition duration-300">
-                    <svg class="w-10 h-10 mx-auto" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
-                        <circle cx="12" cy="12" r="10"/>
-                        <path d="M12 2v20"/>
-                        <path d="M2 12h20"/>
-                        <path d="M6 4c3 3 3 13 0 16"/>
-                        <path d="M18 4c-3 3-3 13 0 16"/>
-                    </svg>
-                </div>
-                <h3 class="font-bold text-gray-900 text-[15px] mb-1">Deporte</h3>
-                <p class="text-[13px] text-[#3b82f6]">63 negocios</p>
-            </a>
-
-            <!-- 12. Belleza (Vestido exacto al Figma) -->
-            <a href="{{ url('/explorar?categoria=Belleza') }}" class="bg-white border border-gray-200 rounded-[16px] py-8 px-4 text-center hover:shadow-[0_8px_30px_rgb(0,0,0,0.06)] hover:border-[#3b82f6] transition duration-300 cursor-pointer group flex flex-col items-center">
-                <div class="mb-4 text-[#2563eb] group-hover:-translate-y-1 transition duration-300">
-                    <svg class="w-10 h-10 mx-auto" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
-                        <!-- Corpiño y tirantes -->
-                        <path d="M9 4v3L7 10l2 2h6l2-2-2-3V4"/>
-                        <!-- Escote en U -->
-                        <path d="M9 7q3 3 6 0"/>
-                        <!-- Falda corte A -->
-                        <path d="M9 12l-3 8h12l-3-8"/>
-                    </svg>
-                </div>
-                <h3 class="font-bold text-gray-900 text-[15px] mb-1">Belleza</h3>
-                <p class="text-[13px] text-[#3b82f6]">71 negocios</p>
-            </a>
+            @endforeach
 
         </div>
     </section>
+    <!-- ========================================== -->
     <!-- ========================================== -->
 
     @guest
