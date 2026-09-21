@@ -37,6 +37,7 @@ Route::get('/', function () {
 
 Route::get('/mapa', function () { return view('mapa'); });
 Route::get('/explorar', function () { return view('usuario.explorar'); })->name('explorar.index');
+Route::get('/redes', function () { return view('public.redes'); })->name('redes.index');
 Route::get('/registro-tipo', function () { return view('auth.tipo-cuenta'); });
 Route::get('/registro/cliente', function () { return view('auth.registro-cliente'); });
 Route::get('/registro/proveedor', function () { return view('auth.registro-proveedor'); });

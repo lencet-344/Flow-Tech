@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Models\Company;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -20,7 +21,8 @@ class RegisteredUserController extends Controller
      */
     public function create(): View
     {
-        return view('auth.register');
+        $categories = \App\Models\Category::all();
+        return view('auth.register', compact('categories'));
     }
 
     /**
@@ -30,19 +32,57 @@ class RegisteredUserController extends Controller
      */
     public function store(Request $request): RedirectResponse
     {
-        $request->validate([
-            'name' => ['required', 'string', 'max:255'],
+        $rules = [
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
             'role' => ['required', 'string', 'in:usuario,cliente,proveedor,servicios'],
-        ]);
+        ];
 
-        $user = User::create([
-            'name' => $request->name,
+        if (in_array($request->role, ['proveedor', 'servicios'])) {
+            $rules['first_name'] = ['required', 'string', 'max:255'];
+            $rules['last_name'] = ['required', 'string', 'max:255'];
+            $rules['cedula'] = ['required', 'string', 'max:50'];
+            $rules['company_name'] = ['required', 'string', 'max:255'];
+            $rules['description'] = ['required', 'string'];
+            $rules['category_id'] = ['required', 'integer'];
+            $rules['address'] = ['required', 'string', 'max:255'];
+            $rules['latitude'] = ['nullable', 'numeric'];
+            $rules['longitude'] = ['nullable', 'numeric'];
+        } else {
+            $rules['name'] = ['required', 'string', 'max:255'];
+        }
+
+        $request->validate($rules);
+
+        $userData = [
             'email' => $request->email,
             'password' => Hash::make($request->password),
             'role' => $request->role,
-        ]);
+        ];
+
+        if (in_array($request->role, ['proveedor', 'servicios'])) {
+            $userData['first_name'] = $request->first_name;
+            $userData['last_name'] = $request->last_name;
+            $userData['cedula'] = $request->cedula;
+            $userData['name'] = $request->first_name . ' ' . $request->last_name;
+        } else {
+            $userData['name'] = $request->name;
+        }
+
+        $user = User::create($userData);
+
+        if (in_array($request->role, ['proveedor', 'servicios'])) {
+            Company::create([
+                'email' => $user->email,
+                'name' => $request->company_name,
+                'description' => $request->description,
+                'category_id' => $request->category_id,
+                'address' => $request->address,
+                'latitude' => $request->latitude,
+                'longitude' => $request->longitude,
+                'type_product' => $request->role === 'servicios' ? 'Servicios' : 'Productos',
+            ]);
+        }
 
         event(new Registered($user));
 
