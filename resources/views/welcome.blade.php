@@ -346,7 +346,7 @@
                     <p class="text-lg text-blue-100/90 mb-10 max-w-lg font-light leading-relaxed">
                         Te ayudamos a que encuentres lo que necesites de forma rápida y confiable. Negocios, proveedores, productos y servicios en un solo lugar.
                     </p>
-                    <form action="{{ route('products.index') }}" method="GET" class="bg-white p-1.5 rounded-full flex items-center max-w-xl shadow-lg mt-8"><input type="text" name="search" placeholder="Busca negocios, productos o servicios..." class="w-full pl-6 pr-4 bg-transparent border-none focus:ring-0 text-gray-500 text-sm outline-none">
+                    <form action="{{ route('explorar.index') }}" method="GET" class="bg-white p-1.5 rounded-full flex items-center max-w-xl shadow-lg mt-8"><input type="text" name="search" placeholder="Busca negocios, productos o servicios..." class="w-full pl-6 pr-4 bg-transparent border-none focus:ring-0 text-gray-500 text-sm outline-none">
                         @error('search') <span class="text-red-500 text-sm mt-1 block">{{ $message }}</span> @enderror<button type="submit" class="bg-[#3b82f6] hover:bg-[#2563eb] text-white font-semibold px-8 py-2.5 rounded-full transition text-sm whitespace-nowrap">Buscar</button></form>
                 </div>
 
@@ -371,28 +371,62 @@
                 <h2 class="text-[32px] font-extrabold text-[#0f172a] mb-2 tracking-normal">Explorar por categoría</h2>
                 <p class="text-[#3b82f6] font-medium text-sm">Encuentra negocios y proveedores según lo que necesitas</p>
             </div>
-            <a href="{{ url('/explorar') }}" class="text-[#3b82f6] font-medium hover:underline flex items-center gap-2 text-sm">Ver todas <span aria-hidden="true">&rarr;</span></a>
+            <!-- ENLACE ORIGINAL RECUPERADO DE GIT -->
+            <a href="{{ route('explorar.index') }}" class="text-[#3b82f6] font-medium hover:underline flex items-center gap-2 text-sm">Ver todas <span aria-hidden="true">&rarr;</span></a>
         </div>
         
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 md:gap-6">
             
             <!-- CICLO DINÁMICO DESDE LA BASE DE DATOS -->
             @foreach($categorias as $categoria)
-            <a href="{{ url('/explorar?categoria=' . urlencode($categoria->name)) }}" class="bg-white border border-gray-200 rounded-[16px] py-8 px-4 text-center hover:shadow-[0_8px_30px_rgb(0,0,0,0.06)] hover:border-[#3b82f6] transition duration-300 cursor-pointer group flex flex-col items-center">
+            <!-- ENLACE DINÁMICO ORIGINAL RECUPERADO -->
+            <a href="{{ route('explorar.index', ['categoria' => $categoria->name]) }}" class="bg-white border border-gray-200 rounded-[16px] py-8 px-4 text-center hover:shadow-[0_8px_30px_rgb(0,0,0,0.06)] hover:border-[#3b82f6] transition duration-300 cursor-pointer group flex flex-col items-center">
                 <div class="mb-4 text-[#2563eb] group-hover:-translate-y-1 transition duration-300">
-                    <!-- Ícono genérico (puedes guardar íconos en tu base de datos más adelante) -->
-                    <svg class="w-10 h-10 mx-auto" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
-                        <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path>
-                    </svg>
+                    
+                    <!-- SWITCH DE ICONOS CON ARCHIVOS FÍSICOS -->
+                    @switch(\Illuminate\Support\Str::slug($categoria->name))
+                        @case('tecnologia')
+                            <img src="{{ asset('images/Vectores-01.svg') }}" alt="Tecnología" class="w-10 h-10 mx-auto">
+                            @break
+                        @case('alimentos')
+                        @case('consumibles')
+                            <img src="{{ asset('images/Vectores-02.svg') }}" alt="Alimentos" class="w-10 h-10 mx-auto">
+                            @break
+                        @case('construccion')
+                        @case('logistica')
+                            <img src="{{ asset('images/Vectores-03.svg') }}" alt="Construcción" class="w-10 h-10 mx-auto">
+                            @break
+                        @case('salud')
+                            <img src="{{ asset('images/Vectores-04.svg') }}" alt="Salud" class="w-10 h-10 mx-auto">
+                            @break
+                        @case('moda')
+                        @case('ropa')
+                            <img src="{{ asset('images/Vectores-05.svg') }}" alt="Moda" class="w-10 h-10 mx-auto">
+                            @break
+                        @case('hogar')
+                            <img src="{{ asset('images/Vectores-06.svg') }}" alt="Hogar" class="w-10 h-10 mx-auto">
+                            @break
+                        @case('servicios')
+                            <img src="{{ asset('images/Vectores-07.svg') }}" alt="Servicios" class="w-10 h-10 mx-auto">
+                            @break
+                        @case('educacion')
+                            <img src="{{ asset('images/Vectores-08.svg') }}" alt="Educación" class="w-10 h-10 mx-auto">
+                            @break
+                        @default
+                            <!-- Ícono Genérico (Engranaje) para categorías nuevas -->
+                            <img src="{{ asset('images/Vectores-07.svg') }}" alt="Categoría" class="w-10 h-10 mx-auto">
+                    @endswitch
+
                 </div>
                 
-                <!-- Nombre real de la base de datos -->
                 <h3 class="font-bold text-gray-900 text-[15px] mb-1">{{ $categoria->name }}</h3>
-                
-                <!-- Conteo real de empresas en esta categoría -->
                 <p class="text-[13px] text-[#3b82f6]">{{ $categoria->companies_count ?? 0 }} negocios</p>
             </a>
             @endforeach
+
+        </div>
+    </section>
+    <!-- ========================================== -->
 
         </div>
     </section>

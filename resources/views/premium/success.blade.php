@@ -45,6 +45,10 @@
 
     <!-- Contenido Principal Centrado -->
     <main class="flex-grow flex items-center justify-center p-6">
+        @php
+            session()->put('is_premium', true);
+            session()->save();
+        @endphp
         <div class="bg-white rounded-[24px] shadow-sm max-w-[540px] w-full p-10 text-center border border-gray-100">
             
             <div class="w-24 h-24 bg-[#7c3aed] rounded-[20px] flex items-center justify-center mx-auto mb-6 shadow-md">
@@ -63,8 +67,8 @@
                     <svg class="w-6 h-6 text-[#8b5cf6] mb-3" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"></path></svg>
                     <p class="text-[14px] font-medium text-[#8b5cf6] leading-snug">Posicionamiento<br>destacado</p>
                 </div>
-                <!-- Beneficio 2 (Ahora es un enlace funcional) -->
-                <a href="{{ url('/admin/comunidad-premium') }}" class="block border border-[#8b5cf6] rounded-[16px] p-5 text-left bg-white transition hover:shadow-md hover:bg-purple-50 cursor-pointer">
+                <!-- Beneficio 2 (Ahora es un enlace funcional con el seguro de URL) -->
+                <a href="{{ url('/admin/comunidad-premium?premium=true') }}" class="block border border-[#8b5cf6] rounded-[16px] p-5 text-left bg-white transition hover:shadow-md hover:bg-purple-50 cursor-pointer">
                     <svg class="w-6 h-6 text-[#8b5cf6] mb-3" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path></svg>
                     <p class="text-[14px] font-medium text-[#8b5cf6] leading-snug">Comunidad de<br>Crecimiento</p>
                 </a>
@@ -78,10 +82,10 @@
                 </div>
             </div>
 
-            <button class="w-full bg-[#7c3aed] hover:bg-[#6d28d9] text-white font-medium py-3.5 rounded-[12px] transition-colors shadow-sm text-[15px]">
-                Ir a mi panel Premium
-            </button>
-        </div>
+            <!-- Botón blindado principal -->
+           <a href="{{ url('/admin/estadisticas?premium=true') }}" class="block text-center w-full bg-[#7c3aed] hover:bg-[#6d28d9] text-white font-medium py-3.5 rounded-[12px] transition-colors shadow-sm text-[15px]">
+    Ir a mi panel Premium
+</a>
     </main>
 
     @include('components.footer')
