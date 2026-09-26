@@ -86,4 +86,25 @@ class CompanyController extends Controller
         $company->delete();
         return redirect()->route("companies.index")->with("success", 'Empresa ha sido eliminado correctamente.');
     }
+
+    /**
+     * Muestra el perfil público del negocio a los clientes.
+     */
+    public function publicProfile(Request $request)
+    {
+        // 1. Capturamos el nombre del negocio de la URL (?negocio=Lebron-Clemente)
+        $nombreNegocio = $request->query('negocio');
+
+        // 2. Buscamos en la base de datos (modelo Company) donde el nombre coincida
+        // Nota: Asegúrate de que tu columna en la BD se llame 'name' o cámbiala por 'nombre'
+        $negocio = Company::where('name', $nombreNegocio)->first();
+
+        // Si por alguna razón escriben mal el nombre en la URL y no existe, mostramos error 404
+        if (!$negocio) {
+            abort(404, 'El negocio no existe o no fue encontrado.');
+        }
+
+        // 3. Retornamos la vista pública enviándole la variable $negocio
+        return view('public.profile', compact('negocio'));
+    }
 }

@@ -33,9 +33,18 @@ class Company extends Model
     }
 
     public function products()
-    {
-        return $this->hasMany(Product::class);
-    }
+{
+    // Relación a través de la tabla inventories
+    return $this->hasManyThrough(
+        Product::class,
+        Inventory::class,
+        'supplier_id', // Llave foránea en la tabla inventories que apunta a Company
+        'id',          // Llave foránea en la tabla products
+        'id',          // Llave local en la tabla companies
+        'product_id'   // Llave local en la tabla inventories que apunta a Product
+    );
+}
+    
 
     public function contact_requests()
     {
