@@ -26,6 +26,8 @@ class CompanyRequest extends FormRequest
             'horario' => 'nullable|string|max:100',
             'category_id' => 'nullable|integer|exists:categories,id',
             'logo' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:5120',
+            'latitude'    => 'nullable|integer',
+            'longitude'   => 'nullable|integer',
         ];
     }
 
