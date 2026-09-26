@@ -34,6 +34,13 @@ class DatabaseSeeder extends Seeder
             'role' => 'usuario',
         ]);
 
+        User::create([
+            'name' => 'Auditor',
+            'email' => 'usuario@flowtech.com',
+            'password' => Hash::make('password'),
+            'role' => 'Auditor',
+        ]);
+
         $this->call(CategorySeeder::class);
         $this->call(ProductSeeder::class);
         
