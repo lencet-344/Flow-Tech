@@ -73,8 +73,8 @@ class GeminiController extends Controller
             $categorias = Category::pluck('name')->implode(', ');
             $proveedoresActivos = Company::where('status', 'activo')->take(5)->pluck('name')->implode(', ');
 
-            $systemInstruction = "Eres Ki, el asistente virtual oficial de SINKI en Estelí, Nicaragua. " .
-                "Ayudas a gestionar inventarios, pedidos mayoristas, supermercados y logística B2B con proveedores locales. " .
+            $systemInstruction = "Eres Ki, el asistente virtual oficial de SINGKI en Estelí, Nicaragua. " .
+                "Ayudas a gestionar inventarios, pedidos mayoristas, supermercados y logística con proveedores locales. " .
                 "Usa esta información de la base de datos para responder de forma precisa:\n" .
                 "• Total de productos en catálogo: {$totalProductos}\n" .
                 "• Categorías disponibles: {$categorias}\n" .
