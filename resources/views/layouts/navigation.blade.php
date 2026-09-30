@@ -77,11 +77,11 @@
                     <x-slot name="trigger">
                         <button class="inline-flex items-center px-2 py-2 border border-transparent text-sm leading-4 font-medium rounded-xl text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-800 hover:text-gray-700 dark:hover:text-gray-300 focus:outline-none transition ease-in-out duration-150">
                             
-                            <img class="h-9 w-9 rounded-full object-cover mr-3 border border-gray-200 dark:border-gray-700" src="https://ui-avatars.com/api/?name={{ urlencode(Auth::user()->name) }}&color=4f46e5&background=e0e7ff" alt="Avatar" />
+                            <img class="h-9 w-9 rounded-full object-cover mr-3 border border-gray-200 dark:border-gray-700" src="https://ui-avatars.com/api/?name={{ urlencode(Auth::user()?->name ?? 'Invitado') }}&color=4f46e5&background=e0e7ff" alt="Avatar" />
                             
                             <div class="flex flex-col items-start mr-1">
-                                <span class="font-bold text-gray-800 dark:text-gray-200 leading-tight">{{ Auth::user()->name }}</span>
-                                <span class="text-xs text-gray-500 dark:text-gray-400 leading-tight">{{ Auth::user()->email }}</span>
+                                <span class="font-bold text-gray-800 dark:text-gray-200 leading-tight">{{ Auth::user()?->name ?? 'Invitado' }}</span>
+                                <span class="text-xs text-gray-500 dark:text-gray-400 leading-tight">{{ Auth::user()?->email ?? '' }}</span>
                             </div>
 
                             <div class="ml-1">
@@ -191,10 +191,10 @@
 
         <div class="pt-4 pb-1 border-t border-gray-200 dark:border-gray-600">
             <div class="px-4 flex items-center mb-3">
-                <img class="h-10 w-10 rounded-full object-cover mr-3 border border-gray-200 dark:border-gray-700" src="https://ui-avatars.com/api/?name={{ urlencode(Auth::user()->name) }}&color=4f46e5&background=e0e7ff" alt="Avatar" />
+                <img class="h-10 w-10 rounded-full object-cover mr-3 border border-gray-200 dark:border-gray-700" src="https://ui-avatars.com/api/?name={{ urlencode(Auth::user()?->name ?? 'Invitado') }}&color=4f46e5&background=e0e7ff" alt="Avatar" />
                 <div>
-                    <div class="font-bold text-base text-gray-800 dark:text-gray-200">{{ Auth::user()->name }}</div>
-                    <div class="font-medium text-sm text-gray-500">{{ Auth::user()->email }}</div>
+                    <div class="font-bold text-base text-gray-800 dark:text-gray-200">{{ Auth::user()?->name ?? 'Invitado' }}</div>
+                    <div class="font-medium text-sm text-gray-500">{{ Auth::user()?->email ?? '' }}</div>
                 </div>
             </div>
 
