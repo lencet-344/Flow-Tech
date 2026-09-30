@@ -55,6 +55,6 @@ class ProfileController extends Controller
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        return Redirect::to('/')->with('status', 'Tu cuenta ha sido eliminada.');
+        return Redirect::to('/')->with('success', 'Tu cuenta ha sido eliminada.');
     }
 }

@@ -49,7 +49,10 @@ class RegisteredUserController extends Controller
             $rules['latitude'] = ['nullable', 'numeric'];
             $rules['longitude'] = ['nullable', 'numeric'];
         } else {
-            $rules['name'] = ['required', 'string', 'max:255'];
+            $rules['first_name'] = ['required', 'string', 'max:255'];
+            $rules['last_name'] = ['required', 'string', 'max:255'];
+            $rules['cedula'] = ['required', 'string', 'max:50'];
+            $rules['phone'] = ['required', 'string', 'max:20'];
         }
 
         $request->validate($rules);
@@ -66,7 +69,10 @@ class RegisteredUserController extends Controller
             $userData['cedula'] = $request->cedula;
             $userData['name'] = $request->first_name . ' ' . $request->last_name;
         } else {
-            $userData['name'] = $request->name;
+            $userData['first_name'] = $request->first_name;
+            $userData['last_name'] = $request->last_name;
+            $userData['cedula'] = $request->cedula;
+            $userData['name'] = $request->first_name . ' ' . $request->last_name;
         }
 
         $user = User::create($userData);

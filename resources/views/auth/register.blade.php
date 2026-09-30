@@ -142,7 +142,7 @@
                             
                             <button type="button" @click="step = 1; role = ''" class="absolute top-8 left-8 text-sm font-semibold text-[#1F51FF] hover:text-blue-700 transition-colors flex items-center gap-2">
                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
-                                Volver a elegir rol
+                                Regresar
                             </button>
 
                             <div class="mb-8 mt-10 text-center">
@@ -151,10 +151,30 @@
                             </div>
 
                             <!-- Inputs Cliente (Intactos) -->
-                            <div class="mb-4">
-                                <label for="name" class="block text-[11px] font-bold text-gray-500 uppercase tracking-wider mb-2">Nombre Completo</label>
-                                <input id="name" class="w-full border border-gray-200 rounded-xl px-4 py-3 bg-gray-50/50 focus:ring-[#1F51FF] focus:border-[#1F51FF] text-sm outline-none transition-colors" type="text" name="name" value="{{ old('name') }}" required autofocus autocomplete="name" />
-                                @error('name') <span class="text-xs text-red-500 mt-1 block">{{ $message }}</span> @enderror
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                                <div>
+                                    <label class="block text-[11px] font-bold text-gray-500 uppercase tracking-wider mb-2">Nombres</label>
+                                    <input class="w-full border border-gray-200 rounded-xl px-4 py-3 bg-gray-50/50 focus:ring-[#1F51FF] focus:border-[#1F51FF] text-sm outline-none transition-colors" type="text" name="first_name" value="{{ old('first_name') }}" placeholder="Ej. María" required autofocus autocomplete="given-name" />
+                                    @error('first_name') <span class="text-xs text-red-500 mt-1 block">{{ $message }}</span> @enderror
+                                </div>
+                                <div>
+                                    <label class="block text-[11px] font-bold text-gray-500 uppercase tracking-wider mb-2">Apellidos</label>
+                                    <input class="w-full border border-gray-200 rounded-xl px-4 py-3 bg-gray-50/50 focus:ring-[#1F51FF] focus:border-[#1F51FF] text-sm outline-none transition-colors" type="text" name="last_name" value="{{ old('last_name') }}" placeholder="Ej. González" required autocomplete="family-name" />
+                                    @error('last_name') <span class="text-xs text-red-500 mt-1 block">{{ $message }}</span> @enderror
+                                </div>
+                            </div>
+
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                                <div>
+                                    <label class="block text-[11px] font-bold text-gray-500 uppercase tracking-wider mb-2">Cédula</label>
+                                    <input class="w-full border border-gray-200 rounded-xl px-4 py-3 bg-gray-50/50 focus:ring-[#1F51FF] focus:border-[#1F51FF] text-sm outline-none transition-colors" type="text" name="cedula" value="{{ old('cedula') }}" placeholder="001-000000-0000A" required />
+                                    @error('cedula') <span class="text-xs text-red-500 mt-1 block">{{ $message }}</span> @enderror
+                                </div>
+                                <div>
+                                    <label class="block text-[11px] font-bold text-gray-500 uppercase tracking-wider mb-2">Teléfono</label>
+                                    <input class="w-full border border-gray-200 rounded-xl px-4 py-3 bg-gray-50/50 focus:ring-[#1F51FF] focus:border-[#1F51FF] text-sm outline-none transition-colors" type="tel" name="phone" value="{{ old('phone') }}" placeholder="8888-0000" required />
+                                    @error('phone') <span class="text-xs text-red-500 mt-1 block">{{ $message }}</span> @enderror
+                                </div>
                             </div>
 
                             <div class="mb-4">
