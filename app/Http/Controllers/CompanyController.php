@@ -67,13 +67,17 @@ class CompanyController extends Controller
     public function update(CompanyRequest $request, Company $company)
     {
         $data = $request->validated();
+        $company->update($data);
+
         if ($request->hasFile('logo')) {
             if ($company->logo && \Illuminate\Support\Facades\Storage::disk('public')->exists($company->logo)) {
                 \Illuminate\Support\Facades\Storage::disk('public')->delete($company->logo);
             }
-            $data['logo'] = $request->file('logo')->store('companies', 'public');
+            $path = $request->file('logo')->store('companies', 'public');
+            $company->logo = $path;
+            $company->save();
         }
-        $company->update($data);
+        
         return back()->with("success", "Empresa actualizada correctamente.");
     }
 
@@ -94,14 +98,27 @@ class CompanyController extends Controller
     {
         // 1. Capturamos el nombre del negocio de la URL (?negocio=Lebron-Clemente)
         $nombreNegocio = $request->query('negocio');
+        
+        $negocio = null;
 
         // 2. Buscamos en la base de datos (modelo Company) donde el nombre coincida
-        // Nota: Asegúrate de que tu columna en la BD se llame 'name' o cámbiala por 'nombre'
-        $negocio = Company::where('name', $nombreNegocio)->first();
+        if ($nombreNegocio) {
+            $negocio = Company::where('name', $nombreNegocio)->first();
+        }
 
-        // Si por alguna razón escriben mal el nombre en la URL y no existe, mostramos error 404
+        // Fallback 1: Si no hay negocio por URL, buscamos el del usuario autenticado por correo
+        if (!$negocio && auth()->check()) {
+            $negocio = Company::where('email', auth()->user()->email)->first();
+        }
+
+        // Fallback 2: Si aún no hay negocio (o no está logueado), tomamos el primero de la BD
         if (!$negocio) {
-            abort(404, 'El negocio no existe o no fue encontrado.');
+            $negocio = Company::first();
+        }
+
+        // Si definitivamente no hay ninguna empresa registrada en toda la BD
+        if (!$negocio) {
+            abort(404, 'No hay negocios registrados en el sistema.');
         }
 
         // 3. Retornamos la vista pública enviándole la variable $negocio
