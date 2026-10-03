@@ -372,7 +372,7 @@
                 <p class="text-[#3b82f6] font-medium text-sm">Encuentra negocios y proveedores según lo que necesitas</p>
             </div>
             <!-- ENLACE ORIGINAL RECUPERADO DE GIT -->
-            <a href="{{ route('explorar.index') }}" class="text-[#3b82f6] font-medium hover:underline flex items-center gap-2 text-sm">Ver todas <span aria-hidden="true">&rarr;</span></a>
+            <a href="{{ auth()->check() ? route('explorar.index') : route('login') }}" class="text-[#3b82f6] font-medium hover:underline flex items-center gap-2 text-sm">Ver todas <span aria-hidden="true">&rarr;</span></a>
         </div>
         
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 md:gap-6">
@@ -380,7 +380,7 @@
             <!-- CICLO DINÁMICO DESDE LA BASE DE DATOS -->
             @foreach($categorias as $categoria)
             <!-- ENLACE DINÁMICO ORIGINAL RECUPERADO -->
-            <a href="{{ route('explorar.index', ['categoria' => $categoria->name]) }}" class="bg-white border border-gray-200 rounded-[16px] py-8 px-4 text-center hover:shadow-[0_8px_30px_rgb(0,0,0,0.06)] hover:border-[#3b82f6] transition duration-300 cursor-pointer group flex flex-col items-center">
+            <a href="{{ auth()->check() ? route('explorar.index', ['categoria' => $categoria->name]) : route('login') }}" class="bg-white border border-gray-200 rounded-[16px] py-8 px-4 text-center hover:shadow-[0_8px_30px_rgb(0,0,0,0.06)] hover:border-[#3b82f6] transition duration-300 cursor-pointer group flex flex-col items-center">
                 <div class="mb-4 text-[#2563eb] group-hover:-translate-y-1 transition duration-300">
                     
                     <!-- SWITCH DE ICONOS CON ARCHIVOS FÍSICOS -->
@@ -509,7 +509,7 @@
                 <h2 class="text-3xl font-extrabold text-[#0f172a] mb-2 tracking-normal">Negocios destacados</h2>
                 <p class="text-gray-500 font-light text-sm">Proveedores verificados con los mejores productos y servicios</p>
             </div>
-            <a href="{{ route('explorar.index') }}" class="text-[#3b82f6] font-medium hover:underline flex items-center gap-2 text-sm">Ver todos <span aria-hidden="true">&rarr;</span></a>
+            <a href="{{ auth()->check() ? route('explorar.index') : route('login') }}" class="text-[#3b82f6] font-medium hover:underline flex items-center gap-2 text-sm">Ver todos <span aria-hidden="true">&rarr;</span></a>
         </div>
         
         <!-- Cuadrícula de 4 tarjetas -->
@@ -570,7 +570,7 @@
                             <span class="text-gray-400">({{ $negocio->reviews ?? '10+' }})</span>
                         </div>
                         <!-- ¡Etiqueta HTML '<a>' corregida aquí! -->
-                        <a href="{{ url('/perfil-publico?negocio=' . urlencode($negocio->name)) }}" class="text-[#3b82f6] font-medium hover:underline text-[13px]">Ver perfil</a>
+                        <a href="{{ auth()->check() ? url('/perfil-publico?negocio=' . urlencode($negocio->name)) : route('login') }}" class="text-[#3b82f6] font-medium hover:underline text-[13px]">Ver perfil</a>
                     </div>
                 </div>
             </div>
