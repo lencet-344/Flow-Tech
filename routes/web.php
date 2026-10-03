@@ -52,6 +52,11 @@ Route::get('/perfil-publico', [App\Http\Controllers\CompanyController::class, 'p
 Route::get('/chat', [GeminiController::class, 'index'])->name('chat.index');
 Route::post('/chat/ask', [GeminiController::class, 'ask'])->name('chat.ask');
 
+// Rutas de contacto (Públicas)
+Route::resource('contact_requests', Contact_requestController::class)->only(['create', 'store']);
+Route::get('/centro-ayuda', fn() => view('public.help'))->name('public.help');
+Route::get('/terminos', fn() => view('public.terms'))->name('public.terms');
+
 
 // ── RUTAS DE 2FA (Requieren login, pero NO 2FA verificado) ──────────────────
 Route::middleware(['auth'])->group(function () {
@@ -192,7 +197,7 @@ Route::middleware(['auth', '2fa_verified', 'verified', 'prevent-back-history'])-
     Route::resource('buy_verifications', Buy_verificationController::class);
     Route::get('/chat/proveedor', function () { return view('usuario.chat'); })->name('usuario.chat.proveedor');
     Route::resource('bookings', BookingController::class);
-    Route::resource('contact_requests', Contact_requestController::class);
+    Route::resource('contact_requests', Contact_requestController::class)->except(['create', 'store']);
     Route::resource('favorites', FavoriteController::class);
     Route::resource('trades', TradeController::class);
     Route::get('/premium/success', [PremiumController::class, 'success'])->name('premium.success');

@@ -170,6 +170,8 @@
                 @endif
             </div>
 
+            <div class="h-[calc(100vh-14rem)] overflow-y-auto pr-4 pb-10">
+
             <!-- ESTADO VACÍO (SIN RESULTADOS) -->
             @if($totalResultados === 0)
             <div class="bg-white border-2 border-dashed border-gray-200 rounded-[24px] p-16 text-center shadow-sm flex flex-col items-center justify-center mt-4">
@@ -205,7 +207,7 @@
                             @if(!empty($negocio->logo))
                                 <img src="{{ asset('storage/' . $negocio->logo) }}" alt="{{ $negocio->name }}" class="w-full h-full object-cover">
                             @else
-                                <div class="w-full h-full flex items-center justify-center bg-gradient-to-br from-[#1F51FF] to-indigo-600">
+                                <div class="w-full h-full flex items-center justify-center bg-[#3565fd]">
                                     <span class="text-3xl font-extrabold text-white tracking-widest uppercase">
                                         {{ mb_substr($negocio->name, 0, 2) }}
                                     </span>
@@ -250,7 +252,7 @@
                             @if(!empty($negocio->logo))
                                 <img src="{{ asset('storage/' . $negocio->logo) }}" alt="{{ $negocio->name }}" class="w-full h-full object-cover">
                             @else
-                                <div class="w-full h-full flex items-center justify-center bg-gradient-to-br from-[#1F51FF] to-indigo-600">
+                                <div class="w-full h-full flex items-center justify-center bg-[#3565fd]">
                                     <span class="text-3xl font-extrabold text-white tracking-widest uppercase">
                                         {{ mb_substr($negocio->name, 0, 2) }}
                                     </span>
@@ -280,6 +282,7 @@
                 </div>
             </div>
             @endif
+            </div>
         </div>
     </main>
 

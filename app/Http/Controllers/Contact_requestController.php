@@ -35,7 +35,7 @@ class Contact_requestController extends Controller
     public function store(Contact_requestRequest $request)
     {
         Contact_request::create($request->validated());
-        return redirect()->route('contact_requests.index')->with('success', 'Contacto ha sido creada correctamente.');
+        return redirect()->back()->with('success', '¡Tu solicitud de contacto fue enviada correctamente!');
     }
 
     /**
