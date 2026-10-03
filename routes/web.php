@@ -20,6 +20,12 @@ use App\Http\Controllers\GeminiController;
 use App\Http\Controllers\PremiumController;
 use App\Http\Middleware\CheckSuperAdmin;
 use App\Http\Controllers\TwoFactorController;
+use App\Http\Controllers\RoleSelectionController;
+
+// ── RUTA DE ONBOARDING (Asignación de Rol) ──────────────────────────────────
+Route::middleware(['auth'])->group(function () {
+    Route::post('/seleccionar-rol', [RoleSelectionController::class, 'assignRole'])->name('role.assign');
+});
 
 // ── RUTAS PÚBLICAS ──────────────────────────────────────────────────────────
 Route::get('/', function () {
@@ -28,7 +34,7 @@ Route::get('/', function () {
     $productos = \App\Models\Product::with('supplier')->latest()->take(6)->get();
     $mis_reservas = collect();
 
-    if (auth()->check() && auth()->user()->role == 'usuario') { 
+    if (auth()->check() && auth()->user()->role == 'cliente') { 
         $mis_reservas = \App\Models\Booking::latest()->take(3)->get();
     }
 
@@ -62,6 +68,12 @@ Route::get('/terminos', fn() => view('public.terms'))->name('public.terms');
 Route::middleware(['auth'])->group(function () {
     Route::get('/verificacion-2fa', [TwoFactorController::class, 'index'])->name('2fa.index');
     Route::post('/verificacion-2fa', [TwoFactorController::class, 'verify'])->name('2fa.verify');
+
+    // ── RUTAS DE CATÁLOGO (Accesibles para usuarios autenticados) ──────────────
+Route::middleware(['auth'])->group(function () {
+    Route::resource('products', ProductController::class)->only(['index', 'show']);
+});
+
 });
 
 
@@ -122,7 +134,7 @@ Route::middleware(['auth', '2fa_verified', 'verified', 'prevent-back-history', C
 
 
 // ── 2. RUTAS DE ADMINISTRACIÓN B2B (Protegidas por 2FA) ─────────────────────
-Route::middleware(['auth', '2fa_verified', 'verified', 'prevent-back-history'])->group(function() {
+Route::middleware(['auth', '2fa_verified', 'verified', 'prevent-back-history', 'role:proveedor'])->group(function() {
     Route::get('/admin/dashboard', function () { return view('admin.dashboard'); });
     Route::get('/admin/perfil', [\App\Http\Controllers\CompanyController::class, 'profile'])->name('admin.perfil');
     Route::put('/admin/perfil/actualizar/{company}', [\App\Http\Controllers\CompanyController::class, 'update'])->name('admin.perfil.update');
@@ -139,7 +151,7 @@ Route::middleware(['auth', '2fa_verified', 'verified', 'prevent-back-history'])-
     Route::get('/admin/promocionar/confirmar', function () { return view('admin.promocionar.confirmar'); });
     Route::get('/admin/reservas', function () { return view('admin.reservas'); });
     
-    Route::resource('products', ProductController::class);
+    Route::resource('products', ProductController::class)->except(['index', 'show']);
     Route::resource('inventories', InventoryController::class);
     Route::get('/offers/success', [OfferController::class, 'success'])->name('offers.success');
     Route::resource('offers', OfferController::class);
@@ -148,7 +160,7 @@ Route::middleware(['auth', '2fa_verified', 'verified', 'prevent-back-history'])-
 
 
 // ── 3. FLUJO DE RESERVAS Y OPERACIONES LOGÍSTICAS (Protegidas por 2FA) ───────
-Route::middleware(['auth', '2fa_verified', 'verified', 'prevent-back-history'])->group(function() {
+Route::middleware(['auth', '2fa_verified', 'verified', 'prevent-back-history', 'role:cliente'])->group(function() {
     Route::get('/producto/agotado/reservar', function () {
         $producto = (object) [
             'id' => 999,
