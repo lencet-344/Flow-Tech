@@ -15,10 +15,10 @@
                 <h4 class="text-[#7dd3fc] font-bold mb-6 text-[15px] tracking-wide">Plataforma</h4>
                 <ul class="space-y-4 text-[14px] text-[#cbd5e1] font-light">
                     <li>
-                        <a href="{{ auth()->check() && auth()->user()->role === 'admin' ? route('categories.index') : url('/explorar') }}" class="hover:text-white transition">Categorías</a>
+                        <a href="{{ auth()->check() ? (auth()->user()->role === 'admin' ? route('categories.index') : url('/explorar')) : route('login') }}" class="hover:text-white transition">Categorías</a>
                     </li>
                     <li>
-                        <a href="{{ url('/explorar') }}" class="hover:text-white transition">Explorar negocios</a>
+                        <a href="{{ auth()->check() ? url('/explorar') : route('login') }}" class="hover:text-white transition">Explorar negocios</a>
                     </li>
                     <li>
                         @guest
