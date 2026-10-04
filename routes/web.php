@@ -36,7 +36,7 @@ Route::get('/', function () {
 })->name('welcome');
 
 Route::get('/mapa', function () { return view('mapa'); });
-Route::get('/explorar', [CategoryController::class, 'explorar'])->name('explorar.index');
+Route::get('/explorar', [CategoryController::class, 'explorar'])->name('explorar.index')->middleware('auth');
 Route::get('/redes', function () { return view('public.redes'); })->name('redes.index');
 Route::get('/registro-tipo', function () { return view('auth.tipo-cuenta'); });
 Route::get('/registro/cliente', function () { return view('auth.registro-cliente'); });
@@ -46,7 +46,7 @@ Route::get('/chat-negocio', function () { return view('chat-negocio'); });
 
 
 // Ruta hacia el perfil público (manejada por el controlador para pasar la variable $negocio)
-Route::get('/perfil-publico', [App\Http\Controllers\CompanyController::class, 'publicProfile'])->name('public.profile');
+Route::get('/perfil-publico', [App\Http\Controllers\CompanyController::class, 'publicProfile'])->name('public.profile')->middleware('auth');
 
 // Rutas públicas del Asistente IA "Ki" (movidas aquí para acceso libre de invitados)
 Route::get('/chat', [GeminiController::class, 'index'])->name('chat.index');
