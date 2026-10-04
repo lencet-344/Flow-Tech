@@ -28,7 +28,7 @@ Route::get('/', function () {
     $productos = \App\Models\Product::with('supplier')->latest()->take(6)->get();
     $mis_reservas = collect();
 
-    if (auth()->check() && auth()->user()->role == 'usuario') { 
+    if (auth()->check() && in_array(auth()->user()->role, ['usuario', 'cliente'])) { 
         $mis_reservas = \App\Models\Booking::latest()->take(3)->get();
     }
 
@@ -171,7 +171,25 @@ Route::middleware(['auth', '2fa_verified', 'verified', 'prevent-back-history'])-
             'notes' => 'nullable|string|max:255',
         ]);
         $inventario = \App\Models\Inventory::where('product_id', $product->id)->first();
-        $supplier_id = $inventario->supplier_id ?? 1;
+        
+        $supplier_id = $inventario?->supplier_id ?? \App\Models\Supplier::value('id');
+        
+        if (!$supplier_id) {
+            $company = \App\Models\Company::first();
+            $supplier = \App\Models\Supplier::create([
+                'name'                => $company->name ?? 'Distribuidora Oficial SINGKI',
+                'age'                 => 30,
+                'gender'              => 'N/A',
+                'address'             => $company->address ?? 'Managua, Nicaragua',
+                'email'               => $company->email ?? ('proveedor' . rand(100,999) . '@singki.com'),
+                'telephone'           => rand(80000000, 89999999),
+                'identification_card' => '001-' . rand(100000, 999999) . '-0001A',
+                'company'             => $company->name ?? 'SINGKI B2B',
+                'code_company'        => 'SUP-' . strtoupper(\Illuminate\Support\Str::random(5)),
+                'No_INSS'             => 'INSS-' . rand(10000, 99999),
+            ]);
+            $supplier_id = $supplier->id;
+        }
 
         $booking = \App\Models\Booking::create([
             'date_booking'    => now()->toDateString(),

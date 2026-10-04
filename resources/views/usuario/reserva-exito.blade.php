@@ -57,10 +57,10 @@
 
             <!-- Botonera -->
             <div class="flex gap-4 w-full">
-                <a href="{{ url('/') }}" class="flex-1 text-center py-3.5 rounded-xl border border-gray-200 text-[#0f172a] font-semibold text-[14px] hover:bg-gray-50 transition-colors">
-                    Volver al negocio
+                <a href="{{ route('products.index') }}" class="flex-1 text-center py-3.5 rounded-xl border border-gray-200 text-[#0f172a] font-semibold text-[14px] hover:bg-gray-50 transition-colors">
+                    Volver al catálogo
                 </a>
-                <a href="{{ url('/admin/reservas') }}" class="flex-1 text-center py-3.5 rounded-xl bg-[#1F51FF] hover:bg-blue-700 text-white font-semibold text-[14px] shadow-sm transition-colors">
+                <a href="{{ route('bookings.index') }}" class="flex-1 text-center py-3.5 rounded-xl bg-[#1F51FF] hover:bg-blue-700 text-white font-semibold text-[14px] shadow-sm transition-colors">
                     Mis reservas
                 </a>
             </div>
