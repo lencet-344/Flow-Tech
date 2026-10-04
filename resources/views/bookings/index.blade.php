@@ -45,6 +45,20 @@
                                 @if(!empty($notes))
                                     <p class="text-gray-400 text-[12px] mt-2 italic">Notas: {{ $notes }}</p>
                                 @endif
+                                
+                                <div class="flex items-center gap-3 mt-4">
+                                    <a href="{{ url('/perfil-publico?negocio=' . urlencode($booking->supplier->name ?? '')) }}" class="border border-gray-200 text-gray-700 hover:bg-gray-50 px-4 py-2 rounded-xl text-xs font-semibold transition">
+                                        Ver negocio
+                                    </a>
+                                    <form action="{{ route('bookings.destroy', $booking->id) }}" method="POST" class="m-0">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="bg-red-50 hover:bg-red-100 text-red-600 border border-red-200 px-4 py-2 rounded-xl text-xs font-semibold transition flex items-center gap-1.5" onclick="return confirm('¿Seguro que deseas cancelar esta reserva?')">
+                                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                                            Cancelar reserva
+                                        </button>
+                                    </form>
+                                </div>
                             </div>
                         </div>
                     @empty

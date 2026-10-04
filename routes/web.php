@@ -42,7 +42,7 @@ Route::get('/', function () {
 })->name('welcome');
 
 Route::get('/mapa', function () { return view('mapa'); });
-Route::get('/explorar', [CategoryController::class, 'explorar'])->name('explorar.index')->middleware('auth');
+Route::get('/explorar', [CategoryController::class, 'explorar'])->name('explorar.index');
 Route::get('/redes', function () { return view('public.redes'); })->name('redes.index');
 Route::get('/registro-tipo', function () { return view('auth.tipo-cuenta'); });
 Route::get('/registro/cliente', function () { return view('auth.registro-cliente'); });
@@ -69,9 +69,12 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/verificacion-2fa', [TwoFactorController::class, 'index'])->name('2fa.index');
     Route::post('/verificacion-2fa', [TwoFactorController::class, 'verify'])->name('2fa.verify');
 
-    // ── RUTAS DE CATÁLOGO (Accesibles para usuarios autenticados) ──────────────
+Route::get('/products', [ProductController::class, 'index'])->name('products.index');
+Route::get('/products/{product}', [ProductController::class, 'show'])->name('products.show');
+
+// ── RUTAS DE CATÁLOGO (Accesibles para usuarios autenticados) ──────────────
 Route::middleware(['auth'])->group(function () {
-    Route::resource('products', ProductController::class)->only(['index', 'show']);
+    Route::post('/favoritos/toggle', [FavoriteController::class, 'toggle'])->name('favorites.toggle');
 });
 
 });
