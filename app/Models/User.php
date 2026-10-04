@@ -42,4 +42,37 @@ class User extends Authenticatable
     {
         return $this->hasOne(Company::class, 'email', 'email');
     }
+
+
+    /**
+     * Comprueba si el usuario tiene un rol específico.
+     */
+    public function hasRole(string $role): bool
+    {
+        return $this->role === $role;
+    }
+
+    /**
+     * Comprueba si el usuario tiene alguno de los roles indicados.
+     */
+    public function hasAnyRole(array $roles): bool
+    {
+        return in_array($this->role, $roles);
+    }
+
+    // Helpers individuales para mayor comodidad
+    public function isCliente(): bool
+    {
+        return $this->role === 'cliente';
+    }
+
+    public function isProveedor(): bool
+    {
+        return $this->role === 'proveedor';
+    }
+
+    public function isServicios(): bool
+    {
+        return $this->role === 'prestador_servicios'; // o la clave que uses para servicios
+    }
 }
