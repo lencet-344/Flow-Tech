@@ -79,7 +79,20 @@ class CategoryController extends Controller
             }
         }
 
-        // 3. Ejecutamos la consulta a MySQL
+        // 3. Filtrar por búsqueda de texto
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->where(function($q) use ($search) {
+                $q->where('name', 'LIKE', "%{$search}%")
+                  ->orWhere('description', 'LIKE', "%{$search}%")
+                  ->orWhere('address', 'LIKE', "%{$search}%")
+                  ->orWhereHas('category', function($qCat) use ($search) {
+                      $qCat->where('name', 'LIKE', "%{$search}%");
+                  });
+            });
+        }
+
+        // 4. Ejecutamos la consulta a MySQL
         $companies = $query->get();
 
         // 4. Retornamos la vista enviando solo los negocios filtrados

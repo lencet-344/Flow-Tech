@@ -253,8 +253,12 @@
                         <p class="text-blue-100 text-[14px] font-light">¿Qué estás buscando hoy?</p>
                     </div>
                     <div class="w-full md:w-1/2 flex justify-start md:justify-end">
-                        <form action="{{ route('explorar.index') }}" method="GET" class="relative w-full max-w-lg bg-white rounded-full flex items-center p-1.5 shadow-sm">
-                            <input type="text" name="search" placeholder="Busca negocios, productos o servicios..." class="w-full pl-5 pr-4 py-2 bg-transparent border-0 focus:ring-0 text-gray-700 text-sm outline-none">
+                        <form x-data="{ searchType: 'negocios' }" x-bind:action="searchType === 'productos' ? '{{ route('products.index') }}' : '{{ url('/explorar') }}'" method="GET" class="relative w-full max-w-lg bg-white rounded-full flex items-center p-1.5 shadow-sm">
+                            <select x-model="searchType" class="border-r border-gray-200 pr-3 pl-4 py-2 bg-transparent focus:ring-0 outline-none cursor-pointer text-[#0f172a] font-semibold text-sm">
+                                <option value="negocios">🏢 Negocios</option>
+                                <option value="productos">📦 Productos</option>
+                            </select>
+                            <input type="text" name="search" x-bind:placeholder="searchType === 'productos' ? 'Buscar productos por nombre, tipo...' : 'Buscar negocios...'" class="w-full pl-5 pr-4 py-2 bg-transparent border-0 focus:ring-0 text-gray-700 text-sm outline-none">
                         @error('search') <span class="text-red-500 text-sm mt-1 block">{{ $message }}</span> @enderror
                             <button type="submit" class="bg-[#3b82f6] hover:bg-[#2563eb] text-white font-medium px-8 py-2 rounded-full transition text-sm">Buscar</button>
                         </form>
@@ -346,8 +350,15 @@
                     <p class="text-lg text-blue-100/90 mb-10 max-w-lg font-light leading-relaxed">
                         Te ayudamos a que encuentres lo que necesites de forma rápida y confiable. Negocios, proveedores, productos y servicios en un solo lugar.
                     </p>
-                    <form action="{{ route('explorar.index') }}" method="GET" class="bg-white p-1.5 rounded-full flex items-center max-w-xl shadow-lg mt-8"><input type="text" name="search" placeholder="Busca negocios, productos o servicios..." class="w-full pl-6 pr-4 bg-transparent border-none focus:ring-0 text-gray-500 text-sm outline-none">
-                        @error('search') <span class="text-red-500 text-sm mt-1 block">{{ $message }}</span> @enderror<button type="submit" class="bg-[#3b82f6] hover:bg-[#2563eb] text-white font-semibold px-8 py-2.5 rounded-full transition text-sm whitespace-nowrap">Buscar</button></form>
+                    <form x-data="{ searchType: 'negocios' }" x-bind:action="searchType === 'productos' ? '{{ route('products.index') }}' : '{{ url('/explorar') }}'" method="GET" class="bg-white p-1.5 rounded-full flex items-center max-w-xl shadow-lg mt-8">
+                        <select x-model="searchType" class="border-r border-gray-200 pr-3 pl-4 py-2 bg-transparent focus:ring-0 outline-none cursor-pointer text-[#0f172a] font-semibold text-sm">
+                            <option value="negocios">🏢 Negocios</option>
+                            <option value="productos">📦 Productos</option>
+                        </select>
+                        <input type="text" name="search" x-bind:placeholder="searchType === 'productos' ? 'Buscar productos por nombre, tipo...' : 'Buscar negocios...'" class="w-full pl-6 pr-4 bg-transparent border-none focus:ring-0 text-gray-500 text-sm outline-none">
+                        @error('search') <span class="text-red-500 text-sm mt-1 block absolute -bottom-6">{{ $message }}</span> @enderror
+                        <button type="submit" class="bg-[#3b82f6] hover:bg-[#2563eb] text-white font-semibold px-8 py-2.5 rounded-full transition text-sm whitespace-nowrap">Buscar</button>
+                    </form>
                 </div>
 
                 <!-- Imagen Chica Sonriendo -->
@@ -623,8 +634,44 @@
                             <a href="{{ route('products.show', $producto->id) }}" class="inline-block text-[#1F51FF] text-[11px] font-bold hover:underline mb-3">Ver detalles &rarr;</a>
                         </div>
                         
+                        <div class="mb-2">
+                            @php
+                                $isFav = false;
+                                if (auth()->check()) {
+                                    $isFav = \App\Models\Favorite::where('user_id', auth()->id())
+                                        ->where('name', 'U:' . auth()->id() . '|P:' . $producto->id)
+                                        ->exists();
+                                }
+                            @endphp
+                            <div x-data="{ 
+                                isFav: {{ $isFav ? 'true' : 'false' }},
+                                animating: false,
+                                async toggleFav() {
+                                    @if(!auth()->check()) window.location.href = '{{ route('login') }}'; return; @endif
+                                    this.animating = true;
+                                    setTimeout(() => this.animating = false, 300);
+                                    this.isFav = !this.isFav;
+                                    try {
+                                        const res = await fetch('{{ route('favorites.toggle') }}', {
+                                            method: 'POST',
+                                            headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': '{{ csrf_token() }}' },
+                                            body: JSON.stringify({ type: 'product', id: {{ $producto->id }} })
+                                        });
+                                        if(!res.ok) throw new Error();
+                                        const data = await res.json();
+                                        this.isFav = data.favorited;
+                                    } catch(e) { this.isFav = !this.isFav; }
+                                }
+                            }">
+                                <button type="button" @click.prevent="toggleFav()" :class="isFav ? 'bg-red-50 border-red-200 text-red-600' : 'bg-white border-gray-200 text-gray-500 hover:bg-gray-50'" class="w-full border rounded-lg py-1.5 flex items-center justify-center gap-1.5 text-[10px] font-bold transition-colors relative z-10">
+                                    <svg class="w-3.5 h-3.5 transition-transform duration-300" :class="[isFav ? 'fill-red-500 text-red-500' : 'fill-none', animating ? 'scale-150' : 'scale-100']" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path></svg>
+                                    <span x-text="isFav ? 'Guardado' : 'Favorito'"></span>
+                                </button>
+                            </div>
+                        </div>
+                        
                         @if($stock <= 0)
-                            <a href="{{ url('/producto/'.$producto->id.'/reservar') }}" class="w-full bg-[#1F51FF] hover:bg-blue-700 text-white text-center py-2.5 rounded-lg text-xs font-medium transition-colors mt-auto opacity-0 group-hover:opacity-100 absolute bottom-0 left-0">
+                            <a href="{{ url('/producto/'.$producto->id.'/reservar') }}" class="w-full bg-[#1F51FF] hover:bg-blue-700 text-white text-center py-2.5 rounded-lg text-xs font-medium transition-colors mt-auto opacity-0 group-hover:opacity-100 absolute bottom-0 left-0 z-20">
                                 Reservar cuando esté disponible
                             </a>
                         @endif

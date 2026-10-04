@@ -52,22 +52,40 @@
         </nav>
 
         <div class="flex items-center gap-2">
+            @guest
+                <a href="{{ route('login') }}" class="text-sm font-bold text-[#1F51FF] hover:text-blue-800 transition px-3 py-1.5 hidden sm:inline-block">Iniciar sesión</a>
+                <a href="{{ url('/registro-tipo') }}" class="text-sm font-bold bg-[#1F51FF] text-white px-4 py-1.5 rounded-full hover:bg-blue-700 transition">Registrarse</a>
+            @endguest
+            @auth
             <div class="w-9 h-9 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center font-bold text-sm">
-                {{ Auth::check() ? substr(Auth::user()->name, 0, 1) : 'S' }}
+                {{ substr(Auth::user()->name, 0, 1) }}
             </div>
             <span class="text-sm font-medium text-gray-700 hidden sm:inline-block">
-                {{ Auth::check() ? explode(' ', Auth::user()->name)[0] : 'Usuario' }}
+                {{ explode(' ', Auth::user()->name)[0] }}
             </span>
+            @endauth
         </div>
     </header>
 
     <!-- SECCIÓN 1: BARRA DE BÚSQUEDA -->
     <div class="bg-white border-b border-gray-100">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-            <div class="relative max-w-4xl mx-auto bg-white rounded-full flex items-center p-1.5 border border-gray-200 shadow-sm">
-                <input type="text" placeholder="Busca negocios, productos o servicios..." class="w-full pl-6 pr-4 py-3 bg-transparent border-0 focus:ring-0 text-gray-700 text-[14px] outline-none">
-                <button class="bg-[#1F51FF] hover:bg-blue-700 text-white font-bold px-10 py-3 rounded-full transition shadow-sm text-[13px] tracking-wide shrink-0">BUSCAR</button>
-            </div>
+            <form action="{{ url('/explorar') }}" method="GET" class="relative max-w-4xl mx-auto bg-white rounded-full flex items-center p-1.5 border border-gray-200 shadow-sm">
+                @if(request()->filled('categoria'))
+                    <input type="hidden" name="categoria" value="{{ request('categoria') }}">
+                @endif
+                @if(request()->filled('orden'))
+                    <input type="hidden" name="orden" value="{{ request('orden') }}">
+                @endif
+                
+                <input type="text" name="search" value="{{ request('search') }}" placeholder="Buscar negocios..." class="w-full pl-6 pr-4 py-3 bg-transparent border-0 focus:ring-0 text-gray-700 text-[14px] outline-none">
+                
+                @if(request()->filled('search'))
+                    <a href="{{ url('/explorar') }}" class="text-gray-400 hover:text-gray-600 text-xs font-bold mr-4 shrink-0 transition">Limpiar</a>
+                @endif
+                
+                <button type="submit" class="bg-[#1F51FF] hover:bg-blue-700 text-white font-bold px-10 py-3 rounded-full transition shadow-sm text-[13px] tracking-wide shrink-0">BUSCAR</button>
+            </form>
         </div>
     </div>
 
@@ -196,7 +214,7 @@
                 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     @foreach($premium as $negocio)
-                    <a href="{{ url('/perfil-publico?negocio=' . urlencode($negocio->name)) }}" class="block bg-white border-2 border-[#e0e7ff] rounded-[24px] overflow-hidden hover:shadow-lg transition duration-300 flex flex-col relative cursor-pointer">
+                    <a href="{{ auth()->check() ? url('/perfil-publico?negocio=' . urlencode($negocio->name)) : route('login') }}" class="block bg-white border-2 border-[#e0e7ff] rounded-[24px] overflow-hidden hover:shadow-lg transition duration-300 flex flex-col relative cursor-pointer">
                         <div class="absolute top-4 left-4 bg-[#8b5cf6] text-white text-[10px] font-bold px-3 py-1.5 rounded-full z-10 flex items-center gap-1.5 shadow-sm uppercase tracking-widest">
                             <svg class="w-3.5 h-3.5 text-yellow-300" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg> 
                             PREMIUM
@@ -245,7 +263,7 @@
                 <h3 class="text-[12px] font-bold text-gray-400 tracking-widest uppercase mb-5">OTROS NEGOCIOS</h3>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     @foreach($normales as $negocio)
-                    <a href="{{ url('/perfil-publico?negocio=' . urlencode($negocio->name)) }}" class="block bg-white border border-gray-200 rounded-[24px] overflow-hidden hover:shadow-lg transition duration-300 flex flex-col cursor-pointer">
+                    <a href="{{ auth()->check() ? url('/perfil-publico?negocio=' . urlencode($negocio->name)) : route('login') }}" class="block bg-white border border-gray-200 rounded-[24px] overflow-hidden hover:shadow-lg transition duration-300 flex flex-col cursor-pointer">
                         
                         <!-- LÓGICA DE IMAGEN O INICIALES -->
                         <div class="h-40 w-full relative bg-gray-100 flex items-center justify-center overflow-hidden">
