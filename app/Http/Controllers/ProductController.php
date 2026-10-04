@@ -14,12 +14,16 @@ class ProductController extends Controller
     public function index(Request $request)
     {
         $search = $request->input('search');
-        if ($search) {
-            $products = Product::where('nombre', 'like', "%$search%")->orderByDesc('id')->get();
-        } else {
-            $products = Product::orderByDesc("id")->get();
-        }
-        return view("products.index", compact("products", "search"));
+        $products = Product::with(['supplier', 'brand'])
+            ->when($search, function ($query, $search) {
+                $query->where('name', 'like', "%{$search}%")
+                      ->orWhere('type', 'like', "%{$search}%")
+                      ->orWhere('presentation', 'like', "%{$search}%");
+            })
+            ->orderByDesc('id')
+            ->get();
+
+        return view('products.index', compact('products', 'search'));
     }
 
     /**

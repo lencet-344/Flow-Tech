@@ -1,95 +1,97 @@
-@extends('layouts.admin')
+@extends('layouts.empty')
 
 @section('content')
-<div class="p-8 md:p-10 bg-[#F4F7FF] min-h-screen">
-    <!-- Botón de Escape -->
-    <div class="mb-6">
-        <a href="{{ url('/') }}" class="inline-flex items-center text-blue-600 hover:text-blue-800 font-bold text-sm gap-2 transition-colors bg-white px-4 py-2 rounded-lg shadow-sm border border-gray-100">
+<!-- Cabecera Superior -->
+<header class="bg-white border-b border-gray-100 sticky top-0 z-40">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+        <a href="{{ url('/') }}" class="flex items-center gap-2">
+            <img src="{{ asset('images/LogoBlanco.png') }}" alt="SINGKI" class="h-8 w-auto">
+            <span class="font-black text-2xl text-[#1F51FF] tracking-tight">SINGKI</span>
+        </a>
+        <a href="{{ url('/') }}" class="inline-flex items-center text-gray-500 hover:text-[#1F51FF] font-bold text-sm gap-2 transition-colors">
             &larr; Regresar al inicio
         </a>
     </div>
+</header>
 
-    <!-- Cabecera -->
-    <div class="mb-8">
-        <h1 class="text-3xl font-bold text-[#040116] tracking-tight">
-            {{ isset($search) && $search ? 'Búsqueda de Productos' : 'Todos los productos' }}
-        </h1>
-        <p class="text-gray-500 text-sm mt-1">
-            {{ isset($search) && $search ? 'Resultados para: "' . $search . '"' : 'Explora productos de proveedores verificados' }}
-        </p>
-    </div>
+<div class="p-8 md:p-10 bg-[#F4F7FF] min-h-screen">
+    <div class="max-w-7xl mx-auto">
+        <!-- Cabecera -->
+        <div class="mb-10 text-center max-w-2xl mx-auto">
+            <h1 class="text-4xl font-extrabold text-[#040116] tracking-tight mb-4">
+                Todos los productos
+            </h1>
+            <p class="text-gray-500 text-base mb-8">
+                Explora productos de proveedores verificados en nuestra red
+            </p>
 
-    <!-- Tarjetas de Resumen -->
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8 text-center">
-        <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex flex-col justify-center">
-            <span class="text-sm font-medium text-gray-500 mb-2">Total Productos</span>
-            <span class="text-3xl font-bold text-[#040116]">{{ $products->count() }}</span>
+            <form action="{{ route('products.index') }}" method="GET" class="relative flex items-center bg-white p-2 rounded-full shadow-sm border border-gray-200">
+                <input type="text" name="search" value="{{ $search ?? '' }}" placeholder="Buscar productos por nombre, tipo o presentación..." class="w-full pl-6 pr-4 py-3 bg-transparent border-0 focus:ring-0 text-gray-700 outline-none rounded-l-full">
+                @if($search)
+                    <a href="{{ route('products.index') }}" class="text-gray-400 hover:text-red-500 font-medium px-4 transition-colors">Limpiar</a>
+                @endif
+                <button type="submit" class="bg-[#1F51FF] hover:bg-blue-700 text-white font-bold px-8 py-3 rounded-full transition-colors whitespace-nowrap">
+                    Buscar
+                </button>
+            </form>
         </div>
-        <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex flex-col justify-center">
-            <span class="text-sm font-medium text-gray-500 mb-2">Disponibles</span>
-            <span class="text-3xl font-bold text-[#040116]">{{ $products->where('state', 'Activo')->count() }}</span>
-        </div>
-        <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex flex-col justify-center">
-            <span class="text-sm font-medium text-gray-500 mb-2">Agotados</span>
-            <span class="text-3xl font-bold text-[#040116]">{{ $products->where('state', '!=', 'Activo')->count() }}</span>
-        </div>
-    </div>
 
-    <!-- Tabla Principal -->
-    <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
-        <div class="overflow-x-auto">
-            <table class="w-full text-left border-collapse">
-                <thead>
-                    <tr class="border-b border-gray-100">
-                        <th class="px-6 py-4 text-xs font-bold text-gray-500 uppercase tracking-wider">Producto / Negocio</th>
-                        <th class="px-6 py-4 text-xs font-bold text-gray-500 uppercase tracking-wider">Precio</th>
-                        <th class="px-6 py-4 text-xs font-bold text-gray-500 uppercase tracking-wider">Estado</th>
-                        <th class="px-6 py-4 text-xs font-bold text-gray-500 uppercase tracking-wider text-center">Acciones</th>
-                    </tr>
-                </thead>
-                <tbody class="divide-y divide-gray-50">
-                    @forelse($products ?? [] as $product)
-                    <tr class="hover:bg-gray-50 transition-colors">
-                        <td class="px-6 py-4">
-                            <div class="flex items-center gap-4">
-                                <div class="w-10 h-10 bg-gray-100 rounded-lg shrink-0 overflow-hidden">
-                                    <img src="https://via.placeholder.com/50" class="w-full h-full object-cover">
-                                </div>
-                                <div>
-                                    <h4 class="text-sm font-bold text-[#040116]">{{ $product->name ?? 'Sin nombre' }}</h4>
-                                    <p class="text-[13px] text-gray-500">{{ $product->supplier->name ?? 'Proveedor' }}</p>
-                                </div>
-                            </div>
-                        </td>
-                        <td class="px-6 py-4 text-sm font-bold text-gray-900">
-                            ${{ number_format($product->cost ?? 0, 2) }}
-                        </td>
-                        <td class="px-6 py-4">
-                            @if(isset($product->state) && $product->state == 'Activo')
-                            <span class="inline-flex items-center gap-1 bg-green-50 border border-green-200 text-green-700 px-3 py-1 rounded-full text-xs font-semibold">Activo</span>
-                            @else
-                            <span class="inline-flex items-center gap-1 bg-gray-50 border border-gray-200 text-gray-500 px-3 py-1 rounded-full text-xs font-semibold">{{ $product->state ?? 'Inactivo' }}</span>
-                            @endif
-                        </td>
-                        <td class="px-6 py-4 text-center">
-                            <div class="flex items-center justify-center gap-2">
-                                <a href="{{ route('products.show', $product->id ?? 0) }}" class="bg-[#2563eb] hover:bg-blue-700 text-white text-xs font-medium px-4 py-2 rounded-lg transition-colors">Ver detalles</a>
-                            </div>
-                        </td>
-                    </tr>
-                    @empty
-                    <tr>
-                        <td colspan="4" class="px-6 py-12 text-center text-gray-500">
-                            <div class="flex flex-col items-center justify-center">
-                                <svg class="w-12 h-12 text-gray-300 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
-                                <p class="text-lg font-medium">No se encontraron productos</p>
-                                <p class="text-sm mt-1">Intenta con otros términos de búsqueda.</p>
-                            </div>
-                        </td>
-                    </tr>
-                    @endforelse
-                </tbody>
-            </table>
+        <!-- Tarjetas de Resumen -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+            <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex flex-col justify-center text-center">
+                <span class="text-sm font-bold text-gray-400 uppercase tracking-wide mb-2">Total Productos</span>
+                <span class="text-4xl font-black text-[#040116]">{{ collect($products)->count() }}</span>
+            </div>
+            <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex flex-col justify-center text-center">
+                <span class="text-sm font-bold text-gray-400 uppercase tracking-wide mb-2">Disponibles</span>
+                <span class="text-4xl font-black text-[#040116]">{{ collect($products)->filter(function($p) { return strtolower($p->state ?? '') === 'activo' && ($p->quantity ?? 0) > 0; })->count() }}</span>
+            </div>
+            <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex flex-col justify-center text-center">
+                <span class="text-sm font-bold text-gray-400 uppercase tracking-wide mb-2">Agotados</span>
+                <span class="text-4xl font-black text-[#040116]">{{ collect($products)->filter(function($p) { return strtolower($p->state ?? '') !== 'activo' || ($p->quantity ?? 0) <= 0; })->count() }}</span>
+            </div>
+        </div>
+
+        <!-- Cuadrícula de Productos -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            @forelse($products ?? [] as $product)
+                @php $stock = $product->quantity ?? 0; @endphp
+                <div class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden flex flex-col h-full hover:shadow-[0_8px_30px_rgb(0,0,0,0.06)] transition-all duration-300 relative group">
+                    
+                    <div class="relative h-48 bg-gray-50 flex items-center justify-center p-4">
+                        <img src="{{ !empty($product->image) ? (str_starts_with($product->image, 'http') ? $product->image : asset('storage/' . $product->image)) : ($product->image_url ?? asset('images/placeholder.png')) }}" alt="{{ $product->name }}" class="w-full h-full object-contain rounded-lg group-hover:scale-105 transition-transform duration-500" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1542838132-92c53300491e?w=400&q=80';">
+                        @if($stock > 0)
+                            <span class="absolute top-4 right-4 bg-green-50 text-green-600 border border-green-200 px-3 py-1 rounded-full text-xs font-bold shadow-sm">Disponible</span>
+                        @else
+                            <span class="absolute top-4 right-4 bg-red-50 text-red-600 border border-red-200 px-3 py-1 rounded-full text-xs font-bold shadow-sm">Agotado</span>
+                        @endif
+                    </div>
+
+                    <div class="p-5 flex-1 flex flex-col justify-between">
+                        <div>
+                            <p class="text-[11px] text-gray-400 font-bold uppercase tracking-wide mb-1">{{ $product->brand->name ?? $product->supplier->name ?? 'SINGKI' }}</p>
+                            <h4 class="text-base font-extrabold text-[#040116] mb-1 leading-tight">{{ $product->name }}</h4>
+                            <p class="text-xs text-gray-500 mb-3">{{ $product->presentation ?? 'Sin especificación' }}</p>
+                            <p class="text-xl font-black text-[#1F51FF] mb-5">C$ {{ number_format($product->cost ?? 0, 2) }}</p>
+                        </div>
+                        
+                        <div class="grid grid-cols-2 gap-2 mt-auto">
+                            <a href="{{ route('products.show', $product->id) }}" class="border-2 border-gray-100 hover:border-gray-200 text-gray-600 hover:text-gray-900 text-center py-2.5 rounded-xl text-sm font-bold transition-colors">
+                                Detalles
+                            </a>
+                            <a href="{{ url('/producto/'.$product->id.'/reservar') }}" class="bg-[#1F51FF] hover:bg-blue-700 text-white text-center py-2.5 rounded-xl text-sm font-bold shadow-md shadow-blue-500/20 transition-colors">
+                                Encargar
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            @empty
+                <div class="col-span-full text-center py-20 bg-white rounded-3xl border border-gray-100 shadow-sm">
+                    <svg class="w-16 h-16 text-gray-300 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                    <p class="text-xl font-bold text-[#040116] mb-2">No encontramos nada</p>
+                    <p class="text-gray-500">Intenta con otros términos de búsqueda.</p>
+                </div>
+            @endforelse
         </div>
     </div>
 </div>

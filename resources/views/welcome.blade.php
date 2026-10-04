@@ -308,12 +308,12 @@
                         <!-- Tarjeta de Reserva -->
                         <div class="bg-white p-5 rounded-2xl border border-yellow-200 shadow-sm flex flex-col justify-between">
                             <div>
-                                <h4 class="font-bold text-gray-900 text-sm mb-1">{{ $reserva->product->name ?? 'Producto Reservado' }}</h4>
+                                <h4 class="font-bold text-gray-900 text-sm mb-1">{{ $reserva->product->name ?? (str_contains($reserva->special_requests ?? '', 'PRODUCTO: ') ? trim(explode('PRODUCTO:', $reserva->special_requests)[1]) : 'Producto Reservado') }}</h4>
                                 <p class="text-gray-500 text-xs mb-4">{{ $reserva->supplier->name ?? 'Negocio' }}</p>
                             </div>
                             <div class="flex justify-between items-center">
                                 <span class="bg-yellow-50 text-yellow-600 border border-yellow-200 px-3 py-1 rounded text-[10px] font-bold uppercase">En espera</span>
-                                <a href="#" class="text-[#1F51FF] text-xs font-medium hover:underline">Ver &rarr;</a>
+                                <a href="{{ route('bookings.index') }}" class="text-[#1F51FF] text-xs font-medium hover:underline">Ver &rarr;</a>
                             </div>
                         </div>
                     @empty
@@ -601,24 +601,26 @@
                 @php $stock = $producto->quantity ?? $producto->stock ?? 0; @endphp
                 <div class="bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden flex flex-col h-full hover:shadow-md transition-shadow relative group">
                     
-                    <div class="relative h-40 bg-gray-50 flex items-center justify-center p-3">
+                    <a href="{{ route('products.show', $producto->id) }}" class="relative h-40 bg-gray-50 flex items-center justify-center p-3 block">
                         <img 
     src="{{ str_starts_with($producto->image, 'http') ? $producto->image : asset('storage/' . $producto->image) }}" 
     alt="{{ $producto->name }}" 
-    class="w-full h-48 object-cover rounded-t-lg"
+    class="w-full h-48 object-cover rounded-t-lg group-hover:scale-105 transition-transform"
+    onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1542838132-92c53300491e?w=400&q=80';"
 >
                         @if($stock > 0)
                             <span class="absolute top-3 right-3 bg-green-50 text-green-500 border border-green-100 px-2 py-0.5 rounded-full text-[10px] font-bold">Disponible</span>
                         @else
                             <span class="absolute top-3 right-3 bg-red-50 text-red-500 border border-red-100 px-2 py-0.5 rounded-full text-[10px] font-bold">Agotado</span>
                         @endif
-                    </div>
+                    </a>
 
                     <div class="p-4 flex-1 flex flex-col justify-between">
                         <div>
                             <p class="text-[10px] text-gray-400 uppercase mb-1">{{ $producto->brand->name ?? $producto->supplier->name ?? 'SINGKI' }}</p>
-                            <h4 class="text-xs font-bold text-gray-900 mb-2 leading-tight">{{ $producto->name }}</h4>
-                            <p class="text-sm font-bold text-[#1F51FF] mb-3">C$ {{ number_format($producto->cost ?? $producto->price ?? 0, 0) }}</p>
+                            <a href="{{ route('products.show', $producto->id) }}" class="block text-xs font-bold text-gray-900 hover:text-[#1F51FF] mb-2 leading-tight transition-colors">{{ $producto->name }}</a>
+                            <p class="text-sm font-bold text-[#1F51FF] mb-2">C$ {{ number_format($producto->cost ?? $producto->price ?? 0, 0) }}</p>
+                            <a href="{{ route('products.show', $producto->id) }}" class="inline-block text-[#1F51FF] text-[11px] font-bold hover:underline mb-3">Ver detalles &rarr;</a>
                         </div>
                         
                         @if($stock <= 0)
