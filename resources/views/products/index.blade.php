@@ -8,9 +8,16 @@
             <img src="{{ asset('images/LogoBlanco.png') }}" alt="SINGKI" class="h-8 w-auto">
             <span class="font-black text-2xl text-[#1F51FF] tracking-tight">SINGKI</span>
         </a>
-        <a href="{{ url('/') }}" class="inline-flex items-center text-gray-500 hover:text-[#1F51FF] font-bold text-sm gap-2 transition-colors">
-            &larr; Regresar al inicio
-        </a>
+        <div class="flex items-center gap-4">
+            <a href="{{ url('/') }}" class="text-gray-500 hover:text-[#1F51FF] font-bold text-sm transition-colors">
+                &larr; Regresar al inicio
+            </a>
+            @guest
+                <a href="{{ route('login') }}" class="text-[#1F51FF] font-bold text-sm transition-colors border border-[#1F51FF] px-4 py-1.5 rounded-full hover:bg-blue-50">
+                    Iniciar sesión
+                </a>
+            @endguest
+        </div>
     </div>
 </header>
 
@@ -74,12 +81,45 @@
                             <p class="text-xs text-gray-500 mb-3">{{ $product->presentation ?? 'Sin especificación' }}</p>
                             <p class="text-xl font-black text-[#1F51FF] mb-5">C$ {{ number_format($product->cost ?? 0, 2) }}</p>
                         </div>
+                        @php
+                            $isFav = false;
+                            if (auth()->check()) {
+                                $isFav = \App\Models\Favorite::where('user_id', auth()->id())
+                                    ->where('name', 'U:' . auth()->id() . '|P:' . $product->id)
+                                    ->exists();
+                            }
+                        @endphp
+                        <div x-data="{ 
+                            isFav: {{ $isFav ? 'true' : 'false' }},
+                            animating: false,
+                            async toggleFav() {
+                                @if(!auth()->check()) window.location.href = '{{ route('login') }}'; return; @endif
+                                this.animating = true;
+                                setTimeout(() => this.animating = false, 300);
+                                this.isFav = !this.isFav;
+                                try {
+                                    const res = await fetch('{{ route('favorites.toggle') }}', {
+                                        method: 'POST',
+                                        headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': '{{ csrf_token() }}' },
+                                        body: JSON.stringify({ type: 'product', id: {{ $product->id }} })
+                                    });
+                                    if(!res.ok) throw new Error();
+                                    const data = await res.json();
+                                    this.isFav = data.favorited;
+                                } catch(e) { this.isFav = !this.isFav; }
+                            }
+                        }" class="mb-3">
+                            <button type="button" @click="toggleFav()" :class="isFav ? 'bg-red-50 border-red-200 text-red-600' : 'bg-gray-50 border-gray-200 text-gray-500 hover:bg-gray-100'" class="w-full border rounded-xl py-2 flex items-center justify-center gap-2 text-xs font-bold transition-colors">
+                                <svg class="w-4 h-4 transition-transform duration-300" :class="[isFav ? 'fill-red-500 text-red-500' : 'fill-none', animating ? 'scale-150' : 'scale-100']" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path></svg>
+                                <span x-text="isFav ? 'Guardado' : 'Favorito'"></span>
+                            </button>
+                        </div>
                         
                         <div class="grid grid-cols-2 gap-2 mt-auto">
-                            <a href="{{ route('products.show', $product->id) }}" class="border-2 border-gray-100 hover:border-gray-200 text-gray-600 hover:text-gray-900 text-center py-2.5 rounded-xl text-sm font-bold transition-colors">
+                            <a href="{{ auth()->check() ? route('products.show', $product->id) : route('login') }}" class="border-2 border-gray-100 hover:border-gray-200 text-gray-600 hover:text-gray-900 text-center py-2.5 rounded-xl text-sm font-bold transition-colors">
                                 Detalles
                             </a>
-                            <a href="{{ url('/producto/'.$product->id.'/reservar') }}" class="bg-[#1F51FF] hover:bg-blue-700 text-white text-center py-2.5 rounded-xl text-sm font-bold shadow-md shadow-blue-500/20 transition-colors">
+                            <a href="{{ auth()->check() ? url('/producto/'.$product->id.'/reservar') : route('login') }}" class="bg-[#1F51FF] hover:bg-blue-700 text-white text-center py-2.5 rounded-xl text-sm font-bold shadow-md shadow-blue-500/20 transition-colors">
                                 Encargar
                             </a>
                         </div>

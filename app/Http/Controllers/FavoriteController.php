@@ -16,43 +16,98 @@ class FavoriteController extends Controller
      */
     public function index()
     {
-        $favorites = Favorite::with("product")->get();
-        return view("favorites.index", compact("favorites"));
+        $userId = auth()->id();
+        $rawFavorites = Favorite::where('user_id', $userId)->get();
+
+        $companyIds = [];
+        $productIds = [];
+        $favMap = [];
+
+        foreach ($rawFavorites as $fav) {
+            if (str_starts_with($fav->name, "U:{$userId}|C:")) {
+                $cId = (int) explode('|C:', $fav->name)[1];
+                $companyIds[] = $cId;
+                $favMap['company_'.$cId] = $fav->id;
+            } elseif (str_starts_with($fav->name, "U:{$userId}|P:")) {
+                $pId = (int) explode('|P:', $fav->name)[1];
+                $productIds[] = $pId;
+                $favMap['product_'.$pId] = $fav->id;
+            }
+        }
+
+        $companies = \App\Models\Company::whereIn('id', $companyIds)->get();
+        foreach ($companies as $c) {
+            $c->favorite_id = $favMap['company_'.$c->id];
+        }
+
+        $products = \App\Models\Product::with(['supplier', 'brand', 'category'])->whereIn('id', $productIds)->get();
+        foreach ($products as $p) {
+            $p->favorite_id = $favMap['product_'.$p->id];
+        }
+
+        return view("favorites.index", compact('companies', 'products'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
+    public function toggle(Request $request)
+    {
+        $request->validate([
+            'type' => 'required|in:company,product',
+            'id' => 'required|integer'
+        ]);
+
+        $userId = auth()->id();
+        $type = $request->type;
+        $targetId = $request->id;
+        
+        $nameVal = "U:{$userId}|" . ($type === 'company' ? 'C' : 'P') . ":{$targetId}";
+        
+        $favorite = Favorite::where('user_id', $userId)->where('name', $nameVal)->first();
+
+        if ($favorite) {
+            $favorite->delete();
+            $status = 'removed';
+            $favorited = false;
+        } else {
+            $productId = ($type === 'product') ? $targetId : \App\Models\Product::value('id');
+            if (!$productId) $productId = 1;
+
+            Favorite::create([
+                'user_id' => $userId,
+                'name' => $nameVal,
+                'type_product' => $type,
+                'product_id' => $productId,
+            ]);
+            $status = 'added';
+            $favorited = true;
+        }
+
+        if ($request->expectsJson()) {
+            return response()->json(['status' => $status, 'favorited' => $favorited]);
+        }
+
+        return back();
+    }
+
     public function create()
     {
         $favorite = new Favorite();
         $users = User::all();
         $products = Product::all();
         return view('favorites.create',compact('favorite','users', 'products'));
-
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(FavoriteRequest $request)
     {
         Favorite::create($request->validated());
         return redirect()->route('favorites.index')->with('success', 'Favoritos ha sido creada correctamente.');
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(Favorite $favorite)
     {
         $favorite = Favorite::with('product')->findOrFail($favorite->id);
         return view('favorites.show', compact('favorite'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit(string $id)
     {
         $favorite = Favorite::with('product')->findOrFail($id);
@@ -61,9 +116,6 @@ class FavoriteController extends Controller
         return view('favorites.edit', compact('favorite', 'users', 'products'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(FavoriteRequest $request, string $id)
     {
         $favorite = Favorite::with('product')->findOrFail($id);
@@ -71,13 +123,10 @@ class FavoriteController extends Controller
         return redirect()->route('favorites.index')->with('success', 'Favoritos ha sido actualizada correctamente.');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(string $id)
     {
-        $favorite = Favorite::with('product')->findOrFail($id);
+        $favorite = Favorite::findOrFail($id);
         $favorite->delete();
-        return redirect()->route('favorites.index')->with('success', 'Favoritos ha sido eliminada correctamente.');
+        return redirect()->route('favorites.index')->with('success', 'Favorito eliminado correctamente.');
     }
 }

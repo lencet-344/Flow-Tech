@@ -52,15 +52,47 @@
 
                     <!-- Botones de Acción -->
                     <div class="flex flex-wrap gap-3 mb-2">
+                        @php
+                            $isFav = false;
+                            if (auth()->check() && isset($negocio->id)) {
+                                $isFav = \App\Models\Favorite::where('user_id', auth()->id())
+                                    ->where('name', 'U:' . auth()->id() . '|C:' . $negocio->id)
+                                    ->exists();
+                            }
+                        @endphp
                         <div x-data="{ 
-                            isFav: localStorage.getItem('fav_company_{{ $negocio->id ?? md5($negocio->name ?? 'default') }}') === 'true',
+                            isFav: {{ $isFav ? 'true' : 'false' }},
                             animating: false,
-                            toggleFav() {
+                            async toggleFav() {
+                                @if(!auth()->check())
+                                    window.location.href = '{{ route('login') }}';
+                                    return;
+                                @endif
+
+                                this.animating = true;
+                                setTimeout(() => this.animating = false, 300);
+
+                                // Actualización optimista
                                 this.isFav = !this.isFav;
-                                localStorage.setItem('fav_company_{{ $negocio->id ?? md5($negocio->name ?? 'default') }}', this.isFav);
-                                if (this.isFav) {
-                                    this.animating = true;
-                                    setTimeout(() => this.animating = false, 300);
+
+                                try {
+                                    const response = await fetch('{{ route('favorites.toggle') }}', {
+                                        method: 'POST',
+                                        headers: {
+                                            'Content-Type': 'application/json',
+                                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                                        },
+                                        body: JSON.stringify({
+                                            type: 'company',
+                                            id: {{ $negocio->id ?? 0 }}
+                                        })
+                                    });
+                                    if (!response.ok) throw new Error('Error en red');
+                                    const data = await response.json();
+                                    this.isFav = data.favorited;
+                                } catch (error) {
+                                    this.isFav = !this.isFav; // Revertir
+                                    console.error('Error:', error);
                                 }
                             }
                         }">
