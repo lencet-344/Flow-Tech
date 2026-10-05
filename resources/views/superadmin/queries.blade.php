@@ -57,7 +57,7 @@
                 <tbody class="text-[13.5px] text-gray-800 divide-y divide-gray-50" id="tabla-consultas">
                     
                     <!-- Fila 1 -->
-                    <tr class="consulta-row hover:bg-gray-50/50 transition" data-estado="abierta">
+                    <tr class="consulta-row query-row hover:bg-gray-50/50 transition" data-estado="abierta">
                         <td class="px-6 py-4 font-medium text-gray-900 consulta-asunto">No puedo completar mi registro</td>
                         <td class="px-6 py-4 text-gray-600">Diego Torres</td>
                         <td class="px-6 py-4">
@@ -74,7 +74,7 @@
                     </tr>
 
                     <!-- Fila 2 -->
-                    <tr class="consulta-row hover:bg-gray-50/50 transition" data-estado="abierta">
+                    <tr class="consulta-row query-row hover:bg-gray-50/50 transition" data-estado="abierta">
                         <td class="px-6 py-4 font-medium text-gray-900 consulta-asunto">Mi negocio no aparece en los resultados de búsqueda</td>
                         <td class="px-6 py-4 text-gray-600">Ana Rodríguez</td>
                         <td class="px-6 py-4">
@@ -90,7 +90,7 @@
                     </tr>
 
                     <!-- Fila 3 -->
-                    <tr class="consulta-row hover:bg-gray-50/50 transition" data-estado="abierta">
+                    <tr class="consulta-row query-row hover:bg-gray-50/50 transition" data-estado="abierta">
                         <td class="px-6 py-4 font-medium text-gray-900 consulta-asunto">¿Cómo elimino una reserva de un cliente?</td>
                         <td class="px-6 py-4 text-gray-600">Carlos Pérez</td>
                         <td class="px-6 py-4">
@@ -106,7 +106,7 @@
                     </tr>
 
                     <!-- Fila 4 -->
-                    <tr class="consulta-row hover:bg-gray-50/50 transition" data-estado="cerrada" style="display: none;">
+                    <tr class="consulta-row query-row hover:bg-gray-50/50 transition" data-estado="cerrada">
                         <td class="px-6 py-4 font-medium text-gray-500 line-through consulta-asunto">Error al subir foto del negocio</td>
                         <td class="px-6 py-4 text-gray-600">Sofía Mejía</td>
                         <td class="px-6 py-4">
@@ -118,6 +118,22 @@
                         </td>
                         <td class="px-6 py-4 text-center">
                             <button onclick="abrirModalConsulta(this, 'Error al subir foto del negocio', 'Sofía Mejía', 'Media')" class="bg-slate-100 text-slate-700 hover:bg-slate-200 px-4 py-1.5 rounded-xl text-xs font-semibold transition cursor-pointer">Abrir</button>
+                        </td>
+                    </tr>
+                    
+                    <!-- Fila 5 -->
+                    <tr class="consulta-row query-row hover:bg-gray-50/50 transition" data-estado="abierta">
+                        <td class="px-6 py-4 font-medium text-gray-900 consulta-asunto">¿Puedo tener más de un negocio registrado?</td>
+                        <td class="px-6 py-4 text-gray-600">Roberto Lima</td>
+                        <td class="px-6 py-4">
+                            <span class="inline-block bg-gradient-to-r from-slate-200 to-transparent text-slate-700 px-4 py-1.5 rounded-full text-[11px] font-bold w-24">Baja</span>
+                        </td>
+                        <td class="px-6 py-4 text-gray-600 font-medium">2026-08-17</td>
+                        <td class="px-6 py-4">
+                            <span class="badge-estado inline-block bg-gradient-to-r from-blue-100 to-transparent text-blue-600 px-4 py-1.5 rounded-full text-[11px] font-bold w-24">Abierta</span>
+                        </td>
+                        <td class="px-6 py-4 text-center">
+                            <button onclick="abrirModalConsulta(this, '¿Puedo tener más de un negocio registrado?', 'Roberto Lima', 'Baja')" class="bg-slate-100 text-slate-700 hover:bg-slate-200 px-4 py-1.5 rounded-xl text-xs font-semibold transition cursor-pointer">Abrir</button>
                         </td>
                     </tr>
                     
@@ -222,16 +238,8 @@
             asunto.classList.add('text-gray-500', 'line-through');
         }
 
-        // Actualizar contadores
-        const countAbiertas = document.getElementById('count-abiertas');
-        const countCerradas = document.getElementById('count-cerradas');
-        
-        if (countAbiertas) {
-            countAbiertas.innerText = parseInt(countAbiertas.innerText) - 1;
-        }
-        if (countCerradas) {
-            countCerradas.innerText = parseInt(countCerradas.innerText) + 1;
-        }
+        // Actualizar contadores dinámicamente
+        actualizarContadoresConsultas();
 
         setTimeout(() => {
             cerrarModalConsulta();
@@ -239,7 +247,32 @@
         }, 1200);
     }
 
-    // Inicializar filtro
-    filtrarConsultas('abierta');
+    function actualizarContadoresConsultas() {
+        const filas = document.querySelectorAll('.query-row');
+        let total = 0;
+        let abiertas = 0;
+        let cerradas = 0;
+
+        filas.forEach(fila => {
+            total++;
+            if (fila.getAttribute('data-estado') === 'abierta') {
+                abiertas++;
+            } else if (fila.getAttribute('data-estado') === 'cerrada') {
+                cerradas++;
+            }
+        });
+
+        const countTotal = document.getElementById('count-total');
+        const countAbiertas = document.getElementById('count-abiertas');
+        const countCerradas = document.getElementById('count-cerradas');
+        
+        if (countTotal) countTotal.innerText = total;
+        if (countAbiertas) countAbiertas.innerText = abiertas;
+        if (countCerradas) countCerradas.innerText = cerradas;
+    }
+
+    // Inicializar contadores y filtro
+    actualizarContadoresConsultas();
+    filtrarConsultas('todos');
 </script>
 @endsection

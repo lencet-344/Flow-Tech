@@ -71,7 +71,23 @@
             </div>
         </div>
 
-        <!-- Ticket 4 (Baja) -->
+        <!-- Ticket 4 (Media) -->
+        <div class="support-card flex items-center justify-between bg-white rounded-2xl border border-gray-100 shadow-sm p-6 hover:shadow-md transition-shadow cursor-pointer group" data-estado="cerrada" onclick="abrirModalSoporte(this, 'Error al subir foto del negocio', 'Sofía Mejía · sofia@correo.com', 'Media')">
+            <div>
+                <div class="flex items-center gap-2 mb-3">
+                    <span class="px-3 py-0.5 bg-yellow-50 text-yellow-600 text-[11px] font-bold rounded-full badge-prioridad">Media</span>
+                    <span class="px-3 py-0.5 bg-gray-200 text-gray-800 text-[11px] font-bold rounded-full badge-estado">Cerrada</span>
+                </div>
+                <h3 class="text-[17px] font-bold text-gray-500 line-through group-hover:text-blue-600 transition-colors titulo-ticket">Error al subir foto del negocio</h3>
+                <p class="text-[14px] text-gray-400 mt-1">Sofía Mejía · sofia@correo.com</p>
+                <p class="text-[13px] text-gray-400 mt-1 info-extra">2 mensajes · Resuelto: 2026-08-18</p>
+            </div>
+            <div class="pr-2">
+                <svg class="w-5 h-5 text-gray-400 group-hover:text-[#040116] group-hover:translate-x-1 transition-all flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"></path></svg>
+            </div>
+        </div>
+
+        <!-- Ticket 5 (Baja) -->
         <div class="support-card flex items-center justify-between bg-white rounded-2xl border border-gray-100 shadow-sm p-6 hover:shadow-md transition-shadow cursor-pointer group" data-estado="abierta" onclick="abrirModalSoporte(this, '¿Puedo tener más de un negocio registrado?', 'Roberto Lima · roberto@correo.com', 'Baja')">
             <div>
                 <div class="flex items-center gap-2 mb-3">
@@ -81,22 +97,6 @@
                 <h3 class="text-[17px] font-bold text-[#040116] group-hover:text-blue-600 transition-colors titulo-ticket">¿Puedo tener más de un negocio registrado?</h3>
                 <p class="text-[14px] text-gray-700 mt-1">Roberto Lima · roberto@correo.com</p>
                 <p class="text-[13px] text-gray-500 mt-1 info-extra">1 mensaje · 2026-08-17</p>
-            </div>
-            <div class="pr-2">
-                <svg class="w-5 h-5 text-gray-400 group-hover:text-[#040116] group-hover:translate-x-1 transition-all flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"></path></svg>
-            </div>
-        </div>
-
-        <!-- Ticket Oculto de Prueba (Cerrada) -->
-        <div class="support-card flex items-center justify-between bg-white rounded-2xl border border-gray-100 shadow-sm p-6 hover:shadow-md transition-shadow cursor-pointer group" data-estado="cerrada" style="display: none;" onclick="abrirModalSoporte(this, 'Duda sobre la facturación del mes', 'María González · maria@correo.com', 'Baja')">
-            <div>
-                <div class="flex items-center gap-2 mb-3">
-                    <span class="px-3 py-0.5 bg-gray-100 text-gray-600 text-[11px] font-bold rounded-full badge-prioridad">Baja</span>
-                    <span class="px-3 py-0.5 bg-green-50 text-green-600 text-[11px] font-bold rounded-full badge-estado">Cerrada</span>
-                </div>
-                <h3 class="text-[17px] font-bold text-gray-500 line-through group-hover:text-blue-600 transition-colors titulo-ticket">Duda sobre la facturación del mes</h3>
-                <p class="text-[14px] text-gray-400 mt-1">María González · maria@correo.com</p>
-                <p class="text-[13px] text-gray-400 mt-1 info-extra">5 mensajes · Resuelto: 2026-08-10</p>
             </div>
             <div class="pr-2">
                 <svg class="w-5 h-5 text-gray-400 group-hover:text-[#040116] group-hover:translate-x-1 transition-all flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"></path></svg>
@@ -207,5 +207,8 @@
             filtrarSoporte(filtroSoporteActivo);
         }, 1200);
     }
+
+    // Inicializar filtro
+    filtrarSoporte('todos');
 </script>
 @endsection
