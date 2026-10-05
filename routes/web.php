@@ -48,7 +48,39 @@ Route::get('/registro-tipo', function () { return view('auth.tipo-cuenta'); });
 Route::get('/registro/cliente', function () { return view('auth.registro-cliente'); });
 Route::get('/registro/proveedor', function () { return view('auth.registro-proveedor'); });
 Route::get('/registro/servicios', function () { return view('auth.registro-servicios'); });
-Route::get('/chat-negocio', function () { return view('chat-negocio'); });
+Route::get('/chat-negocio', function () {
+    $id = request('id');
+    $nombre = request('negocio') ?? request('empresa');
+
+    $company = \App\Models\Company::with('category')
+        ->when($id, fn($q) => $q->where('id', $id))
+        ->when($nombre && !$id, fn($q) => $q->where('name', $nombre)->orWhere('name', 'like', '%' . $nombre . '%'))
+        ->first();
+
+    if (!$company && $nombre) {
+        $company = (object)[
+            'name' => $nombre,
+            'description' => 'Negocio registrado en la plataforma SINGKI.',
+            'category' => (object)['name' => 'Comercio / Servicios'],
+            'address' => 'No especificada',
+            'telephone' => 'No disponible',
+            'email' => 'contacto@' . strtolower(preg_replace('/[^a-zA-Z0-9]/', '', $nombre)) . '.com',
+            'horario' => 'Lunes a Viernes, 8:00 AM - 5:00 PM',
+        ];
+    } elseif (!$company) {
+        $company = (object)[
+            'name' => 'Negocio Desconocido',
+            'description' => 'Negocio registrado en la plataforma SINGKI.',
+            'category' => (object)['name' => 'Comercio / Servicios'],
+            'address' => 'No especificada',
+            'telephone' => 'No disponible',
+            'email' => 'contacto@singki.com',
+            'horario' => 'Lunes a Viernes, 8:00 AM - 5:00 PM',
+        ];
+    }
+
+    return view('usuario.chat-negocio', compact('company'));
+});
 
 
 // Ruta hacia el perfil público (manejada por el controlador para pasar la variable $negocio)
