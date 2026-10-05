@@ -261,10 +261,10 @@
                 <!-- Conteo dinámico de stock (Opcional si tienes la lógica en el modelo) -->
                 <div class="flex gap-3 text-[11px] font-bold">
                     <span class="bg-[#dcfce7] text-[#16a34a] px-3 py-1.5 rounded-full">
-                        {{ $negocio->products->where('quantity', '>', 0)->count() ?? 0 }} disponibles
+                        {{ collect($negocio->products ?? [])->where('quantity', '>', 0)->count() ?? 0 }} disponibles
                     </span>
                     <span class="bg-[#fee2e2] text-[#ef4444] px-3 py-1.5 rounded-full">
-                        {{ $negocio->products->where('quantity', '<=', 0)->count() ?? 0 }} agotados
+                        {{ collect($negocio->products ?? [])->where('quantity', '<=', 0)->count() ?? 0 }} agotados
                     </span>
                 </div>
             </div>

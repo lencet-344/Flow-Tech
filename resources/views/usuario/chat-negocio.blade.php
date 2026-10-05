@@ -75,7 +75,7 @@
                 
                 <div class="mb-4">
                     <span class="inline-block px-3 py-1 bg-blue-50 text-[#1F51FF] text-xs font-bold rounded-full uppercase tracking-wider">
-                        {{ $company->category->name ?? 'Tecnología' }}
+                        {{ $company->category?->name ?? 'Tecnología' }}
                     </span>
                 </div>
 

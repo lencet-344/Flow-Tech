@@ -12,31 +12,31 @@
     <!-- 1. GRID DE MÉTRICAS (5 Columnas) -->
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
         <!-- Usuarios -->
-        <a href="{{ route('superadmin.users') }}" class="block bg-white border border-blue-400 rounded-xl p-5 shadow-sm hover:shadow-md transition cursor-pointer hover:-translate-y-1 hover:bg-blue-50/50">
+        <a href="{{ url('/superadmin/usuarios') }}" class="block bg-white border border-blue-400 rounded-xl p-5 shadow-sm hover:shadow-md transition cursor-pointer hover:-translate-y-1 hover:bg-blue-50/50">
             <svg class="w-6 h-6 text-blue-500 mb-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
-            <div class="text-[40px] leading-none font-bold text-blue-500 mb-2">6</div>
+            <div class="text-[40px] leading-none font-bold text-blue-500 mb-2">{{ \App\Models\User::count() }}</div>
             <div class="text-sm font-medium text-blue-500">Usuarios registrados</div>
         </a>
         <!-- Negocios -->
-        <a href="{{ route('superadmin.businesses') }}" class="block bg-white border border-green-400 rounded-xl p-5 shadow-sm hover:shadow-md transition cursor-pointer hover:-translate-y-1 hover:bg-green-50/50">
+        <a href="{{ url('/superadmin/negocios') }}" class="block bg-white border border-green-400 rounded-xl p-5 shadow-sm hover:shadow-md transition cursor-pointer hover:-translate-y-1 hover:bg-green-50/50">
             <svg class="w-6 h-6 text-green-500 mb-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg>
-            <div class="text-[40px] leading-none font-bold text-green-500 mb-2">4</div>
+            <div class="text-[40px] leading-none font-bold text-green-500 mb-2">{{ \App\Models\Company::count() }}</div>
             <div class="text-sm font-medium text-green-500">Negocios registrados</div>
         </a>
         <!-- Reportes -->
-        <a href="{{ route('superadmin.reports') }}" class="block bg-white border border-red-400 rounded-xl p-5 shadow-sm hover:shadow-md transition cursor-pointer hover:-translate-y-1 hover:bg-red-50/50">
+        <a href="{{ url('/superadmin/reportes') }}" class="block bg-white border border-red-400 rounded-xl p-5 shadow-sm hover:shadow-md transition cursor-pointer hover:-translate-y-1 hover:bg-red-50/50">
             <svg class="w-6 h-6 text-red-500 mb-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 21v-4m0 0V5a2 2 0 012-2h6.5l1 1H21l-3 6 3 6h-8.5l-1-1H5a2 2 0 00-2 2zm9-13.5V9"></path></svg>
             <div class="text-[40px] leading-none font-bold text-red-500 mb-2">3</div>
             <div class="text-sm font-medium text-red-500">Reportes pendientes</div>
         </a>
         <!-- Consultas Abiertas -->
-        <a href="{{ route('superadmin.queries') }}" class="block bg-white border border-yellow-400 rounded-xl p-5 shadow-sm hover:shadow-md transition cursor-pointer hover:-translate-y-1 hover:bg-yellow-50/50">
+        <a href="{{ url('/superadmin/consultas') }}" class="block bg-white border border-yellow-400 rounded-xl p-5 shadow-sm hover:shadow-md transition cursor-pointer hover:-translate-y-1 hover:bg-yellow-50/50">
             <svg class="w-6 h-6 text-yellow-500 mb-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path></svg>
             <div class="text-[40px] leading-none font-bold text-yellow-500 mb-2">4</div>
             <div class="text-sm font-medium text-yellow-500">Consultas abiertas</div>
         </a>
         <!-- Contenido (Moderación) -->
-        <a href="{{ route('superadmin.moderation') }}" class="block bg-white border border-purple-400 rounded-xl p-5 shadow-sm hover:shadow-md transition cursor-pointer hover:-translate-y-1 hover:bg-purple-50/50">
+        <a href="{{ url('/superadmin/moderacion') }}" class="block bg-white border border-purple-400 rounded-xl p-5 shadow-sm hover:shadow-md transition cursor-pointer hover:-translate-y-1 hover:bg-purple-50/50">
             <svg class="w-6 h-6 text-purple-500 mb-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
             <div class="text-[40px] leading-none font-bold text-purple-500 mb-2">2</div>
             <div class="text-sm font-medium text-purple-500">Contenido pendiente</div>
@@ -52,7 +52,7 @@
                     <svg class="w-6 h-6 text-red-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 21v-4m0 0V5a2 2 0 012-2h6.5l1 1H21l-3 6 3 6h-8.5l-1-1H5a2 2 0 00-2 2zm9-13.5V9"></path></svg>
                     <h2 class="text-lg font-bold text-gray-900">Reportes pendientes</h2>
                 </div>
-                <a href="{{ route('superadmin.reports') }}" class="text-[13px] text-blue-600 font-medium hover:underline">Ver todos &rarr;</a>
+                <a href="{{ url('/superadmin/reportes') }}" class="text-[13px] text-blue-600 font-medium hover:underline">Ver todos &rarr;</a>
             </div>
             <div class="space-y-6">
                 <div class="flex justify-between items-start">
@@ -95,7 +95,7 @@
                     <svg class="w-6 h-6 text-yellow-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path></svg>
                     <h2 class="text-lg font-bold text-gray-900">Servicio al cliente</h2>
                 </div>
-                <a href="{{ route('superadmin.support') }}" class="text-[13px] text-blue-600 font-medium hover:underline">Ver todos &rarr;</a>
+                <a href="{{ url('/superadmin/soporte') }}" class="text-[13px] text-blue-600 font-medium hover:underline">Ver todos &rarr;</a>
             </div>
             <div class="space-y-6">
                 <div class="flex justify-between items-start">
