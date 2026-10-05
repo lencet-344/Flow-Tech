@@ -2,7 +2,9 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>Código de verificación</title>
+    <title>SINGKI</title>
+
+    <link rel="icon" type="image/png" href="{{ asset('images/favicon.png') }}?v=2">
 </head>
 <body style="font-family: Arial, sans-serif; background-color: #F4F7FF; padding: 40px 0; text-align: center;">
     <div style="max-w-md: 500px; margin: 0 auto; background: #ffffff; padding: 40px; border-radius: 16px; box-shadow: 0 4px 6px rgba(0,0,0,0.05);">

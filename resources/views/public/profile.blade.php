@@ -1,6 +1,16 @@
 <!-- ========================================== -->
 <!-- VISTA: PERFIL PÚBLICO DEL NEGOCIO          -->
 <!-- ========================================== -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SINGKI</title>
+    <link rel="icon" type="image/png" href="{{ asset('images/favicon.png') }}?v=2">
+    <link rel="shortcut icon" type="image/png" href="{{ asset('images/favicon.png') }}?v=2">
+</head>
+<body>
 <div class="relative bg-gray-50 min-h-screen pb-12" x-data="{
         tab: 'productos',
         showReviewModal: false,
@@ -10,6 +20,11 @@
         reviewText: '',
         storageKey: 'reviews_company_{{ $negocio->id ?? md5($negocio->name ?? 'default') }}',
         userName: '{{ auth()->check() ? explode(' ', auth()->user()->name)[0] : 'Usuario' }}',
+        reportModalOpen: false,
+        reportStep: 1,
+        selectedReason: '',
+        reportDetails: '',
+        reportError: false,
         reviews: [],
         get averageRating() {
             if (this.reviews.length === 0) return '0.0';
@@ -43,6 +58,25 @@
     }">
     <script src="https://cdn.tailwindcss.com"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+
+    <!-- HEADER SUPERIOR LIMPIO SINGKI -->
+    <header class="bg-white/95 backdrop-blur-md border-b border-gray-100 sticky top-0 z-40 px-6 py-3.5 flex justify-between items-center">
+        <div class="flex items-center gap-2 select-none cursor-pointer" onclick="window.location.href='{{ url('/') }}'">
+            <img src="{{ asset('images/LogoBlanco.png') }}" alt="Logo SINGKI" class="h-8 w-auto object-contain">
+            <span class="font-black text-[24px] text-[#1F51FF] tracking-tighter">SINGKI</span>
+        </div>
+        <div class="flex items-center gap-3">
+            <button type="button" onclick="if (window.history.length > 1) { window.history.back(); } else { window.location.href='{{ url('/') }}'; }" class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-slate-100 hover:bg-[#1F51FF] text-slate-700 hover:text-white font-bold text-sm transition cursor-pointer shadow-xs">
+                &larr; Regresar
+            </button>
+            <a href="{{ url('/') }}" class="text-sm font-semibold text-gray-500 hover:text-[#1F51FF] transition px-2">Inicio</a>
+            @auth
+            <a href="{{ route('profile.edit') }}" class="w-8 h-8 rounded-full bg-gradient-to-tr from-[#1F51FF] to-[#0a194f] text-white flex items-center justify-center font-bold text-xs shadow-sm hover:opacity-90 transition ml-2">
+                {{ substr(auth()->user()->name, 0, 1) }}
+            </a>
+            @endauth
+        </div>
+    </header>
     
     <!-- BANNER SUPERIOR -->
     @php
@@ -167,7 +201,7 @@
                             📍 Ver ubicación
                         </button>
                         @endif
-                        <a href="https://wa.me/{{ preg_replace('/[^0-9]/', '', $negocio->telephone ?? '') }}" target="_blank" class="px-6 py-2.5 bg-[#2563eb] text-white rounded-full text-sm font-bold hover:bg-blue-700 flex items-center gap-2 shadow-md transition">
+                        <a href="{{ url('/chat-negocio?negocio=' . urlencode($negocio->name ?? '')) }}" class="px-6 py-2.5 bg-[#2563eb] text-white rounded-full text-sm font-bold hover:bg-blue-700 flex items-center gap-2 shadow-md transition">
                             💬 Chatear
                         </a>
                     </div>
@@ -186,7 +220,7 @@
                     <div class="flex items-center gap-1">🕒 {{ $negocio->horario ?? 'Horario no disponible' }}</div>
                     <div class="flex items-center gap-1">✉️ {{ $negocio->email ?? 'Correo no proporcionado' }}</div>
                 </div>
-                <button class="flex items-center gap-1 text-gray-400 hover:text-red-500 transition">
+                <button type="button" onclick="window.abrirModalReporteSingki()" class="text-red-500 hover:text-red-600 hover:bg-red-50 px-3 py-1.5 rounded-xl transition flex items-center gap-1.5 text-xs font-semibold cursor-pointer">
                     🚩 Reportar negocio
                 </button>
             </div>
@@ -227,10 +261,10 @@
                 <!-- Conteo dinámico de stock (Opcional si tienes la lógica en el modelo) -->
                 <div class="flex gap-3 text-[11px] font-bold">
                     <span class="bg-[#dcfce7] text-[#16a34a] px-3 py-1.5 rounded-full">
-                        {{ $negocio->products->where('quantity', '>', 0)->count() ?? 0 }} disponibles
+                        {{ collect($negocio->products ?? [])->where('quantity', '>', 0)->count() ?? 0 }} disponibles
                     </span>
                     <span class="bg-[#fee2e2] text-[#ef4444] px-3 py-1.5 rounded-full">
-                        {{ $negocio->products->where('quantity', '<=', 0)->count() ?? 0 }} agotados
+                        {{ collect($negocio->products ?? [])->where('quantity', '<=', 0)->count() ?? 0 }} agotados
                     </span>
                 </div>
             </div>
@@ -429,3 +463,140 @@
 
 
 </div>
+
+    <!-- MODAL REPORTAR NEGOCIO (Vanilla JS) -->
+    <div id="modal-reporte-singki" style="display: none;" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 backdrop-blur-sm p-4">
+        
+        <div class="relative transform overflow-hidden rounded-[24px] bg-white text-left shadow-2xl transition-all sm:my-8 sm:w-full sm:max-w-lg border border-gray-100">
+            
+            <!-- PASO 1: Formulario -->
+            <div id="reporte-paso-1">
+                <div class="px-6 py-5 border-b border-gray-50 flex justify-between items-center bg-gray-50/50">
+                    <h3 class="text-lg font-bold text-[#0f172a]" id="modal-title">¿Por qué reportas este negocio?</h3>
+                    <button type="button" onclick="window.cerrarModalReporteSingki()" class="text-gray-400 hover:text-gray-600 bg-gray-100 hover:bg-gray-200 rounded-full p-1.5 transition">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                    </button>
+                </div>
+                
+                <div class="px-6 py-5">
+                    <p class="text-sm text-gray-500 mb-4">Tu reporte es anónimo. Ayúdanos a mantener SINGKI seguro para todos.</p>
+                    
+                    <div class="space-y-2.5">
+                        @php
+                            $razones = [
+                                'Información falsa o engañosa', 
+                                'Posible fraude o cobro indebido', 
+                                'Productos o servicios inapropiados', 
+                                'Suplantación de identidad de otro comercio', 
+                                'Spam o comportamiento abusivo', 
+                                'Otro motivo'
+                            ];
+                        @endphp
+                        @foreach($razones as $razon)
+                            <button type="button" onclick="window.seleccionarMotivoReporte(this, '{{ $razon }}')" class="w-full text-left flex items-center gap-3 p-3 rounded-xl border border-gray-200 hover:bg-gray-50 text-gray-700 cursor-pointer transition btn-motivo-reporte">
+                                <div class="w-4 h-4 rounded-full border border-gray-300 flex items-center justify-center flex-shrink-0 indicador-radio">
+                                    <div class="w-2 h-2 rounded-full bg-[#1F51FF] hidden dot-radio"></div>
+                                </div>
+                                <span class="text-sm font-semibold">{{ $razon }}</span>
+                            </button>
+                        @endforeach
+                    </div>
+
+                    <!-- Textarea opcional -->
+                    <div class="mt-5">
+                        <label class="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-2">Información adicional (Opcional)</label>
+                        <textarea id="reporte-detalles" rows="3" class="w-full border-gray-200 rounded-xl focus:ring-[#1F51FF] focus:border-[#1F51FF] text-sm resize-none p-3 shadow-sm bg-gray-50 hover:bg-white transition" placeholder="Cuéntanos más sobre el problema..."></textarea>
+                    </div>
+                    
+                    <!-- Mensaje de error -->
+                    <div id="reporte-error" style="display: none;">
+                        <p class="text-red-500 text-xs font-semibold mt-3 flex items-center gap-1">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+                            Por favor, selecciona un motivo de la lista.
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="px-6 py-4 bg-gray-50 border-t border-gray-100 flex justify-end gap-3">
+                    <button type="button" onclick="window.cerrarModalReporteSingki()" class="px-5 py-2.5 text-sm font-bold text-gray-600 hover:text-gray-900 bg-white border border-gray-200 hover:bg-gray-50 rounded-xl transition">
+                        Cancelar
+                    </button>
+                    <button type="button" onclick="window.enviarReporteSingki()" class="px-5 py-2.5 text-sm font-bold text-white bg-red-500 hover:bg-red-600 rounded-xl transition shadow-sm shadow-red-500/30 flex items-center gap-2">
+                        Enviar reporte
+                    </button>
+                </div>
+            </div>
+
+            <!-- PASO 2: Éxito -->
+            <div id="reporte-paso-2" style="display: none;">
+                <div class="px-6 py-12 text-center flex flex-col items-center">
+                    <div class="w-20 h-20 bg-green-500 text-white rounded-full flex items-center justify-center mb-5 shadow-lg shadow-green-500/30">
+                        <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg>
+                    </div>
+                    <h3 class="text-xl font-black text-[#0f172a] mb-2">¡Negocio reportado con éxito!</h3>
+                    <p class="text-gray-500 text-sm max-w-sm mx-auto">Gracias por tu reporte. Nuestro equipo de moderación lo revisará a la brevedad para garantizar la calidad de SINGKI.</p>
+                    <button type="button" onclick="window.cerrarModalReporteSingki()" class="mt-8 px-8 py-3 text-sm font-bold text-white bg-[#0f172a] hover:bg-[#1e293b] rounded-xl transition w-full sm:w-auto shadow-md">
+                        Listo
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Script Vanilla JS para Modal Reporte -->
+    <script>
+        let reporteMotivoSeleccionado = '';
+
+        window.abrirModalReporteSingki = function() {
+            document.getElementById('modal-reporte-singki').style.display = 'flex';
+            document.getElementById('reporte-paso-1').style.display = 'block';
+            document.getElementById('reporte-paso-2').style.display = 'none';
+            document.getElementById('reporte-error').style.display = 'none';
+            document.getElementById('reporte-detalles').value = '';
+            reporteMotivoSeleccionado = '';
+            
+            // Reset styles
+            document.querySelectorAll('.btn-motivo-reporte').forEach(btn => {
+                btn.classList.remove('border-[#1F51FF]', 'bg-blue-50/60', 'text-[#1F51FF]');
+                btn.classList.add('border-gray-200', 'text-gray-700');
+                btn.querySelector('.indicador-radio').classList.remove('border-[#1F51FF]');
+                btn.querySelector('.indicador-radio').classList.add('border-gray-300');
+                btn.querySelector('.dot-radio').style.display = 'none';
+            });
+        };
+
+        window.cerrarModalReporteSingki = function() {
+            document.getElementById('modal-reporte-singki').style.display = 'none';
+        };
+
+        window.seleccionarMotivoReporte = function(elemento, motivo) {
+            reporteMotivoSeleccionado = motivo;
+            document.getElementById('reporte-error').style.display = 'none';
+            
+            document.querySelectorAll('.btn-motivo-reporte').forEach(btn => {
+                btn.classList.remove('border-[#1F51FF]', 'bg-blue-50/60', 'text-[#1F51FF]');
+                btn.classList.add('border-gray-200', 'text-gray-700');
+                btn.querySelector('.indicador-radio').classList.remove('border-[#1F51FF]');
+                btn.querySelector('.indicador-radio').classList.add('border-gray-300');
+                btn.querySelector('.dot-radio').style.display = 'none';
+            });
+            
+            elemento.classList.remove('border-gray-200', 'text-gray-700');
+            elemento.classList.add('border-[#1F51FF]', 'bg-blue-50/60', 'text-[#1F51FF]');
+            elemento.querySelector('.indicador-radio').classList.remove('border-gray-300');
+            elemento.querySelector('.indicador-radio').classList.add('border-[#1F51FF]');
+            elemento.querySelector('.dot-radio').style.display = 'block';
+        };
+
+        window.enviarReporteSingki = function() {
+            if (!reporteMotivoSeleccionado) {
+                document.getElementById('reporte-error').style.display = 'block';
+                return;
+            }
+            document.getElementById('reporte-paso-1').style.display = 'none';
+            document.getElementById('reporte-paso-2').style.display = 'block';
+        };
+    </script>
+</div>
+</body>
+</html>

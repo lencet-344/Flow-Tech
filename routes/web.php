@@ -48,7 +48,79 @@ Route::get('/registro-tipo', function () { return view('auth.tipo-cuenta'); });
 Route::get('/registro/cliente', function () { return view('auth.registro-cliente'); });
 Route::get('/registro/proveedor', function () { return view('auth.registro-proveedor'); });
 Route::get('/registro/servicios', function () { return view('auth.registro-servicios'); });
-Route::get('/chat-negocio', function () { return view('chat-negocio'); });
+Route::get('/chat-negocio', function () {
+    $id = request('id');
+    $nombre = request('negocio') ?? request('empresa');
+
+    $company = \App\Models\Company::with('category')
+        ->when($id, fn($q) => $q->where('id', $id))
+        ->when($nombre && !$id, fn($q) => $q->where('name', $nombre)->orWhere('name', 'like', '%' . $nombre . '%'))
+        ->first();
+
+    if (!$company && $nombre) {
+        $desc = "Negocio registrado en la plataforma SINGKI.";
+        $cat = 'Comercio / Servicios';
+        $email = 'contacto@' . strtolower(preg_replace('/[^a-zA-Z0-9]/', '', $nombre)) . '.com';
+        $dir = 'No especificada';
+        $tel = 'No disponible';
+
+        if ($nombre == 'Moda Express') {
+            $cat = 'Moda';
+            $desc = "Ropa y accesorios al por mayor. Colecciones para dama y caballero.";
+            $dir = "Av. Central, Estelí";
+            $tel = "8888-1020";
+            $email = "contacto@modaexpress.com";
+        } elseif ($nombre == 'TechSolutions GT') {
+            $cat = 'Tecnología';
+            $desc = "Soluciones tecnológicas para empresas. Hardware y soporte.";
+            $dir = "Zona Centro, Estelí";
+            $tel = "8888-3040";
+            $email = "carlos@techsolutions.com";
+        } elseif ($nombre == 'Distribuidora Alimentos Norte') {
+            $cat = 'Alimentos';
+            $desc = "Distribución mayorista de alimentos secos y enlatados.";
+            $dir = "Carretera Norte, Estelí";
+            $tel = "8888-5060";
+            $email = "ventas@alimentosnorte.com";
+        }
+
+        $company = (object)[
+            'id' => rand(1000, 9000),
+            'name' => $nombre,
+            'description' => $desc,
+            'category' => (object)['name' => $cat],
+            'address' => $dir,
+            'telephone' => $tel,
+            'email' => $email,
+            'horario' => 'Lunes a Viernes, 8:00 AM - 5:00 PM',
+            'created_at' => now(),
+            'logo' => null,
+            'website' => null,
+            'products' => collect([]),
+            'inventories' => collect([]),
+            'offers' => collect([]),
+        ];
+    } elseif (!$company) {
+        $company = (object)[
+            'id' => rand(1000, 9000),
+            'name' => 'Negocio Desconocido',
+            'description' => 'Negocio registrado en la plataforma SINGKI.',
+            'category' => (object)['name' => 'Comercio / Servicios'],
+            'address' => 'No especificada',
+            'telephone' => 'No disponible',
+            'email' => 'contacto@singki.com',
+            'horario' => 'Lunes a Viernes, 8:00 AM - 5:00 PM',
+            'created_at' => now(),
+            'logo' => null,
+            'website' => null,
+            'products' => collect([]),
+            'inventories' => collect([]),
+            'offers' => collect([]),
+        ];
+    }
+
+    return view('usuario.chat-negocio', compact('company'));
+});
 
 
 // Ruta hacia el perfil público (manejada por el controlador para pasar la variable $negocio)
@@ -112,7 +184,10 @@ Route::middleware(['auth', '2fa_verified', 'verified', 'prevent-back-history', C
     })->name('admin.users.toggleStatus');
     
     Route::get('/superadmin/proveedores', function () { return view('superadmin.suppliers'); })->name('superadmin.suppliers');
-    Route::get('/superadmin/negocios', function () { return view('superadmin.businesses'); })->name('superadmin.businesses');
+    Route::get('/superadmin/negocios', function () { 
+        $companies = \App\Models\Company::with('category')->orderByRaw("name = 'wawastech' DESC")->orderBy('id', 'desc')->get();
+        return view('superadmin.businesses', compact('companies')); 
+    })->name('superadmin.businesses');
 
     Route::patch('/superadmin/negocios/{id}/toggle-status', function ($id) {
         $company = \App\Models\Company::findOrFail($id);

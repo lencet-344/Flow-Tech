@@ -3,9 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Verificación de Seguridad - SINGKI</title>
+    <title>SINGKI</title>
     <!-- Cargamos Tailwind CSS -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+
+    <link rel="icon" type="image/png" href="{{ asset('images/favicon.png') }}?v=2">
 </head>
 <body class="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-600 via-indigo-500 to-purple-600 font-sans antialiased p-4">
 
