@@ -1,13 +1,63 @@
 <!-- ========================================== -->
 <!-- VISTA: PERFIL PÚBLICO DEL NEGOCIO          -->
 <!-- ========================================== -->
-<div class="relative bg-gray-50 min-h-screen pb-12">
+<div class="relative bg-gray-50 min-h-screen pb-12" x-data="{
+        tab: 'productos',
+        showReviewModal: false,
+        reviewStep: 1,
+        rating: 0,
+        hoverRating: 0,
+        reviewText: '',
+        storageKey: 'reviews_company_{{ $negocio->id ?? md5($negocio->name ?? 'default') }}',
+        userName: '{{ auth()->check() ? explode(' ', auth()->user()->name)[0] : 'Usuario' }}',
+        reviews: [],
+        get averageRating() {
+            if (this.reviews.length === 0) return '0.0';
+            const sum = this.reviews.reduce((acc, r) => acc + parseInt(r.estrellas), 0);
+            return (sum / this.reviews.length).toFixed(1);
+        },
+        init() {
+            const saved = localStorage.getItem(this.storageKey);
+            this.reviews = saved ? JSON.parse(saved) : [];
+        },
+        submitReview() {
+            if (this.rating === 0 || this.reviewText.trim() === '') return;
+            this.reviews.unshift({
+                nombre: this.userName,
+                fecha: new Date().toISOString().split('T')[0],
+                estrellas: this.rating,
+                texto: this.reviewText.trim()
+            });
+            localStorage.setItem(this.storageKey, JSON.stringify(this.reviews));
+            this.reviewStep = 2;
+        },
+        closeModal() {
+            this.showReviewModal = false;
+            setTimeout(() => {
+                this.reviewStep = 1;
+                this.rating = 0;
+                this.hoverRating = 0;
+                this.reviewText = '';
+            }, 300);
+        }
+    }">
     <script src="https://cdn.tailwindcss.com"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     
     <!-- BANNER SUPERIOR -->
-    <div class="h-64 w-full bg-gray-800 overflow-hidden">
-        <img src="{{ $negocio->banner_url ?? asset('images/default-banner.jpg') }}" alt="Banner de {{ $negocio->name }}" class="w-full h-full object-cover opacity-80">
+    @php
+        $slugSearch = \Illuminate\Support\Str::slug($negocio->name ?? request('negocio', ''));
+        $idSearch = $negocio->id ?? \App\Models\Company::where('name', $negocio->name ?? request('negocio'))->value('id');
+        $bannerMatches = array_merge(
+            $idSearch ? (glob(public_path('images/banners/company_' . $idSearch . '.*')) ?: []) : [],
+            $slugSearch ? (glob(public_path('images/banners/negocio_' . $slugSearch . '.*')) ?: []) : []
+        );
+        $bannerUrl = !empty($bannerMatches) ? asset('images/banners/' . basename($bannerMatches[0])) . '?v=' . filemtime($bannerMatches[0]) : null;
+    @endphp
+    <div class="h-64 w-full relative overflow-hidden bg-gradient-to-r from-[#0a194f] via-[#163080] to-[#1F51FF]">
+        @if($bannerUrl)
+            <img src="{{ $bannerUrl }}" alt="Banner de {{ $negocio->name ?? 'Negocio' }}" class="w-full h-full object-cover object-center" onerror="this.style.display='none'">
+        @endif
     </div>
 
     <!-- TARJETA PRINCIPAL DE INFORMACIÓN -->
@@ -52,15 +102,47 @@
 
                     <!-- Botones de Acción -->
                     <div class="flex flex-wrap gap-3 mb-2">
+                        @php
+                            $isFav = false;
+                            if (auth()->check() && isset($negocio->id)) {
+                                $isFav = \App\Models\Favorite::where('user_id', auth()->id())
+                                    ->where('name', 'U:' . auth()->id() . '|C:' . $negocio->id)
+                                    ->exists();
+                            }
+                        @endphp
                         <div x-data="{ 
-                            isFav: localStorage.getItem('fav_company_{{ $negocio->id ?? md5($negocio->name ?? 'default') }}') === 'true',
+                            isFav: {{ $isFav ? 'true' : 'false' }},
                             animating: false,
-                            toggleFav() {
+                            async toggleFav() {
+                                @if(!auth()->check())
+                                    window.location.href = '{{ route('login') }}';
+                                    return;
+                                @endif
+
+                                this.animating = true;
+                                setTimeout(() => this.animating = false, 300);
+
+                                // Actualización optimista
                                 this.isFav = !this.isFav;
-                                localStorage.setItem('fav_company_{{ $negocio->id ?? md5($negocio->name ?? 'default') }}', this.isFav);
-                                if (this.isFav) {
-                                    this.animating = true;
-                                    setTimeout(() => this.animating = false, 300);
+
+                                try {
+                                    const response = await fetch('{{ route('favorites.toggle') }}', {
+                                        method: 'POST',
+                                        headers: {
+                                            'Content-Type': 'application/json',
+                                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                                        },
+                                        body: JSON.stringify({
+                                            type: 'company',
+                                            id: {{ $negocio->id ?? 0 }}
+                                        })
+                                    });
+                                    if (!response.ok) throw new Error('Error en red');
+                                    const data = await response.json();
+                                    this.isFav = data.favorited;
+                                } catch (error) {
+                                    this.isFav = !this.isFav; // Revertir
+                                    console.error('Error:', error);
                                 }
                             }
                         }">
@@ -97,8 +179,8 @@
                 <div class="flex items-center gap-6">
                     <div class="flex items-center gap-1">
                         <span class="text-yellow-400 text-lg leading-none">★</span> 
-                        <span class="font-bold text-gray-900">{{ $negocio->rating ?? '5.0' }}</span> 
-                        <span>({{ $negocio->reviews_count ?? '0' }} reseñas)</span>
+                        <span class="font-bold text-gray-900" x-text="averageRating">{{ $negocio->rating ?? '5.0' }}</span> 
+                        <span>(<span x-text="reviews.length">{{ $negocio->reviews_count ?? '0' }}</span> reseñas)</span>
                     </div>
                     <div class="flex items-center gap-1">📍 {{ $negocio->address ?? 'Ubicación no especificada' }}</div>
                     <div class="flex items-center gap-1">🕒 {{ $negocio->horario ?? 'Horario no disponible' }}</div>
@@ -111,41 +193,7 @@
         </div>
     </div>
 
-    <div x-data="{
-        tab: 'productos',
-        showReviewModal: false,
-        reviewStep: 1,
-        rating: 0,
-        hoverRating: 0,
-        reviewText: '',
-        storageKey: 'reviews_company_{{ $negocio->id ?? md5($negocio->name ?? 'default') }}',
-        userName: '{{ auth()->check() ? explode(' ', auth()->user()->name)[0] : 'Usuario' }}',
-        reviews: [],
-        init() {
-            const saved = localStorage.getItem(this.storageKey);
-            this.reviews = saved ? JSON.parse(saved) : [];
-        },
-        submitReview() {
-            if (this.rating === 0 || this.reviewText.trim() === '') return;
-            this.reviews.unshift({
-                nombre: this.userName,
-                fecha: new Date().toISOString().split('T')[0],
-                estrellas: this.rating,
-                texto: this.reviewText.trim()
-            });
-            localStorage.setItem(this.storageKey, JSON.stringify(this.reviews));
-            this.reviewStep = 2;
-        },
-        closeModal() {
-            this.showReviewModal = false;
-            setTimeout(() => {
-                this.reviewStep = 1;
-                this.rating = 0;
-                this.hoverRating = 0;
-                this.reviewText = '';
-            }, 300);
-        }
-    }">
+
 
     <!-- PESTAÑAS DE NAVEGACIÓN -->
     <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 mb-8">
@@ -379,5 +427,5 @@
         </div>
     </div>
 
-    </div> <!-- /x-data main wrapper -->
+
 </div>

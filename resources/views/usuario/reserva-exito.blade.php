@@ -11,19 +11,19 @@
     
     <!-- Navbar Limpio con el Logo Blanco (Sin Cajas Azules) -->
     <header class="bg-white px-6 py-4 flex justify-between items-center shadow-sm border-b border-gray-100">
-        <a href="{{ url('/') }}" class="flex items-center gap-2 hover:opacity-90 transition-opacity">
+        <div class="flex items-center gap-2 select-none cursor-default">
             <img src="{{ asset('images/LogoBlanco.png') }}" alt="Logo SINGKI" class="h-8 w-auto object-contain">
             <span class="font-black text-[24px] text-[#1F51FF] tracking-tighter">SINGKI</span>
-        </a>
+        </div>
         
-        <div class="flex items-center gap-2">
+        <a href="{{ route('profile.edit') }}" class="flex items-center gap-2 px-3 py-1.5 rounded-full hover:bg-blue-50/80 transition cursor-pointer group" title="Mi perfil">
             <div class="w-9 h-9 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center font-bold text-sm">
                 {{ Auth::check() ? substr(Auth::user()->name, 0, 1) : 'S' }}
             </div>
             <span class="text-sm font-medium text-gray-700 hidden sm:inline-block">
                 {{ Auth::check() ? explode(' ', Auth::user()->name)[0] : 'Sharon' }}
             </span>
-        </div>
+        </a>
     </header>
 
     <!-- Contenedor Principal Centrado -->
@@ -57,10 +57,10 @@
 
             <!-- Botonera -->
             <div class="flex gap-4 w-full">
-                <a href="{{ url('/') }}" class="flex-1 text-center py-3.5 rounded-xl border border-gray-200 text-[#0f172a] font-semibold text-[14px] hover:bg-gray-50 transition-colors">
-                    Volver al negocio
+                <a href="{{ route('products.index') }}" class="flex-1 text-center py-3.5 rounded-xl border border-gray-200 text-[#0f172a] font-semibold text-[14px] hover:bg-gray-50 transition-colors">
+                    Volver al catálogo
                 </a>
-                <a href="{{ url('/admin/reservas') }}" class="flex-1 text-center py-3.5 rounded-xl bg-[#1F51FF] hover:bg-blue-700 text-white font-semibold text-[14px] shadow-sm transition-colors">
+                <a href="{{ route('bookings.index') }}" class="flex-1 text-center py-3.5 rounded-xl bg-[#1F51FF] hover:bg-blue-700 text-white font-semibold text-[14px] shadow-sm transition-colors">
                     Mis reservas
                 </a>
             </div>

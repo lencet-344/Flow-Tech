@@ -34,7 +34,7 @@ Route::get('/', function () {
     $productos = \App\Models\Product::with('supplier')->latest()->take(6)->get();
     $mis_reservas = collect();
 
-    if (auth()->check() && auth()->user()->role == 'cliente') { 
+    if (auth()->check() && in_array(auth()->user()->role, ['usuario', 'cliente'])) { 
         $mis_reservas = \App\Models\Booking::latest()->take(3)->get();
     }
 
@@ -42,7 +42,7 @@ Route::get('/', function () {
 })->name('welcome');
 
 Route::get('/mapa', function () { return view('mapa'); });
-Route::get('/explorar', [CategoryController::class, 'explorar'])->name('explorar.index')->middleware('auth');
+Route::get('/explorar', [CategoryController::class, 'explorar'])->name('explorar.index');
 Route::get('/redes', function () { return view('public.redes'); })->name('redes.index');
 Route::get('/registro-tipo', function () { return view('auth.tipo-cuenta'); });
 Route::get('/registro/cliente', function () { return view('auth.registro-cliente'); });
@@ -63,16 +63,17 @@ Route::resource('contact_requests', Contact_requestController::class)->only(['cr
 Route::get('/centro-ayuda', fn() => view('public.help'))->name('public.help');
 Route::get('/terminos', fn() => view('public.terms'))->name('public.terms');
 
+Route::get('/products', [ProductController::class, 'index'])->name('products.index');
+Route::get('/products/{product}', [ProductController::class, 'show'])->name('products.show');
+
 
 // ── RUTAS DE 2FA (Requieren login, pero NO 2FA verificado) ──────────────────
 Route::middleware(['auth'])->group(function () {
     Route::get('/verificacion-2fa', [TwoFactorController::class, 'index'])->name('2fa.index');
     Route::post('/verificacion-2fa', [TwoFactorController::class, 'verify'])->name('2fa.verify');
 
-    // ── RUTAS DE CATÁLOGO (Accesibles para usuarios autenticados) ──────────────
-Route::middleware(['auth'])->group(function () {
-    Route::resource('products', ProductController::class)->only(['index', 'show']);
-});
+// ── RUTAS DE CATÁLOGO (Accesibles para usuarios autenticados) ──────────────
+    Route::post('/favoritos/toggle', [FavoriteController::class, 'toggle'])->name('favorites.toggle');
 
 });
 
@@ -135,7 +136,15 @@ Route::middleware(['auth', '2fa_verified', 'verified', 'prevent-back-history', C
 
 // ── 2. RUTAS DE ADMINISTRACIÓN B2B (Protegidas por 2FA) ─────────────────────
 Route::middleware(['auth', '2fa_verified', 'verified', 'prevent-back-history', 'role:proveedor'])->group(function() {
-    Route::get('/admin/dashboard', function () { return view('admin.dashboard'); });
+    Route::get('/admin/dashboard', function () {
+        $company = \App\Models\Company::where('email', auth()->user()->email)->first() 
+                ?? auth()->user()->company 
+                ?? \App\Models\Company::where('name', 'wawastech')->first() 
+                ?? \App\Models\Company::latest('id')->first();
+        $inventories = \App\Models\Inventory::with("product", "supplier")->get();
+        $bookings = \App\Models\Booking::with("supplier")->latest()->get();
+        return view('admin.dashboard', compact('company', 'inventories', 'bookings'));
+    });
     Route::get('/admin/perfil', [\App\Http\Controllers\CompanyController::class, 'profile'])->name('admin.perfil');
     Route::put('/admin/perfil/actualizar/{company}', [\App\Http\Controllers\CompanyController::class, 'update'])->name('admin.perfil.update');
     
@@ -183,7 +192,25 @@ Route::middleware(['auth', '2fa_verified', 'verified', 'prevent-back-history', '
             'notes' => 'nullable|string|max:255',
         ]);
         $inventario = \App\Models\Inventory::where('product_id', $product->id)->first();
-        $supplier_id = $inventario->supplier_id ?? 1;
+        
+        $supplier_id = $inventario?->supplier_id ?? \App\Models\Supplier::value('id');
+        
+        if (!$supplier_id) {
+            $company = \App\Models\Company::first();
+            $supplier = \App\Models\Supplier::create([
+                'name'                => $company->name ?? 'Distribuidora Oficial SINGKI',
+                'age'                 => 30,
+                'gender'              => 'N/A',
+                'address'             => $company->address ?? 'Managua, Nicaragua',
+                'email'               => $company->email ?? ('proveedor' . rand(100,999) . '@singki.com'),
+                'telephone'           => rand(80000000, 89999999),
+                'identification_card' => '001-' . rand(100000, 999999) . '-0001A',
+                'company'             => $company->name ?? 'SINGKI B2B',
+                'code_company'        => 'SUP-' . strtoupper(\Illuminate\Support\Str::random(5)),
+                'No_INSS'             => 'INSS-' . rand(10000, 99999),
+            ]);
+            $supplier_id = $supplier->id;
+        }
 
         $booking = \App\Models\Booking::create([
             'date_booking'    => now()->toDateString(),

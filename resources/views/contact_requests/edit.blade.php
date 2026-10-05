@@ -15,30 +15,22 @@
                     <div class="mb-4">
                         <label for="name" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Nombre</label>
                         <input type="text" name="name" id="name" value="{{ old('name', $contact_request->name) }}" class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
-                        @error('name')
-                            <p class="mt-2 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
-                        @enderror
+                        @error('name') <span class="text-red-500 text-xs font-medium mt-1 block">{{ $message }}</span> @enderror
                     </div>
                     <div class="mb-4">
                         <label for="email" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Correo Electrónico</label>
                         <input type="text" name="email" id="email" value="{{ old('email', $contact_request->email) }}" class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
-                        @error('email')
-                            <p class="mt-2 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
-                        @enderror
+                        @error('email') <span class="text-red-500 text-xs font-medium mt-1 block">{{ $message }}</span> @enderror
                     </div>
                     <div class="mb-4">
                         <label for="telephone" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Teléfono</label>
-                        <input type="text" name="telephone" id="telephone" value="{{ old('telephone', $contact_request->telephone) }}" class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
-                        @error('telephone')
-                            <p class="mt-2 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
-                        @enderror
+                        <input type="text" name="telephone" id="telephone" value="{{ old('telephone', $contact_request->telephone) }}" class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" maxlength="8" inputmode="numeric" oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 8)" placeholder="Ej. 88888888">
+                        @error('telephone') <span class="text-red-500 text-xs font-medium mt-1 block">{{ $message }}</span> @enderror
                     </div>
                     <div class="mb-4">
                         <label for="location" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Ubicación</label>
                         <input type="text" name="location" id="location" value="{{ old('location', $contact_request->location) }}" class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
-                        @error('location')
-                            <p class="mt-2 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
-                        @enderror
+                        @error('location') <span class="text-red-500 text-xs font-medium mt-1 block">{{ $message }}</span> @enderror
                     </div>
                     <div class="mb-4">
                         <label for="company_id" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Company id</label>
@@ -48,9 +40,7 @@
                                 <option value="{{ $item->id }}" {{ old('company_id', $contact_request->company_id) == $item->id ? 'selected' : '' }}>{{ $item->name ?? $item->title ?? $item->id }}</option>
                             @endforeach
                         </select>
-                        @error('company_id')
-                            <p class="mt-2 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
-                        @enderror
+                        @error('company_id') <span class="text-red-500 text-xs font-medium mt-1 block">{{ $message }}</span> @enderror
                     </div>
                     <div class="flex justify-end mt-6">
                         <a href="{{ route('contact_requests.index') }}" class="mr-4 inline-flex items-center px-4 py-2 border border-gray-300 rounded-md font-semibold text-xs text-gray-700 dark:text-gray-300 uppercase tracking-widest shadow-sm hover:text-gray-500 dark:hover:text-gray-400 focus:outline-none focus:border-indigo-300 focus:ring focus:ring-indigo-200 active:text-gray-800 active:bg-gray-50 transition">

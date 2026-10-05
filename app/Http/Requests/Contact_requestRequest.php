@@ -18,9 +18,9 @@ class Contact_requestRequest extends FormRequest
         return [
             'name' => 'required|string|max:30',
             'email' => 'required|string|email|max:30|unique:contact_requests,email,' . $id,
-            'telephone' => 'required|integer|unique:contact_requests,telephone,' . $id,
-            'location' => 'required|string|max:30',
-            'company_id' => 'required|integer|exists:companies,id',
+            'telephone' => 'required|numeric|digits_between:7,8|unique:contact_requests,telephone,' . $id,
+            'location' => 'nullable|string|max:30',
+            'company_id' => 'nullable|integer|exists:companies,id',
         ];
     }
 
@@ -34,7 +34,8 @@ class Contact_requestRequest extends FormRequest
             'email.max' => 'El campo email no debe exceder los 30 caracteres',
             'email.unique' => 'Este email ya está registrado',
             'telephone.required' => 'El campo telephone es requerido',
-            'telephone.integer' => 'El campo telephone debe ser un número entero',
+            'telephone.numeric' => 'El teléfono debe ser numérico',
+            'telephone.digits_between' => 'El teléfono debe tener entre 7 y 8 dígitos',
             'telephone.unique' => 'Este telephone ya está registrado',
             'location.required' => 'El campo location es requerido',
             'location.max' => 'El campo location no debe exceder los 30 caracteres',

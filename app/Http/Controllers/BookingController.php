@@ -15,7 +15,7 @@ class BookingController extends Controller
      */
     public function index()
     {
-        $bookings = Booking::with("supplier")->get();
+        $bookings = Booking::with("supplier")->latest()->get();
         return view("bookings.index", compact("bookings"));
     }
 
