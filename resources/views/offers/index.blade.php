@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 
 @section('content')
-<div class="p-8 md:p-10">
+<div x-data="{ showDeleteModal: false, deleteFormId: null }" class="p-8 md:p-10">
     
     <!-- ENCABEZADO -->
     <div class="flex flex-col md:flex-row md:items-center justify-between mb-8 gap-4">
@@ -55,10 +55,10 @@
                 <a href="{{ route('offers.edit', $offer->id ?? 0) }}" class="bg-white border border-gray-200 text-gray-700 font-medium px-5 py-2 rounded-xl text-sm hover:bg-gray-50 transition shadow-sm">
                     Editar
                 </a>
-                <form action="{{ route('offers.destroy', $offer->id ?? 0) }}" method="POST">
+                <form id="delete-offer-{{ $offer->id ?? 0 }}" action="{{ route('offers.destroy', $offer->id ?? 0) }}" method="POST">
                     @csrf
                     @method('DELETE')
-                    <button type="submit" class="bg-red-50 text-red-500 font-medium px-5 py-2 rounded-xl text-sm hover:bg-red-100 transition shadow-sm">
+                    <button type="button" @click="deleteFormId = 'delete-offer-{{ $offer->id ?? 0 }}'; showDeleteModal = true;" class="bg-red-50 text-red-500 font-medium px-5 py-2 rounded-xl text-sm hover:bg-red-100 transition shadow-sm">
                         Eliminar
                     </button>
                 </form>
@@ -69,4 +69,19 @@
         @endforelse
     </div>
 </div>
+
+    <!-- MODAL DE CONFIRMACIÓN DE ELIMINACIÓN ESTILO SINGKI -->
+    <div x-show="showDeleteModal" style="display: none;" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/40 backdrop-blur-sm">
+        <div class="bg-white rounded-3xl shadow-2xl border border-gray-100 p-8 max-w-md w-full mx-4 text-center" @click.away="showDeleteModal = false">
+            <div class="w-16 h-16 rounded-full bg-red-50 text-red-500 flex items-center justify-center mx-auto mb-5">
+                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+            </div>
+            <h3 class="text-xl font-extrabold text-[#0f172a] mb-2">¿Eliminar esta oferta?</h3>
+            <p class="text-sm text-gray-500 mb-7">Esta acción eliminará la oferta permanentemente. ¿Estás seguro de que deseas continuar?</p>
+            <div class="flex gap-3">
+                <button type="button" @click="showDeleteModal = false" class="flex-1 py-3 px-4 rounded-xl border border-gray-200 text-gray-700 font-semibold text-sm hover:bg-gray-50 transition">No, conservar</button>
+                <button type="button" @click="if(deleteFormId) document.getElementById(deleteFormId).submit()" class="flex-1 py-3 px-4 rounded-xl bg-red-500 hover:bg-red-600 text-white font-semibold text-sm shadow-sm transition">Sí, eliminar</button>
+            </div>
+        </div>
+    </div>
 @endsection

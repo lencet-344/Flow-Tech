@@ -40,10 +40,10 @@
     
     <!-- Navbar Reciclado -->
     <header class="bg-white px-6 py-4 flex justify-between items-center shadow-sm border-b border-gray-100 z-20 relative">
-        <a href="{{ url('/') }}" class="flex items-center gap-2 hover:opacity-90 transition-opacity">
+        <div class="flex items-center gap-2 select-none cursor-default">
             <img src="{{ asset('images/LogoBlanco.png') }}" alt="Logo SINGKI" class="h-8 w-auto object-contain">
             <span class="font-black text-[24px] text-[#1F51FF] tracking-tighter">SINGKI</span>
-        </a>
+        </div>
         
         <nav class="hidden md:flex gap-8 text-sm font-medium text-gray-600">
             <a href="{{ url('/') }}" class="hover:text-[#1F51FF] transition">Inicio</a>
@@ -57,12 +57,14 @@
                 <a href="{{ url('/registro-tipo') }}" class="text-sm font-bold bg-[#1F51FF] text-white px-4 py-1.5 rounded-full hover:bg-blue-700 transition">Registrarse</a>
             @endguest
             @auth
-            <div class="w-9 h-9 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center font-bold text-sm">
-                {{ substr(Auth::user()->name, 0, 1) }}
-            </div>
-            <span class="text-sm font-medium text-gray-700 hidden sm:inline-block">
-                {{ explode(' ', Auth::user()->name)[0] }}
-            </span>
+            <a href="{{ route('profile.edit') }}" class="flex items-center gap-3 px-3 py-1.5 rounded-full hover:bg-blue-50/80 transition cursor-pointer group" title="Mi perfil">
+                <div class="w-9 h-9 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center font-bold text-sm">
+                    {{ substr(Auth::user()->name, 0, 1) }}
+                </div>
+                <span class="text-sm font-medium text-gray-700 hidden sm:inline-block">
+                    {{ explode(' ', Auth::user()->name)[0] }}
+                </span>
+            </a>
             @endauth
         </div>
     </header>

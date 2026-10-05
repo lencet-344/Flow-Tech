@@ -2,16 +2,17 @@
 @extends($isClient ? 'layouts.empty' : 'layouts.admin')
 
 @section('content')
+<div x-data="{ showDeleteModal: false, deleteFormId: null }">
     @if($isClient)
         <!-- ========================================================== -->
         <!-- VISTA PARA CLIENTES (MIS RESERVAS)                         -->
         <!-- ========================================================== -->
         <div class="bg-[#F4F7FF] min-h-screen">
             <header class="bg-white px-6 py-4 flex justify-between items-center shadow-sm border-b border-gray-100">
-                <a href="{{ url('/') }}" class="flex items-center gap-2 hover:opacity-90 transition-opacity">
+                <div class="flex items-center gap-2 select-none cursor-default">
                     <img src="{{ asset('images/LogoBlanco.png') }}" alt="Logo SINGKI" class="h-8 w-auto object-contain">
                     <span class="font-black text-[24px] text-[#1F51FF] tracking-tighter">SINGKI</span>
-                </a>
+                </div>
                 <a href="{{ url('/') }}" class="text-sm font-medium text-gray-600 hover:text-[#1F51FF] transition">&larr; Regresar al inicio</a>
             </header>
 
@@ -50,10 +51,10 @@
                                     <a href="{{ url('/perfil-publico?negocio=' . urlencode($booking->supplier->name ?? '')) }}" class="border border-gray-200 text-gray-700 hover:bg-gray-50 px-4 py-2 rounded-xl text-xs font-semibold transition">
                                         Ver negocio
                                     </a>
-                                    <form action="{{ route('bookings.destroy', $booking->id) }}" method="POST" class="m-0">
+                                    <form id="delete-booking-{{ $booking->id }}" action="{{ route('bookings.destroy', $booking->id) }}" method="POST" class="m-0">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="bg-red-50 hover:bg-red-100 text-red-600 border border-red-200 px-4 py-2 rounded-xl text-xs font-semibold transition flex items-center gap-1.5" onclick="return confirm('¿Seguro que deseas cancelar esta reserva?')">
+                                        <button type="button" @click="deleteFormId = 'delete-booking-{{ $booking->id }}'; showDeleteModal = true;" class="bg-red-50 hover:bg-red-100 text-red-600 border border-red-200 px-4 py-2 rounded-xl text-xs font-semibold transition flex items-center gap-1.5">
                                             <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
                                             Cancelar reserva
                                         </button>
@@ -132,10 +133,10 @@
                                 </td>
                                 <td class="px-6 py-4 text-center">
                                     <div class="flex items-center justify-center gap-2">
-                                        <form action="{{ route('bookings.destroy', $booking->id) }}" method="POST" onsubmit="return confirm('¿Eliminar reserva?')">
+                                        <form id="delete-admin-booking-{{ $booking->id }}" action="{{ route('bookings.destroy', $booking->id) }}" method="POST">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="submit" class="bg-red-50 hover:bg-red-100 text-red-600 border border-red-200 text-xs font-medium px-4 py-2 rounded-lg transition-colors">Eliminar</button>
+                                            <button type="button" @click="deleteFormId = 'delete-admin-booking-{{ $booking->id }}'; showDeleteModal = true;" class="bg-red-50 hover:bg-red-100 text-red-600 border border-red-200 text-xs font-medium px-4 py-2 rounded-lg transition-colors">Eliminar</button>
                                         </form>
                                     </div>
                                 </td>
@@ -151,4 +152,20 @@
             </div>
         </div>
     @endif
+
+    <!-- MODAL DE CONFIRMACIÓN DE ELIMINACIÓN ESTILO SINGKI -->
+    <div x-show="showDeleteModal" style="display: none;" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/40 backdrop-blur-sm">
+        <div class="bg-white rounded-3xl shadow-2xl border border-gray-100 p-8 max-w-md w-full mx-4 text-center" @click.away="showDeleteModal = false">
+            <div class="w-16 h-16 rounded-full bg-red-50 text-red-500 flex items-center justify-center mx-auto mb-5">
+                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+            </div>
+            <h3 class="text-xl font-extrabold text-[#0f172a] mb-2">¿Cancelar esta reserva?</h3>
+            <p class="text-sm text-gray-500 mb-7">Esta acción cancelará tu apartado del producto. ¿Estás seguro de que deseas continuar?</p>
+            <div class="flex gap-3">
+                <button type="button" @click="showDeleteModal = false" class="flex-1 py-3 px-4 rounded-xl border border-gray-200 text-gray-700 font-semibold text-sm hover:bg-gray-50 transition">No, conservar</button>
+                <button type="button" @click="if(deleteFormId) document.getElementById(deleteFormId).submit()" class="flex-1 py-3 px-4 rounded-xl bg-red-500 hover:bg-red-600 text-white font-semibold text-sm shadow-sm transition">Sí, cancelar reserva</button>
+            </div>
+        </div>
+    </div>
+</div>
 @endsection

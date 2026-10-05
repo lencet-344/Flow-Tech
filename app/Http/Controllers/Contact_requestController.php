@@ -34,8 +34,25 @@ class Contact_requestController extends Controller
      */
     public function store(Contact_requestRequest $request)
     {
-        Contact_request::create($request->validated());
-        return redirect()->back()->with('success', '¡Tu solicitud de contacto fue enviada correctamente!');
+        $data = $request->validated();
+        
+        if (empty($data['location'])) {
+            $data['location'] = 'No especificada';
+        }
+        
+        if (empty($data['company_id'])) {
+            $data['company_id'] = \App\Models\Company::value('id');
+        }
+
+        Contact_request::create($data);
+
+        $isSuperAdmin = auth()->check() && in_array(auth()->user()->email, ['isaacmeneses254@gmail.com', 'edmundo@ejemplo.com', 'admin@sinki.com']);
+
+        if (!$isSuperAdmin) {
+            return redirect()->back()->with('success', '¡Tu solicitud ha sido enviada correctamente! Te responderemos a la brevedad.');
+        }
+
+        return redirect()->route('contact_requests.index')->with('success', '¡Tu solicitud ha sido enviada correctamente! Te responderemos a la brevedad.');
     }
 
     /**

@@ -4,10 +4,10 @@
 <!-- Cabecera Superior -->
 <header class="bg-white border-b border-gray-100 sticky top-0 z-40 shadow-sm">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
-        <a href="{{ url('/') }}" class="flex items-center gap-2">
+        <div class="flex items-center gap-2 select-none cursor-default">
             <img src="{{ asset('images/LogoBlanco.png') }}" alt="SINGKI" class="h-8 w-auto">
             <span class="font-black text-2xl text-[#1F51FF] tracking-tight">SINGKI</span>
-        </a>
+        </div>
         <div class="flex items-center gap-4">
             <a href="{{ route('products.index') }}" class="text-gray-500 hover:text-[#1F51FF] font-bold text-sm transition-colors">
                 &larr; Volver al catálogo

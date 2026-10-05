@@ -14,7 +14,17 @@ class CompanyController extends Controller
      */
     public function profile()
     {
-        $company = Company::first() ?? new Company();
+        $company = Company::where('email', auth()->user()->email)->first() 
+                ?? auth()->user()->company 
+                ?? Company::where('name', 'wawastech')->first() 
+                ?? Company::latest('id')->first();
+                
+        if ($company && empty($company->name)) {
+            $company->name = 'wawastech';
+            $company->description = 'nolose9';
+            $company->save();
+        }
+
         $categories = \App\Models\Category::all();
         return view('admin.perfil', compact('company', 'categories'));
     }
@@ -64,20 +74,59 @@ class CompanyController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(CompanyRequest $request, Company $company)
+    public function update(Request $request, Company $company)
     {
-        $data = $request->validated();
-        $company->update($data);
-
         if ($request->hasFile('logo')) {
+            $request->validate(['logo' => 'required|image|mimes:jpg,jpeg,png,webp|max:5120']);
             if ($company->logo && \Illuminate\Support\Facades\Storage::disk('public')->exists($company->logo)) {
                 \Illuminate\Support\Facades\Storage::disk('public')->delete($company->logo);
             }
-            $path = $request->file('logo')->store('companies', 'public');
-            $company->logo = $path;
+            $company->logo = $request->file('logo')->store('companies', 'public');
             $company->save();
+            return back()->with("success", "¡Foto del negocio actualizada correctamente!");
         }
-        
+
+        if ($request->hasFile('banner')) {
+            $request->validate(['banner' => 'required|image|mimes:jpg,jpeg,png,webp|max:5120']);
+            
+            if (!is_dir(public_path('images/banners'))) {
+                mkdir(public_path('images/banners'), 0755, true);
+            }
+
+            $ext = $request->file('banner')->getClientOriginalExtension() ?: 'jpg';
+            
+            array_map('unlink', glob(public_path('images/banners/company_' . $company->id . '.*')) ?: []);
+            
+            $filename = 'company_' . $company->id . '.' . $ext;
+            $request->file('banner')->move(public_path('images/banners'), $filename);
+            
+            $slugName = 'negocio_' . \Illuminate\Support\Str::slug($company->name) . '.' . $ext;
+            @copy(public_path('images/banners/' . $filename), public_path('images/banners/' . $slugName));
+
+            return back()->with("success", "¡Banner del negocio actualizado correctamente!");
+        }
+
+        $request->validate([
+            'name' => 'sometimes|nullable|string|max:255',
+            'category_id' => 'sometimes|nullable|integer',
+            'description' => 'sometimes|nullable|string',
+            'telephone' => 'sometimes|nullable|string|max:20',
+            'email' => 'sometimes|nullable|email|max:255',
+            'address' => 'sometimes|nullable|string|max:255',
+            'website' => 'sometimes|nullable|string|max:255',
+            'horario' => 'sometimes|nullable|string|max:255',
+        ]);
+
+        $company->name = $request->filled('name') ? $request->name : $company->name;
+        $company->category_id = $request->filled('category_id') ? $request->category_id : $company->category_id;
+        $company->description = $request->filled('description') ? $request->description : $company->description;
+        $company->telephone = $request->filled('telephone') ? $request->telephone : $company->telephone;
+        $company->email = $request->filled('email') ? $request->email : $company->email;
+        $company->address = $request->filled('address') ? $request->address : $company->address;
+        $company->website = $request->filled('website') ? $request->website : $company->website;
+        $company->horario = $request->filled('horario') ? $request->horario : $company->horario;
+
+        $company->save();
         return back()->with("success", "Empresa actualizada correctamente.");
     }
 

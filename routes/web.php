@@ -63,19 +63,17 @@ Route::resource('contact_requests', Contact_requestController::class)->only(['cr
 Route::get('/centro-ayuda', fn() => view('public.help'))->name('public.help');
 Route::get('/terminos', fn() => view('public.terms'))->name('public.terms');
 
+Route::get('/products', [ProductController::class, 'index'])->name('products.index');
+Route::get('/products/{product}', [ProductController::class, 'show'])->name('products.show');
+
 
 // ── RUTAS DE 2FA (Requieren login, pero NO 2FA verificado) ──────────────────
 Route::middleware(['auth'])->group(function () {
     Route::get('/verificacion-2fa', [TwoFactorController::class, 'index'])->name('2fa.index');
     Route::post('/verificacion-2fa', [TwoFactorController::class, 'verify'])->name('2fa.verify');
 
-Route::get('/products', [ProductController::class, 'index'])->name('products.index');
-Route::get('/products/{product}', [ProductController::class, 'show'])->name('products.show');
-
 // ── RUTAS DE CATÁLOGO (Accesibles para usuarios autenticados) ──────────────
-Route::middleware(['auth'])->group(function () {
     Route::post('/favoritos/toggle', [FavoriteController::class, 'toggle'])->name('favorites.toggle');
-});
 
 });
 
@@ -138,7 +136,15 @@ Route::middleware(['auth', '2fa_verified', 'verified', 'prevent-back-history', C
 
 // ── 2. RUTAS DE ADMINISTRACIÓN B2B (Protegidas por 2FA) ─────────────────────
 Route::middleware(['auth', '2fa_verified', 'verified', 'prevent-back-history', 'role:proveedor'])->group(function() {
-    Route::get('/admin/dashboard', function () { return view('admin.dashboard'); });
+    Route::get('/admin/dashboard', function () {
+        $company = \App\Models\Company::where('email', auth()->user()->email)->first() 
+                ?? auth()->user()->company 
+                ?? \App\Models\Company::where('name', 'wawastech')->first() 
+                ?? \App\Models\Company::latest('id')->first();
+        $inventories = \App\Models\Inventory::with("product", "supplier")->get();
+        $bookings = \App\Models\Booking::with("supplier")->latest()->get();
+        return view('admin.dashboard', compact('company', 'inventories', 'bookings'));
+    });
     Route::get('/admin/perfil', [\App\Http\Controllers\CompanyController::class, 'profile'])->name('admin.perfil');
     Route::put('/admin/perfil/actualizar/{company}', [\App\Http\Controllers\CompanyController::class, 'update'])->name('admin.perfil.update');
     

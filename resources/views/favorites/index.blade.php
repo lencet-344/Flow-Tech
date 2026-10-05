@@ -5,10 +5,10 @@
     <!-- CABECERA LIMPIA OFICIAL SINGKI -->
     <header class="bg-white shadow-sm border-b border-gray-100 relative z-20">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
-            <a href="{{ url('/') }}" class="flex items-center gap-2 hover:opacity-90 transition-opacity">
+            <div class="flex items-center gap-2 select-none cursor-default">
                 <img src="{{ asset('images/LogoBlanco.png') }}" alt="Logo SINGKI" class="h-8 w-auto object-contain">
                 <span class="font-black text-[24px] text-[#1F51FF] tracking-tighter">SINGKI</span>
-            </a>
+            </div>
             
             <a href="{{ url('/') }}" class="text-[#1F51FF] font-bold text-sm flex items-center gap-2 hover:underline transition">
                 &larr; Regresar al inicio
