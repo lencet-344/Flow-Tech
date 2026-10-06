@@ -16,7 +16,32 @@
         </div>
     </header>
 
-    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10" x-data="{ tab: 'todos' }">
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10" x-data="{ 
+        tab: 'todos',
+        dbCompanyIds: [{{ collect($companies)->pluck('id')->implode(',') }}],
+        dbProductIds: [{{ collect($products)->pluck('id')->implode(',') }}],
+        localCompanies: [],
+        localProducts: [],
+        init() {
+            try {
+                let lbc = JSON.parse(localStorage.getItem('singki_fav_businesses') || '[]');
+                this.localCompanies = lbc.filter(c => !this.dbCompanyIds.includes(parseInt(c.id)));
+                
+                let lbp = JSON.parse(localStorage.getItem('singki_fav_products') || '[]');
+                this.localProducts = lbp.filter(p => !this.dbProductIds.includes(parseInt(p.id)));
+            } catch(e) {}
+        },
+        removeLocalCompany(id) {
+            this.localCompanies = this.localCompanies.filter(c => c.id != id);
+            localStorage.setItem('singki_fav_businesses', JSON.stringify(this.localCompanies));
+            localStorage.removeItem('fav_company_' + id);
+        },
+        removeLocalProduct(id) {
+            this.localProducts = this.localProducts.filter(p => p.id != id);
+            localStorage.setItem('singki_fav_products', JSON.stringify(this.localProducts));
+            localStorage.removeItem('fav_product_' + id);
+        }
+    }">
         <div class="mb-8">
             <h1 class="text-3xl font-extrabold text-[#040116] tracking-tight flex items-center gap-3">
                 <svg class="w-8 h-8 text-[#1F51FF]" fill="currentColor" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"></path></svg>
@@ -56,7 +81,7 @@
                 <div class="absolute top-3 left-3 bg-[#1F51FF] text-white text-[10px] font-bold px-3 py-1 rounded-full z-10 shadow-sm">
                     NEGOCIO
                 </div>
-                <div class="h-40 bg-gray-100 relative">
+                <div class="h-40 bg-gray-100 relative flex items-center justify-center">
                     @if(!empty($company->logo))
                         <img src="{{ asset('storage/' . $company->logo) }}" class="w-full h-full object-cover">
                     @else
@@ -80,6 +105,30 @@
                 </div>
             </div>
             @endforeach
+
+            <!-- TARJETAS DE NEGOCIOS LOCALES -->
+            <template x-for="company in localCompanies" :key="'lc-'+company.id">
+                <div x-show="tab === 'todos' || tab === 'negocios'" class="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden flex flex-col hover:shadow-md transition-shadow relative">
+                    <div class="absolute top-3 left-3 bg-[#1F51FF] text-white text-[10px] font-bold px-3 py-1 rounded-full z-10 shadow-sm">
+                        NEGOCIO
+                    </div>
+                    <div class="h-40 bg-gray-100 relative flex items-center justify-center">
+                        <div class="w-full h-full flex items-center justify-center bg-gradient-to-br from-[#1F51FF] to-blue-800">
+                            <span class="text-4xl font-extrabold text-white" x-text="company.name ? company.name.substring(0, 2).toUpperCase() : 'NN'"></span>
+                        </div>
+                    </div>
+                    <div class="p-5 flex-grow flex flex-col">
+                        <h3 class="font-extrabold text-[#040116] text-lg mb-1" x-text="company.name"></h3>
+                        <p class="text-[11px] font-bold text-[#1F51FF] bg-blue-50 inline-block px-2 py-0.5 rounded-full self-start mb-3" x-text="company.category || 'Categoría'"></p>
+                        <p class="text-sm text-gray-500 mb-6 flex-grow" x-text="company.address || 'Nicaragua'"></p>
+                        
+                        <div class="flex items-center gap-2 mt-auto">
+                            <a :href="company.url || '/perfil-publico?negocio=' + encodeURIComponent(company.name)" class="flex-grow bg-[#1F51FF] hover:bg-blue-700 text-white text-center font-bold py-2 rounded-xl text-sm transition-colors">Ver perfil</a>
+                            <button type="button" @click="removeLocalCompany(company.id)" class="shrink-0 bg-red-50 hover:bg-red-100 text-red-600 px-4 py-2 rounded-xl text-sm font-bold transition-colors">Quitar</button>
+                        </div>
+                    </div>
+                </div>
+            </template>
 
             <!-- TARJETAS DE PRODUCTOS -->
             @foreach($products as $product)
@@ -106,6 +155,31 @@
                 </div>
             </div>
             @endforeach
+
+            <!-- TARJETAS DE PRODUCTOS LOCALES -->
+            <template x-for="product in localProducts" :key="'lp-'+product.id">
+                <div x-show="tab === 'todos' || tab === 'productos'" class="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden flex flex-col hover:shadow-md transition-shadow relative">
+                    <div class="absolute top-3 left-3 bg-[#f59e0b] text-white text-[10px] font-bold px-3 py-1 rounded-full z-10 shadow-sm">
+                        PRODUCTO
+                    </div>
+                    <div class="h-40 bg-gray-50 flex items-center justify-center p-3">
+                        <template x-if="product.image">
+                            <img :src="product.image.startsWith('http') ? product.image : '/storage/' + product.image" class="max-h-full max-w-full object-contain" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1542838132-92c53300491e?w=400&q=80';">
+                        </template>
+                    </div>
+                    <div class="p-5 flex-grow flex flex-col">
+                        <h3 class="font-extrabold text-[#040116] text-base mb-1" x-text="product.name"></h3>
+                        <p class="text-xs text-gray-400 mb-2">Presentación</p>
+                        <p class="text-lg font-black text-[#1F51FF] mb-6 flex-grow" x-text="'C$ ' + (product.price || 0)"></p>
+                        
+                        <div class="grid grid-cols-2 gap-2 mb-2 mt-auto">
+                            <a :href="'/producto/' + product.id" class="bg-gray-100 hover:bg-gray-200 text-[#040116] text-center font-bold py-2 rounded-xl text-xs transition-colors">Detalles</a>
+                            <a :href="'/producto/' + product.id + '/reservar'" class="bg-[#1F51FF] hover:bg-blue-700 text-white text-center font-bold py-2 rounded-xl text-xs transition-colors">Encargar</a>
+                        </div>
+                        <button type="button" @click="removeLocalProduct(product.id)" class="w-full bg-red-50 hover:bg-red-100 text-red-600 px-4 py-2 rounded-xl text-xs font-bold transition-colors">Quitar de favoritos</button>
+                    </div>
+                </div>
+            </template>
 
             <!-- ESTADO VACÍO -->
             @if(count($companies) === 0 && count($products) === 0)

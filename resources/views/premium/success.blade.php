@@ -32,8 +32,12 @@
                 Hazte Premium
             </button>
             <div class="flex items-center gap-2 cursor-pointer">
-                <div class="w-9 h-9 bg-[#e0e7ff] text-[#4f46e5] rounded-full flex items-center justify-center font-bold text-sm">
-                    {{ Auth::check() ? substr(Auth::user()->name, 0, 1) : 'C' }}
+                <div class="w-9 h-9 bg-[#e0e7ff] text-[#4f46e5] rounded-full flex items-center justify-center font-bold text-sm overflow-hidden border border-indigo-200">
+                    @if(Auth::check() && file_exists(public_path('uploads/avatars/avatar_u' . Auth::id() . '_' . md5(strtolower(trim(Auth::user()->email))) . '.jpg')))
+                        <img src="{{ asset('uploads/avatars/avatar_u' . Auth::id() . '_' . md5(strtolower(trim(Auth::user()->email))) . '.jpg') . '?v=' . filemtime(public_path('uploads/avatars/avatar_u' . Auth::id() . '_' . md5(strtolower(trim(Auth::user()->email))) . '.jpg')) }}" class="w-full h-full object-cover rounded-full">
+                    @else
+                        {{ Auth::check() ? substr(Auth::user()->name, 0, 1) : 'C' }}
+                    @endif
                 </div>
                 <span class="text-[15px] font-medium text-gray-700">
                     {{ Auth::check() ? explode(' ', Auth::user()->name)[0] : 'Carlos' }}

@@ -164,6 +164,7 @@ Route::middleware(['auth', '2fa_verified', 'verified', 'prevent-back-history'])-
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::post('/profile/avatar', [ProfileController::class, 'updateAvatar'])->name('profile.avatar.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
@@ -258,45 +259,143 @@ Route::middleware(['auth', '2fa_verified', 'verified', 'prevent-back-history', '
 
     Route::get('/producto/{product}/reservar', function (\App\Models\Product $product) {
         $product->load(['supplier', 'category']);
-        $inventario = \App\Models\Inventory::where('product_id', $product->id)->first();
+        $inventario = \App\Models\Inventory::with('supplier')->where('product_id', $product->id)->first();
+        
+        if (!$inventario?->supplier && !$product->supplier) {
+            $suppliers = \App\Models\Supplier::all();
+            if ($suppliers->count() > 0) {
+                $product->setRelation('supplier', $suppliers->get($product->id % $suppliers->count()));
+            } else {
+                $companies = \App\Models\Company::where('name', '!=', 'wawastech')->get();
+                if ($companies->count() > 0) {
+                    $product->setRelation('supplier', (object)['name' => $companies->get($product->id % $companies->count())->name]);
+                }
+            }
+        }
+        
+        $negociosCatalogo = [
+            'Distribuidora Alimentos Norte',
+            'Comercial San José',
+            'Agroindustria del Norte',
+            'Abastos Central Estelí',
+            'Mercadito El Sol',
+            'Importadora Las Segovias',
+            'Distribuidora La Favorita',
+            'Suplidora Nicaragüense'
+        ];
+        
+        $supplierName = $inventario?->supplier?->name ?? $product->supplier?->name;
+        if (empty($supplierName) || strtolower($supplierName) === 'singki' || strtolower($supplierName) === 'wawastech') {
+            $assignedName = $negociosCatalogo[$product->id % count($negociosCatalogo)];
+            if ($inventario?->supplier) {
+                $inventario->supplier->name = $assignedName;
+            } elseif ($product->supplier) {
+                $product->supplier->name = $assignedName;
+            } else {
+                $product->setRelation('supplier', (object)['name' => $assignedName]);
+            }
+        }
+
         return view('usuario.reservar', ['producto' => $product, 'inventario' => $inventario]);
     })->name('usuario.producto.reservar');
 
     Route::post('/producto/{product}/reservar', function (\Illuminate\Http\Request $request, \App\Models\Product $product) {
         $request->validate([
             'notes' => 'nullable|string|max:255',
+            'cantidad' => 'required|integer|min:1',
+            'unidad' => 'required|string',
+            'delivery_address' => 'required|string',
+            'latitude' => 'nullable|numeric',
+            'longitude' => 'nullable|numeric',
         ]);
-        $inventario = \App\Models\Inventory::where('product_id', $product->id)->first();
         
-        $supplier_id = $inventario?->supplier_id ?? \App\Models\Supplier::value('id');
+        $inventario = \App\Models\Inventory::with('supplier')->where('product_id', $product->id)->first();
+        $supplier = $inventario?->supplier ?? $product->supplier;
         
-        if (!$supplier_id) {
-            $company = \App\Models\Company::first();
-            $supplier = \App\Models\Supplier::create([
-                'name'                => $company->name ?? 'Distribuidora Oficial SINGKI',
-                'age'                 => 30,
-                'gender'              => 'N/A',
-                'address'             => $company->address ?? 'Managua, Nicaragua',
-                'email'               => $company->email ?? ('proveedor' . rand(100,999) . '@singki.com'),
-                'telephone'           => rand(80000000, 89999999),
-                'identification_card' => '001-' . rand(100000, 999999) . '-0001A',
-                'company'             => $company->name ?? 'SINGKI B2B',
-                'code_company'        => 'SUP-' . strtoupper(\Illuminate\Support\Str::random(5)),
-                'No_INSS'             => 'INSS-' . rand(10000, 99999),
-            ]);
-            $supplier_id = $supplier->id;
+        if (!$supplier) {
+            $suppliers = \App\Models\Supplier::all();
+            if ($suppliers->count() > 0) {
+                $supplier = $suppliers->get($product->id % $suppliers->count());
+            } else {
+                $companies = \App\Models\Company::where('name', '!=', 'wawastech')->get();
+                $company = $companies->count() > 0 ? $companies->get($product->id % $companies->count()) : \App\Models\Company::first();
+                
+                $supplier = \App\Models\Supplier::create([
+                    'name'                => $company->name ?? 'Distribuidora Oficial SINGKI',
+                    'age'                 => 30,
+                    'gender'              => 'N/A',
+                    'address'             => $company->address ?? 'Managua, Nicaragua',
+                    'email'               => $company->email ?? ('proveedor' . rand(100,999) . '@singki.com'),
+                    'telephone'           => rand(80000000, 89999999),
+                    'identification_card' => '001-' . rand(100000, 999999) . '-0001A',
+                    'company'             => $company->name ?? 'SINGKI B2B',
+                    'code_company'        => 'SUP-' . strtoupper(\Illuminate\Support\Str::random(5)),
+                    'No_INSS'             => 'INSS-' . rand(10000, 99999),
+                ]);
+            }
         }
+        
+        $negociosCatalogo = [
+            'Distribuidora Alimentos Norte',
+            'Comercial San José',
+            'Agroindustria del Norte',
+            'Abastos Central Estelí',
+            'Mercadito El Sol',
+            'Importadora Las Segovias',
+            'Distribuidora La Favorita',
+            'Suplidora Nicaragüense'
+        ];
+
+        $finalSupplierName = $supplier->name;
+        if (empty($finalSupplierName) || strtolower($finalSupplierName) === 'singki' || strtolower($finalSupplierName) === 'wawastech') {
+            $finalSupplierName = $negociosCatalogo[$product->id % count($negociosCatalogo)];
+            // Optionally we could update $supplier->name in DB but let's just use it for the session
+        }
+
+        $cantidad = $request->cantidad;
+        $unidad = $request->unidad;
+        $cost = $product->cost ?? $product->price ?? 0;
+        $totalAmount = $cost * $cantidad;
+        $delivery = $request->delivery_address;
+        
+        $lat = $request->latitude ? round((float)$request->latitude, 5) : null;
+        $lng = $request->longitude ? round((float)$request->longitude, 5) : null;
+
+        $notaCorta = ($request->notes ?? '') . " | Prod: " . ($product->name ?? '') . " x" . $cantidad;
+        $special_requests_safe = \Illuminate\Support\Str::limit($notaCorta, 45, '');
 
         $booking = \App\Models\Booking::create([
             'date_booking'    => now()->toDateString(),
-            'total_amount'    => $product->cost ?? 0,
+            'total_amount'    => $totalAmount,
             'deposit_amount'  => 0,
             'payment_method'  => 'En espera',
-            'special_requests'=> ($request->notes ?? '') . ' | PRODUCTO: ' . ($product->name ?? ''),
-            'supplier_id'     => $supplier_id,
+            'special_requests'=> $special_requests_safe,
+            'supplier_id'     => $supplier->id,
         ]);
 
-        return redirect()->route('usuario.reserva.exito', ['booking' => $booking->id, 'p' => $product->name]);
+        $metaData = [
+            'product_name' => $product->name,
+            'quantity' => $cantidad,
+            'unit' => $unidad,
+            'delivery_address' => $delivery,
+            'latitude' => $lat,
+            'longitude' => $lng,
+            'notes' => $request->notes,
+            'total_amount' => $totalAmount,
+            'supplier_name' => $finalSupplierName
+        ];
+        
+        session()->put("booking_meta_{$booking->id}", $metaData);
+        
+        $metaPath = storage_path('app/booking_meta.json');
+        $allMetas = file_exists($metaPath) ? json_decode(file_get_contents($metaPath), true) : [];
+        if (!is_array($allMetas)) $allMetas = [];
+        $allMetas[$booking->id] = $metaData;
+        file_put_contents($metaPath, json_encode($allMetas, JSON_PRETTY_PRINT));
+
+        return redirect()->route('usuario.reserva.exito', [
+            'booking' => $booking->id
+        ]);
     })->name('usuario.producto.reservar.store');
 
     Route::get('/reserva/{booking}/exito', function (\Illuminate\Http\Request $request, \App\Models\Booking $booking) {
