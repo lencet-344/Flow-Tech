@@ -181,8 +181,12 @@
 
 
                         <a href="{{ route('profile.edit') }}" class="flex items-center gap-3 px-3 py-1.5 rounded-full hover:bg-blue-50/80 transition cursor-pointer group" title="Mi perfil">
-                            <div class="w-10 h-10 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center font-bold text-lg">
-                                {{ strtoupper(substr(Auth::user()->name, 0, 1)) }}
+                            <div class="w-10 h-10 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center font-bold text-lg overflow-hidden border border-blue-200">
+                                @if(Auth::check() && file_exists(public_path('uploads/avatars/avatar_u' . Auth::id() . '_' . md5(strtolower(trim(Auth::user()->email))) . '.jpg')))
+                                    <img src="{{ asset('uploads/avatars/avatar_u' . Auth::id() . '_' . md5(strtolower(trim(Auth::user()->email))) . '.jpg') . '?v=' . filemtime(public_path('uploads/avatars/avatar_u' . Auth::id() . '_' . md5(strtolower(trim(Auth::user()->email))) . '.jpg')) }}" class="w-full h-full object-cover rounded-full">
+                                @else
+                                    {{ strtoupper(substr(Auth::user()->name, 0, 1)) }}
+                                @endif
                             </div>
                             <span class="font-medium text-gray-700">{{ explode(' ', Auth::user()->name)[0] }}</span>
                         </a>
@@ -303,10 +307,6 @@
                 <a href="#categorias" class="bg-[#1F51FF] text-white px-6 py-2.5 rounded-full font-medium flex items-center gap-2 text-sm shadow-sm hover:opacity-90">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"></path></svg>
                     Categorías
-                </a>
-                <a href="{{ route('explorar.index') }}" class="bg-[#1F51FF] text-white px-6 py-2.5 rounded-full font-medium flex items-center gap-2 text-sm shadow-sm hover:opacity-90">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
-                    Buscar
                 </a>
 
                 <!-- 🚀 BOTÓN NEGRO RECUPERADO Y MEJORADO 🚀 -->
@@ -676,7 +676,14 @@
 
                     <div class="p-4 flex-1 flex flex-col justify-between">
                         <div>
-                            <p class="text-[10px] text-gray-400 uppercase mb-1">{{ $producto->brand->name ?? $producto->supplier->name ?? 'SINGKI' }}</p>
+                            @php
+                                $supName = $producto->brand->name ?? $producto->supplier->name ?? '';
+                                if (empty($supName) || strtolower($supName) === 'singki' || strtolower($supName) === 'wawastech') {
+                                    $negociosCatalogo = ['Distribuidora Alimentos Norte', 'Comercial San José', 'Agroindustria del Norte', 'Abastos Central Estelí', 'Mercadito El Sol', 'Importadora Las Segovias', 'Distribuidora La Favorita', 'Suplidora Nicaragüense'];
+                                    $supName = $negociosCatalogo[($producto->id ?? 1) % count($negociosCatalogo)];
+                                }
+                            @endphp
+                            <p class="text-[10px] text-gray-400 uppercase mb-1">{{ $supName }}</p>
                             <a href="{{ route('products.show', $producto->id) }}" class="block text-xs font-bold text-gray-900 hover:text-[#1F51FF] mb-2 leading-tight transition-colors">{{ $producto->name }}</a>
                             <p class="text-sm font-bold text-[#1F51FF] mb-2">C$ {{ number_format($producto->cost ?? $producto->price ?? 0, 0) }}</p>
                             <a href="{{ route('products.show', $producto->id) }}" class="inline-block text-[#1F51FF] text-[11px] font-bold hover:underline mb-3">Ver detalles &rarr;</a>
@@ -694,26 +701,49 @@
                             <div x-data="{ 
                                 isFav: {{ $isFav ? 'true' : 'false' }},
                                 animating: false,
+                                init() {
+                                    if(localStorage.getItem('fav_product_{{ $producto->id }}') === 'true') {
+                                        this.isFav = true;
+                                    }
+                                },
                                 async toggleFav() {
                                     @if(!auth()->check()) window.location.href = '{{ route('login') }}'; return; @endif
                                     this.animating = true;
                                     setTimeout(() => this.animating = false, 300);
                                     this.isFav = !this.isFav;
+
+                                    if(this.isFav) {
+                                        localStorage.setItem('fav_product_{{ $producto->id }}', 'true');
+                                        let arr = JSON.parse(localStorage.getItem('singki_fav_products') || '[]');
+                                        if(!arr.some(p => p.id == {{ $producto->id }})) {
+                                            arr.push({id: {{ $producto->id }}, name: '{{ addslashes($producto->name) }}', price: '{{ $producto->price }}', image: '{{ $producto->image }}'});
+                                            localStorage.setItem('singki_fav_products', JSON.stringify(arr));
+                                        }
+                                        if(typeof window.showSingkiToast === 'function') window.showSingkiToast('✓ Producto añadido a favoritos');
+                                    } else {
+                                        localStorage.removeItem('fav_product_{{ $producto->id }}');
+                                        let arr = JSON.parse(localStorage.getItem('singki_fav_products') || '[]');
+                                        localStorage.setItem('singki_fav_products', JSON.stringify(arr.filter(p => p.id != {{ $producto->id }})));
+                                        if(typeof window.showSingkiToast === 'function') window.showSingkiToast('Eliminado de tus favoritos');
+                                    }
+
                                     try {
-                                        const res = await fetch('{{ route('favorites.toggle') }}', {
+                                        fetch('{{ route('favorites.toggle') }}', {
                                             method: 'POST',
-                                            headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': '{{ csrf_token() }}' },
+                                            headers: { 
+                                                'Content-Type': 'application/json', 
+                                                'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                                                'X-Requested-With': 'XMLHttpRequest',
+                                                'Accept': 'application/json'
+                                            },
                                             body: JSON.stringify({ type: 'product', id: {{ $producto->id }} })
                                         });
-                                        if(!res.ok) throw new Error();
-                                        const data = await res.json();
-                                        this.isFav = data.favorited;
-                                    } catch(e) { this.isFav = !this.isFav; }
+                                    } catch(e) { }
                                 }
                             }">
-                                <button type="button" @click.prevent="toggleFav()" :class="isFav ? 'bg-red-50 border-red-200 text-red-600' : 'bg-white border-gray-200 text-gray-500 hover:bg-gray-50'" class="w-full border rounded-lg py-1.5 flex items-center justify-center gap-1.5 text-[10px] font-bold transition-colors relative z-10">
-                                    <svg class="w-3.5 h-3.5 transition-transform duration-300" :class="[isFav ? 'fill-red-500 text-red-500' : 'fill-none', animating ? 'scale-150' : 'scale-100']" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path></svg>
-                                    <span x-text="isFav ? 'Guardado' : 'Favorito'"></span>
+                                <button type="button" @click.prevent.stop="toggleFav()" :class="isFav ? 'bg-red-50 border-red-200 text-red-600' : 'hover:bg-gray-50 text-gray-500'" :style="isFav ? 'background-color: #fef2f2 !important; border-color: #fecaca !important; color: #dc2626 !important;' : ''" class="w-full border rounded-lg py-1.5 flex items-center justify-center gap-1.5 text-[10px] font-bold transition-colors relative z-10">
+                                    <svg class="w-3.5 h-3.5 transition-transform duration-300" :style="isFav ? 'fill: #ef4444 !important; stroke: #ef4444 !important; color: #ef4444 !important;' : 'fill: none; stroke: currentColor;'" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path></svg>
+                                    <span x-text="isFav ? 'En Favoritos' : 'Favorito'" :class="isFav ? 'text-red-600' : ''"></span>
                                 </button>
                             </div>
                         </div>
@@ -811,15 +841,15 @@
         <p class="text-gray-500 text-[15px] mb-16 font-light max-w-xl mx-auto leading-relaxed">Clientes, emprendedores y proveedores que ya confían en SINGKI para hacer crecer sus negocios.</p>
         
         <div x-data="{ active: 1 }" class="relative w-full max-w-[1200px] mx-auto mb-16">
-            <div class="flex flex-col md:flex-row justify-center items-center gap-6 lg:gap-10 relative w-full overflow-hidden">
+            <div class="flex flex-col md:flex-row justify-center items-center gap-6 lg:gap-10 relative w-full overflow-visible py-10 px-4">
                 
                 <!-- Tarjeta 0 -->
-                <div @click="active = 0" class="transition-all duration-500 ease-in-out transform cursor-pointer w-full md:w-[300px] lg:w-[320px] shrink-0 rounded-[32px] overflow-hidden" :class="active === 0 ? 'scale-100 md:scale-110 z-20 bg-[#2563eb] shadow-[0_20px_50px_rgba(37,99,235,0.3)]' : 'scale-90 z-10 bg-blue-300 opacity-60 md:opacity-50 md:blur-[1px] hover:opacity-80 hover:blur-none hidden md:block'">
-                    <div class="h-48 md:h-56 relative">
-                        <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=500&q=80" class="w-full h-full object-cover transition-all duration-500" :class="active === 0 ? 'grayscale-0' : 'grayscale'">
+                <div @click="active = 0" class="transition-all duration-500 ease-in-out transform cursor-pointer w-full md:w-[300px] lg:w-[320px] shrink-0 rounded-[28px] overflow-hidden" :class="active === 0 ? 'scale-100 md:scale-110 z-20 bg-[#2563eb] shadow-[0_20px_50px_rgba(37,99,235,0.3)]' : 'scale-90 z-10 bg-blue-300 opacity-60 md:opacity-50 md:blur-[1px] hover:opacity-80 hover:blur-none hidden md:block'">
+                    <div class="h-48 md:h-56 relative rounded-t-[28px] overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=500&q=80" class="w-full h-full object-cover transition-all duration-500 rounded-t-[28px]" :class="active === 0 ? 'grayscale-0' : 'grayscale'">
                         <div x-show="active === 0" x-transition.opacity class="absolute bottom-4 left-4 bg-slate-900/70 backdrop-blur-md text-white text-[10px] font-semibold px-4 py-1.5 rounded-full uppercase tracking-wider border border-white/10">Cliente</div>
                     </div>
-                    <div class="p-6 md:p-8 text-left transition-all duration-500" :class="active === 0 ? 'text-white' : 'text-blue-50/80'">
+                    <div class="p-6 md:p-8 text-left transition-all duration-500 rounded-b-[28px]" :class="active === 0 ? 'text-white' : 'text-blue-50/80'">
                         <div class="text-yellow-400 text-sm md:text-lg mb-3 tracking-widest">★★★★★</div>
                         <p class="mb-4 font-light leading-relaxed text-[12px] md:text-[14px]" :class="active === 0 ? 'line-clamp-none' : 'line-clamp-3'">"Encontré exactamente lo que necesitaba en minutos. SINGKI me conectó con un proveedor confiable y el proceso fue súper sencillo."</p>
                         <div>
@@ -829,12 +859,12 @@
                 </div>
 
                 <!-- Tarjeta 1 -->
-                <div @click="active = 1" class="transition-all duration-500 ease-in-out transform cursor-pointer w-full md:w-[300px] lg:w-[320px] shrink-0 rounded-[32px] overflow-hidden" :class="active === 1 ? 'scale-100 md:scale-110 z-20 bg-[#2563eb] shadow-[0_20px_50px_rgba(37,99,235,0.3)]' : 'scale-90 z-10 bg-blue-300 opacity-60 md:opacity-50 md:blur-[1px] hover:opacity-80 hover:blur-none hidden md:block'">
-                    <div class="h-48 md:h-56 relative">
-                        <img src="https://images.unsplash.com/photo-1556157382-97eda2d62296?w=500&q=80" class="w-full h-full object-cover transition-all duration-500" :class="active === 1 ? 'grayscale-0' : 'grayscale'">
+                <div @click="active = 1" class="transition-all duration-500 ease-in-out transform cursor-pointer w-full md:w-[300px] lg:w-[320px] shrink-0 rounded-[28px] overflow-hidden" :class="active === 1 ? 'scale-100 md:scale-110 z-20 bg-[#2563eb] shadow-[0_20px_50px_rgba(37,99,235,0.3)]' : 'scale-90 z-10 bg-blue-300 opacity-60 md:opacity-50 md:blur-[1px] hover:opacity-80 hover:blur-none hidden md:block'">
+                    <div class="h-48 md:h-56 relative rounded-t-[28px] overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1556157382-97eda2d62296?w=500&q=80" class="w-full h-full object-cover transition-all duration-500 rounded-t-[28px]" :class="active === 1 ? 'grayscale-0' : 'grayscale'">
                         <div x-show="active === 1" x-transition.opacity class="absolute bottom-4 left-4 bg-slate-900/70 backdrop-blur-md text-white text-[10px] font-semibold px-4 py-1.5 rounded-full uppercase tracking-wider border border-white/10">Emprendedor</div>
                     </div>
-                    <div class="p-6 md:p-8 text-left transition-all duration-500" :class="active === 1 ? 'text-white' : 'text-blue-50/80'">
+                    <div class="p-6 md:p-8 text-left transition-all duration-500 rounded-b-[28px]" :class="active === 1 ? 'text-white' : 'text-blue-50/80'">
                         <div class="text-yellow-400 text-sm md:text-lg mb-3 tracking-widest">★★★★★</div>
                         <p class="mb-4 font-light leading-relaxed text-[12px] md:text-[14px]" :class="active === 1 ? 'line-clamp-none' : 'line-clamp-3'">"Registré mi negocio en SINGKI y en la primera semana ya tenía consultas reales. La plataforma le da visibilidad a mi emprendimiento."</p>
                         <div>
@@ -845,12 +875,12 @@
                 </div>
 
                 <!-- Tarjeta 2 -->
-                <div @click="active = 2" class="transition-all duration-500 ease-in-out transform cursor-pointer w-full md:w-[300px] lg:w-[320px] shrink-0 rounded-[32px] overflow-hidden" :class="active === 2 ? 'scale-100 md:scale-110 z-20 bg-[#2563eb] shadow-[0_20px_50px_rgba(37,99,235,0.3)]' : 'scale-90 z-10 bg-blue-300 opacity-60 md:opacity-50 md:blur-[1px] hover:opacity-80 hover:blur-none hidden md:block'">
-                    <div class="h-48 md:h-56 relative">
-                        <img src="https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?w=500&q=80" class="w-full h-full object-cover transition-all duration-500" :class="active === 2 ? 'grayscale-0' : 'grayscale'">
+                <div @click="active = 2" class="transition-all duration-500 ease-in-out transform cursor-pointer w-full md:w-[300px] lg:w-[320px] shrink-0 rounded-[28px] overflow-hidden" :class="active === 2 ? 'scale-100 md:scale-110 z-20 bg-[#2563eb] shadow-[0_20px_50px_rgba(37,99,235,0.3)]' : 'scale-90 z-10 bg-blue-300 opacity-60 md:opacity-50 md:blur-[1px] hover:opacity-80 hover:blur-none hidden md:block'">
+                    <div class="h-48 md:h-56 relative rounded-t-[28px] overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?w=500&q=80" class="w-full h-full object-cover transition-all duration-500 rounded-t-[28px]" :class="active === 2 ? 'grayscale-0' : 'grayscale'">
                         <div x-show="active === 2" x-transition.opacity class="absolute bottom-4 left-4 bg-slate-900/70 backdrop-blur-md text-white text-[10px] font-semibold px-4 py-1.5 rounded-full uppercase tracking-wider border border-white/10">Proveedora</div>
                     </div>
-                    <div class="p-6 md:p-8 text-left transition-all duration-500" :class="active === 2 ? 'text-white' : 'text-blue-50/80'">
+                    <div class="p-6 md:p-8 text-left transition-all duration-500 rounded-b-[28px]" :class="active === 2 ? 'text-white' : 'text-blue-50/80'">
                         <div class="text-yellow-400 text-sm md:text-lg mb-3 tracking-widest">★★★★★</div>
                         <p class="mb-4 font-light leading-relaxed text-[12px] md:text-[14px]" :class="active === 2 ? 'line-clamp-none' : 'line-clamp-3'">"El panel de administración es muy completo. Puedo gestionar mi inventario, ver reservas y chatear con los clientes fácilmente."</p>
                         <div>

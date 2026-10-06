@@ -80,13 +80,14 @@
     
     <!-- BANNER SUPERIOR -->
     @php
-        $slugSearch = \Illuminate\Support\Str::slug($negocio->name ?? request('negocio', ''));
         $idSearch = $negocio->id ?? \App\Models\Company::where('name', $negocio->name ?? request('negocio'))->value('id');
-        $bannerMatches = array_merge(
-            $idSearch ? (glob(public_path('images/banners/company_' . $idSearch . '.*')) ?: []) : [],
-            $slugSearch ? (glob(public_path('images/banners/negocio_' . $slugSearch . '.*')) ?: []) : []
-        );
-        $bannerUrl = !empty($bannerMatches) ? asset('images/banners/' . basename($bannerMatches[0])) . '?v=' . filemtime($bannerMatches[0]) : null;
+        $bannerUrl = null;
+        if ($idSearch && $idSearch > 0) {
+            $bannerMatches = glob(public_path('images/banners/company_' . $idSearch . '.*')) ?: [];
+            if (!empty($bannerMatches)) {
+                $bannerUrl = asset('images/banners/' . basename($bannerMatches[0])) . '?v=' . filemtime($bannerMatches[0]);
+            }
+        }
     @endphp
     <div class="h-64 w-full relative overflow-hidden bg-gradient-to-r from-[#0a194f] via-[#163080] to-[#1F51FF]">
         @if($bannerUrl)
@@ -143,55 +144,93 @@
                                     ->where('name', 'U:' . auth()->id() . '|C:' . $negocio->id)
                                     ->exists();
                             }
+                            $negocioId = $negocio->id ?? md5($negocio->name ?? 'default');
                         @endphp
-                        <div x-data="{ 
-                            isFav: {{ $isFav ? 'true' : 'false' }},
-                            animating: false,
-                            async toggleFav() {
-                                @if(!auth()->check())
-                                    window.location.href = '{{ route('login') }}';
-                                    return;
+                        <div x-data="{
+                            isFav: false,
+                            init() {
+                                const isStoredFav = localStorage.getItem('fav_company_{{ $negocioId }}') === 'true';
+                                @if(auth()->check())
+                                    const isDbFav = {{ $isFav ? 'true' : 'false' }};
+                                    this.isFav = isDbFav || isStoredFav;
+                                @else
+                                    this.isFav = isStoredFav;
                                 @endif
-
-                                this.animating = true;
-                                setTimeout(() => this.animating = false, 300);
-
-                                // Actualización optimista
+                            },
+                            async toggleFav() {
                                 this.isFav = !this.isFav;
-
-                                try {
-                                    const response = await fetch('{{ route('favorites.toggle') }}', {
-                                        method: 'POST',
-                                        headers: {
-                                            'Content-Type': 'application/json',
-                                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                                        },
-                                        body: JSON.stringify({
-                                            type: 'company',
-                                            id: {{ $negocio->id ?? 0 }}
-                                        })
-                                    });
-                                    if (!response.ok) throw new Error('Error en red');
-                                    const data = await response.json();
-                                    this.isFav = data.favorited;
-                                } catch (error) {
-                                    this.isFav = !this.isFav; // Revertir
-                                    console.error('Error:', error);
+                                localStorage.setItem('fav_company_{{ $negocioId }}', this.isFav);
+                                
+                                let arr = JSON.parse(localStorage.getItem('singki_fav_businesses') || '[]');
+                                if(this.isFav) {
+                                    if(!arr.some(n => n.id == '{{ $negocioId }}')) {
+                                        arr.push({
+                                            id: '{{ $negocioId }}',
+                                            name: '{{ $negocio->name ?? "" }}',
+                                            category: '{{ $negocio->category?->name ?? "" }}',
+                                            address: '{{ $negocio->address ?? "" }}',
+                                            url: '{{ url()->current() }}'
+                                        });
+                                    }
+                                    if(typeof window.showSingkiToast === 'function') window.showSingkiToast('✓ Negocio guardado en tus favoritos');
+                                } else {
+                                    arr = arr.filter(n => n.id != '{{ $negocioId }}');
+                                    if(typeof window.showSingkiToast === 'function') window.showSingkiToast('Eliminado de tus favoritos');
                                 }
+                                localStorage.setItem('singki_fav_businesses', JSON.stringify(arr));
+
+                                @if(auth()->check())
+                                try {
+                                    fetch('{{ route('favorites.toggle') }}', {
+                                        method: 'POST',
+                                        headers: { 
+                                            'Content-Type': 'application/json', 
+                                            'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                                            'X-Requested-With': 'XMLHttpRequest',
+                                            'Accept': 'application/json'
+                                        },
+                                        body: JSON.stringify({ type: 'company', id: '{{ $negocioId }}' })
+                                    });
+                                } catch(e) { }
+                                @else
+                                    window.location.href = '{{ route('login') }}';
+                                @endif
                             }
                         }">
                             <button type="button" 
-                                    @click="toggleFav()" 
-                                    :class="isFav ? 'bg-red-50 border-red-200 text-red-600' : 'bg-white border-gray-200 text-gray-700 hover:bg-gray-50'"
+                                    @click.prevent.stop="toggleFav()"
+                                    :class="isFav ? 'bg-red-50 border-red-200 text-red-600' : 'text-gray-700 hover:bg-gray-50'"
+                                    :style="isFav ? 'background-color: #fef2f2 !important; border-color: #fecaca !important; color: #dc2626 !important;' : ''"
                                     class="px-5 py-2.5 border rounded-full text-sm font-medium flex items-center gap-2 transition-all duration-200 select-none">
                                 <svg class="w-4 h-4 transition-transform duration-300" 
-                                     :class="[isFav ? 'text-red-500 fill-red-500' : 'text-gray-600 fill-none', animating ? 'scale-150' : 'scale-100']" 
-                                     stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                     :style="isFav ? 'fill: #ef4444 !important; stroke: #ef4444 !important; color: #ef4444 !important;' : 'fill: none; stroke: currentColor;'"
+                                     stroke-width="2" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
                                 </svg>
-                                <span>Favorito</span>
+                                <span x-text="isFav ? 'En Favoritos' : 'Favorito'"></span>
                             </button>
                         </div>
+                        <script>
+
+                            if(typeof window.showSingkiToast === 'undefined') {
+                                window.showSingkiToast = function(msg) {
+                                    let t = document.getElementById('singki-toast-fixed');
+                                    if(!t) {
+                                        t = document.createElement('div');
+                                        t.id = 'singki-toast-fixed';
+                                        t.className = 'fixed top-24 right-6 z-[9999] transform transition-all duration-300 opacity-0 translate-y-[-10px] bg-green-500 text-white px-4 py-2.5 rounded-xl shadow-lg font-bold text-sm';
+                                        document.body.appendChild(t);
+                                    }
+                                    t.textContent = msg;
+                                    t.style.opacity = '1';
+                                    t.style.transform = 'translateY(0)';
+                                    setTimeout(() => {
+                                        t.style.opacity = '0';
+                                        t.style.transform = 'translateY(-10px)';
+                                    }, 3000);
+                                };
+                            }
+                        </script>
                         @if(!empty($negocio->address))
                         <a href="https://www.google.com/maps/search/?api=1&query={{ urlencode($negocio->address) }}" target="_blank" class="px-5 py-2.5 border border-gray-200 rounded-full text-sm font-medium text-gray-700 hover:bg-gray-50 flex items-center gap-2 transition">
                             📍 Ver ubicación

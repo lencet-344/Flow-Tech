@@ -221,7 +221,11 @@
                     <!-- FORMULARIO PROVEEDOR/SERVICIOS (Diseño Figma) -->
                     <!-- ========================================== -->
                     <template x-if="role === 'proveedor' || role === 'servicios'">
-                        <div x-data="{ formStep: 1, showMap: false }" class="w-full max-w-xl mx-auto flex flex-col items-center">
+                        <div x-data="{ 
+                            formStep: {{ $errors->hasAny(['company_name', 'description', 'category_id', 'address', 'latitude', 'longitude']) && !$errors->hasAny(['first_name', 'last_name', 'cedula', 'email', 'password']) ? 2 : 1 }}, 
+                            showMap: false, 
+                            mapSelected: {{ old('latitude') ? 'true' : 'false' }} 
+                        }" class="w-full max-w-xl mx-auto flex flex-col items-center">
                             
                             <!-- CABECERA EXTERNA (El Logo, el Título y el Stepper) -->
                             <div class="text-center w-full mt-2">
@@ -282,22 +286,22 @@
                                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                                         <div>
                                             <label class="block text-[13px] font-bold text-[#040116] mb-1.5">Nombres</label>
-                                            <input class="w-full border border-gray-200 rounded-xl px-4 py-3 focus:ring-[#1F51FF] focus:border-[#1F51FF] text-sm outline-none transition-colors placeholder-blue-300 text-[#1F51FF]" type="text" name="first_name" placeholder="Ej. Carlos" required />
+                                            <input class="w-full border border-gray-200 rounded-xl px-4 py-3 focus:ring-[#1F51FF] focus:border-[#1F51FF] text-sm outline-none transition-colors placeholder-blue-300 text-[#1F51FF]" type="text" name="first_name" value="{{ old('first_name') }}" placeholder="Ej. Carlos" required />
                                         </div>
                                         <div>
                                             <label class="block text-[13px] font-bold text-[#040116] mb-1.5">Apellidos</label>
-                                            <input class="w-full border border-gray-200 rounded-xl px-4 py-3 focus:ring-[#1F51FF] focus:border-[#1F51FF] text-sm outline-none transition-colors placeholder-blue-300 text-[#1F51FF]" type="text" name="last_name" placeholder="Ej. González" required />
+                                            <input class="w-full border border-gray-200 rounded-xl px-4 py-3 focus:ring-[#1F51FF] focus:border-[#1F51FF] text-sm outline-none transition-colors placeholder-blue-300 text-[#1F51FF]" type="text" name="last_name" value="{{ old('last_name') }}" placeholder="Ej. González" required />
                                         </div>
                                     </div>
 
                                     <div class="mb-4">
                                         <label class="block text-[13px] font-bold text-[#040116] mb-1.5">Correo Electrónico</label>
-                                        <input class="w-full border border-gray-200 rounded-xl px-4 py-3 focus:ring-[#1F51FF] focus:border-[#1F51FF] text-sm outline-none transition-colors placeholder-blue-300 text-[#1F51FF]" type="email" name="email" placeholder="negocio@correo.com" required />
+                                        <input class="w-full border border-gray-200 rounded-xl px-4 py-3 focus:ring-[#1F51FF] focus:border-[#1F51FF] text-sm outline-none transition-colors placeholder-blue-300 text-[#1F51FF]" type="email" name="email" value="{{ old('email') }}" placeholder="negocio@correo.com" required />
                                     </div>
 
                                     <div class="mb-4">
                                         <label class="block text-[13px] font-bold text-[#040116] mb-1.5">Cédula</label>
-                                        <input class="w-full border border-gray-200 rounded-xl px-4 py-3 focus:ring-[#1F51FF] focus:border-[#1F51FF] text-sm outline-none transition-colors placeholder-blue-300 text-[#1F51FF]" type="text" name="cedula" placeholder="8888-0000" required />
+                                        <input class="w-full border border-gray-200 rounded-xl px-4 py-3 focus:ring-[#1F51FF] focus:border-[#1F51FF] text-sm outline-none transition-colors placeholder-blue-300 text-[#1F51FF]" type="text" name="cedula" value="{{ old('cedula') }}" placeholder="8888-0000" required />
                                     </div>
 
                                     <div class="mb-4">
@@ -338,12 +342,12 @@
 
                                     <div class="mb-4">
                                         <label class="block text-[13px] font-bold text-[#040116] mb-1.5">Nombre del negocio *</label>
-                                        <input class="w-full border border-gray-200 rounded-xl px-4 py-3 focus:ring-[#1F51FF] focus:border-[#1F51FF] text-sm outline-none transition-colors placeholder-blue-300 text-[#1F51FF]" type="text" name="company_name" placeholder="Ej. TechSolutions GT" required />
+                                        <input class="w-full border border-gray-200 rounded-xl px-4 py-3 focus:ring-[#1F51FF] focus:border-[#1F51FF] text-sm outline-none transition-colors placeholder-blue-300 text-[#1F51FF]" type="text" name="company_name" value="{{ old('company_name') }}" placeholder="Ej. TechSolutions GT" required />
                                     </div>
 
                                     <div class="mb-4">
                                         <label class="block text-[13px] font-bold text-[#040116] mb-1.5">Descripción *</label>
-                                        <textarea class="w-full border border-gray-200 rounded-xl px-4 py-3 focus:ring-[#1F51FF] focus:border-[#1F51FF] text-sm outline-none transition-colors placeholder-blue-300 text-[#1F51FF]" name="description" rows="2" placeholder="Describe brevemente tu negocio o servicio..." required></textarea>
+                                        <textarea class="w-full border border-gray-200 rounded-xl px-4 py-3 focus:ring-[#1F51FF] focus:border-[#1F51FF] text-sm outline-none transition-colors placeholder-blue-300 text-[#1F51FF]" name="description" rows="2" placeholder="Describe brevemente tu negocio o servicio..." required>{{ old('description') }}</textarea>
                                     </div>
 
                                     <div class="mb-4">
@@ -351,24 +355,35 @@
                                         <select name="category_id" class="w-full border border-gray-200 rounded-xl px-4 py-3 focus:ring-[#1F51FF] focus:border-[#1F51FF] text-sm outline-none transition-colors text-[#1F51FF]" required>
                                             <option value="">Selecciona una categoría</option>
                                             @foreach($categories ?? [] as $category)
-                                                <option value="{{ $category->id }}">{{ $category->name }}</option>
+                                                <option value="{{ $category->id }}" {{ old('category_id') == $category->id ? 'selected' : '' }}>{{ $category->name }}</option>
                                             @endforeach
                                         </select>
                                     </div>
 
                                     <div class="mb-4">
                                         <label class="block text-[13px] font-bold text-[#040116] mb-1.5">Ubicación</label>
-                                        <input class="w-full border border-gray-200 rounded-xl px-4 py-3 focus:ring-[#1F51FF] focus:border-[#1F51FF] text-sm outline-none transition-colors placeholder-blue-300 text-[#1F51FF]" type="text" name="address" placeholder="Dirección" required />
+                                        <input class="w-full border border-gray-200 rounded-xl px-4 py-3 focus:ring-[#1F51FF] focus:border-[#1F51FF] text-sm outline-none transition-colors placeholder-blue-300 text-[#1F51FF]" type="text" name="address" value="{{ old('address') }}" placeholder="Dirección" required />
                                     </div>
 
                                     <div class="mb-8">
                                         <label class="block text-[13px] font-bold text-[#040116] mb-1.5">Ubicación en el mapa</label>
-                                        <div @click="showMap = true; setTimeout(() => initMapPicker(), 300)" class="w-full border border-gray-200 rounded-xl px-4 py-4 bg-white text-center cursor-pointer hover:bg-blue-50 transition-colors flex items-center justify-center gap-2 text-[#1F51FF]">
-                                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 010-5 2.5 2.5 0 010 5z"></path></svg>
-                                            <span class="text-sm font-semibold">Agregar ubicación con el mapa</span>
+                                        <div @click="showMap = true; setTimeout(() => initMapPicker(), 300)" 
+                                             :class="mapSelected ? 'border-2 border-emerald-500 bg-emerald-50 text-emerald-700' : 'border border-gray-200 bg-white text-[#1F51FF] hover:bg-blue-50'"
+                                             class="w-full rounded-xl px-4 py-4 text-center cursor-pointer transition-colors flex items-center justify-center gap-2">
+                                            
+                                            <!-- Ícono Dinámico -->
+                                            <template x-if="!mapSelected">
+                                                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 010-5 2.5 2.5 0 010 5z"></path></svg>
+                                            </template>
+                                            <template x-if="mapSelected">
+                                                <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path></svg>
+                                            </template>
+                                            
+                                            <!-- Texto Dinámico -->
+                                            <span class="text-sm font-semibold" x-text="mapSelected ? 'Ubicación confirmada ✓' : 'Agregar ubicación con el mapa'"></span>
                                         </div>
-                                        <input type="hidden" name="latitude" />
-                                        <input type="hidden" name="longitude" />
+                                        <input type="hidden" name="latitude" value="{{ old('latitude') }}" id="latInput" />
+                                        <input type="hidden" name="longitude" value="{{ old('longitude') }}" id="lngInput" />
                                     </div>
 
                                     <div class="flex gap-4">
@@ -400,7 +415,7 @@
                                     <!-- Contenedor con altura forzada nativa para evadir el bug de Tailwind -->
                                     <div id="mapPicker" class="w-full bg-gray-100 rounded-xl mb-4 border border-gray-200" style="height: 400px; display: block;"></div>
                                     
-                                    <button type="button" @click="showMap = false" class="w-full bg-[#1F51FF] hover:bg-blue-700 text-white font-bold py-3.5 px-4 rounded-xl transition-colors shadow-sm">
+                                    <button type="button" @click="showMap = false; mapSelected = true; if(typeof window.showSingkiToast === 'function') window.showSingkiToast('✓ Ubicación confirmada', 'success');" class="w-full bg-[#1F51FF] hover:bg-blue-700 text-white font-bold py-3.5 px-4 rounded-xl transition-colors shadow-sm">
                                         Confirmar ubicación
                                     </button>
                                 </div>

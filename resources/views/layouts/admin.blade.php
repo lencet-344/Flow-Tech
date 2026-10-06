@@ -22,8 +22,12 @@
 
                 <!-- Perfil Dinámico -->
                 <div class="px-6 py-5 border-b border-gray-800 flex items-center gap-3">
-                    <div class="w-10 h-10 rounded-full bg-[#1F51FF] flex items-center justify-center text-white font-bold uppercase">
-                        {{ substr(Auth::user()->name ?? 'U', 0, 1) }}
+                    <div class="w-10 h-10 rounded-full bg-[#1F51FF] flex items-center justify-center text-white font-bold uppercase overflow-hidden border border-blue-500">
+                        @if(Auth::check() && file_exists(public_path('uploads/avatars/avatar_u' . Auth::id() . '_' . md5(strtolower(trim(Auth::user()->email))) . '.jpg')))
+                            <img src="{{ asset('uploads/avatars/avatar_u' . Auth::id() . '_' . md5(strtolower(trim(Auth::user()->email))) . '.jpg') . '?v=' . filemtime(public_path('uploads/avatars/avatar_u' . Auth::id() . '_' . md5(strtolower(trim(Auth::user()->email))) . '.jpg')) }}" class="w-full h-full object-cover rounded-full">
+                        @else
+                            {{ substr(Auth::user()->name ?? 'U', 0, 1) }}
+                        @endif
                     </div>
                     <div>
                         <p class="font-semibold text-sm capitalize">{{ Auth::user()->name ?? 'Usuario' }}</p>

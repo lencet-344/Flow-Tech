@@ -71,13 +71,14 @@
                     <span class="block text-[11px] font-bold text-gray-500 uppercase tracking-wider mb-3">Banner Actual</span>
                     <div class="w-full h-32 rounded-xl overflow-hidden border border-gray-100 relative">
                         @php
-                            $slugSearch = \Illuminate\Support\Str::slug($company->name ?? request('negocio', ''));
-                            $idSearch = $company->id ?? \App\Models\Company::where('name', 'wawastech')->value('id');
-                            $bannerMatches = array_merge(
-                                $idSearch ? (glob(public_path('images/banners/company_' . $idSearch . '.*')) ?: []) : [],
-                                $slugSearch ? (glob(public_path('images/banners/negocio_' . $slugSearch . '.*')) ?: []) : []
-                            );
-                            $bannerUrl = !empty($bannerMatches) ? asset('images/banners/' . basename($bannerMatches[0])) . '?v=' . filemtime($bannerMatches[0]) : null;
+                            $idSearch = $company->id ?? null;
+                            $bannerUrl = null;
+                            if ($idSearch && $idSearch > 0) {
+                                $bannerMatches = glob(public_path('images/banners/company_' . $idSearch . '.*')) ?: [];
+                                if (!empty($bannerMatches)) {
+                                    $bannerUrl = asset('images/banners/' . basename($bannerMatches[0])) . '?v=' . filemtime($bannerMatches[0]);
+                                }
+                            }
                         @endphp
                         @if($bannerUrl)
                             <img id="preview_banner" src="{{ $bannerUrl }}" alt="Banner Actual" class="w-full h-full object-cover object-center">

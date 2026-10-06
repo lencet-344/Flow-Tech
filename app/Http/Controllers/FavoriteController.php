@@ -81,7 +81,7 @@ class FavoriteController extends Controller
             $favorited = true;
         }
 
-        if ($request->expectsJson()) {
+        if ($request->expectsJson() || $request->wantsJson() || $request->ajax()) {
             return response()->json(['status' => $status, 'favorited' => $favorited]);
         }
 

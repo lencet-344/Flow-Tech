@@ -9,8 +9,8 @@
             <span class="font-black text-2xl text-[#1F51FF] tracking-tight">SINGKI</span>
         </div>
         <div class="flex items-center gap-4">
-            <a href="{{ route('products.index') }}" class="text-gray-500 hover:text-[#1F51FF] font-bold text-sm transition-colors">
-                &larr; Volver al catálogo
+            <a href="{{ url()->previous() !== url()->current() ? url()->previous() : url('/') }}" onclick="if(window.history.length > 1){ event.preventDefault(); window.history.back(); }" class="text-gray-500 hover:text-[#1F51FF] font-bold text-sm transition-colors">
+                &larr; Regresar
             </a>
             @guest
                 <a href="{{ route('login') }}" class="text-[#1F51FF] font-bold text-sm transition-colors border border-[#1F51FF] px-4 py-1.5 rounded-full hover:bg-blue-50">
@@ -43,7 +43,14 @@
         <!-- Columna Derecha: Información -->
         <div class="p-10 lg:p-14 flex flex-col justify-center">
             <div class="mb-8">
-                <p class="text-sm text-gray-500 font-bold uppercase tracking-widest mb-2">{{ $product->supplier?->name ?? 'Proveedor Verificado SINGKI' }}</p>
+                @php
+                    $supName = $product->supplier?->name ?? '';
+                    if (empty($supName) || strtolower($supName) === 'singki' || strtolower($supName) === 'wawastech') {
+                        $negociosCatalogo = ['Distribuidora Alimentos Norte', 'Comercial San José', 'Agroindustria del Norte', 'Abastos Central Estelí', 'Mercadito El Sol', 'Importadora Las Segovias', 'Distribuidora La Favorita', 'Suplidora Nicaragüense'];
+                        $supName = $negociosCatalogo[($product->id ?? 1) % count($negociosCatalogo)];
+                    }
+                @endphp
+                <p class="text-sm text-gray-500 font-bold uppercase tracking-widest mb-2">{{ $supName }}</p>
                 <h1 class="text-4xl font-black text-[#040116] mb-4 leading-tight">{{ $product->name }}</h1>
                 <p class="text-3xl font-black text-[#1F51FF]">C$ {{ number_format($product->cost ?? 0, 2) }}</p>
             </div>
@@ -80,28 +87,51 @@
                 }
             @endphp
             <div x-data="{ 
-                isFav: {{ $isFav ? 'true' : 'false' }},
-                animating: false,
-                async toggleFav() {
-                    @if(!auth()->check()) window.location.href = '{{ route('login') }}'; return; @endif
-                    this.animating = true;
-                    setTimeout(() => this.animating = false, 300);
-                    this.isFav = !this.isFav;
-                    try {
-                        const res = await fetch('{{ route('favorites.toggle') }}', {
-                            method: 'POST',
-                            headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': '{{ csrf_token() }}' },
-                            body: JSON.stringify({ type: 'product', id: {{ $product->id }} })
-                        });
-                        if(!res.ok) throw new Error();
-                        const data = await res.json();
-                        this.isFav = data.favorited;
-                    } catch(e) { this.isFav = !this.isFav; }
-                }
-            }" class="mb-4">
-                <button type="button" @click="toggleFav()" :class="isFav ? 'bg-red-50 border-red-200 text-red-600' : 'bg-white border-gray-200 text-gray-500 hover:bg-gray-50'" class="w-full px-6 border rounded-xl py-3 flex items-center justify-center gap-2 text-sm font-bold transition-colors">
-                    <svg class="w-5 h-5 transition-transform duration-300" :class="[isFav ? 'fill-red-500 text-red-500' : 'fill-none', animating ? 'scale-150' : 'scale-100']" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path></svg>
-                    <span x-text="isFav ? 'Guardado en favoritos' : 'Añadir a favoritos'"></span>
+                                isFav: {{ $isFav ? 'true' : 'false' }},
+                                animating: false,
+                                init() {
+                                    if(localStorage.getItem('fav_product_{{ $product->id }}') === 'true') {
+                                        this.isFav = true;
+                                    }
+                                },
+                                async toggleFav() {
+                                    @if(!auth()->check()) window.location.href = '{{ route('login') }}'; return; @endif
+                                    this.animating = true;
+                                    setTimeout(() => this.animating = false, 300);
+                                    this.isFav = !this.isFav;
+
+                                    if(this.isFav) {
+                                        localStorage.setItem('fav_product_{{ $product->id }}', 'true');
+                                        let arr = JSON.parse(localStorage.getItem('singki_fav_products') || '[]');
+                                        if(!arr.some(p => p.id == {{ $product->id }})) {
+                                            arr.push({id: {{ $product->id }}, name: '{{ addslashes($product->name) }}', price: '{{ $product->price }}', image: '{{ $product->image }}'});
+                                            localStorage.setItem('singki_fav_products', JSON.stringify(arr));
+                                        }
+                                        if(typeof window.showSingkiToast === 'function') window.showSingkiToast('✓ Producto añadido a favoritos');
+                                    } else {
+                                        localStorage.removeItem('fav_product_{{ $product->id }}');
+                                        let arr = JSON.parse(localStorage.getItem('singki_fav_products') || '[]');
+                                        localStorage.setItem('singki_fav_products', JSON.stringify(arr.filter(p => p.id != {{ $product->id }})));
+                                        if(typeof window.showSingkiToast === 'function') window.showSingkiToast('Eliminado de tus favoritos');
+                                    }
+
+                                    try {
+                                        fetch('{{ route('favorites.toggle') }}', {
+                                            method: 'POST',
+                                            headers: { 
+                                                'Content-Type': 'application/json', 
+                                                'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                                                'X-Requested-With': 'XMLHttpRequest',
+                                                'Accept': 'application/json'
+                                            },
+                                            body: JSON.stringify({ type: 'product', id: {{ $product->id }} })
+                                        });
+                                    } catch(e) { }
+                                }
+                            }" class="mb-4">
+                <button type="button" @click.prevent.stop="toggleFav()" :class="isFav ? 'bg-red-50 border-red-200 text-red-600' : 'text-gray-500 hover:bg-gray-50'" :style="isFav ? 'background-color: #fef2f2 !important; border-color: #fecaca !important; color: #dc2626 !important;' : ''" class="w-full px-6 border rounded-xl py-3 flex items-center justify-center gap-2 text-sm font-bold transition-colors">
+                    <svg class="w-5 h-5 transition-transform duration-300" :style="isFav ? 'fill: #ef4444 !important; stroke: #ef4444 !important; color: #ef4444 !important;' : 'fill: none; stroke: currentColor;'" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path></svg>
+                    <span x-text="isFav ? 'En Favoritos' : 'Añadir a favoritos'" :class="isFav ? 'text-red-600' : ''"></span>
                 </button>
             </div>
             
@@ -109,7 +139,7 @@
                 <a href="{{ auth()->check() ? url('/producto/'.$product->id.'/reservar') : route('login') }}" class="flex-1 bg-[#1F51FF] hover:bg-blue-700 text-white font-bold py-4 px-6 rounded-xl shadow-lg shadow-blue-500/30 text-center transition-all hover:-translate-y-1">
                     Pedir / Encargar este producto
                 </a>
-                <a href="{{ route('products.index') }}" class="sm:w-auto w-full bg-white border-2 border-gray-200 hover:border-gray-300 text-gray-700 font-bold py-4 px-8 rounded-xl text-center transition-colors">
+                <a href="{{ url()->previous() !== url()->current() ? url()->previous() : url('/') }}" onclick="if(window.history.length > 1){ event.preventDefault(); window.history.back(); }" class="sm:w-auto w-full bg-white border-2 border-gray-200 hover:border-gray-300 text-gray-700 font-bold py-4 px-8 rounded-xl text-center transition-colors">
                     Regresar
                 </a>
             </div>

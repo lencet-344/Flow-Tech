@@ -17,8 +17,12 @@
         </div>
         
         <a href="{{ route('profile.edit') }}" class="flex items-center gap-2 px-3 py-1.5 rounded-full hover:bg-blue-50/80 transition cursor-pointer group" title="Mi perfil">
-            <div class="w-9 h-9 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center font-bold text-sm">
-                {{ Auth::check() ? substr(Auth::user()->name, 0, 1) : 'S' }}
+            <div class="w-9 h-9 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center font-bold text-sm overflow-hidden border border-blue-200">
+                @if(Auth::check() && file_exists(public_path('uploads/avatars/avatar_u' . Auth::id() . '_' . md5(strtolower(trim(Auth::user()->email))) . '.jpg')))
+                    <img src="{{ asset('uploads/avatars/avatar_u' . Auth::id() . '_' . md5(strtolower(trim(Auth::user()->email))) . '.jpg') . '?v=' . filemtime(public_path('uploads/avatars/avatar_u' . Auth::id() . '_' . md5(strtolower(trim(Auth::user()->email))) . '.jpg')) }}" class="w-full h-full object-cover rounded-full">
+                @else
+                    {{ Auth::check() ? substr(Auth::user()->name, 0, 1) : 'S' }}
+                @endif
             </div>
             <span class="text-sm font-medium text-gray-700 hidden sm:inline-block">
                 {{ Auth::check() ? explode(' ', Auth::user()->name)[0] : 'Sharon' }}
@@ -39,19 +43,37 @@
             </div>
             
             <h1 class="text-[24px] font-extrabold text-[#0f172a] mb-2 tracking-tight">¡Reserva confirmada!</h1>
+            @php
+                $meta = session("booking_meta_{$reserva->id}", []);
+                $p_name = $meta['product_name'] ?? request('p', $reserva->product->name ?? 'Producto');
+                $p_qty = $meta['quantity'] ?? request('cantidad', 1);
+                $p_unit = $meta['unit'] ?? request('unidad', 'Unidades');
+                $p_addr = $meta['delivery_address'] ?? 'No especificada';
+                $p_lat = $meta['latitude'] ?? request('lat');
+                $p_total = $meta['total_amount'] ?? request('total', $reserva->total_amount ?? 0);
+                
+                $p_supplier = $meta['supplier_name'] ?? $reserva->supplier->name ?? '';
+                if (empty($p_supplier) || strtolower($p_supplier) === 'singki' || strtolower($p_supplier) === 'wawastech') {
+                    $negociosCatalogo = ['Distribuidora Alimentos Norte', 'Comercial San José', 'Agroindustria del Norte', 'Abastos Central Estelí', 'Mercadito El Sol', 'Importadora Las Segovias', 'Distribuidora La Favorita', 'Suplidora Nicaragüense'];
+                    $p_supplier = $negociosCatalogo[($reserva->product->id ?? 1) % count($negociosCatalogo)];
+                }
+            @endphp
+            
             <p class="text-gray-500 text-[14.5px] mb-8 font-light leading-relaxed">
-                Se ha registrado tu reserva para <span class="font-bold text-[#0f172a]">{{ $reserva->product->name ?? 'Monitor Dell 27" 4K' }}</span>.<br>
-                Te notificaremos cuando el producto esté disponible en <span class="font-bold text-[#0f172a]">{{ $reserva->supplier->name ?? 'TechSolutions GT' }}</span>.
+                Se ha registrado tu reserva para <span class="font-bold text-[#0f172a]">{{ $p_name }}</span>.<br>
+                Te notificaremos cuando el producto esté disponible en <span class="font-bold text-[#0f172a]">{{ $p_supplier }}</span>.
             </p>
 
             <!-- Caja de Detalles de la Reserva -->
             <div class="bg-[#F8FAFC] rounded-xl p-5 mb-8 text-left border border-gray-100">
-                <p class="text-[11px] font-bold text-gray-400 tracking-widest uppercase mb-4">DETALLES DE LA RESERVA</p>
+                <p class="text-[11px] font-bold text-gray-400 tracking-widest uppercase mb-4">DETALLES DEL PEDIDO</p>
                 <div class="space-y-3 text-[13px]">
-                    <div class="flex justify-between"><span class="text-gray-500 font-medium">Producto</span><span class="font-bold text-[#0f172a]">{{ $reserva->product->name ?? 'Monitor Dell 27" 4K' }}</span></div>
-                    <div class="flex justify-between"><span class="text-gray-500 font-medium">Negocio</span><span class="font-bold text-[#0f172a]">{{ $reserva->supplier->name ?? 'TechSolutions GT' }}</span></div>
-                    <div class="flex justify-between"><span class="text-gray-500 font-medium">Estado</span><span class="font-bold text-[#f59e0b]">En espera</span></div>
-                    <div class="flex justify-between"><span class="text-gray-500 font-medium">Notificación</span><span class="font-bold text-[#10b981]">Activada</span></div>
+                    <div class="flex justify-between"><span class="text-gray-500 font-medium">Producto</span><span class="font-bold text-[#0f172a]">{{ $p_name }}</span></div>
+                    <div class="flex justify-between"><span class="text-gray-500 font-medium">Cantidad</span><span class="font-bold text-[#0f172a]">{{ $p_qty }} {{ $p_unit }}</span></div>
+                    <div class="flex justify-between gap-4"><span class="text-gray-500 font-medium shrink-0">Dirección</span><span class="font-bold text-[#0f172a] truncate text-right" title="{{ $p_addr }}">{{ $p_addr }}</span></div>
+                    <div class="flex justify-between"><span class="text-gray-500 font-medium">Ubicación mapa</span><span class="font-bold {{ $p_lat ? 'text-[#10b981]' : 'text-gray-400' }}">{{ $p_lat ? 'Confirmada ✓' : 'No especificada' }}</span></div>
+                    <div class="flex justify-between"><span class="text-gray-500 font-medium">Total Estimado</span><span class="font-bold text-[#1F51FF]">C$ {{ number_format($p_total, 2) }}</span></div>
+                    <div class="flex justify-between border-t border-gray-200 pt-3 mt-3"><span class="text-gray-500 font-medium">Negocio</span><span class="font-bold text-[#0f172a]">{{ $p_supplier }}</span></div>
                 </div>
             </div>
 

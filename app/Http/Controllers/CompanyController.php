@@ -99,9 +99,6 @@ class CompanyController extends Controller
             
             $filename = 'company_' . $company->id . '.' . $ext;
             $request->file('banner')->move(public_path('images/banners'), $filename);
-            
-            $slugName = 'negocio_' . \Illuminate\Support\Str::slug($company->name) . '.' . $ext;
-            @copy(public_path('images/banners/' . $filename), public_path('images/banners/' . $slugName));
 
             return back()->with("success", "¡Banner del negocio actualizado correctamente!");
         }

@@ -1,5 +1,15 @@
 @extends('layouts.empty')
 
+@php
+$userAvatarKey = auth()->check()
+    ? 'avatar_u' . auth()->id() . '_' . md5(strtolower(trim(auth()->user()->email)))
+    : null;
+$userAvatarRelPath = $userAvatarKey ? 'uploads/avatars/' . $userAvatarKey . '.jpg' : null;
+$userAvatarUrl = ($userAvatarRelPath && file_exists(public_path($userAvatarRelPath)))
+    ? asset($userAvatarRelPath) . '?v=' . filemtime(public_path($userAvatarRelPath))
+    : null;
+@endphp
+
 @section('content')
 <div class="bg-[#F4F7FF] font-sans min-h-screen pb-12">
 
@@ -20,9 +30,19 @@
 
         <!-- Cabecera de Resumen del Usuario -->
         <div class="rounded-3xl bg-white p-8 shadow-sm border border-gray-100 mb-8 flex flex-col md:flex-row items-center gap-6">
-            <div class="w-24 h-24 rounded-full bg-[#1F51FF] text-white flex items-center justify-center text-4xl font-bold shrink-0">
-                {{ strtoupper(substr($user->name, 0, 1)) }}
-            </div>
+            <label for="avatar_upload" class="relative group cursor-pointer w-24 h-24 rounded-full bg-[#1F51FF] text-white flex items-center justify-center text-4xl font-bold shrink-0 overflow-hidden shadow-sm border-2 border-white">
+                @if($userAvatarUrl)
+                    <img id="avatar-preview-img" src="{{ $userAvatarUrl }}" class="w-full h-full object-cover rounded-full">
+                    <span id="avatar-preview-initial" class="hidden">{{ strtoupper(substr($user->name, 0, 1)) }}</span>
+                @else
+                    <img id="avatar-preview-img" class="w-full h-full object-cover rounded-full hidden">
+                    <span id="avatar-preview-initial">{{ strtoupper(substr($user->name, 0, 1)) }}</span>
+                @endif
+                <div class="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center text-white text-[10px] font-bold rounded-full">
+                    <svg class="w-6 h-6 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                    Cambiar
+                </div>
+            </label>
             <div class="text-center md:text-left flex-1">
                 <h1 class="text-2xl font-bold text-[#040116]">{{ $user->name }}</h1>
                 <p class="text-gray-500 mt-1">{{ $user->email }}</p>
@@ -41,6 +61,11 @@
                         </a>
                     @endif
                 </div>
+                <div class="mt-4">
+                    <label for="avatar_upload" class="text-[#1F51FF] hover:underline text-xs font-bold cursor-pointer inline-flex items-center gap-1 bg-blue-50 px-3 py-1.5 rounded-full transition-colors hover:bg-blue-100">
+                        📷 Cambiar foto de perfil
+                    </label>
+                </div>
             </div>
         </div>
 
@@ -56,9 +81,46 @@
                 </div>
             @endif
 
-            <form method="post" action="{{ route('profile.update') }}" class="space-y-5">
+            <form method="post" action="{{ route('profile.update') }}" class="space-y-5" enctype="multipart/form-data">
                 @csrf
                 @method('patch')
+                
+                <input type="file" id="avatar_upload" name="avatar" accept="image/*" class="hidden" onchange="
+                    const file = this.files[0];
+                    if (file) {
+                        const reader = new FileReader();
+                        reader.onload = function(e) {
+                            document.getElementById('avatar-preview-img').src = e.target.result;
+                            document.getElementById('avatar-preview-img').classList.remove('hidden');
+                            document.getElementById('avatar-preview-initial').classList.add('hidden');
+                        }
+                        reader.readAsDataURL(file);
+
+                        const formData = new FormData();
+                        formData.append('avatar', file);
+
+                        fetch('{{ url('/profile/avatar') }}', {
+                            method: 'POST',
+                            headers: {
+                                'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                                'Accept': 'application/json'
+                            },
+                            body: formData
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            if(data.success) {
+                                document.getElementById('avatar-preview-img').src = data.avatar_url;
+                                const msgEl = document.getElementById('avatar-preview-msg');
+                                msgEl.innerHTML = '<svg class=\'w-4 h-4\' fill=\'none\' stroke=\'currentColor\' viewBox=\'0 0 24 24\'><path stroke-linecap=\'round\' stroke-linejoin=\'round\' stroke-width=\'2\' d=\'M5 13l4 4L19 7\'></path></svg> ✓ Foto de perfil guardada correctamente';
+                                msgEl.classList.remove('hidden');
+                            }
+                        });
+                    }
+                ">
+                
+                <p id="avatar-preview-msg" class="hidden text-[12px] font-bold text-emerald-700 bg-emerald-50 border border-emerald-200 rounded-lg px-3 py-2 mt-2 inline-flex items-center gap-1.5">
+                </p>
 
                 <div>
                     <label for="name" class="block text-[13px] font-medium text-[#040116] mb-2">Nombre completo</label>
