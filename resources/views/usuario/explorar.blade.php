@@ -314,5 +314,7 @@
     @if(View::exists('components.footer'))
         @include('components.footer')
     @endif
+@include('components.accessibility-widget')
+@include('components.welcome-scroll-animations')
 </body>
 </html>

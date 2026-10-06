@@ -280,5 +280,6 @@
             }
         }
     </script>
+@include('components.accessibility-widget')
 </body>
 </html>

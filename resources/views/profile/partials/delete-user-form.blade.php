@@ -1,18 +1,18 @@
 <section class="space-y-6">
     <header>
         <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">
-            {{ __('Delete Account') }}
+            {{ __('Eliminar cuenta') }}
         </h2>
 
         <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
-            {{ __('Once your account is deleted, all of its resources and data will be permanently deleted. Before deleting your account, please download any data or information that you wish to retain.') }}
+            {{ __('Una vez que tu cuenta sea eliminada, todos sus recursos y datos serán eliminados permanentemente. Antes de eliminar tu cuenta, por favor descarga cualquier dato o información que desees conservar.') }}
         </p>
     </header>
 
     <x-danger-button
         x-data=""
         x-on:click.prevent="$dispatch('open-modal', 'confirm-user-deletion')"
-    >{{ __('Delete Account') }}</x-danger-button>
+    >{{ __('Eliminar cuenta') }}</x-danger-button>
 
     <x-modal name="confirm-user-deletion" :show="$errors->userDeletion->isNotEmpty()" focusable>
         <form method="post" action="{{ route('profile.destroy') }}" class="p-6">
@@ -20,15 +20,15 @@
             @method('delete')
 
             <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">
-                {{ __('Are you sure you want to delete your account?') }}
+                {{ __('¿Estás seguro de que deseas eliminar tu cuenta?') }}
             </h2>
 
             <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
-                {{ __('Once your account is deleted, all of its resources and data will be permanently deleted. Please enter your password to confirm you would like to permanently delete your account.') }}
+                {{ __('Una vez que tu cuenta sea eliminada, todos sus recursos y datos serán eliminados permanentemente. Por favor ingresa tu contraseña para confirmar que deseas eliminar tu cuenta permanentemente.') }}
             </p>
 
             <div class="mt-6">
-                <x-input-label for="password" value="{{ __('Password') }}" class="sr-only" />
+                <x-input-label for="password" value="{{ __('Contraseña') }}" class="sr-only" />
 
                 <div class="relative w-3/4">
                     <x-text-input
@@ -37,7 +37,7 @@
                         type="password"
                         class="mt-1 block w-full pr-12"
                         style="padding-right: 48px;"
-                        placeholder="{{ __('Password') }}"
+                        placeholder="{{ __('Contraseña') }}"
                     />
                     <button type="button" tabindex="-1" class="absolute inset-y-0 right-4 flex items-center px-1 text-gray-400 hover:text-[#1F51FF] focus:outline-none transition-colors" style="right: 16px;" onclick="const input = this.previousElementSibling; const eyeOpen = this.querySelector('.eye-open'); const eyeClosed = this.querySelector('.eye-closed'); if (input.type === 'password') { input.type = 'text'; eyeOpen.classList.add('hidden'); eyeClosed.classList.remove('hidden'); } else { input.type = 'password'; eyeOpen.classList.remove('hidden'); eyeClosed.classList.add('hidden'); }">
                         <svg class="eye-open w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
@@ -50,11 +50,11 @@
 
             <div class="mt-6 flex justify-end">
                 <x-secondary-button x-on:click="$dispatch('close')">
-                    {{ __('Cancel') }}
+                    {{ __('Cancelar') }}
                 </x-secondary-button>
 
                 <x-danger-button class="ms-3">
-                    {{ __('Delete Account') }}
+                    {{ __('Eliminar cuenta') }}
                 </x-danger-button>
             </div>
         </form>

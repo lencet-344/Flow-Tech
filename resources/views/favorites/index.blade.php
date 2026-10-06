@@ -193,4 +193,5 @@
         </div>
     </main>
 </div>
+@include('components.accessibility-widget')
 @endsection

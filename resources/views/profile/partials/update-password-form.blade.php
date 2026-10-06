@@ -1,11 +1,11 @@
 <section>
     <header>
         <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">
-            {{ __('Update Password') }}
+            {{ __('Actualizar contraseña') }}
         </h2>
 
         <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
-            {{ __('Ensure your account is using a long, random password to stay secure.') }}
+            {{ __('Asegúrate de que tu cuenta utilice una contraseña larga y aleatoria para mantenerte seguro.') }}
         </p>
     </header>
 
@@ -14,7 +14,7 @@
         @method('put')
 
         <div>
-            <x-input-label for="update_password_current_password" :value="__('Current Password')" />
+            <x-input-label for="update_password_current_password" :value="__('Contraseña actual')" />
             <div class="relative">
                 <x-text-input id="update_password_current_password" name="current_password" type="password" class="mt-1 block w-full pr-12" style="padding-right: 48px;" autocomplete="current-password" />
                 <button type="button" tabindex="-1" class="absolute inset-y-0 right-4 flex items-center px-1 text-gray-400 hover:text-[#1F51FF] focus:outline-none transition-colors" style="right: 16px;" onclick="const input = this.previousElementSibling; const eyeOpen = this.querySelector('.eye-open'); const eyeClosed = this.querySelector('.eye-closed'); if (input.type === 'password') { input.type = 'text'; eyeOpen.classList.add('hidden'); eyeClosed.classList.remove('hidden'); } else { input.type = 'password'; eyeOpen.classList.remove('hidden'); eyeClosed.classList.add('hidden'); }">
@@ -26,7 +26,7 @@
         </div>
 
         <div>
-            <x-input-label for="update_password_password" :value="__('New Password')" />
+            <x-input-label for="update_password_password" :value="__('Nueva contraseña')" />
             <div class="relative">
                 <x-text-input id="update_password_password" name="password" type="password" class="mt-1 block w-full pr-12" style="padding-right: 48px;" autocomplete="new-password" />
                 <button type="button" tabindex="-1" class="absolute inset-y-0 right-4 flex items-center px-1 text-gray-400 hover:text-[#1F51FF] focus:outline-none transition-colors" style="right: 16px;" onclick="const input = this.previousElementSibling; const eyeOpen = this.querySelector('.eye-open'); const eyeClosed = this.querySelector('.eye-closed'); if (input.type === 'password') { input.type = 'text'; eyeOpen.classList.add('hidden'); eyeClosed.classList.remove('hidden'); } else { input.type = 'password'; eyeOpen.classList.remove('hidden'); eyeClosed.classList.add('hidden'); }">
@@ -38,7 +38,7 @@
         </div>
 
         <div>
-            <x-input-label for="update_password_password_confirmation" :value="__('Confirm Password')" />
+            <x-input-label for="update_password_password_confirmation" :value="__('Confirmar contraseña')" />
             <div class="relative">
                 <x-text-input id="update_password_password_confirmation" name="password_confirmation" type="password" class="mt-1 block w-full pr-12" style="padding-right: 48px;" autocomplete="new-password" />
                 <button type="button" tabindex="-1" class="absolute inset-y-0 right-4 flex items-center px-1 text-gray-400 hover:text-[#1F51FF] focus:outline-none transition-colors" style="right: 16px;" onclick="const input = this.previousElementSibling; const eyeOpen = this.querySelector('.eye-open'); const eyeClosed = this.querySelector('.eye-closed'); if (input.type === 'password') { input.type = 'text'; eyeOpen.classList.add('hidden'); eyeClosed.classList.remove('hidden'); } else { input.type = 'password'; eyeOpen.classList.remove('hidden'); eyeClosed.classList.add('hidden'); }">
@@ -50,7 +50,7 @@
         </div>
 
         <div class="flex items-center gap-4">
-            <x-primary-button>{{ __('Save') }}</x-primary-button>
+            <x-primary-button>{{ __('Guardar') }}</x-primary-button>
 
             @if (session('status') === 'password-updated')
                 <p
@@ -59,7 +59,7 @@
                     x-transition
                     x-init="setTimeout(() => show = false, 2000)"
                     class="text-sm text-gray-600 dark:text-gray-400"
-                >{{ __('Saved.') }}</p>
+                >{{ __('Guardado.') }}</p>
             @endif
         </div>
     </form>

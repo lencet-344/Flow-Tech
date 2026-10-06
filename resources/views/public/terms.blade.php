@@ -63,5 +63,6 @@
     </main>
 
     <x-footer />
+@include('components.accessibility-widget')
 </body>
 </html>
