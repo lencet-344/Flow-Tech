@@ -165,4 +165,6 @@
         </div>
     </div>
 </div>
+@include('components.accessibility-widget')
+@include('components.welcome-scroll-animations')
 @endsection

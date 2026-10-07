@@ -38,5 +38,6 @@
             Swal.fire({ toast: true, position: 'top-end', icon: 'info', title: "{{ session('status') }}", showConfirmButton: false, timer: 3000, timerProgressBar: true });
         @endif
     </script>
+@include('components.accessibility-widget')
 </body>
 </html>

@@ -637,5 +637,6 @@
         };
     </script>
 </div>
+@include('components.accessibility-widget')
 </body>
 </html>

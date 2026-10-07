@@ -126,5 +126,6 @@
             });
         </script>
     @endif
+@include('components.accessibility-widget')
 </body>
 </html>

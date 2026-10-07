@@ -1156,5 +1156,7 @@
         }
     }
 </script>
+@include('components.accessibility-widget')
+@include('components.welcome-scroll-animations')
 </body>
 </html>
