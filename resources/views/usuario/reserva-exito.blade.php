@@ -36,9 +36,19 @@
         <div class="bg-white max-w-[420px] w-full rounded-[24px] shadow-sm p-8 sm:p-10 border border-gray-100 text-center">
             
             <!-- Círculo Verde con Check Blanco -->
-            <div class="w-20 h-20 bg-[#86efac] rounded-full flex items-center justify-center mx-auto mb-6 shadow-sm">
+            <style>
+                @keyframes singkiScalePop {
+                    0% { transform: scale(0); opacity: 0; }
+                    60% { transform: scale(1.1); opacity: 1; }
+                    100% { transform: scale(1); opacity: 1; }
+                }
+                @keyframes singkiDrawCheck {
+                    to { stroke-dashoffset: 0; }
+                }
+            </style>
+            <div class="w-20 h-20 bg-[#86efac] rounded-full flex items-center justify-center mx-auto mb-6 shadow-sm" style="animation: singkiScalePop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;">
                 <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path>
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" style="stroke-dasharray: 50; stroke-dashoffset: 50; animation: singkiDrawCheck 0.4s ease-out 0.25s forwards;"></path>
                 </svg>
             </div>
             

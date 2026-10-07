@@ -2,7 +2,7 @@
 
 @section('content')
 
-@if(auth()->check() && (optional(auth()->user())->is_premium || request()->has('premium')))
+@if(auth()->check() && auth()->user()->is_premium)
 <!-- VISTA: COMUNIDAD (MODO PREMIUM DESBLOQUEADO) -->
 <div class="max-w-5xl mx-auto p-6 bg-[#f8fafc] min-h-screen">
     
@@ -15,10 +15,44 @@
             </h2>
             <p class="text-gray-500 text-sm mt-1">Resuelve dudas de tu negocio con apoyo oficial de SINGKI</p>
         </div>
-        <button class="bg-[#8b5cf6] hover:bg-purple-600 text-white font-bold px-6 py-2.5 rounded-lg text-sm transition shadow-md flex items-center gap-2">
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>
-            Publicar pregunta
-        </button>
+        <div x-data="{ openModal: false }" class="relative">
+            <button @click="openModal = true" class="bg-[#8b5cf6] hover:bg-purple-600 text-white font-bold px-6 py-2.5 rounded-lg text-sm transition shadow-md flex items-center gap-2">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>
+                Publicar pregunta
+            </button>
+            
+            <!-- Modal Centrado -->
+            <div x-show="openModal" class="fixed inset-0 z-[100] flex items-center justify-center bg-black/60 backdrop-blur-sm" style="display: none;" x-transition>
+                <div @click.away="openModal = false" class="bg-white rounded-3xl shadow-2xl p-8 w-full max-w-lg transform transition-all">
+                    <div class="flex justify-between items-center mb-6">
+                        <h3 class="text-2xl font-extrabold text-[#0f172a]">Publicar pregunta</h3>
+                        <button @click="openModal = false" type="button" class="text-gray-400 hover:text-gray-600 bg-gray-100 hover:bg-gray-200 rounded-full p-2 transition-colors">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                        </button>
+                    </div>
+                    <form action="{{ url('/admin/comunidad/preguntar') }}" method="POST">
+                        @csrf
+                        <div class="mb-5">
+                            <label class="block text-sm font-bold text-[#0f172a] mb-2">Categoría</label>
+                            <select name="category" class="w-full text-sm border-gray-300 rounded-xl focus:ring-[#8b5cf6] focus:border-[#8b5cf6] py-3" required>
+                                <option value="Diseño e identidad visual">Diseño e identidad visual</option>
+                                <option value="Marketing y redes sociales">Marketing y redes sociales</option>
+                                <option value="Precios y finanzas">Precios y finanzas</option>
+                                <option value="Ventas y clientes">Ventas y clientes</option>
+                            </select>
+                        </div>
+                        <div class="mb-6">
+                            <label class="block text-sm font-bold text-[#0f172a] mb-2">Tu pregunta</label>
+                            <textarea name="question" required class="w-full text-sm border-gray-300 rounded-xl focus:ring-[#8b5cf6] focus:border-[#8b5cf6] py-3" rows="4" placeholder="Describe detalladamente tu duda..."></textarea>
+                        </div>
+                        <div class="flex justify-end gap-3">
+                            <button type="button" @click="openModal = false" class="px-5 py-2.5 rounded-xl font-bold text-gray-500 hover:bg-gray-100 transition-colors">Cancelar</button>
+                            <button type="submit" class="bg-[#8b5cf6] hover:bg-[#7c3aed] text-white px-6 py-2.5 rounded-xl font-bold transition-colors shadow-md">Enviar a SINGKI</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- Cuadrícula de Categorías Premium -->
@@ -56,70 +90,90 @@
     </div>
 
     <!-- Pestañas (Tabs) -->
-    <div class="flex gap-2 mb-6">
-        <button class="bg-[#8b5cf6] text-white px-5 py-2 rounded-full text-sm font-bold shadow-sm">Todas</button>
-        <button class="bg-blue-600 text-white px-5 py-2 rounded-full text-sm font-bold shadow-sm">En revisión</button>
-        <button class="bg-blue-600 text-white px-5 py-2 rounded-full text-sm font-bold shadow-sm">Respondidas</button>
+    <div class="flex gap-2 mb-6" id="comunidad-tabs">
+        <button data-filter="todas" class="filter-btn bg-[#8b5cf6] text-white px-5 py-2 rounded-full text-sm font-bold shadow-sm transition">Todas</button>
+        <button data-filter="en_revision" class="filter-btn bg-gray-200 text-gray-600 hover:bg-gray-300 px-5 py-2 rounded-full text-sm font-bold shadow-sm transition">En revisión</button>
+        <button data-filter="respondida" class="filter-btn bg-gray-200 text-gray-600 hover:bg-gray-300 px-5 py-2 rounded-full text-sm font-bold shadow-sm transition">Respondidas</button>
     </div>
 
     <!-- Feed de Preguntas y Respuestas -->
     <div class="space-y-6">
         
-        <!-- Tarjeta de Pregunta 1 -->
-        <div class="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm">
+        @forelse($questions ?? [] as $q)
+        <div class="question-card bg-white p-6 rounded-2xl border border-gray-100 shadow-sm" data-estado="{{ $q->status }}">
             <div class="flex justify-between items-center mb-3">
                 <div class="flex gap-2">
-                    <span class="bg-[#a855f7] text-white text-[10px] px-3 py-1 rounded-full font-bold uppercase tracking-wider">Marketing</span> 
-                    <span class="border border-green-200 bg-green-50 text-green-600 text-[10px] px-3 py-1 rounded-full font-bold uppercase tracking-wider">Respondida</span>
+                    <span class="bg-[#a855f7] text-white text-[10px] px-3 py-1 rounded-full font-bold uppercase tracking-wider">{{ $q->category }}</span> 
+                    @if($q->status == 'respondida')
+                        <span class="border border-green-200 bg-green-50 text-green-600 text-[10px] px-3 py-1 rounded-full font-bold uppercase tracking-wider">Respondida</span>
+                    @else
+                        <span class="border border-orange-200 bg-orange-50 text-orange-600 text-[10px] px-3 py-1 rounded-full font-bold uppercase tracking-wider">{{ ucfirst(str_replace('_', ' ', $q->status)) }}</span>
+                    @endif
                 </div>
-                <span class="text-xs text-gray-400 font-medium">2026-08-20</span>
+                <span class="text-xs text-gray-400 font-medium">{{ $q->created_at->format('Y-m-d') }}</span>
             </div>
-            <h4 class="font-bold text-[#0f172a] text-[15px] mb-1">¿Cuál es la mejor estrategia para dar a conocer mi negocio en SINGKI y atraer más clientes?</h4>
-            <p class="text-[11px] text-gray-500 mb-5 font-medium">TechSolutions GT</p>
+            <h4 class="font-bold text-[#0f172a] text-[15px] mb-1">{{ $q->question }}</h4>
+            <p class="text-[11px] text-gray-500 mb-5 font-medium">{{ optional(optional($q->user)->company)->name ?? optional($q->user)->name ?? 'Emprendedor SINGKI' }}</p>
             
-            <!-- Caja de Respuesta Oficial -->
+            @if($q->status == 'respondida')
             <div class="border border-[#e9d5ff] rounded-xl p-5 bg-[#faf5ff]">
                 <div class="flex justify-between items-center mb-3">
                     <div class="flex items-center gap-2">
                         <div class="w-7 h-7 bg-[#8b5cf6] text-white rounded-full flex items-center justify-center text-xs font-bold shadow-sm">S</div>
                         <span class="font-bold text-sm text-[#0f172a]">Respuesta oficial de SINGKI</span>
                     </div>
-                    <span class="text-[11px] text-gray-400 font-medium">2026-08-21</span>
                 </div>
                 <p class="text-[13px] text-gray-700 leading-relaxed font-medium">
-                    Te recomendamos mantener tu perfil completo y actualizado, subir fotos de calidad de tus productos y responder rápidamente los chats. Publicar ofertas periódicas también aumenta tu visibilidad en los resultados de búsqueda.
+                    {{ $q->official_answer }}
                 </p>
             </div>
-        </div>
-
-        <!-- Tarjeta de Pregunta 2 -->
-        <div class="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm">
-            <div class="flex justify-between items-center mb-3">
-                <div class="flex gap-2">
-                    <span class="bg-[#a855f7] text-white text-[10px] px-3 py-1 rounded-full font-bold uppercase tracking-wider">Precios</span> 
-                    <span class="border border-green-200 bg-green-50 text-green-600 text-[10px] px-3 py-1 rounded-full font-bold uppercase tracking-wider">Respondida</span>
-                </div>
-                <span class="text-xs text-gray-400 font-medium">2026-08-21</span>
+            @else
+            <div class="border border-gray-200 rounded-xl p-4 bg-gray-50 text-gray-400 text-xs text-center italic">
+                Pendiente de respuesta oficial
             </div>
-            <h4 class="font-bold text-[#0f172a] text-[15px] mb-1">¿Cómo establezco precios competitivos cuando hay otros negocios del mismo rubro con precios muy bajos?</h4>
-            <p class="text-[11px] text-gray-500 mb-5 font-medium">Moda Express</p>
-            
-            <div class="border border-[#e9d5ff] rounded-xl p-5 bg-[#faf5ff]">
-                <div class="flex justify-between items-center mb-3">
-                    <div class="flex items-center gap-2">
-                        <div class="w-7 h-7 bg-[#8b5cf6] text-white rounded-full flex items-center justify-center text-xs font-bold shadow-sm">S</div>
-                        <span class="font-bold text-sm text-[#0f172a]">Respuesta oficial de SINGKI</span>
-                    </div>
-                    <span class="text-[11px] text-gray-400 font-medium">2026-08-22</span>
-                </div>
-                <p class="text-[13px] text-gray-700 leading-relaxed font-medium">
-                    Diferenciarte por valor es clave. Destaca la calidad, el servicio al cliente y la confiabilidad. Evita competir solo por precio; en cambio, asegúrate de que tu propuesta de valor sea clara en tu perfil y descripción de productos.
-                </p>
-            </div>
+            @endif
         </div>
+        @empty
+        <div class="text-center py-10 text-gray-500 font-medium">Aún no hay preguntas en la comunidad. Sé el primero en participar.</div>
+        @endforelse
         
     </div>
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const filterBtns = document.querySelectorAll('.filter-btn');
+    const cards = document.querySelectorAll('.question-card');
+
+    filterBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            // Reset styles
+            filterBtns.forEach(b => {
+                b.classList.remove('bg-[#8b5cf6]', 'text-white');
+                b.classList.add('bg-gray-200', 'text-gray-600');
+            });
+            // Active style
+            btn.classList.remove('bg-gray-200', 'text-gray-600');
+            btn.classList.add('bg-[#8b5cf6]', 'text-white');
+
+            const filter = btn.getAttribute('data-filter');
+
+            cards.forEach(card => {
+                const status = card.getAttribute('data-estado');
+                if(filter === 'todas') {
+                    card.style.display = 'block';
+                } else if(filter === 'en_revision' && (status === 'en_revision' || status === 'pendiente')) {
+                    card.style.display = 'block';
+                } else if(filter === status) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        });
+    });
+});
+</script>
 @else
 <div class="p-8 md:p-10 max-w-5xl mx-auto">
     

@@ -44,24 +44,7 @@
             <img src="{{ asset('images/logo-animado.gif') }}" alt="Cargando SINGKI" class="w-64 md:w-80 h-auto object-contain">
         </div>
 
-        <div class="relative z-10 flex flex-wrap items-center justify-center gap-6 md:gap-10 text-[#2563eb] font-bold text-[13px] tracking-wide uppercase">
-            
-            <div class="flex items-center gap-2">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"></path><path stroke-linecap="round" stroke-linejoin="round" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                <span>@SINGKI_NI</span>
-            </div>
-            
-            <div class="flex items-center gap-2">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z"></path><circle cx="4" cy="4" r="2" stroke="none" fill="currentColor"></circle></svg>
-                <span>@SINGKI.OFICIAL</span>
-            </div>
-            
-            <div class="flex items-center gap-2">
-                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"></path></svg>
-                <span>@SINGKI.NIC</span>
-            </div>
 
-        </div>
     </div>
     @endguest
     <!-- ========================================== -->
@@ -420,8 +403,26 @@
     @endif
     <!-- ========================================== -->
 
-
-   <!-- ========================================== -->
+    <!-- ========================================== -->
+    <!-- NUEVA SECCIÓN: VIDEO PROMOCIONAL           -->
+    <!-- ========================================== -->
+    @guest
+    <section class="bg-white py-16 relative z-10">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h2 class="text-3xl lg:text-4xl font-extrabold text-[#0f172a] mb-3 tracking-tight">Cómo llegan los clientes</h2>
+            <p class="text-gray-500 text-base mb-10 max-w-2xl mx-auto font-light">Alguien te elige, te llega el email con el contexto, reclamás tu perfil y respondés.</p>
+            <div class="relative w-full rounded-[32px] overflow-hidden shadow-2xl border border-gray-100 aspect-video bg-gray-900 group">
+                <video class="w-full h-full object-cover" controls playsinline preload="metadata">
+                    <source src="{{ asset('images/promo.mp4') }}" type="video/mp4">
+                    Tu navegador no soporta el formato de video.
+                </video>
+            </div>
+        </div>
+    </section>
+    @endguest
+    <!-- ========================================== -->
+    
+    <!-- ========================================== -->
     <!-- SECCIÓN 4: CATEGORÍAS                      -->
     <!-- ========================================== -->
     <section id="categorias" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 bg-white">

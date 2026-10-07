@@ -1,4 +1,5 @@
 <!-- resources/views/components/accessibility-widget.blade.php -->
+@if(!request()->is('admin*'))
 <style>
     /* Clases de Accesibilidad */
     html.a11y-contrast { filter: contrast(130%) saturate(115%); }
@@ -394,3 +395,4 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 });
 </script>
+@endif

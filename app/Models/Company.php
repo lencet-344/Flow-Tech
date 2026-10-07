@@ -25,6 +25,7 @@ class Company extends Model
         'horario',
         'category_id',
         'status',
+        'is_premium',
     ];
 
     public function category()
