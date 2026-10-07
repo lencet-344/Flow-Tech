@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Contacto - SINGKI</title>
+    <title>SINGKI</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <link rel="icon" type="image/png" href="{{ asset('images/favicon.png') }}">
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
@@ -14,10 +14,10 @@
     <!-- Navegación Superior -->
     <nav class="bg-white border-b border-gray-100 py-4 px-6 sticky top-0 z-50">
         <div class="max-w-7xl mx-auto flex justify-between items-center">
-            <a href="{{ url('/') }}" class="flex items-center gap-2 hover:opacity-90 transition-opacity">
+            <div class="flex items-center gap-2 select-none cursor-default">
                 <img src="{{ asset('images/LogoBlanco.png') }}" alt="Logo SINGKI" class="h-8 w-auto object-contain">
                 <span class="font-black text-2xl text-[#2563eb] tracking-tighter">SINGKI</span>
-            </a>
+            </div>
             <a href="{{ url('/') }}" class="text-sm font-semibold text-gray-500 hover:text-[#1F51FF] transition flex items-center gap-2">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
                 Volver al inicio
@@ -34,6 +34,13 @@
                 <p class="text-gray-500 text-sm">Déjanos tus datos y el motivo de tu consulta. Te responderemos a la brevedad.</p>
             </div>
 
+            @if(session('success'))
+                <div class="mb-6 p-4 bg-green-50 border border-green-200 rounded-xl text-green-600 text-sm font-medium flex items-center gap-3">
+                    <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    {{ session('success') }}
+                </div>
+            @endif
+
             <form action="{{ route('contact_requests.store') }}" method="POST">
                 @csrf
                 
@@ -41,25 +48,25 @@
                     <div>
                         <label for="name" class="block text-[13px] font-bold text-gray-500 uppercase tracking-wider mb-2">Nombre completo *</label>
                         <input type="text" name="name" id="name" value="{{ old('name', auth()->check() ? auth()->user()->name : '') }}" required class="w-full border border-gray-200 rounded-xl px-4 py-3 focus:ring-[#1F51FF] focus:border-[#1F51FF] text-sm outline-none transition-colors bg-gray-50/50" placeholder="Ej. Juan Pérez">
-                        @error('name') <span class="text-xs text-red-500 mt-1 block">{{ $message }}</span> @enderror
+                        @error('name') <span class="text-red-500 text-xs font-medium mt-1 block">{{ $message }}</span> @enderror
                     </div>
                     <div>
                         <label for="email" class="block text-[13px] font-bold text-gray-500 uppercase tracking-wider mb-2">Correo Electrónico *</label>
                         <input type="email" name="email" id="email" value="{{ old('email', auth()->check() ? auth()->user()->email : '') }}" required class="w-full border border-gray-200 rounded-xl px-4 py-3 focus:ring-[#1F51FF] focus:border-[#1F51FF] text-sm outline-none transition-colors bg-gray-50/50" placeholder="ejemplo@correo.com">
-                        @error('email') <span class="text-xs text-red-500 mt-1 block">{{ $message }}</span> @enderror
+                        @error('email') <span class="text-red-500 text-xs font-medium mt-1 block">{{ $message }}</span> @enderror
                     </div>
                 </div>
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
                     <div>
                         <label for="telephone" class="block text-[13px] font-bold text-gray-500 uppercase tracking-wider mb-2">Teléfono *</label>
-                        <input type="tel" name="telephone" id="telephone" value="{{ old('telephone') }}" required class="w-full border border-gray-200 rounded-xl px-4 py-3 focus:ring-[#1F51FF] focus:border-[#1F51FF] text-sm outline-none transition-colors bg-gray-50/50" placeholder="8888-0000">
-                        @error('telephone') <span class="text-xs text-red-500 mt-1 block">{{ $message }}</span> @enderror
+                        <input type="tel" name="telephone" id="telephone" value="{{ old('telephone') }}" required class="w-full border border-gray-200 rounded-xl px-4 py-3 focus:ring-[#1F51FF] focus:border-[#1F51FF] text-sm outline-none transition-colors bg-gray-50/50" maxlength="8" inputmode="numeric" oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 8)" placeholder="Ej. 88888888">
+                        @error('telephone') <span class="text-red-500 text-xs font-medium mt-1 block">{{ $message }}</span> @enderror
                     </div>
                     <div>
                         <label for="location" class="block text-[13px] font-bold text-gray-500 uppercase tracking-wider mb-2">Ubicación</label>
                         <input type="text" name="location" id="location" value="{{ old('location') }}" class="w-full border border-gray-200 rounded-xl px-4 py-3 focus:ring-[#1F51FF] focus:border-[#1F51FF] text-sm outline-none transition-colors bg-gray-50/50" placeholder="Ciudad, País (Opcional)">
-                        @error('location') <span class="text-xs text-red-500 mt-1 block">{{ $message }}</span> @enderror
+                        @error('location') <span class="text-red-500 text-xs font-medium mt-1 block">{{ $message }}</span> @enderror
                     </div>
                 </div>
 
@@ -71,7 +78,7 @@
                             <option value="{{ $item->id }}" {{ old('company_id') == $item->id ? 'selected' : '' }}>{{ $item->name ?? $item->title ?? $item->id }}</option>
                         @endforeach
                     </select>
-                    @error('company_id') <span class="text-xs text-red-500 mt-1 block">{{ $message }}</span> @enderror
+                    @error('company_id') <span class="text-red-500 text-xs font-medium mt-1 block">{{ $message }}</span> @enderror
                 </div>
 
                 <button type="submit" class="w-full bg-[#1F51FF] hover:bg-blue-700 text-white font-bold py-4 px-6 rounded-xl transition-colors shadow-md flex justify-center items-center gap-2">

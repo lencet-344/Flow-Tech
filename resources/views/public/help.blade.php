@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Centro de Ayuda - SINGKI</title>
+    <title>SINGKI</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <link rel="icon" type="image/png" href="{{ asset('images/favicon.png') }}">
     <meta name="csrf-token" content="{{ csrf_token() }}">
@@ -14,10 +14,10 @@
     <!-- Navegación Superior -->
     <nav class="bg-white border-b border-gray-100 py-4 px-6 sticky top-0 z-50">
         <div class="max-w-7xl mx-auto flex justify-between items-center">
-            <a href="{{ url('/') }}" class="flex items-center gap-2 hover:opacity-90 transition-opacity">
+            <div class="flex items-center gap-2 select-none cursor-default">
                 <img src="{{ asset('images/LogoBlanco.png') }}" alt="Logo SINGKI" class="h-8 w-auto object-contain">
                 <span class="font-black text-2xl text-[#2563eb] tracking-tighter">SINGKI</span>
-            </a>
+            </div>
             <a href="{{ url('/') }}" class="text-sm font-semibold text-gray-500 hover:text-[#1F51FF] transition flex items-center gap-2">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
                 Volver al inicio
@@ -280,5 +280,6 @@
             }
         }
     </script>
+@include('components.accessibility-widget')
 </body>
 </html>

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registro - SINGKI</title>
+    <title>SINGKI</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <link rel="icon" type="image/png" href="{{ asset('images/favicon.png') }}">
 </head>
@@ -64,7 +64,7 @@
                         <svg class="w-10 h-10 mb-6 text-[#1F51FF]" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 21v-7.5a.75.75 0 01.75-.75h3a.75.75 0 01.75.75V21m-4.5 0H2.36m11.14 0H18m0 0h3.64m-1.39 0V9.349m-16.5 11.65V9.35m0 0a3.001 3.001 0 003.75-.615A2.993 2.993 0 009.75 9.75c.896 0 1.7-.393 2.25-1.016a2.993 2.993 0 002.25 1.016c.896 0 1.7-.393 2.25-1.016a3.001 3.001 0 003.75.614m-16.5 0a3.004 3.004 0 01-.621-4.72L4.318 3.44A1.5 1.5 0 015.378 3h13.243a1.5 1.5 0 011.06.44l1.19 1.189a3 3 0 01-.621 4.72m-13.5 8.65h3.75a.75.75 0 00.75-.75V13.5a.75.75 0 00-.75-.75H6.75a.75.75 0 00-.75.75v3.75c0 .415.336.75.75.75z"></path>
                         </svg>
-                        <h2 class="font-sans text-xl font-bold mb-3">Soy Proveedor / Emprendedor</h2>
+                        <h2 class="font-sans text-xl font-bold mb-3">Soy Emprendedor</h2>
                         <p class="text-gray-500 text-sm mb-6 min-h-[4rem]">Tengo un negocio o empresa y quiero publicar mis productos e inventario en la plataforma.</p>
                         
                         <ul class="flex-1 space-y-3 mb-8">
@@ -94,7 +94,7 @@
                         <svg class="w-10 h-10 mb-6 text-[#1F51FF]" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M11.48 3.499a.562.562 0 011.04 0l2.125 5.111a.563.563 0 00.475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 00-.182.557l1.285 5.385a.562.562 0 01-.84.61l-4.725-2.885a.563.563 0 00-.586 0L6.982 20.54a.562.562 0 01-.84-.61l1.285-5.386a.562.562 0 00-.182-.557l-4.204-3.602a.563.563 0 01.321-.988l5.518-.442a.563.563 0 00.475-.345L11.48 3.5z"></path>
                         </svg>
-                        <h2 class="font-sans text-xl font-bold mb-3">Ofrezco Servicios</h2>
+                        <h2 class="font-sans text-xl font-bold mb-3">Soy Proveedor</h2>
                         <p class="text-gray-500 text-sm mb-6 min-h-[4rem]">Soy profesional independiente o emprendedor de servicios y quiero presentar mi oferta.</p>
                         
                         <ul class="flex-1 space-y-3 mb-8">
@@ -185,13 +185,25 @@
 
                             <div class="mb-4">
                                 <label for="password" class="block text-[11px] font-bold text-gray-500 uppercase tracking-wider mb-2">Contraseña</label>
-                                <input id="password" class="w-full border border-gray-200 rounded-xl px-4 py-3 bg-gray-50/50 focus:ring-[#1F51FF] focus:border-[#1F51FF] text-sm outline-none transition-colors" type="password" name="password" required autocomplete="new-password" />
+                                <div class="relative">
+                                    <input id="password" class="w-full border border-gray-200 rounded-xl px-4 py-3 pr-12 bg-gray-50/50 focus:ring-[#1F51FF] focus:border-[#1F51FF] text-sm outline-none transition-colors" style="padding-right: 48px;" type="password" name="password" required autocomplete="new-password" />
+                                    <button type="button" tabindex="-1" class="absolute inset-y-0 right-4 flex items-center px-1 text-gray-400 hover:text-[#1F51FF] focus:outline-none transition-colors" style="right: 16px;" onclick="const input = this.previousElementSibling; const eyeOpen = this.querySelector('.eye-open'); const eyeClosed = this.querySelector('.eye-closed'); if (input.type === 'password') { input.type = 'text'; eyeOpen.classList.add('hidden'); eyeClosed.classList.remove('hidden'); } else { input.type = 'password'; eyeOpen.classList.remove('hidden'); eyeClosed.classList.add('hidden'); }">
+                                        <svg class="eye-open w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
+                                        <svg class="eye-closed w-5 h-5 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21"></path></svg>
+                                    </button>
+                                </div>
                                 @error('password') <span class="text-xs text-red-500 mt-1 block">{{ $message }}</span> @enderror
                             </div>
 
                             <div class="mb-6">
                                 <label for="password_confirmation" class="block text-[11px] font-bold text-gray-500 uppercase tracking-wider mb-2">Confirmar Contraseña</label>
-                                <input id="password_confirmation" class="w-full border border-gray-200 rounded-xl px-4 py-3 bg-gray-50/50 focus:ring-[#1F51FF] focus:border-[#1F51FF] text-sm outline-none transition-colors" type="password" name="password_confirmation" required autocomplete="new-password" />
+                                <div class="relative">
+                                    <input id="password_confirmation" class="w-full border border-gray-200 rounded-xl px-4 py-3 pr-12 bg-gray-50/50 focus:ring-[#1F51FF] focus:border-[#1F51FF] text-sm outline-none transition-colors" style="padding-right: 48px;" type="password" name="password_confirmation" required autocomplete="new-password" />
+                                    <button type="button" tabindex="-1" class="absolute inset-y-0 right-4 flex items-center px-1 text-gray-400 hover:text-[#1F51FF] focus:outline-none transition-colors" style="right: 16px;" onclick="const input = this.previousElementSibling; const eyeOpen = this.querySelector('.eye-open'); const eyeClosed = this.querySelector('.eye-closed'); if (input.type === 'password') { input.type = 'text'; eyeOpen.classList.add('hidden'); eyeClosed.classList.remove('hidden'); } else { input.type = 'password'; eyeOpen.classList.remove('hidden'); eyeClosed.classList.add('hidden'); }">
+                                        <svg class="eye-open w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
+                                        <svg class="eye-closed w-5 h-5 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21"></path></svg>
+                                    </button>
+                                </div>
                                 @error('password_confirmation') <span class="text-xs text-red-500 mt-1 block">{{ $message }}</span> @enderror
                             </div>
 
@@ -209,7 +221,11 @@
                     <!-- FORMULARIO PROVEEDOR/SERVICIOS (Diseño Figma) -->
                     <!-- ========================================== -->
                     <template x-if="role === 'proveedor' || role === 'servicios'">
-                        <div x-data="{ formStep: 1, showMap: false }" class="w-full max-w-xl mx-auto flex flex-col items-center">
+                        <div x-data="{ 
+                            formStep: {{ $errors->hasAny(['company_name', 'description', 'category_id', 'address', 'latitude', 'longitude']) && !$errors->hasAny(['first_name', 'last_name', 'cedula', 'email', 'password']) ? 2 : 1 }}, 
+                            showMap: false, 
+                            mapSelected: {{ old('latitude') ? 'true' : 'false' }} 
+                        }" class="w-full max-w-xl mx-auto flex flex-col items-center">
                             
                             <!-- CABECERA EXTERNA (El Logo, el Título y el Stepper) -->
                             <div class="text-center w-full mt-2">
@@ -270,32 +286,44 @@
                                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                                         <div>
                                             <label class="block text-[13px] font-bold text-[#040116] mb-1.5">Nombres</label>
-                                            <input class="w-full border border-gray-200 rounded-xl px-4 py-3 focus:ring-[#1F51FF] focus:border-[#1F51FF] text-sm outline-none transition-colors placeholder-blue-300 text-[#1F51FF]" type="text" name="first_name" placeholder="Ej. Carlos" required />
+                                            <input class="w-full border border-gray-200 rounded-xl px-4 py-3 focus:ring-[#1F51FF] focus:border-[#1F51FF] text-sm outline-none transition-colors placeholder-blue-300 text-[#1F51FF]" type="text" name="first_name" value="{{ old('first_name') }}" placeholder="Ej. Carlos" required />
                                         </div>
                                         <div>
                                             <label class="block text-[13px] font-bold text-[#040116] mb-1.5">Apellidos</label>
-                                            <input class="w-full border border-gray-200 rounded-xl px-4 py-3 focus:ring-[#1F51FF] focus:border-[#1F51FF] text-sm outline-none transition-colors placeholder-blue-300 text-[#1F51FF]" type="text" name="last_name" placeholder="Ej. González" required />
+                                            <input class="w-full border border-gray-200 rounded-xl px-4 py-3 focus:ring-[#1F51FF] focus:border-[#1F51FF] text-sm outline-none transition-colors placeholder-blue-300 text-[#1F51FF]" type="text" name="last_name" value="{{ old('last_name') }}" placeholder="Ej. González" required />
                                         </div>
                                     </div>
 
                                     <div class="mb-4">
                                         <label class="block text-[13px] font-bold text-[#040116] mb-1.5">Correo Electrónico</label>
-                                        <input class="w-full border border-gray-200 rounded-xl px-4 py-3 focus:ring-[#1F51FF] focus:border-[#1F51FF] text-sm outline-none transition-colors placeholder-blue-300 text-[#1F51FF]" type="email" name="email" placeholder="negocio@correo.com" required />
+                                        <input class="w-full border border-gray-200 rounded-xl px-4 py-3 focus:ring-[#1F51FF] focus:border-[#1F51FF] text-sm outline-none transition-colors placeholder-blue-300 text-[#1F51FF]" type="email" name="email" value="{{ old('email') }}" placeholder="negocio@correo.com" required />
                                     </div>
 
                                     <div class="mb-4">
                                         <label class="block text-[13px] font-bold text-[#040116] mb-1.5">Cédula</label>
-                                        <input class="w-full border border-gray-200 rounded-xl px-4 py-3 focus:ring-[#1F51FF] focus:border-[#1F51FF] text-sm outline-none transition-colors placeholder-blue-300 text-[#1F51FF]" type="text" name="cedula" placeholder="8888-0000" required />
+                                        <input class="w-full border border-gray-200 rounded-xl px-4 py-3 focus:ring-[#1F51FF] focus:border-[#1F51FF] text-sm outline-none transition-colors placeholder-blue-300 text-[#1F51FF]" type="text" name="cedula" value="{{ old('cedula') }}" placeholder="8888-0000" required />
                                     </div>
 
                                     <div class="mb-4">
                                         <label class="block text-[13px] font-bold text-[#040116] mb-1.5">Contraseña</label>
-                                        <input class="w-full border border-gray-200 rounded-xl px-4 py-3 focus:ring-[#1F51FF] focus:border-[#1F51FF] text-sm outline-none transition-colors placeholder-blue-300 text-[#1F51FF]" type="password" name="password" placeholder="Mínimo 8 caracteres" required />
+                                        <div class="relative">
+                                            <input class="w-full border border-gray-200 rounded-xl px-4 py-3 pr-12 focus:ring-[#1F51FF] focus:border-[#1F51FF] text-sm outline-none transition-colors placeholder-blue-300 text-[#1F51FF]" style="padding-right: 48px;" type="password" name="password" placeholder="Mínimo 8 caracteres" required />
+                                            <button type="button" tabindex="-1" class="absolute inset-y-0 right-4 flex items-center px-1 text-gray-400 hover:text-[#1F51FF] focus:outline-none transition-colors" style="right: 16px;" onclick="const input = this.previousElementSibling; const eyeOpen = this.querySelector('.eye-open'); const eyeClosed = this.querySelector('.eye-closed'); if (input.type === 'password') { input.type = 'text'; eyeOpen.classList.add('hidden'); eyeClosed.classList.remove('hidden'); } else { input.type = 'password'; eyeOpen.classList.remove('hidden'); eyeClosed.classList.add('hidden'); }">
+                                                <svg class="eye-open w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
+                                                <svg class="eye-closed w-5 h-5 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21"></path></svg>
+                                            </button>
+                                        </div>
                                     </div>
 
                                     <div class="mb-6">
                                         <label class="block text-[13px] font-bold text-[#040116] mb-1.5">Confirmar Contraseña</label>
-                                        <input class="w-full border border-gray-200 rounded-xl px-4 py-3 focus:ring-[#1F51FF] focus:border-[#1F51FF] text-sm outline-none transition-colors placeholder-blue-300 text-[#1F51FF]" type="password" name="password_confirmation" placeholder="Mínimo 8 caracteres" required />
+                                        <div class="relative">
+                                            <input class="w-full border border-gray-200 rounded-xl px-4 py-3 pr-12 focus:ring-[#1F51FF] focus:border-[#1F51FF] text-sm outline-none transition-colors placeholder-blue-300 text-[#1F51FF]" style="padding-right: 48px;" type="password" name="password_confirmation" placeholder="Mínimo 8 caracteres" required />
+                                            <button type="button" tabindex="-1" class="absolute inset-y-0 right-4 flex items-center px-1 text-gray-400 hover:text-[#1F51FF] focus:outline-none transition-colors" style="right: 16px;" onclick="const input = this.previousElementSibling; const eyeOpen = this.querySelector('.eye-open'); const eyeClosed = this.querySelector('.eye-closed'); if (input.type === 'password') { input.type = 'text'; eyeOpen.classList.add('hidden'); eyeClosed.classList.remove('hidden'); } else { input.type = 'password'; eyeOpen.classList.remove('hidden'); eyeClosed.classList.add('hidden'); }">
+                                                <svg class="eye-open w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
+                                                <svg class="eye-closed w-5 h-5 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21"></path></svg>
+                                            </button>
+                                        </div>
                                     </div>
 
                                     <button type="button" @click="formStep = 2" class="w-full bg-[#1F51FF] hover:bg-blue-700 text-white font-semibold py-3.5 px-4 rounded-xl transition-colors shadow-sm text-center">
@@ -314,12 +342,12 @@
 
                                     <div class="mb-4">
                                         <label class="block text-[13px] font-bold text-[#040116] mb-1.5">Nombre del negocio *</label>
-                                        <input class="w-full border border-gray-200 rounded-xl px-4 py-3 focus:ring-[#1F51FF] focus:border-[#1F51FF] text-sm outline-none transition-colors placeholder-blue-300 text-[#1F51FF]" type="text" name="company_name" placeholder="Ej. TechSolutions GT" required />
+                                        <input class="w-full border border-gray-200 rounded-xl px-4 py-3 focus:ring-[#1F51FF] focus:border-[#1F51FF] text-sm outline-none transition-colors placeholder-blue-300 text-[#1F51FF]" type="text" name="company_name" value="{{ old('company_name') }}" placeholder="Ej. TechSolutions GT" required />
                                     </div>
 
                                     <div class="mb-4">
                                         <label class="block text-[13px] font-bold text-[#040116] mb-1.5">Descripción *</label>
-                                        <textarea class="w-full border border-gray-200 rounded-xl px-4 py-3 focus:ring-[#1F51FF] focus:border-[#1F51FF] text-sm outline-none transition-colors placeholder-blue-300 text-[#1F51FF]" name="description" rows="2" placeholder="Describe brevemente tu negocio o servicio..." required></textarea>
+                                        <textarea class="w-full border border-gray-200 rounded-xl px-4 py-3 focus:ring-[#1F51FF] focus:border-[#1F51FF] text-sm outline-none transition-colors placeholder-blue-300 text-[#1F51FF]" name="description" rows="2" placeholder="Describe brevemente tu negocio o servicio..." required>{{ old('description') }}</textarea>
                                     </div>
 
                                     <div class="mb-4">
@@ -327,24 +355,35 @@
                                         <select name="category_id" class="w-full border border-gray-200 rounded-xl px-4 py-3 focus:ring-[#1F51FF] focus:border-[#1F51FF] text-sm outline-none transition-colors text-[#1F51FF]" required>
                                             <option value="">Selecciona una categoría</option>
                                             @foreach($categories ?? [] as $category)
-                                                <option value="{{ $category->id }}">{{ $category->name }}</option>
+                                                <option value="{{ $category->id }}" {{ old('category_id') == $category->id ? 'selected' : '' }}>{{ $category->name }}</option>
                                             @endforeach
                                         </select>
                                     </div>
 
                                     <div class="mb-4">
                                         <label class="block text-[13px] font-bold text-[#040116] mb-1.5">Ubicación</label>
-                                        <input class="w-full border border-gray-200 rounded-xl px-4 py-3 focus:ring-[#1F51FF] focus:border-[#1F51FF] text-sm outline-none transition-colors placeholder-blue-300 text-[#1F51FF]" type="text" name="address" placeholder="Dirección" required />
+                                        <input class="w-full border border-gray-200 rounded-xl px-4 py-3 focus:ring-[#1F51FF] focus:border-[#1F51FF] text-sm outline-none transition-colors placeholder-blue-300 text-[#1F51FF]" type="text" name="address" value="{{ old('address') }}" placeholder="Dirección" required />
                                     </div>
 
                                     <div class="mb-8">
                                         <label class="block text-[13px] font-bold text-[#040116] mb-1.5">Ubicación en el mapa</label>
-                                        <div @click="showMap = true; setTimeout(() => initMapPicker(), 300)" class="w-full border border-gray-200 rounded-xl px-4 py-4 bg-white text-center cursor-pointer hover:bg-blue-50 transition-colors flex items-center justify-center gap-2 text-[#1F51FF]">
-                                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 010-5 2.5 2.5 0 010 5z"></path></svg>
-                                            <span class="text-sm font-semibold">Agregar ubicación con el mapa</span>
+                                        <div @click="showMap = true; setTimeout(() => initMapPicker(), 300)" 
+                                             :class="mapSelected ? 'border-2 border-emerald-500 bg-emerald-50 text-emerald-700' : 'border border-gray-200 bg-white text-[#1F51FF] hover:bg-blue-50'"
+                                             class="w-full rounded-xl px-4 py-4 text-center cursor-pointer transition-colors flex items-center justify-center gap-2">
+                                            
+                                            <!-- Ícono Dinámico -->
+                                            <template x-if="!mapSelected">
+                                                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 010-5 2.5 2.5 0 010 5z"></path></svg>
+                                            </template>
+                                            <template x-if="mapSelected">
+                                                <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path></svg>
+                                            </template>
+                                            
+                                            <!-- Texto Dinámico -->
+                                            <span class="text-sm font-semibold" x-text="mapSelected ? 'Ubicación confirmada ✓' : 'Agregar ubicación con el mapa'"></span>
                                         </div>
-                                        <input type="hidden" name="latitude" />
-                                        <input type="hidden" name="longitude" />
+                                        <input type="hidden" name="latitude" value="{{ old('latitude') }}" id="latInput" />
+                                        <input type="hidden" name="longitude" value="{{ old('longitude') }}" id="lngInput" />
                                     </div>
 
                                     <div class="flex gap-4">
@@ -376,7 +415,7 @@
                                     <!-- Contenedor con altura forzada nativa para evadir el bug de Tailwind -->
                                     <div id="mapPicker" class="w-full bg-gray-100 rounded-xl mb-4 border border-gray-200" style="height: 400px; display: block;"></div>
                                     
-                                    <button type="button" @click="showMap = false" class="w-full bg-[#1F51FF] hover:bg-blue-700 text-white font-bold py-3.5 px-4 rounded-xl transition-colors shadow-sm">
+                                    <button type="button" @click="showMap = false; mapSelected = true; if(typeof window.showSingkiToast === 'function') window.showSingkiToast('✓ Ubicación confirmada', 'success');" class="w-full bg-[#1F51FF] hover:bg-blue-700 text-white font-bold py-3.5 px-4 rounded-xl transition-colors shadow-sm">
                                         Confirmar ubicación
                                     </button>
                                 </div>

@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Chat - TechSolutions GT</title>
+    <title>SINGKI</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 <link rel="icon" type="image/png" href="{{ asset('images/favicon.png') }}">
 </head>
@@ -23,8 +23,12 @@
         </nav>
         
         <div class="flex items-center gap-2">
-            <div class="w-9 h-9 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center font-bold text-sm">
-                {{ Auth::check() ? substr(Auth::user()->name, 0, 1) : 'M' }}
+            <div class="w-9 h-9 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center font-bold text-sm overflow-hidden border border-blue-200">
+                @if(Auth::check() && file_exists(public_path('uploads/avatars/avatar_u' . Auth::id() . '_' . md5(strtolower(trim(Auth::user()->email))) . '.jpg')))
+                    <img src="{{ asset('uploads/avatars/avatar_u' . Auth::id() . '_' . md5(strtolower(trim(Auth::user()->email))) . '.jpg') . '?v=' . filemtime(public_path('uploads/avatars/avatar_u' . Auth::id() . '_' . md5(strtolower(trim(Auth::user()->email))) . '.jpg')) }}" class="w-full h-full object-cover rounded-full">
+                @else
+                    {{ Auth::check() ? substr(Auth::user()->name, 0, 1) : 'M' }}
+                @endif
             </div>
             <span class="text-sm font-medium text-gray-700 hidden sm:inline-block">
                 {{ Auth::check() ? explode(' ', Auth::user()->name)[0] : 'María' }}

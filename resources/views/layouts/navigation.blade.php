@@ -12,63 +12,57 @@
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                         {{ __('Dashboard') }}
                     </x-nav-link>
-                    <x-nav-link :href="route('suppliers.index')" :active="request()->routeIs('suppliers.*')">
-                        {{ __('Proveedores') }}
-                    </x-nav-link>
-                    
-                    <x-nav-link :href="route('companies.index')" :active="request()->routeIs('companies.*')">
-                        {{ __('Empresas') }}
-                    </x-nav-link>
 
-                    <x-nav-link :href="route('products.index')" :active="request()->routeIs('products.*')">
-                        {{ __('Productos') }}
-                    </x-nav-link>
+                    @if(in_array(Auth::user()->role, ['administrador', 'admin']) || in_array(Auth::user()->email, ['isaacmeneses254@gmail.com', 'edmundo@ejemplo.com', 'admin@sinki.com']))
+                        <x-nav-link :href="route('roles.index')" :active="request()->routeIs('roles.*')">
+                            {{ __('Roles') }}
+                        </x-nav-link>
+                        <x-nav-link :href="route('companies.index')" :active="request()->routeIs('companies.*')">
+                            {{ __('Empresas') }}
+                        </x-nav-link>
+                        <x-nav-link :href="route('categories.index')" :active="request()->routeIs('categories.*')">
+                            {{ __('Categorías') }}
+                        </x-nav-link>
+                        <x-nav-link :href="route('brands.index')" :active="request()->routeIs('brands.*')">
+                            {{ __('Marcas') }}
+                        </x-nav-link>
+                    @endif
 
-                    <x-nav-link :href="route('categories.index')" :active="request()->routeIs('categories.*')">
-                        {{ __('Categorías') }}
-                    </x-nav-link>
+                    @if(in_array(Auth::user()->role, ['proveedor', 'servicios']) || in_array(Auth::user()->email, ['isaacmeneses254@gmail.com', 'edmundo@ejemplo.com', 'admin@sinki.com']))
+                        <x-nav-link :href="route('products.index')" :active="request()->routeIs('products.*')">
+                            {{ __('Productos') }}
+                        </x-nav-link>
+                        <x-nav-link :href="route('inventories.index')" :active="request()->routeIs('inventories.*')">
+                            {{ __('Inventario') }}
+                        </x-nav-link>
+                        <x-nav-link :href="route('offers.index')" :active="request()->routeIs('offers.*')">
+                            {{ __('Ofertas') }}
+                        </x-nav-link>
+                        <x-nav-link :href="route('suppliers.index')" :active="request()->routeIs('suppliers.*')">
+                            {{ __('Proveedores') }}
+                        </x-nav-link>
+                    @endif
 
-                    <x-nav-link :href="route('buy_verifications.index')" :active="request()->routeIs('buy-verifications.*')">
-                        {{ __('Verificaciones de Compra') }}
-                    </x-nav-link>
-
-                    <x-nav-link :href="route('orders.index')" :active="request()->routeIs('orders.*')">
-                        {{ __('Pedidos') }}
-                    </x-nav-link>
-
-                    <x-nav-link :href="route('trades.index')" :active="request()->routeIs('trades.*')">
-                        {{ __('Intercambios') }}
-                    </x-nav-link>
-
-                    <x-nav-link :href="route('brands.index')" :active="request()->routeIs('brands.*')">
-                        {{ __('Marcas') }}
-                    </x-nav-link>
-
-                    <x-nav-link :href="route('favorites.index')" :active="request()->routeIs('favorites.*')">
-                        {{ __('Favoritos') }}
-                    </x-nav-link>
-
-                    <x-nav-link :href="route('bookings.index')" :active="request()->routeIs('bookings.*')">
-                        {{ __('Reservas') }}
-                    </x-nav-link>
-
-                    <x-nav-link :href="route('roles.index')" :active="request()->routeIs('roles.*')">
-                        {{ __('Roles') }}
-                    </x-nav-link>
-
-                    <x-nav-link :href="route('inventories.index')" :active="request()->routeIs('inventories.*')">
-                        {{ __('Inventario') }}
-                    </x-nav-link>
-
-                    <x-nav-link :href="route('offers.index')" :active="request()->routeIs('offers.*')">
-                        {{ __('Ofertas') }}
-                    </x-nav-link>
-
-                    <x-nav-link :href="route('contact_requests.index')" :active="request()->routeIs('contact-requests.*')">
-                        {{ __('Solicitudes de Contacto') }}
-                    </x-nav-link>
-
-
+                    @if(in_array(Auth::user()->role, ['usuario', 'cliente']) || in_array(Auth::user()->email, ['isaacmeneses254@gmail.com', 'edmundo@ejemplo.com', 'admin@sinki.com']))
+                        <x-nav-link :href="route('orders.index')" :active="request()->routeIs('orders.*')">
+                            {{ __('Pedidos') }}
+                        </x-nav-link>
+                        <x-nav-link :href="route('buy_verifications.index')" :active="request()->routeIs('buy-verifications.*')">
+                            {{ __('Verificaciones de Compra') }}
+                        </x-nav-link>
+                        <x-nav-link :href="route('bookings.index')" :active="request()->routeIs('bookings.*')">
+                            {{ __('Reservas') }}
+                        </x-nav-link>
+                        <x-nav-link :href="route('contact_requests.index')" :active="request()->routeIs('contact-requests.*')">
+                            {{ __('Solicitudes de Contacto') }}
+                        </x-nav-link>
+                        <x-nav-link :href="route('favorites.index')" :active="request()->routeIs('favorites.*')">
+                            {{ __('Favoritos') }}
+                        </x-nav-link>
+                        <x-nav-link :href="route('trades.index')" :active="request()->routeIs('trades.*')">
+                            {{ __('Intercambios') }}
+                        </x-nav-link>
+                    @endif
                 </div>
             </div>
 
@@ -131,62 +125,57 @@
             <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                 {{ __('Dashboard') }}
             </x-responsive-nav-link>
-            <x-responsive-nav-link :href="route('suppliers.index')" :active="request()->routeIs('suppliers.*')">
-                {{ __('Proveedores') }}
-            </x-responsive-nav-link>
+            
+            @if(in_array(Auth::user()->role, ['administrador', 'admin']) || in_array(Auth::user()->email, ['isaacmeneses254@gmail.com', 'edmundo@ejemplo.com', 'admin@sinki.com']))
+                <x-responsive-nav-link :href="route('roles.index')" :active="request()->routeIs('roles.*')">
+                    {{ __('Roles') }}
+                </x-responsive-nav-link>
+                <x-responsive-nav-link :href="route('companies.index')" :active="request()->routeIs('companies.*')">
+                    {{ __('Empresas') }}
+                </x-responsive-nav-link>
+                <x-responsive-nav-link :href="route('categories.index')" :active="request()->routeIs('categories.*')">
+                    {{ __('Categorías') }}
+                </x-responsive-nav-link>
+                <x-responsive-nav-link :href="route('brands.index')" :active="request()->routeIs('brands.*')">
+                    {{ __('Marcas') }}
+                </x-responsive-nav-link>
+            @endif
 
-            <x-responsive-nav-link :href="route('companies.index')" :active="request()->routeIs('companies.*')">
-                {{ __('Empresas') }}
-            </x-responsive-nav-link>
+            @if(in_array(Auth::user()->role, ['proveedor', 'servicios']) || in_array(Auth::user()->email, ['isaacmeneses254@gmail.com', 'edmundo@ejemplo.com', 'admin@sinki.com']))
+                <x-responsive-nav-link :href="route('products.index')" :active="request()->routeIs('products.*')">
+                    {{ __('Productos') }}
+                </x-responsive-nav-link>
+                <x-responsive-nav-link :href="route('inventories.index')" :active="request()->routeIs('inventories.*')">
+                    {{ __('Inventario') }}
+                </x-responsive-nav-link>
+                <x-responsive-nav-link :href="route('offers.index')" :active="request()->routeIs('offers.*')">
+                    {{ __('Ofertas') }}
+                </x-responsive-nav-link>
+                <x-responsive-nav-link :href="route('suppliers.index')" :active="request()->routeIs('suppliers.*')">
+                    {{ __('Proveedores') }}
+                </x-responsive-nav-link>
+            @endif
 
-            <x-responsive-nav-link :href="route('products.index')" :active="request()->routeIs('products.*')">
-                {{ __('Productos') }}
-            </x-responsive-nav-link>
-
-            <x-responsive-nav-link :href="route('categories.index')" :active="request()->routeIs('categories.*')">
-                {{ __('Categorías') }}
-            </x-responsive-nav-link>
-
-            <x-responsive-nav-link :href="route('buy_verifications.index')" :active="request()->routeIs('buy-verifications.*')">
-                {{ __('Verificaciones de Compra') }}
-            </x-responsive-nav-link>
-
-            <x-responsive-nav-link :href="route('orders.index')" :active="request()->routeIs('orders.*')">
-                {{ __('Órdenes') }}
-            </x-responsive-nav-link>
-
-            <x-responsive-nav-link :href="route('trades.index')" :active="request()->routeIs('trades.*')">
-                {{ __('Comercios') }}
-            </x-responsive-nav-link>
-
-            <x-responsive-nav-link :href="route('brands.index')" :active="request()->routeIs('brands.*')">
-                {{ __('Marcas') }}
-            </x-responsive-nav-link>
-
-            <x-responsive-nav-link :href="route('favorites.index')" :active="request()->routeIs('favorites.*')">
-                {{ __('Favoritos') }}
-            </x-responsive-nav-link>
-
-            <x-responsive-nav-link :href="route('bookings.index')" :active="request()->routeIs('bookings.*')">
-                {{ __('Reservas') }}
-            </x-responsive-nav-link>
-
-            <x-responsive-nav-link :href="route('roles.index')" :active="request()->routeIs('roles.*')">
-                {{ __('Roles') }}
-            </x-responsive-nav-link>
-
-            <x-responsive-nav-link :href="route('inventories.index')" :active="request()->routeIs('inventories.*')">
-                {{ __('Inventario') }}
-            </x-responsive-nav-link>
-
-            <x-responsive-nav-link :href="route('offers.index')" :active="request()->routeIs('offers.*')">
-                {{ __('Ofertas') }}
-            </x-responsive-nav-link>
-
-            <x-responsive-nav-link :href="route('contact_requests.index')" :active="request()->routeIs('contact-requests.*')">
-                {{ __('Solicitudes de Contacto') }}
-            </x-responsive-nav-link>
-
+            @if(in_array(Auth::user()->role, ['usuario', 'cliente']) || in_array(Auth::user()->email, ['isaacmeneses254@gmail.com', 'edmundo@ejemplo.com', 'admin@sinki.com']))
+                <x-responsive-nav-link :href="route('orders.index')" :active="request()->routeIs('orders.*')">
+                    {{ __('Órdenes') }}
+                </x-responsive-nav-link>
+                <x-responsive-nav-link :href="route('buy_verifications.index')" :active="request()->routeIs('buy-verifications.*')">
+                    {{ __('Verificaciones de Compra') }}
+                </x-responsive-nav-link>
+                <x-responsive-nav-link :href="route('bookings.index')" :active="request()->routeIs('bookings.*')">
+                    {{ __('Reservas') }}
+                </x-responsive-nav-link>
+                <x-responsive-nav-link :href="route('contact_requests.index')" :active="request()->routeIs('contact-requests.*')">
+                    {{ __('Solicitudes de Contacto') }}
+                </x-responsive-nav-link>
+                <x-responsive-nav-link :href="route('favorites.index')" :active="request()->routeIs('favorites.*')">
+                    {{ __('Favoritos') }}
+                </x-responsive-nav-link>
+                <x-responsive-nav-link :href="route('trades.index')" :active="request()->routeIs('trades.*')">
+                    {{ __('Comercios') }}
+                </x-responsive-nav-link>
+            @endif
         </div>
 
         <div class="pt-4 pb-1 border-t border-gray-200 dark:border-gray-600">

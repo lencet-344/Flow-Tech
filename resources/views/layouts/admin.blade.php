@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Singki - Panel de Administración</title>
+    <title>SINGKI</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 <link rel="icon" type="image/png" href="{{ asset('images/favicon.png') }}">
 </head>
@@ -22,8 +22,12 @@
 
                 <!-- Perfil Dinámico -->
                 <div class="px-6 py-5 border-b border-gray-800 flex items-center gap-3">
-                    <div class="w-10 h-10 rounded-full bg-[#1F51FF] flex items-center justify-center text-white font-bold uppercase">
-                        {{ substr(Auth::user()->name ?? 'U', 0, 1) }}
+                    <div class="w-10 h-10 rounded-full bg-[#1F51FF] flex items-center justify-center text-white font-bold uppercase overflow-hidden border border-blue-500">
+                        @if(Auth::check() && file_exists(public_path('uploads/avatars/avatar_u' . Auth::id() . '_' . md5(strtolower(trim(Auth::user()->email))) . '.jpg')))
+                            <img src="{{ asset('uploads/avatars/avatar_u' . Auth::id() . '_' . md5(strtolower(trim(Auth::user()->email))) . '.jpg') . '?v=' . filemtime(public_path('uploads/avatars/avatar_u' . Auth::id() . '_' . md5(strtolower(trim(Auth::user()->email))) . '.jpg')) }}" class="w-full h-full object-cover rounded-full">
+                        @else
+                            {{ substr(Auth::user()->name ?? 'U', 0, 1) }}
+                        @endif
                     </div>
                     <div>
                         <p class="font-semibold text-sm capitalize">{{ Auth::user()->name ?? 'Usuario' }}</p>
@@ -47,8 +51,8 @@
                         <a href="{{ route('bookings.index') }}" class="py-2 px-3 rounded-lg transition-colors {{ request()->routeIs('bookings.*') ? 'bg-[#2563eb] text-white font-medium shadow-sm' : 'text-gray-300 hover:text-white hover:bg-white/5' }}">Reservas</a>
                         <a href="{{ route('offers.index') }}" class="py-2 px-3 rounded-lg transition-colors {{ request()->routeIs('offers.*') ? 'bg-[#2563eb] text-white font-medium shadow-sm' : 'text-gray-300 hover:text-white hover:bg-white/5' }}">Ofertas</a>
 @if(in_array(auth()->user()->role, ['proveedor', 'servicios']))
-    <a href="{{ session('is_premium') ? url('/admin/comunidad?premium=true') : url('/admin/comunidad') }}" class="py-2 px-3 rounded-lg transition-colors {{ request()->is('admin/comunidad') ? 'bg-[#2563eb] text-white font-medium shadow-sm' : 'text-gray-300 hover:text-white hover:bg-white/5' }}">Comunidad Premium</a>
-    <a href="{{ session('is_premium') ? url('/admin/estadisticas?premium=true') : url('/admin/estadisticas') }}" class="py-2 px-3 rounded-lg transition-colors {{ request()->is('admin/estadisticas') ? 'bg-[#2563eb] text-white font-medium shadow-sm' : 'text-gray-300 hover:text-white hover:bg-white/5' }}">Estadísticas</a>
+    <a href="{{ url('/admin/comunidad') }}" class="py-2 px-3 rounded-lg transition-colors {{ request()->is('admin/comunidad') ? 'bg-[#2563eb] text-white font-medium shadow-sm' : 'text-gray-300 hover:text-white hover:bg-white/5' }}">Comunidad Premium</a>
+    <a href="{{ url('/admin/estadisticas') }}" class="py-2 px-3 rounded-lg transition-colors {{ request()->is('admin/estadisticas') ? 'bg-[#2563eb] text-white font-medium shadow-sm' : 'text-gray-300 hover:text-white hover:bg-white/5' }}">Estadísticas</a>
 @endif
                         <a href="{{ url('/admin/promocionar') }}" class="py-2 px-3 rounded-lg transition-colors {{ request()->is('admin/promocionar*') ? 'bg-[#2563eb] text-white font-medium shadow-sm' : 'text-gray-300 hover:text-white hover:bg-white/5' }}">Promocionar negocio</a>
                     </nav>
@@ -122,5 +126,6 @@
             });
         </script>
     @endif
+@include('components.accessibility-widget')
 </body>
 </html>

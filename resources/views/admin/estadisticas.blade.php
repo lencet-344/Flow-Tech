@@ -2,14 +2,7 @@
 
 @section('content')
 
-@if(request()->has('premium'))
-    @php 
-        session(['is_premium' => true]);
-        session()->save(); 
-    @endphp
-@endif
-
-@if(session('is_premium') || request()->has('premium'))
+@if(auth()->check() && auth()->user()->is_premium)
 <!-- VISTA: ESTADÍSTICAS (MODO PREMIUM DESBLOQUEADO) -->
 <div class="max-w-6xl mx-auto p-6 bg-[#f8fafc] min-h-screen">
     
@@ -36,25 +29,25 @@
     <div class="grid grid-cols-1 md:grid-cols-4 gap-5 mb-8">
         <div class="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm relative">
             <p class="text-sm text-gray-500 font-medium mb-1">Visitas al perfil</p>
-            <h3 class="text-4xl font-extrabold text-[#0f172a] mb-2">382</h3>
+            <h3 class="text-4xl font-extrabold text-[#0f172a] mb-2">{{ $visitas }}</h3>
             <p class="text-green-500 text-xs font-bold">↑ +14% <span class="text-gray-400 font-normal">vs semana anterior</span></p>
             <svg class="absolute top-6 right-6 w-6 h-6 text-gray-300" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
         </div>
         <div class="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm relative">
             <p class="text-sm text-gray-500 font-medium mb-1">Guardados</p>
-            <h3 class="text-4xl font-extrabold text-[#0f172a] mb-2">60</h3>
+            <h3 class="text-4xl font-extrabold text-[#0f172a] mb-2">{{ $guardados }}</h3>
             <p class="text-green-500 text-xs font-bold">↑ +8% <span class="text-gray-400 font-normal">vs semana anterior</span></p>
             <svg class="absolute top-6 right-6 w-5 h-5 text-red-400" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clip-rule="evenodd"></path></svg>
         </div>
         <div class="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm relative">
             <p class="text-sm text-gray-500 font-medium mb-1">Contactos / Chat</p>
-            <h3 class="text-4xl font-extrabold text-[#0f172a] mb-2">47</h3>
+            <h3 class="text-4xl font-extrabold text-[#0f172a] mb-2">{{ $contactos }}</h3>
             <p class="text-green-500 text-xs font-bold">↑ +22% <span class="text-gray-400 font-normal">vs semana anterior</span></p>
             <svg class="absolute top-6 right-6 w-6 h-6 text-gray-300" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path></svg>
         </div>
         <div class="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm relative">
             <p class="text-sm text-gray-500 font-medium mb-1">Reservas generadas</p>
-            <h3 class="text-4xl font-extrabold text-[#0f172a] mb-2">3</h3>
+            <h3 class="text-4xl font-extrabold text-[#0f172a] mb-2">{{ $reservas }}</h3>
             <p class="text-green-500 text-xs font-bold">↑ +1 <span class="text-gray-400 font-normal">vs semana anterior</span></p>
             <svg class="absolute top-6 right-6 w-6 h-6 text-amber-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path></svg>
         </div>
@@ -164,9 +157,9 @@
                 <tfoot>
                     <tr class="font-bold text-[#0f172a] text-[15px]">
                         <td class="pt-6">Total</td>
-                        <td class="pt-6 text-[#8b5cf6]">382</td>
-                        <td class="pt-6">60</td>
-                        <td class="pt-6">47</td>
+                        <td class="pt-6 text-[#8b5cf6]">{{ $visitas }}</td>
+                        <td class="pt-6">{{ $guardados }}</td>
+                        <td class="pt-6">{{ $contactos }}</td>
                     </tr>
                 </tfoot>
             </table>

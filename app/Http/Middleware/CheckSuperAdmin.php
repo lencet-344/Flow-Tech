@@ -21,7 +21,7 @@ class CheckSuperAdmin
             'edmundo@ejemplo.com'
         ];
 
-        if (Auth::check() && in_array(Auth::user()->email, $superAdmins)) {
+        if (Auth::check() && (in_array(Auth::user()->email, $superAdmins) || Auth::user()->role === 'administrador')) {
             return $next($request);
         }
 

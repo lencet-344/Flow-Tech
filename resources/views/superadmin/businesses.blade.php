@@ -13,7 +13,7 @@
             <svg class="w-7 h-7 text-[#040116]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg>
             <h1 class="text-3xl font-extrabold text-[#040116] tracking-tight">Negocios</h1>
         </div>
-        <p class="text-gray-500 text-sm font-light ml-9">4 negocios registrados en la plataforma</p>
+        <p class="text-gray-500 text-sm font-light ml-9">{{ isset($companies) ? $companies->count() : \App\Models\Company::count() }} negocios registrados en la plataforma</p>
     </div>
 
     <!-- Filtros -->

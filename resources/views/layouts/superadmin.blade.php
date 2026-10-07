@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Super Admin - SINGKI</title>
+    <title>SINGKI</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 <link rel="icon" type="image/png" href="{{ asset('images/favicon.png') }}">
 </head>
@@ -131,5 +131,6 @@
             Swal.fire({ toast: true, position: 'top-end', icon: 'info', title: "{{ session('status') }}", showConfirmButton: false, timer: 3000, timerProgressBar: true });
         @endif
     </script>
+@include('components.accessibility-widget')
 </body>
 </html>

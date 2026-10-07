@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 
 @section('content')
-@if(session('is_premium') || request()->has('premium'))
+@if(auth()->check() && auth()->user()->is_premium)
 <div class="p-8 md:p-10 max-w-5xl mx-auto">
 
     <!-- HEADER -->

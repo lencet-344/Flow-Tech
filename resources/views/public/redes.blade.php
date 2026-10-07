@@ -3,8 +3,10 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Redes Sociales - SINGKI</title>
+    <title>SINGKI</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+
+    <link rel="icon" type="image/png" href="{{ asset('images/favicon.png') }}?v=2">
 </head>
 <body class="bg-[#3565fd] min-h-screen flex flex-col items-center justify-center font-sans relative px-4 selection:bg-[#000034] selection:text-[#adfeff]">
     

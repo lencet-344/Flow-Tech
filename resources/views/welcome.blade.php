@@ -6,7 +6,7 @@
       <link rel="icon" type="image/png" href="{{ asset('images/favicon.png') }}">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>{{ config('app.name', 'SINGKI - Conectamos negocios') }}</title>
+    <title>SINGKI</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 </head>
@@ -44,24 +44,7 @@
             <img src="{{ asset('images/logo-animado.gif') }}" alt="Cargando SINGKI" class="w-64 md:w-80 h-auto object-contain">
         </div>
 
-        <div class="relative z-10 flex flex-wrap items-center justify-center gap-6 md:gap-10 text-[#2563eb] font-bold text-[13px] tracking-wide uppercase">
-            
-            <div class="flex items-center gap-2">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"></path><path stroke-linecap="round" stroke-linejoin="round" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                <span>@SINGKI_NI</span>
-            </div>
-            
-            <div class="flex items-center gap-2">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z"></path><circle cx="4" cy="4" r="2" stroke="none" fill="currentColor"></circle></svg>
-                <span>@SINGKI.OFICIAL</span>
-            </div>
-            
-            <div class="flex items-center gap-2">
-                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"></path></svg>
-                <span>@SINGKI.NIC</span>
-            </div>
 
-        </div>
     </div>
     @endguest
     <!-- ========================================== -->
@@ -136,10 +119,10 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center h-20">
             
             <div class="flex items-center gap-2">
-                <a href="{{ route('products.index') }}" class="flex items-center gap-2">
+                <div class="flex items-center gap-2 select-none cursor-default">
                     <img src="{{ asset('images/LogoBlanco.png') }}" alt="Logo SINGKI" class="h-8 w-auto">
                     <span class="font-black text-2xl text-[#3b82f6] tracking-tight">SINGKI</span>
-                </a>
+                </div>
             </div>
             
             <!-- Enlaces centrales -->
@@ -180,12 +163,16 @@
                         <!-- Avatar y Nombre -->
 
 
-                        <div class="flex items-center gap-3">
-                            <div class="w-10 h-10 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center font-bold text-lg">
-                                {{ strtoupper(substr(Auth::user()->name, 0, 1)) }}
+                        <a href="{{ route('profile.edit') }}" class="flex items-center gap-3 px-3 py-1.5 rounded-full hover:bg-blue-50/80 transition cursor-pointer group" title="Mi perfil">
+                            <div class="w-10 h-10 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center font-bold text-lg overflow-hidden border border-blue-200">
+                                @if(Auth::check() && file_exists(public_path('uploads/avatars/avatar_u' . Auth::id() . '_' . md5(strtolower(trim(Auth::user()->email))) . '.jpg')))
+                                    <img src="{{ asset('uploads/avatars/avatar_u' . Auth::id() . '_' . md5(strtolower(trim(Auth::user()->email))) . '.jpg') . '?v=' . filemtime(public_path('uploads/avatars/avatar_u' . Auth::id() . '_' . md5(strtolower(trim(Auth::user()->email))) . '.jpg')) }}" class="w-full h-full object-cover rounded-full">
+                                @else
+                                    {{ strtoupper(substr(Auth::user()->name, 0, 1)) }}
+                                @endif
                             </div>
                             <span class="font-medium text-gray-700">{{ explode(' ', Auth::user()->name)[0] }}</span>
-                        </div>
+                        </a>
                         
                       @if(in_array(Auth::user()->email, $superAdmins))
                             <a href="{{ url('/superadmin/dashboard') }}" class="text-[#3b82f6] font-medium text-sm hover:underline transition">Panel Super Admin</a>
@@ -253,9 +240,34 @@
                         <p class="text-blue-100 text-[14px] font-light">¿Qué estás buscando hoy?</p>
                     </div>
                     <div class="w-full md:w-1/2 flex justify-start md:justify-end">
-                        <form action="{{ route('explorar.index') }}" method="GET" class="relative w-full max-w-lg bg-white rounded-full flex items-center p-1.5 shadow-sm">
-                            <input type="text" name="search" placeholder="Busca negocios, productos o servicios..." class="w-full pl-5 pr-4 py-2 bg-transparent border-0 focus:ring-0 text-gray-700 text-sm outline-none">
-                        @error('search') <span class="text-red-500 text-sm mt-1 block">{{ $message }}</span> @enderror
+                        <form x-data="{ searchType: 'negocios', openType: false }" x-bind:action="searchType === 'productos' ? '{{ route('products.index') }}' : '{{ url('/explorar') }}'" method="GET" class="relative w-full max-w-lg bg-white rounded-full flex items-center p-1.5 shadow-sm">
+                            <!-- Botón Dropdown Personalizado -->
+                            <div class="relative shrink-0">
+                                <button type="button" @click="openType = !openType" @click.outside="openType = false" class="flex items-center gap-2 pl-5 pr-4 py-2.5 text-sm font-semibold text-[#0f172a] hover:text-[#1F51FF] border-r border-gray-200 rounded-l-full bg-transparent transition shrink-0 focus:outline-none">
+                                    <template x-if="searchType === 'negocios'">
+                                        <svg class="w-4 h-4 text-[#1F51FF]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1v2H9V7zm0 4h1v2H9v-2zm0 4h1v2H9v-2zm-3-4h1v2H6v-2zm0-4h1v2H6V7zm0 8h1v2H6v-2z"></path></svg>
+                                    </template>
+                                    <template x-if="searchType === 'productos'">
+                                        <svg class="w-4 h-4 text-[#1F51FF]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path></svg>
+                                    </template>
+                                    <span x-text="searchType === 'negocios' ? 'Negocios' : 'Productos'"></span>
+                                    <svg class="w-3 h-3 text-gray-400 transition-transform duration-200" :class="openType ? 'rotate-180' : ''" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"></path></svg>
+                                </button>
+
+                                <!-- Menú flotante -->
+                                <div x-show="openType" x-transition class="absolute left-2 top-full mt-2 w-48 bg-white rounded-2xl shadow-xl border border-gray-100 py-1.5 z-50 text-left" style="display: none;">
+                                    <button type="button" @click="searchType = 'negocios'; openType = false" class="w-full flex items-center gap-3 px-4 py-2.5 text-sm transition-colors" :class="searchType === 'negocios' ? 'bg-blue-50/80 text-[#1F51FF] font-bold' : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900'">
+                                        <svg class="w-4 h-4" :class="searchType === 'negocios' ? 'text-[#1F51FF]' : 'text-gray-400'" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1v2H9V7zm0 4h1v2H9v-2zm0 4h1v2H9v-2zm-3-4h1v2H6v-2zm0-4h1v2H6V7zm0 8h1v2H6v-2z"></path></svg>
+                                        Negocios
+                                    </button>
+                                    <button type="button" @click="searchType = 'productos'; openType = false" class="w-full flex items-center gap-3 px-4 py-2.5 text-sm transition-colors" :class="searchType === 'productos' ? 'bg-blue-50/80 text-[#1F51FF] font-bold' : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900'">
+                                        <svg class="w-4 h-4" :class="searchType === 'productos' ? 'text-[#1F51FF]' : 'text-gray-400'" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path></svg>
+                                        Productos
+                                    </button>
+                                </div>
+                            </div>
+                            <input type="text" name="search" x-bind:placeholder="searchType === 'productos' ? 'Buscar productos...' : 'Buscar negocios...'" class="w-full pl-5 pr-4 py-2 bg-transparent border-0 focus:ring-0 text-gray-700 text-sm outline-none">
+                        @error('search') <span class="text-red-500 text-sm mt-1 block absolute -bottom-6">{{ $message }}</span> @enderror
                             <button type="submit" class="bg-[#3b82f6] hover:bg-[#2563eb] text-white font-medium px-8 py-2 rounded-full transition text-sm">Buscar</button>
                         </form>
                     </div>
@@ -279,10 +291,6 @@
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"></path></svg>
                     Categorías
                 </a>
-                <a href="{{ route('explorar.index') }}" class="bg-[#1F51FF] text-white px-6 py-2.5 rounded-full font-medium flex items-center gap-2 text-sm shadow-sm hover:opacity-90">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
-                    Buscar
-                </a>
 
                 <!-- 🚀 BOTÓN NEGRO RECUPERADO Y MEJORADO 🚀 -->
                 @php
@@ -300,28 +308,34 @@
 
        
             <!-- Sección de Reservas Activas (Sube de posición) -->
-            <section class="bg-[#FFF8EC] py-10 border-b border-yellow-100/50">
+            <section class="bg-[#FFF8EC] py-6 border-b border-yellow-100/50">
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <h3 class="text-[#f59e0b] font-bold text-[15px] mb-5">Tus reservas activas</h3>
-                    <div class="grid grid-cols-1 md:grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5">
-                        @forelse($reservas_activas ?? [] as $reserva)
-                        <!-- Tarjeta de Reserva -->
-                        <div class="bg-white p-5 rounded-2xl border border-yellow-200 shadow-sm flex flex-col justify-between">
-                            <div>
-                                <h4 class="font-bold text-gray-900 text-sm mb-1">{{ $reserva->product->name ?? 'Producto Reservado' }}</h4>
-                                <p class="text-gray-500 text-xs mb-4">{{ $reserva->supplier->name ?? 'Negocio' }}</p>
-                            </div>
-                            <div class="flex justify-between items-center">
-                                <span class="bg-yellow-50 text-yellow-600 border border-yellow-200 px-3 py-1 rounded text-[10px] font-bold uppercase">En espera</span>
-                                <a href="#" class="text-[#1F51FF] text-xs font-medium hover:underline">Ver &rarr;</a>
-                            </div>
+                    @php
+                        $reservasCount = \App\Models\Booking::count();
+                    @endphp
+                    <div class="flex flex-wrap items-center justify-between gap-4">
+                        <div class="flex items-center gap-3 flex-wrap">
+                            <h3 class="text-[#D97706] font-extrabold text-base tracking-wide m-0">Tus reservas activas</h3>
+                            <span class="inline-flex items-center justify-center min-w-[2.25rem] h-9 px-3 rounded-full text-sm font-extrabold leading-none shadow-sm transition-all {{ $reservasCount > 0 ? 'bg-[#f59e0b] text-white ring-4 ring-amber-500/15' : 'bg-amber-100 text-amber-800' }}">
+                                {{ $reservasCount }}
+                            </span>
+                            <span class="text-sm font-medium text-gray-700 ml-1">
+                                @if($reservasCount > 0)
+                                    Tienes {{ $reservasCount }} {{ $reservasCount === 1 ? 'reserva activa registrada' : 'reservas activas registradas' }}.
+                                @else
+                                    No tienes reservas activas en este momento.
+                                @endif
+                            </span>
                         </div>
-                    @empty
-                        <p class="text-gray-500 text-sm">No tienes reservas activas.</p>
-                    @endforelse
+                        
+                        @if($reservasCount > 0)
+                            <a href="{{ route('bookings.index') }}" class="text-sm font-bold text-[#D97706] hover:text-amber-800 transition whitespace-nowrap">
+                                Ver en Mis Reservas &rarr;
+                            </a>
+                        @endif
+                    </div>
                 </div>
-            </div>
-        </section>
+            </section>
 
     @elseif(auth()->check() && in_array(auth()->user()->role, ['proveedor', 'administrador', 'super_admin']))
         <!-- 2. VISTA EXCLUSIVA: ADMIN / PROVEEDOR (Banner simplificado) -->
@@ -331,7 +345,7 @@
         </section>
     @else
         <!-- VISTA INVITADO (Hero Original con la Chica Sonriendo) -->
-        <section class="bg-gradient-to-r from-[#0a194f] via-[#163080] to-[#2563eb] pt-20 pb-28 overflow-hidden relative">
+        <section class="bg-gradient-to-r from-[#0a194f] via-[#163080] to-[#2563eb] pt-20 pb-28 relative">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-1 lg:grid-cols-12 gap-8 items-center relative z-10">
                 <!-- Textos Invitado -->
                 <div class="lg:col-span-7 z-10">
@@ -346,8 +360,36 @@
                     <p class="text-lg text-blue-100/90 mb-10 max-w-lg font-light leading-relaxed">
                         Te ayudamos a que encuentres lo que necesites de forma rápida y confiable. Negocios, proveedores, productos y servicios en un solo lugar.
                     </p>
-                    <form action="{{ route('explorar.index') }}" method="GET" class="bg-white p-1.5 rounded-full flex items-center max-w-xl shadow-lg mt-8"><input type="text" name="search" placeholder="Busca negocios, productos o servicios..." class="w-full pl-6 pr-4 bg-transparent border-none focus:ring-0 text-gray-500 text-sm outline-none">
-                        @error('search') <span class="text-red-500 text-sm mt-1 block">{{ $message }}</span> @enderror<button type="submit" class="bg-[#3b82f6] hover:bg-[#2563eb] text-white font-semibold px-8 py-2.5 rounded-full transition text-sm whitespace-nowrap">Buscar</button></form>
+                    <form x-data="{ searchType: 'negocios', openType: false }" x-bind:action="searchType === 'productos' ? '{{ route('products.index') }}' : '{{ url('/explorar') }}'" method="GET" class="relative bg-white p-1.5 rounded-full flex items-center max-w-xl shadow-lg mt-8">
+                        <!-- Botón Dropdown Personalizado -->
+                        <div class="relative shrink-0">
+                            <button type="button" @click="openType = !openType" @click.outside="openType = false" class="flex items-center gap-2 pl-5 pr-4 py-2.5 text-sm font-semibold text-[#0f172a] hover:text-[#1F51FF] border-r border-gray-200 rounded-l-full bg-transparent transition shrink-0 focus:outline-none">
+                                <template x-if="searchType === 'negocios'">
+                                    <svg class="w-4 h-4 text-[#1F51FF]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1v2H9V7zm0 4h1v2H9v-2zm0 4h1v2H9v-2zm-3-4h1v2H6v-2zm0-4h1v2H6V7zm0 8h1v2H6v-2z"></path></svg>
+                                </template>
+                                <template x-if="searchType === 'productos'">
+                                    <svg class="w-4 h-4 text-[#1F51FF]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path></svg>
+                                </template>
+                                <span x-text="searchType === 'negocios' ? 'Negocios' : 'Productos'"></span>
+                                <svg class="w-3 h-3 text-gray-400 transition-transform duration-200" :class="openType ? 'rotate-180' : ''" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"></path></svg>
+                            </button>
+
+                            <!-- Menú flotante -->
+                            <div x-show="openType" x-transition class="absolute left-2 top-full mt-2 w-48 bg-white rounded-2xl shadow-xl border border-gray-100 py-1.5 z-50 text-left" style="display: none;">
+                                <button type="button" @click="searchType = 'negocios'; openType = false" class="w-full flex items-center gap-3 px-4 py-2.5 text-sm transition-colors" :class="searchType === 'negocios' ? 'bg-blue-50/80 text-[#1F51FF] font-bold' : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900'">
+                                    <svg class="w-4 h-4" :class="searchType === 'negocios' ? 'text-[#1F51FF]' : 'text-gray-400'" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1v2H9V7zm0 4h1v2H9v-2zm0 4h1v2H9v-2zm-3-4h1v2H6v-2zm0-4h1v2H6V7zm0 8h1v2H6v-2z"></path></svg>
+                                    Negocios
+                                </button>
+                                <button type="button" @click="searchType = 'productos'; openType = false" class="w-full flex items-center gap-3 px-4 py-2.5 text-sm transition-colors" :class="searchType === 'productos' ? 'bg-blue-50/80 text-[#1F51FF] font-bold' : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900'">
+                                    <svg class="w-4 h-4" :class="searchType === 'productos' ? 'text-[#1F51FF]' : 'text-gray-400'" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path></svg>
+                                    Productos
+                                </button>
+                            </div>
+                        </div>
+                        <input type="text" name="search" x-bind:placeholder="searchType === 'productos' ? 'Buscar productos...' : 'Buscar negocios...'" class="w-full pl-6 pr-4 bg-transparent border-none focus:ring-0 text-gray-500 text-sm outline-none">
+                        @error('search') <span class="text-red-500 text-sm mt-1 block absolute -bottom-6">{{ $message }}</span> @enderror
+                        <button type="submit" class="bg-[#3b82f6] hover:bg-[#2563eb] text-white font-semibold px-8 py-2.5 rounded-full transition text-sm whitespace-nowrap">Buscar</button>
+                    </form>
                 </div>
 
                 <!-- Imagen Chica Sonriendo -->
@@ -361,8 +403,26 @@
     @endif
     <!-- ========================================== -->
 
-
-   <!-- ========================================== -->
+    <!-- ========================================== -->
+    <!-- NUEVA SECCIÓN: VIDEO PROMOCIONAL           -->
+    <!-- ========================================== -->
+    @guest
+    <section class="bg-white py-16 relative z-10">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h2 class="text-3xl lg:text-4xl font-extrabold text-[#0f172a] mb-3 tracking-tight">Cómo llegan los clientes</h2>
+            <p class="text-gray-500 text-base mb-10 max-w-2xl mx-auto font-light">Alguien te elige, te llega el email con el contexto, reclamás tu perfil y respondés.</p>
+            <div class="relative w-full rounded-[32px] overflow-hidden shadow-2xl border border-gray-100 aspect-video bg-gray-900 group">
+                <video class="w-full h-full object-cover" controls playsinline preload="metadata">
+                    <source src="{{ asset('images/promo.mp4') }}" type="video/mp4">
+                    Tu navegador no soporta el formato de video.
+                </video>
+            </div>
+        </div>
+    </section>
+    @endguest
+    <!-- ========================================== -->
+    
+    <!-- ========================================== -->
     <!-- SECCIÓN 4: CATEGORÍAS                      -->
     <!-- ========================================== -->
     <section id="categorias" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 bg-white">
@@ -372,7 +432,7 @@
                 <p class="text-[#3b82f6] font-medium text-sm">Encuentra negocios y proveedores según lo que necesitas</p>
             </div>
             <!-- ENLACE ORIGINAL RECUPERADO DE GIT -->
-            <a href="{{ route('explorar.index') }}" class="text-[#3b82f6] font-medium hover:underline flex items-center gap-2 text-sm">Ver todas <span aria-hidden="true">&rarr;</span></a>
+            <a href="{{ auth()->check() ? route('explorar.index') : route('login') }}" class="text-[#3b82f6] font-medium hover:underline flex items-center gap-2 text-sm">Ver todas <span aria-hidden="true">&rarr;</span></a>
         </div>
         
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 md:gap-6">
@@ -380,7 +440,7 @@
             <!-- CICLO DINÁMICO DESDE LA BASE DE DATOS -->
             @foreach($categorias as $categoria)
             <!-- ENLACE DINÁMICO ORIGINAL RECUPERADO -->
-            <a href="{{ route('explorar.index', ['categoria' => $categoria->name]) }}" class="bg-white border border-gray-200 rounded-[16px] py-8 px-4 text-center hover:shadow-[0_8px_30px_rgb(0,0,0,0.06)] hover:border-[#3b82f6] transition duration-300 cursor-pointer group flex flex-col items-center">
+            <a href="{{ auth()->check() ? route('explorar.index', ['categoria' => $categoria->name]) : route('login') }}" class="bg-white border border-gray-200 rounded-[16px] py-8 px-4 text-center hover:shadow-[0_8px_30px_rgb(0,0,0,0.06)] hover:border-[#3b82f6] transition duration-300 cursor-pointer group flex flex-col items-center">
                 <div class="mb-4 text-[#2563eb] group-hover:-translate-y-1 transition duration-300">
                     
                     <!-- SWITCH DE ICONOS CON ARCHIVOS FÍSICOS -->
@@ -502,14 +562,14 @@
     <!-- ========================================== -->
     <!-- SECCIÓN 6: NEGOCIOS DESTACADOS             -->
     <!-- ========================================== -->
-    <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 bg-white">
+    <section id="negocios-destacados" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 bg-white">
         <!-- Encabezado de la sección -->
         <div class="flex justify-between items-end mb-10">
             <div>
                 <h2 class="text-3xl font-extrabold text-[#0f172a] mb-2 tracking-normal">Negocios destacados</h2>
                 <p class="text-gray-500 font-light text-sm">Proveedores verificados con los mejores productos y servicios</p>
             </div>
-            <a href="{{ route('explorar.index') }}" class="text-[#3b82f6] font-medium hover:underline flex items-center gap-2 text-sm">Ver todos <span aria-hidden="true">&rarr;</span></a>
+            <a href="{{ auth()->check() ? route('explorar.index') : route('login') }}" class="text-[#3b82f6] font-medium hover:underline flex items-center gap-2 text-sm">Ver todos <span aria-hidden="true">&rarr;</span></a>
         </div>
         
         <!-- Cuadrícula de 4 tarjetas -->
@@ -570,7 +630,7 @@
                             <span class="text-gray-400">({{ $negocio->reviews ?? '10+' }})</span>
                         </div>
                         <!-- ¡Etiqueta HTML '<a>' corregida aquí! -->
-                        <a href="{{ url('/perfil-publico?negocio=' . urlencode($negocio->name)) }}" class="text-[#3b82f6] font-medium hover:underline text-[13px]">Ver perfil</a>
+                        <a href="{{ auth()->check() ? url('/perfil-publico?negocio=' . urlencode($negocio->name)) : route('login') }}" class="text-[#3b82f6] font-medium hover:underline text-[13px]">Ver perfil</a>
                     </div>
                 </div>
             </div>
@@ -601,28 +661,96 @@
                 @php $stock = $producto->quantity ?? $producto->stock ?? 0; @endphp
                 <div class="bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden flex flex-col h-full hover:shadow-md transition-shadow relative group">
                     
-                    <div class="relative h-40 bg-gray-50 flex items-center justify-center p-3">
+                    <a href="{{ route('products.show', $producto->id) }}" class="relative h-40 bg-gray-50 flex items-center justify-center p-3 block">
                         <img 
     src="{{ str_starts_with($producto->image, 'http') ? $producto->image : asset('storage/' . $producto->image) }}" 
     alt="{{ $producto->name }}" 
-    class="w-full h-48 object-cover rounded-t-lg"
+    class="w-full h-48 object-cover rounded-t-lg group-hover:scale-105 transition-transform"
+    onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1542838132-92c53300491e?w=400&q=80';"
 >
                         @if($stock > 0)
                             <span class="absolute top-3 right-3 bg-green-50 text-green-500 border border-green-100 px-2 py-0.5 rounded-full text-[10px] font-bold">Disponible</span>
                         @else
                             <span class="absolute top-3 right-3 bg-red-50 text-red-500 border border-red-100 px-2 py-0.5 rounded-full text-[10px] font-bold">Agotado</span>
                         @endif
-                    </div>
+                    </a>
 
                     <div class="p-4 flex-1 flex flex-col justify-between">
                         <div>
-                            <p class="text-[10px] text-gray-400 uppercase mb-1">{{ $producto->brand->name ?? $producto->supplier->name ?? 'SINGKI' }}</p>
-                            <h4 class="text-xs font-bold text-gray-900 mb-2 leading-tight">{{ $producto->name }}</h4>
-                            <p class="text-sm font-bold text-[#1F51FF] mb-3">C$ {{ number_format($producto->cost ?? $producto->price ?? 0, 0) }}</p>
+                            @php
+                                $supName = $producto->brand->name ?? $producto->supplier->name ?? '';
+                                if (empty($supName) || strtolower($supName) === 'singki' || strtolower($supName) === 'wawastech') {
+                                    $negociosCatalogo = ['Distribuidora Alimentos Norte', 'Comercial San José', 'Agroindustria del Norte', 'Abastos Central Estelí', 'Mercadito El Sol', 'Importadora Las Segovias', 'Distribuidora La Favorita', 'Suplidora Nicaragüense'];
+                                    $supName = $negociosCatalogo[($producto->id ?? 1) % count($negociosCatalogo)];
+                                }
+                            @endphp
+                            <p class="text-[10px] text-gray-400 uppercase mb-1">{{ $supName }}</p>
+                            <a href="{{ route('products.show', $producto->id) }}" class="block text-xs font-bold text-gray-900 hover:text-[#1F51FF] mb-2 leading-tight transition-colors">{{ $producto->name }}</a>
+                            <p class="text-sm font-bold text-[#1F51FF] mb-2">C$ {{ number_format($producto->cost ?? $producto->price ?? 0, 0) }}</p>
+                            <a href="{{ route('products.show', $producto->id) }}" class="inline-block text-[#1F51FF] text-[11px] font-bold hover:underline mb-3">Ver detalles &rarr;</a>
+                        </div>
+                        
+                        <div class="mb-2">
+                            @php
+                                $isFav = false;
+                                if (auth()->check()) {
+                                    $isFav = \App\Models\Favorite::where('user_id', auth()->id())
+                                        ->where('name', 'U:' . auth()->id() . '|P:' . $producto->id)
+                                        ->exists();
+                                }
+                            @endphp
+                            <div x-data="{ 
+                                isFav: {{ $isFav ? 'true' : 'false' }},
+                                animating: false,
+                                init() {
+                                    if(localStorage.getItem('fav_product_{{ $producto->id }}') === 'true') {
+                                        this.isFav = true;
+                                    }
+                                },
+                                async toggleFav() {
+                                    @if(!auth()->check()) window.location.href = '{{ route('login') }}'; return; @endif
+                                    this.animating = true;
+                                    setTimeout(() => this.animating = false, 300);
+                                    this.isFav = !this.isFav;
+
+                                    if(this.isFav) {
+                                        localStorage.setItem('fav_product_{{ $producto->id }}', 'true');
+                                        let arr = JSON.parse(localStorage.getItem('singki_fav_products') || '[]');
+                                        if(!arr.some(p => p.id == {{ $producto->id }})) {
+                                            arr.push({id: {{ $producto->id }}, name: '{{ addslashes($producto->name) }}', price: '{{ $producto->price }}', image: '{{ $producto->image }}'});
+                                            localStorage.setItem('singki_fav_products', JSON.stringify(arr));
+                                        }
+                                        if(typeof window.showSingkiToast === 'function') window.showSingkiToast('✓ Producto añadido a favoritos');
+                                    } else {
+                                        localStorage.removeItem('fav_product_{{ $producto->id }}');
+                                        let arr = JSON.parse(localStorage.getItem('singki_fav_products') || '[]');
+                                        localStorage.setItem('singki_fav_products', JSON.stringify(arr.filter(p => p.id != {{ $producto->id }})));
+                                        if(typeof window.showSingkiToast === 'function') window.showSingkiToast('Eliminado de tus favoritos');
+                                    }
+
+                                    try {
+                                        fetch('{{ route('favorites.toggle') }}', {
+                                            method: 'POST',
+                                            headers: { 
+                                                'Content-Type': 'application/json', 
+                                                'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                                                'X-Requested-With': 'XMLHttpRequest',
+                                                'Accept': 'application/json'
+                                            },
+                                            body: JSON.stringify({ type: 'product', id: {{ $producto->id }} })
+                                        });
+                                    } catch(e) { }
+                                }
+                            }">
+                                <button type="button" @click.prevent.stop="toggleFav()" :class="isFav ? 'bg-red-50 border-red-200 text-red-600' : 'hover:bg-gray-50 text-gray-500'" :style="isFav ? 'background-color: #fef2f2 !important; border-color: #fecaca !important; color: #dc2626 !important;' : ''" class="w-full border rounded-lg py-1.5 flex items-center justify-center gap-1.5 text-[10px] font-bold transition-colors relative z-10">
+                                    <svg class="w-3.5 h-3.5 transition-transform duration-300" :style="isFav ? 'fill: #ef4444 !important; stroke: #ef4444 !important; color: #ef4444 !important;' : 'fill: none; stroke: currentColor;'" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path></svg>
+                                    <span x-text="isFav ? 'En Favoritos' : 'Favorito'" :class="isFav ? 'text-red-600' : ''"></span>
+                                </button>
+                            </div>
                         </div>
                         
                         @if($stock <= 0)
-                            <a href="{{ url('/producto/'.$producto->id.'/reservar') }}" class="w-full bg-[#1F51FF] hover:bg-blue-700 text-white text-center py-2.5 rounded-lg text-xs font-medium transition-colors mt-auto opacity-0 group-hover:opacity-100 absolute bottom-0 left-0">
+                            <a href="{{ url('/producto/'.$producto->id.'/reservar') }}" class="w-full bg-[#1F51FF] hover:bg-blue-700 text-white text-center py-2.5 rounded-lg text-xs font-medium transition-colors mt-auto opacity-0 group-hover:opacity-100 absolute bottom-0 left-0 z-20">
                                 Reservar cuando esté disponible
                             </a>
                         @endif
@@ -632,25 +760,7 @@
                 <p class="text-gray-500 text-sm">No hay productos.</p>
             @endforelse
 
-            <!-- PRODUCTO ESTÁTICO (DEMO AGOTADO PARA PRESENTACIÓN) -->
-            <div class="group relative bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden flex flex-col h-full hover:shadow-md transition-all duration-300 pb-2">
-                
-                <div class="relative h-40 bg-gray-50 flex items-center justify-center p-3">
-                    <img src="https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?w=300&q=80" alt="Monitor Dell 27 4K" class="object-contain max-h-full">
-                    <span class="absolute top-3 right-3 bg-red-50 text-red-500 border border-red-100 px-2 py-0.5 rounded-full text-[10px] font-bold tracking-wide">Agotado</span>
-                </div>
 
-                <div class="p-4 flex-1 flex flex-col bg-white">
-                    <p class="text-[10px] text-gray-400 uppercase tracking-wider mb-1">Dell</p>
-                    <h4 class="text-xs font-bold text-[#040116] leading-tight mb-2">Monitor Dell 27" 4K</h4>
-                    <p class="text-sm font-bold text-[#1F51FF] mt-auto">C$ 4,200</p>
-                </div>
-                
-                <!-- Botón Hover Anclado Abajo -->
-                <a href="{{ url('/producto/agotado/reservar') }}" class="absolute bottom-0 left-0 w-full bg-[#1F51FF] hover:bg-blue-700 text-white text-center py-2.5 text-xs font-medium opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-20">
-                    Reservar cuando esté disponible
-                </a>
-            </div>
         </div>
     </section>
 
@@ -732,15 +842,15 @@
         <p class="text-gray-500 text-[15px] mb-16 font-light max-w-xl mx-auto leading-relaxed">Clientes, emprendedores y proveedores que ya confían en SINGKI para hacer crecer sus negocios.</p>
         
         <div x-data="{ active: 1 }" class="relative w-full max-w-[1200px] mx-auto mb-16">
-            <div class="flex flex-col md:flex-row justify-center items-center gap-6 lg:gap-10 relative w-full overflow-hidden">
+            <div class="flex flex-col md:flex-row justify-center items-center gap-6 lg:gap-10 relative w-full overflow-visible py-10 px-4">
                 
                 <!-- Tarjeta 0 -->
-                <div @click="active = 0" class="transition-all duration-500 ease-in-out transform cursor-pointer w-full md:w-[300px] lg:w-[320px] shrink-0 rounded-[32px] overflow-hidden" :class="active === 0 ? 'scale-100 md:scale-110 z-20 bg-[#2563eb] shadow-[0_20px_50px_rgba(37,99,235,0.3)]' : 'scale-90 z-10 bg-blue-300 opacity-60 md:opacity-50 md:blur-[1px] hover:opacity-80 hover:blur-none hidden md:block'">
-                    <div class="h-48 md:h-56 relative">
-                        <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=500&q=80" class="w-full h-full object-cover transition-all duration-500" :class="active === 0 ? 'grayscale-0' : 'grayscale'">
+                <div @click="active = 0" class="transition-all duration-500 ease-in-out transform cursor-pointer w-full md:w-[300px] lg:w-[320px] shrink-0 rounded-[28px] overflow-hidden" :class="active === 0 ? 'scale-100 md:scale-110 z-20 bg-[#2563eb] shadow-[0_20px_50px_rgba(37,99,235,0.3)]' : 'scale-90 z-10 bg-blue-300 opacity-60 md:opacity-50 md:blur-[1px] hover:opacity-80 hover:blur-none hidden md:block'">
+                    <div class="h-48 md:h-56 relative rounded-t-[28px] overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=500&q=80" class="w-full h-full object-cover transition-all duration-500 rounded-t-[28px]" :class="active === 0 ? 'grayscale-0' : 'grayscale'">
                         <div x-show="active === 0" x-transition.opacity class="absolute bottom-4 left-4 bg-slate-900/70 backdrop-blur-md text-white text-[10px] font-semibold px-4 py-1.5 rounded-full uppercase tracking-wider border border-white/10">Cliente</div>
                     </div>
-                    <div class="p-6 md:p-8 text-left transition-all duration-500" :class="active === 0 ? 'text-white' : 'text-blue-50/80'">
+                    <div class="p-6 md:p-8 text-left transition-all duration-500 rounded-b-[28px]" :class="active === 0 ? 'text-white' : 'text-blue-50/80'">
                         <div class="text-yellow-400 text-sm md:text-lg mb-3 tracking-widest">★★★★★</div>
                         <p class="mb-4 font-light leading-relaxed text-[12px] md:text-[14px]" :class="active === 0 ? 'line-clamp-none' : 'line-clamp-3'">"Encontré exactamente lo que necesitaba en minutos. SINGKI me conectó con un proveedor confiable y el proceso fue súper sencillo."</p>
                         <div>
@@ -750,12 +860,12 @@
                 </div>
 
                 <!-- Tarjeta 1 -->
-                <div @click="active = 1" class="transition-all duration-500 ease-in-out transform cursor-pointer w-full md:w-[300px] lg:w-[320px] shrink-0 rounded-[32px] overflow-hidden" :class="active === 1 ? 'scale-100 md:scale-110 z-20 bg-[#2563eb] shadow-[0_20px_50px_rgba(37,99,235,0.3)]' : 'scale-90 z-10 bg-blue-300 opacity-60 md:opacity-50 md:blur-[1px] hover:opacity-80 hover:blur-none hidden md:block'">
-                    <div class="h-48 md:h-56 relative">
-                        <img src="https://images.unsplash.com/photo-1556157382-97eda2d62296?w=500&q=80" class="w-full h-full object-cover transition-all duration-500" :class="active === 1 ? 'grayscale-0' : 'grayscale'">
+                <div @click="active = 1" class="transition-all duration-500 ease-in-out transform cursor-pointer w-full md:w-[300px] lg:w-[320px] shrink-0 rounded-[28px] overflow-hidden" :class="active === 1 ? 'scale-100 md:scale-110 z-20 bg-[#2563eb] shadow-[0_20px_50px_rgba(37,99,235,0.3)]' : 'scale-90 z-10 bg-blue-300 opacity-60 md:opacity-50 md:blur-[1px] hover:opacity-80 hover:blur-none hidden md:block'">
+                    <div class="h-48 md:h-56 relative rounded-t-[28px] overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1556157382-97eda2d62296?w=500&q=80" class="w-full h-full object-cover transition-all duration-500 rounded-t-[28px]" :class="active === 1 ? 'grayscale-0' : 'grayscale'">
                         <div x-show="active === 1" x-transition.opacity class="absolute bottom-4 left-4 bg-slate-900/70 backdrop-blur-md text-white text-[10px] font-semibold px-4 py-1.5 rounded-full uppercase tracking-wider border border-white/10">Emprendedor</div>
                     </div>
-                    <div class="p-6 md:p-8 text-left transition-all duration-500" :class="active === 1 ? 'text-white' : 'text-blue-50/80'">
+                    <div class="p-6 md:p-8 text-left transition-all duration-500 rounded-b-[28px]" :class="active === 1 ? 'text-white' : 'text-blue-50/80'">
                         <div class="text-yellow-400 text-sm md:text-lg mb-3 tracking-widest">★★★★★</div>
                         <p class="mb-4 font-light leading-relaxed text-[12px] md:text-[14px]" :class="active === 1 ? 'line-clamp-none' : 'line-clamp-3'">"Registré mi negocio en SINGKI y en la primera semana ya tenía consultas reales. La plataforma le da visibilidad a mi emprendimiento."</p>
                         <div>
@@ -766,12 +876,12 @@
                 </div>
 
                 <!-- Tarjeta 2 -->
-                <div @click="active = 2" class="transition-all duration-500 ease-in-out transform cursor-pointer w-full md:w-[300px] lg:w-[320px] shrink-0 rounded-[32px] overflow-hidden" :class="active === 2 ? 'scale-100 md:scale-110 z-20 bg-[#2563eb] shadow-[0_20px_50px_rgba(37,99,235,0.3)]' : 'scale-90 z-10 bg-blue-300 opacity-60 md:opacity-50 md:blur-[1px] hover:opacity-80 hover:blur-none hidden md:block'">
-                    <div class="h-48 md:h-56 relative">
-                        <img src="https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?w=500&q=80" class="w-full h-full object-cover transition-all duration-500" :class="active === 2 ? 'grayscale-0' : 'grayscale'">
+                <div @click="active = 2" class="transition-all duration-500 ease-in-out transform cursor-pointer w-full md:w-[300px] lg:w-[320px] shrink-0 rounded-[28px] overflow-hidden" :class="active === 2 ? 'scale-100 md:scale-110 z-20 bg-[#2563eb] shadow-[0_20px_50px_rgba(37,99,235,0.3)]' : 'scale-90 z-10 bg-blue-300 opacity-60 md:opacity-50 md:blur-[1px] hover:opacity-80 hover:blur-none hidden md:block'">
+                    <div class="h-48 md:h-56 relative rounded-t-[28px] overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?w=500&q=80" class="w-full h-full object-cover transition-all duration-500 rounded-t-[28px]" :class="active === 2 ? 'grayscale-0' : 'grayscale'">
                         <div x-show="active === 2" x-transition.opacity class="absolute bottom-4 left-4 bg-slate-900/70 backdrop-blur-md text-white text-[10px] font-semibold px-4 py-1.5 rounded-full uppercase tracking-wider border border-white/10">Proveedora</div>
                     </div>
-                    <div class="p-6 md:p-8 text-left transition-all duration-500" :class="active === 2 ? 'text-white' : 'text-blue-50/80'">
+                    <div class="p-6 md:p-8 text-left transition-all duration-500 rounded-b-[28px]" :class="active === 2 ? 'text-white' : 'text-blue-50/80'">
                         <div class="text-yellow-400 text-sm md:text-lg mb-3 tracking-widest">★★★★★</div>
                         <p class="mb-4 font-light leading-relaxed text-[12px] md:text-[14px]" :class="active === 2 ? 'line-clamp-none' : 'line-clamp-3'">"El panel de administración es muy completo. Puedo gestionar mi inventario, ver reservas y chatear con los clientes fácilmente."</p>
                         <div>
@@ -891,8 +1001,8 @@
             <h2 class="text-4xl lg:text-5xl font-extrabold text-[#2563eb] mb-4 tracking-normal">¿Listo para empezar?</h2>
             <p class="text-[#3b82f6] text-[15px] font-light mb-10 max-w-2xl mx-auto">Únete a la plataforma que conecta negocios con oportunidades.</p>
             <div class="flex flex-col sm:flex-row gap-4 items-center justify-center mt-6 w-full px-6 sm:px-0">
-                <button class="w-full sm:w-auto bg-[#2563eb] text-white font-bold px-8 py-3 rounded-xl hover:bg-[#1d4ed8] transition shadow-sm text-[15px]">Crear cuenta gratis</button>
-                <button class="w-full sm:w-auto bg-white border border-[#2563eb] text-[#2563eb] font-bold px-8 py-3 rounded-xl hover:bg-blue-50 transition text-[15px]">Explorar negocios</button>
+                <a href="{{ route('register') }}" class="w-full sm:w-auto bg-[#2563eb] text-white font-bold px-8 py-3 rounded-xl hover:bg-[#1d4ed8] transition shadow-sm text-[15px] inline-block text-center">Crear cuenta gratis</a>
+                <a href="#negocios-destacados" onclick="event.preventDefault(); document.getElementById('negocios-destacados')?.scrollIntoView({ behavior: 'smooth' });" class="w-full sm:w-auto bg-white border border-[#2563eb] text-[#2563eb] font-bold px-8 py-3 rounded-xl hover:bg-blue-50 transition text-[15px] inline-block text-center">Explorar negocios</a>
             </div>
         </div>
         @endguest
@@ -1047,5 +1157,7 @@
         }
     }
 </script>
+@include('components.accessibility-widget')
+@include('components.welcome-scroll-animations')
 </body>
 </html>
