@@ -252,6 +252,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // =========================================================================
     // MODULO: FONDO ANIMADO FRANJA AZUL (Solo para Welcome /)
     // =========================================================================
+    @auth
     if (isWelcome) {
         const headers = Array.from(document.querySelectorAll('h1, h2, h3, p')).filter(el => {
             const text = el.textContent.toLowerCase();
@@ -389,6 +390,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
     }
+    @endauth
 
     // =========================================================================
     // MODULO: ANIMACIONES SCROLL REVEAL BIDIRECCIONALES
@@ -467,14 +469,16 @@ document.addEventListener('DOMContentLoaded', () => {
         ].join(', ');
 
         const includeSelectors = [
-            'section h1', 'section h2', 'section h3', 'section p.text-gray-500', 'section p.text-gray-600',
-            'div > h1', 'div > h2', 'div > h3', 'div > p.text-gray-500', 'div > p.text-gray-600',
+            'section h1', 'section h2', 'section h3', 'section p',
+            'div.bg-white > h2', 'div.bg-white > p',
+            'div.text-center > h2', 'div.text-center > p',
             'form',
+            'section span.inline-block', 'section div.inline-flex',
+            'section img',
             'div[class*="grid"] > *',
-            '.flex.flex-wrap > .bg-white.rounded-full', 
-            'main > div > div.max-w-7xl > div.grid > *',
-            '.bg-blue-600', '.bg-blue-900', 
-            'section > div > img' 
+            '.space-y-5 > div',
+            '.flex.gap-4 > a',
+            '.flex.flex-wrap > .bg-white.rounded-full'
         ].join(', ');
 
         const possibleItems = document.querySelectorAll(includeSelectors);
@@ -520,6 +524,17 @@ document.addEventListener('DOMContentLoaded', () => {
         }, observerOptions);
 
         document.querySelectorAll('.singki-scroll-item').forEach(el => scrollObserver.observe(el));
+
+        // Re-check after splash screen loader might have finished (fallback to ensure no items get stuck)
+        setTimeout(() => {
+            document.querySelectorAll('.singki-scroll-item').forEach(el => {
+                const rect = el.getBoundingClientRect();
+                if (rect.top < window.innerHeight && rect.bottom > 0) {
+                    el.classList.add('singki-visible');
+                    el.classList.remove('singki-above');
+                }
+            });
+        }, 3600); // 3500ms loader + 100ms
     }
 });
 </script>
