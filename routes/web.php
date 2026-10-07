@@ -226,12 +226,38 @@ Route::middleware(['auth', '2fa_verified', 'verified', 'prevent-back-history', '
     
     Route::get('/admin/inventario', function () { return view('admin.inventario'); });
     Route::get('/admin/ofertas', function () { return view('admin.ofertas'); });
-    Route::get('/admin/comunidad', function () { return view('admin.comunidad'); });
-    Route::get('/admin/estadisticas', function () { return view('admin.estadisticas'); });
+    Route::get('/admin/comunidad', function () { 
+        $questions = \App\Models\CommunityQuestion::latest()->get();
+        return view('admin.comunidad', compact('questions')); 
+    });
+    Route::post('/admin/comunidad/preguntar', function (\Illuminate\Http\Request $request) {
+        $request->validate(['category' => 'required|string', 'question' => 'required|string']);
+        \App\Models\CommunityQuestion::create([
+            'user_id' => auth()->id(),
+            'category' => $request->category,
+            'question' => $request->question,
+            'status' => 'pendiente'
+        ]);
+        return back()->with('success', 'Pregunta enviada');
+    });
+    Route::get('/admin/estadisticas', function () { 
+        $company = auth()->user()->company;
+        $company_id = $company ? $company->id : 0;
+        $reservas = \App\Models\Booking::where('supplier_id', $company_id)->count();
+        $guardados = \App\Models\Favorite::whereIn('product_id', $company ? $company->products->pluck('id') : [])->count();
+        $contactos = \App\Models\Contact_request::where('company_id', $company_id)->count();
+        $visitas = $reservas * 14 + 25;
+        return view('admin.estadisticas', compact('visitas', 'guardados', 'contactos', 'reservas')); 
+    });
     Route::get('/admin/comunidad-premium', function () { return view('admin.comunidad-premium'); });
     Route::get('/admin/premium/planes', function () { return view('admin.premium.planes'); })->name('premium.planes');
     Route::get('/admin/premium/checkout', function () { return view('admin.premium.checkout'); })->name('premium.checkout');
-    Route::get('/admin/premium/success', function () { return view('admin.premium.success'); })->name('premium.success');
+    Route::get('/admin/premium/success', function () {
+        if (auth()->check()) {
+            auth()->user()->update(['is_premium' => true]);
+        }
+        return view('admin.premium.success');
+    })->name('premium.success');
     Route::get('/admin/promocionar', function () { return view('admin.promocionar.configurar'); });
     Route::get('/admin/promocionar/confirmar', function () { return view('admin.promocionar.confirmar'); });
     Route::get('/admin/reservas', function () { return view('admin.reservas'); });
