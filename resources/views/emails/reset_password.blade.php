@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Código de Verificación - SINGKI</title>
+    <title>Restablecer Contraseña - SINGKI</title>
 </head>
 <body style="margin: 0; padding: 0; background-color: #f4f4f5; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
     <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="table-layout: fixed; background-color: #f4f4f5; padding: 40px 0;">
@@ -15,7 +15,7 @@
                     <tr>
                         <td style="background-color: #0f172a; padding: 30px 40px; text-align: left;">
                             <img src="{{ $message->embed(public_path('images/LogoAzul.png')) }}" alt="SINGKI" height="60" style="margin-bottom: 20px; display: block; border: none; outline: none;">
-                            <h1 style="color: #ffffff; font-size: 24px; margin: 0; font-weight: 600;">Código de acceso único</h1>
+                            <h1 style="color: #ffffff; font-size: 24px; margin: 0; font-weight: 600;">Restablecer contraseña</h1>
                         </td>
                     </tr>
 
@@ -26,21 +26,28 @@
                                 Hola, {{ $name ?? 'Usuario' }}:
                             </p>
                             <p style="font-size: 15px; line-height: 1.6; color: #475569; margin-bottom: 30px;">
-                                Para completar tu acción o acceso en tu cuenta de SINGKI, introduce el siguiente código de verificación (OTP):
+                                Recibiste este correo porque hemos recibido una solicitud de restablecimiento de contraseña para tu cuenta en SINGKI. Haz clic en el botón de abajo para elegir una nueva contraseña:
                             </p>
 
-                            <!-- Caja del Código -->
+                            <!-- Botón de Restablecimiento -->
                             <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%">
                                <tr>
-                                   <td align="left" style="background-color: #f8fafc; border-left: 4px solid #2563eb; padding: 20px; border-radius: 4px;">
-                                       <span style="font-size: 13px; color: #64748b; text-transform: uppercase; letter-spacing: 1px; display: block; margin-bottom: 5px;">Código de verificación:</span>
-                                       <span style="font-size: 32px; font-weight: 800; color: #0f172a; letter-spacing: 4px;">{{ $code }}</span>
+                                   <td align="center" style="padding: 10px 0 30px 0;">
+                                       <a href="{{ $url ?? '#' }}" style="background-color: #2563eb; color: #ffffff; padding: 14px 32px; border-radius: 6px; font-size: 16px; font-weight: 600; text-decoration: none; display: inline-block;">
+                                           Restablecer contraseña
+                                       </a>
                                    </td>
                                </tr>
                             </table>
 
+                            <!-- Enlace de respaldo en caso de que el botón falle -->
+                            <p style="font-size: 14px; color: #475569; margin-bottom: 20px; line-height: 1.6;">
+                                Si el botón no funciona, copia y pega el siguiente enlace directamente en tu navegador:<br>
+                                <a href="{{ $url ?? '#' }}" style="color: #2563eb; word-break: break-all;">{{ $url ?? 'AQUÍ_IRÁ_EL_ENLACE' }}</a>
+                            </p>
+
                             <p style="font-size: 14px; color: #64748b; margin-top: 30px; margin-bottom: 0;">
-                                No compartas este código con nadie ni reenvíes este correo electrónico. Este código expirará en pocos minutos.
+                                Si no solicitaste un restablecimiento de contraseña, puedes ignorar este correo electrónico con seguridad. Tu contraseña no cambiará.
                             </p>
                         </td>
                     </tr>

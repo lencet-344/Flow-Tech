@@ -12,33 +12,33 @@ class DatabaseSeeder extends Seeder
     {
         
         User::create([
-            'name' => 'Admin Principal',
-            'email' => 'admin@flowtech.com',
-            'password' => Hash::make('password'),
+            'name' => 'Administrador Principal',
+            'email' => 'administrador608@gmail.com',
+            'password' => Hash::make('singkiuia01'),
             'role' => 'administrador',
         ]);
 
         
         User::create([
             'name' => 'Proveedor de Prueba',
-            'email' => 'proveedor@flowtech.com',
-            'password' => Hash::make('password'),
+            'email' => 'proveedor345singki@gmail.com',
+            'password' => Hash::make('123proveedor'),
             'role' => 'proveedor',
         ]);
 
         
         User::create([
             'name' => 'Usuario Normal',
-            'email' => 'usuario@flowtech.com',
-            'password' => Hash::make('password'),
-            'role' => 'usuario',
+            'email' => 'edmundoherrera234@gmail.com',
+            'password' => Hash::make('123usuario'),
+            'role' => 'cliente',
         ]);
 
         User::create([
             'name' => 'Auditor',
             'email' => 'usuario@flowtech.com',
             'password' => Hash::make('password'),
-            'role' => 'Auditor',
+            'role' => 'auditor',
         ]);
 
         $this->call(CategorySeeder::class);
