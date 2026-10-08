@@ -29,6 +29,11 @@ Route::middleware(['auth'])->group(function () {
 
 // ── RUTAS PÚBLICAS ──────────────────────────────────────────────────────────
 Route::get('/', function () {
+
+    $totalNegocios = \App\Models\Company::count();
+    $totalUsuarios = \App\Models\User::count();
+    $promedioCalificacion = 4.9; // Puedes dejarlo fijo o consultar tu tabla de reseñas si la tienes
+
     $categorias = \App\Models\Category::withCount('companies')->take(8)->get(); 
     $negocios_destacados = \App\Models\Company::where('status', 'activo')->take(4)->get();
     $productos = \App\Models\Product::with('supplier')->latest()->take(6)->get();
@@ -38,7 +43,7 @@ Route::get('/', function () {
         $mis_reservas = \App\Models\Booking::latest()->take(3)->get();
     }
 
-    return view('welcome', compact('categorias', 'negocios_destacados', 'productos', 'mis_reservas'));
+    return view('welcome', compact('categorias', 'negocios_destacados', 'productos', 'mis_reservas', 'totalNegocios', 'totalUsuarios', 'promedioCalificacion'));
 })->name('welcome');
 
 Route::get('/mapa', function () { return view('mapa'); });
@@ -146,6 +151,8 @@ Route::middleware(['auth'])->group(function () {
 
 // ── RUTAS DE CATÁLOGO (Accesibles para usuarios autenticados) ──────────────
     Route::post('/favoritos/toggle', [FavoriteController::class, 'toggle'])->name('favorites.toggle');
+
+    Route::post('/dejar-resena', [App\Http\Controllers\ReviewController::class, 'store'])->name('resenas.store');
 
 });
 
