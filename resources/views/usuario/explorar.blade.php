@@ -231,7 +231,7 @@
                             @if(!empty($negocio->logo))
                                 <img src="{{ asset('storage/' . $negocio->logo) }}" alt="{{ $negocio->name }}" class="w-full h-full object-cover">
                             @else
-                                <div class="w-full h-full flex items-center justify-center bg-[#3565fd]">
+                                <div class="w-full h-full flex items-center justify-center bg-[#264fe3]" style="background-color: #264fe3;">
                                     <span class="text-3xl font-extrabold text-white tracking-widest uppercase">
                                         {{ mb_substr($negocio->name, 0, 2) }}
                                     </span>
@@ -276,7 +276,7 @@
                             @if(!empty($negocio->logo))
                                 <img src="{{ asset('storage/' . $negocio->logo) }}" alt="{{ $negocio->name }}" class="w-full h-full object-cover">
                             @else
-                                <div class="w-full h-full flex items-center justify-center bg-[#3565fd]">
+                                <div class="w-full h-full flex items-center justify-center bg-[#264fe3]" style="background-color: #264fe3;">
                                     <span class="text-3xl font-extrabold text-white tracking-widest uppercase">
                                         {{ mb_substr($negocio->name, 0, 2) }}
                                     </span>

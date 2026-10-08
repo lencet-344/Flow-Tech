@@ -37,6 +37,52 @@ class InventoryController extends Controller
     public function store(InventoryRequest $request)
     {
         $data = $request->validated();
+        
+        if (empty($data['supplier_id'])) {
+            $supplierId = \App\Models\Supplier::inRandomOrder()->value('id');
+            if (!$supplierId) {
+                $company = \App\Models\Company::inRandomOrder()->first();
+                $supplier = new \App\Models\Supplier();
+                $supplier->name = mb_substr($company->name ?? 'Negocio Aleatorio', 0, 50);
+                $supplier->age = 30;
+                $supplier->gender = 'N/A';
+                $supplier->address = mb_substr($company->address ?? 'N/A', 0, 100);
+                $supplier->email = mb_substr(uniqid().'@test.com', 0, 50);
+                $supplier->telephone = mb_substr(uniqid(), 0, 15);
+                $supplier->identification_card = mb_substr(uniqid(), 0, 20);
+                $supplier->company = mb_substr($company->name ?? 'Negocio Aleatorio', 0, 50);
+                $supplier->code_company = mb_substr(uniqid(), 0, 20);
+                $supplier->no_INSS = mb_substr(uniqid(), 0, 20);
+                $supplier->save();
+                $supplierId = $supplier->id;
+            }
+            $data['supplier_id'] = $supplierId;
+        }
+
+        if (!empty($data['product_id'])) {
+            $product = \App\Models\Product::find($data['product_id']);
+            if ($product && !empty($data['presentation'])) {
+                $product->update([
+                    'presentation' => $data['presentation'],
+                    'quantity' => $data['quantity'],
+                    'cost' => $data['unit_cost']
+                ]);
+            }
+        } elseif (!empty($data['product_name'])) {
+            $product = \App\Models\Product::create([
+                'name' => mb_substr($data['product_name'], 0, 30),
+                'presentation' => $data['presentation'],
+                'type' => 'Producto',
+                'cost' => $data['unit_cost'],
+                'quantity' => $data['quantity'],
+                'state' => 'activo',
+                'code_bar' => uniqid(),
+            ]);
+            $data['product_id'] = $product->id;
+        }
+
+        unset($data['product_name'], $data['presentation']);
+
         $data['batch_number'] = rand(100000, 999999);
         $data['status'] = 'Activo';
         Inventory::create($data);
@@ -69,7 +115,54 @@ class InventoryController extends Controller
     public function update(InventoryRequest $request, string $id)
     {
         $inventory = Inventory::with("product")->findOrFail($id);
-        $inventory->update($request->validated());
+        $data = $request->validated();
+
+        if (empty($data['supplier_id'])) {
+            $supplierId = \App\Models\Supplier::inRandomOrder()->value('id');
+            if (!$supplierId) {
+                $company = \App\Models\Company::inRandomOrder()->first();
+                $supplier = new \App\Models\Supplier();
+                $supplier->name = mb_substr($company->name ?? 'Negocio Aleatorio', 0, 50);
+                $supplier->age = 30;
+                $supplier->gender = 'N/A';
+                $supplier->address = mb_substr($company->address ?? 'N/A', 0, 100);
+                $supplier->email = mb_substr(uniqid().'@test.com', 0, 50);
+                $supplier->telephone = mb_substr(uniqid(), 0, 15);
+                $supplier->identification_card = mb_substr(uniqid(), 0, 20);
+                $supplier->company = mb_substr($company->name ?? 'Negocio Aleatorio', 0, 50);
+                $supplier->code_company = mb_substr(uniqid(), 0, 20);
+                $supplier->no_INSS = mb_substr(uniqid(), 0, 20);
+                $supplier->save();
+                $supplierId = $supplier->id;
+            }
+            $data['supplier_id'] = $supplierId;
+        }
+
+        if (!empty($data['product_id'])) {
+            $product = \App\Models\Product::find($data['product_id']);
+            if ($product && !empty($data['presentation'])) {
+                $product->update([
+                    'presentation' => $data['presentation'],
+                    'quantity' => $data['quantity'],
+                    'cost' => $data['unit_cost']
+                ]);
+            }
+        } elseif (!empty($data['product_name'])) {
+            $product = \App\Models\Product::create([
+                'name' => mb_substr($data['product_name'], 0, 30),
+                'presentation' => $data['presentation'],
+                'type' => 'Producto',
+                'cost' => $data['unit_cost'],
+                'quantity' => $data['quantity'],
+                'state' => 'activo',
+                'code_bar' => uniqid(),
+            ]);
+            $data['product_id'] = $product->id;
+        }
+
+        unset($data['product_name'], $data['presentation']);
+
+        $inventory->update($data);
         return redirect()->route("inventories.index")->with("success", 'Inventario ha sido actualizado correctamente.');
     }
 

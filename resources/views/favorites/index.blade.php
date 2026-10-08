@@ -85,7 +85,7 @@
                     @if(!empty($company->logo))
                         <img src="{{ asset('storage/' . $company->logo) }}" class="w-full h-full object-cover">
                     @else
-                        <div class="w-full h-full flex items-center justify-center bg-gradient-to-br from-[#1F51FF] to-blue-800">
+                        <div class="w-full h-full flex items-center justify-center bg-[#264fe3]" style="background-color: #264fe3;">
                             <span class="text-4xl font-extrabold text-white">{{ mb_substr($company->name, 0, 2) }}</span>
                         </div>
                     @endif
@@ -113,7 +113,7 @@
                         NEGOCIO
                     </div>
                     <div class="h-40 bg-gray-100 relative flex items-center justify-center">
-                        <div class="w-full h-full flex items-center justify-center bg-gradient-to-br from-[#1F51FF] to-blue-800">
+                        <div class="w-full h-full flex items-center justify-center bg-[#264fe3]" style="background-color: #264fe3;">
                             <span class="text-4xl font-extrabold text-white" x-text="company.name ? company.name.substring(0, 2).toUpperCase() : 'NN'"></span>
                         </div>
                     </div>

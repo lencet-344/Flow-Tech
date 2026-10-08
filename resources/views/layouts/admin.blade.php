@@ -31,7 +31,15 @@
                     </div>
                     <div>
                         <p class="font-semibold text-sm capitalize">{{ Auth::user()->name ?? 'Usuario' }}</p>
-                        <p class="text-[#1F51FF] text-xs">Administrador</p>
+                        <p class="text-[#1F51FF] text-xs">
+                            @if(Auth::user()->role === 'servicios')
+                                Servicios
+                            @elseif(in_array(Auth::user()->role, ['emprendedor', 'proveedor']))
+                                Emprendedor
+                            @else
+                                Administrador
+                            @endif
+                        </p>
                     </div>
                 </div>
 

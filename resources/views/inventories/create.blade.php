@@ -15,22 +15,63 @@
             
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
                 <!-- Producto -->
-                <div>
-                    <label for="product_id" class="block text-sm font-semibold text-gray-700 mb-2">Producto</label>
-                    <select name="product_id" id="product_id" required class="w-full rounded-lg border-gray-200 shadow-sm focus:ring-[#2563eb] focus:border-[#2563eb] text-sm text-gray-700">
-                        <option value="">Seleccione un producto...</option>
-                        @foreach($products as $item)
-                            <option value="{{ $item->id }}" {{ old('product_id') == $item->id ? 'selected' : '' }}>{{ $item->name ?? $item->id }}</option>
-                        @endforeach
-                    </select>
+                <div x-data="{
+                    open: false,
+                    search: '{{ old('product_name') }}',
+                    selectedId: '{{ old('product_id') }}',
+                    products: {{ json_encode($products->map(function($p) { return ['id' => $p->id, 'name' => $p->name ?? $p->id]; })) }},
+                    get filteredProducts() {
+                        if (this.search === '') return this.products;
+                        return this.products.filter(p => p.name.toLowerCase().includes(this.search.toLowerCase()));
+                    },
+                    selectProduct(product) {
+                        this.search = product.name;
+                        this.selectedId = product.id;
+                        this.open = false;
+                    }
+                }" class="relative">
+                    <label for="product_name" class="block text-sm font-semibold text-gray-700 mb-2">Producto</label>
+                    <input type="hidden" name="product_id" :value="selectedId">
+                    <input type="text" name="product_name" id="product_name" x-model="search" @input="open = true; selectedId = ''" @focus="open = true" @click.away="open = false" class="w-full rounded-lg border-gray-200 shadow-sm focus:ring-[#2563eb] focus:border-[#2563eb] text-sm text-gray-700" placeholder="Buscar o escribir nuevo..." autocomplete="off">
+                    
+                    <div x-show="open" style="display: none;" class="absolute z-10 w-full bg-white border border-gray-200 mt-1 rounded-lg shadow-lg max-h-60 overflow-y-auto">
+                        <template x-for="product in filteredProducts" :key="product.id">
+                            <div @click="selectProduct(product)" class="px-4 py-2 cursor-pointer hover:bg-blue-50 text-sm text-gray-700" x-text="product.name"></div>
+                        </template>
+                        <div x-show="search.length > 0 && !products.some(p => p.name.toLowerCase() === search.toLowerCase())" class="px-4 py-2 text-sm text-blue-600 bg-blue-50 cursor-pointer" @click="open = false">
+                            Crear nuevo: <span x-text="search" class="font-bold"></span>
+                        </div>
+                    </div>
                     @error('product_id') <p class="mt-1 text-xs text-red-500">{{ $message }}</p> @enderror
+                    @error('product_name') <p class="mt-1 text-xs text-red-500">{{ $message }}</p> @enderror
+                </div>
+
+                <!-- Unidad de Medida / Presentación -->
+                <div>
+                    <label for="presentation" class="block text-sm font-semibold text-gray-700 mb-2">Unidad de Medida</label>
+                    <select name="presentation" id="presentation" required class="w-full rounded-lg border-gray-200 shadow-sm focus:ring-[#2563eb] focus:border-[#2563eb] text-sm text-gray-700">
+                        <option value="">Seleccione...</option>
+                        <option value="Unidades" {{ old('presentation') == 'Unidades' ? 'selected' : '' }}>Unidades</option>
+                        <option value="Libras (lb)" {{ old('presentation') == 'Libras (lb)' ? 'selected' : '' }}>Libras (lb)</option>
+                        <option value="Litros (L)" {{ old('presentation') == 'Litros (L)' ? 'selected' : '' }}>Litros (L)</option>
+                        <option value="Kilogramos (kg)" {{ old('presentation') == 'Kilogramos (kg)' ? 'selected' : '' }}>Kilogramos (kg)</option>
+                        <option value="Gramos (g)" {{ old('presentation') == 'Gramos (g)' ? 'selected' : '' }}>Gramos (g)</option>
+                        <option value="Mililitros (ml)" {{ old('presentation') == 'Mililitros (ml)' ? 'selected' : '' }}>Mililitros (ml)</option>
+                        <option value="Cajas" {{ old('presentation') == 'Cajas' ? 'selected' : '' }}>Cajas</option>
+                        <option value="Sacos" {{ old('presentation') == 'Sacos' ? 'selected' : '' }}>Sacos</option>
+                        <option value="Paquetes" {{ old('presentation') == 'Paquetes' ? 'selected' : '' }}>Paquetes</option>
+                        <option value="Galones" {{ old('presentation') == 'Galones' ? 'selected' : '' }}>Galones</option>
+                        <option value="Docenas" {{ old('presentation') == 'Docenas' ? 'selected' : '' }}>Docenas</option>
+                        <option value="Lotes" {{ old('presentation') == 'Lotes' ? 'selected' : '' }}>Lotes</option>
+                    </select>
+                    @error('presentation') <p class="mt-1 text-xs text-red-500">{{ $message }}</p> @enderror
                 </div>
 
                 <!-- Proveedor -->
                 <div>
                     <label for="supplier_id" class="block text-sm font-semibold text-gray-700 mb-2">Proveedor</label>
-                    <select name="supplier_id" id="supplier_id" required class="w-full rounded-lg border-gray-200 shadow-sm focus:ring-[#2563eb] focus:border-[#2563eb] text-sm text-gray-700">
-                        <option value="">Seleccione un proveedor...</option>
+                    <select name="supplier_id" id="supplier_id" class="w-full rounded-lg border-gray-200 shadow-sm focus:ring-[#2563eb] focus:border-[#2563eb] text-sm text-gray-700">
+                        <option value="">Seleccione un proveedor (Opcional - Aleatorio si se deja vacío)...</option>
                         @foreach($suppliers as $supplier)
                             <option value="{{ $supplier->id }}" {{ old('supplier_id') == $supplier->id ? 'selected' : '' }}>{{ $supplier->name ?? $supplier->id }}</option>
                         @endforeach
