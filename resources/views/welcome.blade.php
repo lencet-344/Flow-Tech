@@ -576,7 +576,9 @@
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             @forelse($negocios_destacados ?? [] as $negocio)
             <!-- Borde índigo muy fino (border-[#818cf8]) como en el Figma -->
-            <div class="bg-white border border-[#818cf8] rounded-[16px] overflow-hidden hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] transition duration-300 group flex flex-col relative">
+            <!-- AQUÍ SE APLICÓ LA OPCIÓN 1: cursor-pointer y el evento onclick con tu lógica de rutas -->
+            <div class="cursor-pointer bg-white border border-[#818cf8] rounded-[16px] overflow-hidden hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] transition duration-300 group flex flex-col relative"
+                 onclick="window.location.href='{{ auth()->check() ? url('/perfil-publico?negocio=' . urlencode($negocio->name)) : route('login') }}'">
                 
                 @if($negocio->is_premium)
                     <!-- Etiqueta PREMIUM Morada -->
@@ -629,8 +631,8 @@
                             <span class="font-bold text-gray-900">{{ $negocio->rating ?? '5.0' }}</span>
                             <span class="text-gray-400">({{ $negocio->reviews ?? '10+' }})</span>
                         </div>
-                        <!-- ¡Etiqueta HTML '<a>' corregida aquí! -->
-                        <a href="{{ auth()->check() ? url('/perfil-publico?negocio=' . urlencode($negocio->name)) : route('login') }}" class="text-[#3b82f6] font-medium hover:underline text-[13px]">Ver perfil</a>
+                        <!-- Se cambió la etiqueta <a> a <span> para que el onclick del padre haga todo el trabajo -->
+                        <span class="text-[#3b82f6] font-medium hover:underline text-[13px]">Ver perfil</span>
                     </div>
                 </div>
             </div>
@@ -910,24 +912,74 @@
         <div class="max-w-4xl mx-auto h-px bg-gradient-to-r from-transparent via-blue-200 to-transparent mb-16"></div>
 
         <!-- Estadísticas -->
-        <div class="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-10">
-            <div>
-                <div class="text-[40px] font-extrabold text-[#0f172a] mb-1 tracking-tight">1,200<span class="text-[#2563eb] font-black">+</span></div>
-                <div class="text-[13px] text-[#3b82f6] font-medium">Negocios registrados</div>
-            </div>
-            <div>
-                <div class="text-[40px] font-extrabold text-[#0f172a] mb-1 tracking-tight">8,500<span class="text-[#2563eb] font-black">+</span></div>
-                <div class="text-[13px] text-[#3b82f6] font-medium">Usuarios activos</div>
-            </div>
-            <div>
-                <div class="text-[40px] font-extrabold text-[#0f172a] mb-1 tracking-tight flex items-center justify-center gap-1">
-                    4.9 <span class="text-[#2563eb] text-3xl -mt-1">★</span>
-                </div>
-                <div class="text-[13px] text-[#3b82f6] font-medium">Calificación promedio</div>
-            </div>
+<div class="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-10">
+    <div>
+        <div class="text-[40px] font-extrabold text-[#0f172a] mb-1 tracking-tight">
+            {{ number_format($totalNegocios ?? 0) }}<span class="text-[#2563eb] font-black">+</span>
         </div>
-    </section>
-    <!-- ========================================== -->
+        <div class="text-[13px] text-[#3b82f6] font-medium">Negocios registrados</div>
+    </div>
+    <div>
+        <div class="text-[40px] font-extrabold text-[#0f172a] mb-1 tracking-tight">
+            {{ number_format($totalUsuarios ?? 0) }}<span class="text-[#2563eb] font-black">+</span>
+        </div>
+        <div class="text-[13px] text-[#3b82f6] font-medium">Usuarios activos</div>
+    </div>
+    <div>
+        <div class="text-[40px] font-extrabold text-[#0f172a] mb-1 tracking-tight flex items-center justify-center gap-1">
+            {{ number_format($promedioCalificacion ?? 5.0, 1) }} <span class="text-[#2563eb] text-3xl -mt-1">★</span>
+        </div>
+        <div class="text-[13px] text-[#3b82f6] font-medium">Calificación promedio</div>
+    </div>
+</div>
+
+
+    <!-- SECCIÓN DE DEJAR RESEÑA -->
+<section class="max-w-3xl mx-auto px-4 py-16">
+    <div class="bg-blue-50 rounded-2xl p-8 border border-blue-100 shadow-sm text-center">
+        <h3 class="text-2xl font-extrabold text-[#0f172a] mb-2">¿Qué te parece nuestra plataforma?</h3>
+        <p class="text-gray-500 mb-6 text-sm">Tu opinión nos ayuda a mejorar el servicio para todos los negocios.</p>
+
+        @if(session('success'))
+            <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4">
+                {{ session('success') }}
+            </div>
+        @endif
+
+        @auth
+            <form action="{{ route('resenas.store') }}" method="POST" class="max-w-lg mx-auto text-left">
+                @csrf
+                
+                <!-- Calificación -->
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-[#0f172a] mb-2">Calificación (1 al 5)</label>
+                    <select name="rating" required class="w-full border-gray-300 rounded-lg shadow-sm focus:border-blue-500 focus:ring-blue-500 text-[#0f172a]">
+                        <option value="5">5 - ¡Excelente!</option>
+                        <option value="4">4 - Muy bueno</option>
+                        <option value="3">3 - Regular</option>
+                        <option value="2">2 - Podría mejorar</option>
+                        <option value="1">1 - Mala experiencia</option>
+                    </select>
+                </div>
+
+                <!-- Comentario -->
+                <div class="mb-6">
+                    <label class="block text-sm font-medium text-[#0f172a] mb-2">Comentario (Opcional)</label>
+                    <textarea name="comment" rows="3" class="w-full border-gray-300 rounded-lg shadow-sm focus:border-blue-500 focus:ring-blue-500" placeholder="Cuéntanos tu experiencia..."></textarea>
+                </div>
+
+                <button type="submit" class="w-full bg-[#2563eb] hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-lg transition duration-300">
+                    Enviar reseña
+                </button>
+            </form>
+        @else
+            <div class="p-4 bg-white rounded-lg border border-gray-200">
+                <p class="text-[#0f172a] mb-3">Inicia sesión para dejar una reseña.</p>
+                <a href="{{ route('login') }}" class="inline-block bg-[#0f172a] text-white px-6 py-2 rounded-lg hover:bg-gray-800 transition">Iniciar sesión</a>
+            </div>
+        @endauth
+    </div>
+</section>
 
     <!-- ========================================== -->
     <!-- SECCIÓN 9: PREGUNTAS FRECUENTES            -->
