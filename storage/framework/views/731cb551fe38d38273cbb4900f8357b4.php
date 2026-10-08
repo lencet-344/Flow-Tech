@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SINGKI</title>
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
-<link rel="icon" type="image/png" href="{{ asset('images/favicon.png') }}">
+    <?php echo app('Illuminate\Foundation\Vite')(['resources/css/app.css', 'resources/js/app.js']); ?>
+<link rel="icon" type="image/png" href="<?php echo e(asset('images/favicon.png')); ?>">
 </head>
 <body>
     <div class="flex h-screen overflow-hidden bg-[#F4F7FF] font-sans">
@@ -16,36 +16,37 @@
             <div class="flex-1 overflow-y-auto flex flex-col">
                 <!-- Logo -->
                 <div class="px-6 py-5 border-b border-gray-800">
-                    <img src="{{ asset('images/LogoAzul.png') }}" alt="Logo Singki" class="h-10">
+                    <img src="<?php echo e(asset('images/LogoAzul.png')); ?>" alt="Logo Singki" class="h-10">
                     <p class="text-[#1F51FF] text-sm mt-2">Panel de Administración</p>
                 </div>
 
                 <!-- Perfil Dinámico -->
                 <div class="px-6 py-5 border-b border-gray-800 flex items-center gap-3">
                     <div class="w-10 h-10 rounded-full bg-[#1F51FF] flex items-center justify-center text-white font-bold uppercase overflow-hidden border border-blue-500">
-                        @if(Auth::check() && file_exists(public_path('uploads/avatars/avatar_u' . Auth::id() . '_' . md5(strtolower(trim(Auth::user()->email))) . '.jpg')))
-                            <img src="{{ asset('uploads/avatars/avatar_u' . Auth::id() . '_' . md5(strtolower(trim(Auth::user()->email))) . '.jpg') . '?v=' . filemtime(public_path('uploads/avatars/avatar_u' . Auth::id() . '_' . md5(strtolower(trim(Auth::user()->email))) . '.jpg')) }}" class="w-full h-full object-cover rounded-full">
-                        @else
-                            {{ substr(Auth::user()->name ?? 'U', 0, 1) }}
-                        @endif
+                        <?php if(Auth::check() && file_exists(public_path('uploads/avatars/avatar_u' . Auth::id() . '_' . md5(strtolower(trim(Auth::user()->email))) . '.jpg'))): ?>
+                            <img src="<?php echo e(asset('uploads/avatars/avatar_u' . Auth::id() . '_' . md5(strtolower(trim(Auth::user()->email))) . '.jpg') . '?v=' . filemtime(public_path('uploads/avatars/avatar_u' . Auth::id() . '_' . md5(strtolower(trim(Auth::user()->email))) . '.jpg'))); ?>" class="w-full h-full object-cover rounded-full">
+                        <?php else: ?>
+                            <?php echo e(substr(Auth::user()->name ?? 'U', 0, 1)); ?>
+
+                        <?php endif; ?>
                     </div>
                     <div>
-                        <p class="font-semibold text-sm capitalize">{{ Auth::user()->name ?? 'Usuario' }}</p>
+                        <p class="font-semibold text-sm capitalize"><?php echo e(Auth::user()->name ?? 'Usuario'); ?></p>
                         <p class="text-[#1F51FF] text-xs">
-                            @if(Auth::user()->role === 'servicios')
+                            <?php if(Auth::user()->role === 'servicios'): ?>
                                 Servicios
-                            @elseif(in_array(Auth::user()->role, ['emprendedor', 'proveedor']))
+                            <?php elseif(in_array(Auth::user()->role, ['emprendedor', 'proveedor'])): ?>
                                 Emprendedor
-                            @else
+                            <?php else: ?>
                                 Administrador
-                            @endif
+                            <?php endif; ?>
                         </p>
                     </div>
                 </div>
 
                 <!-- Botón Ir al Inicio -->
                 <div class="px-6 py-5">
-                    <a href="{{ url('/') }}" class="block text-center w-full bg-[#A6F4EB] text-black py-2 rounded-xl font-medium text-sm">Ir al inicio</a>
+                    <a href="<?php echo e(url('/')); ?>" class="block text-center w-full bg-[#A6F4EB] text-black py-2 rounded-xl font-medium text-sm">Ir al inicio</a>
                 </div>
 
                 <!-- Navegación MI NEGOCIO -->
@@ -53,16 +54,16 @@
                     <p class="text-[#1F51FF] text-xs font-bold mb-3 uppercase">Mi Negocio</p>
                     <nav class="flex flex-col gap-1 text-sm">
                         <!-- Nota cómo el botón "Promocionar negocio" ahora verifica si estás en la ruta para pintarse de azul -->
-                        <a href="{{ url('/admin/dashboard') }}" class="py-2 px-3 rounded-lg transition-colors {{ request()->is('admin/dashboard') ? 'bg-[#2563eb] text-white font-medium shadow-sm' : 'text-gray-300 hover:text-white hover:bg-white/5' }}">Dashboard</a>
-                        <a href="{{ url('/admin/perfil') }}" class="py-2 px-3 rounded-lg transition-colors {{ request()->is('admin/perfil') ? 'bg-[#2563eb] text-white font-medium shadow-sm' : 'text-gray-300 hover:text-white hover:bg-white/5' }}">Perfil del negocio</a>
-                        <a href="{{ route('inventories.index') }}" class="py-2 px-3 rounded-lg transition-colors {{ request()->routeIs('inventories.*') ? 'bg-[#2563eb] text-white font-medium shadow-sm' : 'text-gray-300 hover:text-white hover:bg-white/5' }}">Inventario</a>
-                        <a href="{{ route('bookings.index') }}" class="py-2 px-3 rounded-lg transition-colors {{ request()->routeIs('bookings.*') ? 'bg-[#2563eb] text-white font-medium shadow-sm' : 'text-gray-300 hover:text-white hover:bg-white/5' }}">Reservas</a>
-                        <a href="{{ route('offers.index') }}" class="py-2 px-3 rounded-lg transition-colors {{ request()->routeIs('offers.*') ? 'bg-[#2563eb] text-white font-medium shadow-sm' : 'text-gray-300 hover:text-white hover:bg-white/5' }}">Ofertas</a>
-@if(in_array(auth()->user()->role, ['proveedor', 'servicios']))
-    <a href="{{ url('/admin/comunidad') }}" class="py-2 px-3 rounded-lg transition-colors {{ request()->is('admin/comunidad') ? 'bg-[#2563eb] text-white font-medium shadow-sm' : 'text-gray-300 hover:text-white hover:bg-white/5' }}">Comunidad Premium</a>
-    <a href="{{ url('/admin/estadisticas') }}" class="py-2 px-3 rounded-lg transition-colors {{ request()->is('admin/estadisticas') ? 'bg-[#2563eb] text-white font-medium shadow-sm' : 'text-gray-300 hover:text-white hover:bg-white/5' }}">Estadísticas</a>
-@endif
-                        <a href="{{ url('/admin/promocionar') }}" class="py-2 px-3 rounded-lg transition-colors {{ request()->is('admin/promocionar*') ? 'bg-[#2563eb] text-white font-medium shadow-sm' : 'text-gray-300 hover:text-white hover:bg-white/5' }}">Promocionar negocio</a>
+                        <a href="<?php echo e(url('/admin/dashboard')); ?>" class="py-2 px-3 rounded-lg transition-colors <?php echo e(request()->is('admin/dashboard') ? 'bg-[#2563eb] text-white font-medium shadow-sm' : 'text-gray-300 hover:text-white hover:bg-white/5'); ?>">Dashboard</a>
+                        <a href="<?php echo e(url('/admin/perfil')); ?>" class="py-2 px-3 rounded-lg transition-colors <?php echo e(request()->is('admin/perfil') ? 'bg-[#2563eb] text-white font-medium shadow-sm' : 'text-gray-300 hover:text-white hover:bg-white/5'); ?>">Perfil del negocio</a>
+                        <a href="<?php echo e(route('inventories.index')); ?>" class="py-2 px-3 rounded-lg transition-colors <?php echo e(request()->routeIs('inventories.*') ? 'bg-[#2563eb] text-white font-medium shadow-sm' : 'text-gray-300 hover:text-white hover:bg-white/5'); ?>">Inventario</a>
+                        <a href="<?php echo e(route('bookings.index')); ?>" class="py-2 px-3 rounded-lg transition-colors <?php echo e(request()->routeIs('bookings.*') ? 'bg-[#2563eb] text-white font-medium shadow-sm' : 'text-gray-300 hover:text-white hover:bg-white/5'); ?>">Reservas</a>
+                        <a href="<?php echo e(route('offers.index')); ?>" class="py-2 px-3 rounded-lg transition-colors <?php echo e(request()->routeIs('offers.*') ? 'bg-[#2563eb] text-white font-medium shadow-sm' : 'text-gray-300 hover:text-white hover:bg-white/5'); ?>">Ofertas</a>
+<?php if(in_array(auth()->user()->role, ['proveedor', 'servicios'])): ?>
+    <a href="<?php echo e(url('/admin/comunidad')); ?>" class="py-2 px-3 rounded-lg transition-colors <?php echo e(request()->is('admin/comunidad') ? 'bg-[#2563eb] text-white font-medium shadow-sm' : 'text-gray-300 hover:text-white hover:bg-white/5'); ?>">Comunidad Premium</a>
+    <a href="<?php echo e(url('/admin/estadisticas')); ?>" class="py-2 px-3 rounded-lg transition-colors <?php echo e(request()->is('admin/estadisticas') ? 'bg-[#2563eb] text-white font-medium shadow-sm' : 'text-gray-300 hover:text-white hover:bg-white/5'); ?>">Estadísticas</a>
+<?php endif; ?>
+                        <a href="<?php echo e(url('/admin/promocionar')); ?>" class="py-2 px-3 rounded-lg transition-colors <?php echo e(request()->is('admin/promocionar*') ? 'bg-[#2563eb] text-white font-medium shadow-sm' : 'text-gray-300 hover:text-white hover:bg-white/5'); ?>">Promocionar negocio</a>
                     </nav>
                 </div>
 
@@ -70,10 +71,10 @@
                 <div class="px-6 py-4">
                     <p class="text-[#1F51FF] text-xs font-bold mb-3 uppercase">Información Pública</p>
                     <nav class="flex flex-col gap-1 text-sm text-gray-300">
-                        <a href="{{ url('/admin/perfil') }}" class="py-2 px-3 hover:text-white rounded-lg transition-colors">Foto del negocio</a>
-                        <a href="{{ route('inventories.index') }}" class="py-2 px-3 hover:text-white rounded-lg transition-colors">Disponibilidad/Stock</a>
+                        <a href="<?php echo e(url('/admin/perfil')); ?>" class="py-2 px-3 hover:text-white rounded-lg transition-colors">Foto del negocio</a>
+                        <a href="<?php echo e(route('inventories.index')); ?>" class="py-2 px-3 hover:text-white rounded-lg transition-colors">Disponibilidad/Stock</a>
                         <!-- Agregamos target="_blank" opcionalmente para que la vista pública abra en otra pestaña sin sacarlo del panel -->
-                        <a href="{{ url('/perfil-publico') }}" target="_blank" class="py-2 px-3 hover:text-white rounded-lg transition-colors">Info pública</a>
+                        <a href="<?php echo e(url('/perfil-publico')); ?>" target="_blank" class="py-2 px-3 hover:text-white rounded-lg transition-colors">Info pública</a>
                     </nav>
                 </div>
             </div>
@@ -89,7 +90,7 @@
 
         <!-- Main Content -->
         <main class="flex-1 overflow-y-auto">
-            @yield('content')
+            <?php echo $__env->yieldContent('content'); ?>
         </main>
         
     </div>
@@ -108,34 +109,34 @@
         });
     </script>
     
-    @if(session('success'))
+    <?php if(session('success')): ?>
         <script>
             Toast.fire({
                 icon: 'success',
-                title: "{{ session('success') }}"
+                title: "<?php echo e(session('success')); ?>"
             });
         </script>
-    @endif
+    <?php endif; ?>
 
-    @if(session('error'))
+    <?php if(session('error')): ?>
         <script>
             Toast.fire({
                 icon: 'error',
-                title: "{{ session('error') }}"
+                title: "<?php echo e(session('error')); ?>"
             });
         </script>
-    @endif
+    <?php endif; ?>
 
-    @if($errors->any())
+    <?php if($errors->any()): ?>
         <script>
             Toast.fire({
                 icon: 'warning',
-                title: "{{ $errors->first() }}"
+                title: "<?php echo e($errors->first()); ?>"
             });
         </script>
-    @endif
-@include('components.accessibility-widget')
-    @auth
+    <?php endif; ?>
+<?php echo $__env->make('components.accessibility-widget', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
+    <?php if(auth()->guard()->check()): ?>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const pendingReview = localStorage.getItem('singki_pending_review');
@@ -153,11 +154,11 @@
 
                     localStorage.removeItem('singki_pending_review');
                     
-                    fetch("{{ route('resenas.store') }}", {
+                    fetch("<?php echo e(route('resenas.store')); ?>", {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
-                            'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                            'X-CSRF-TOKEN': '<?php echo e(csrf_token()); ?>',
                             'Accept': 'application/json'
                         },
                         body: JSON.stringify({
@@ -192,6 +193,6 @@
             }
         });
     </script>
-    @endauth
+    <?php endif; ?>
 </body>
-</html>
+</html><?php /**PATH C:\laragon\www\Flow-Tech\resources\views/layouts/admin.blade.php ENDPATH**/ ?>
