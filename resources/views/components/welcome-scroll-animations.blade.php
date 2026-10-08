@@ -163,6 +163,18 @@
     }
 
     /* ---- MODO NEBULA ---- */
+    .singki-nebula-banner {
+        overflow: visible !important;
+        position: relative;
+        z-index: 30;
+    }
+    .singki-banner-fx {
+        position: absolute;
+        inset: 0;
+        overflow: hidden;
+        pointer-events: none;
+        z-index: 0;
+    }
     .singki-nebula-bg {
         position: absolute; inset: 0; z-index: 1; pointer-events: none; overflow: hidden; background: #010112;
     }
@@ -269,10 +281,11 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         if (heroSection && !heroSection.querySelector('.singki-cyber-bg') && !heroSection.querySelector('.singki-wave-bg') && !heroSection.querySelector('.singki-nebula-bg')) {
-            // 1. Proteger el contenedor padre
+            // 1. Proteger el contenedor padre y permitir overflow visible
+            heroSection.classList.add('singki-nebula-banner');
             heroSection.style.position = 'relative';
-            heroSection.style.overflow = 'hidden';
-            heroSection.classList.remove('bg-blue-600', 'bg-[#2563eb]', 'bg-blue-700', 'bg-blue-900');
+            heroSection.style.overflow = 'visible';
+            heroSection.classList.remove('bg-blue-600', 'bg-[#2563eb]', 'bg-blue-700', 'bg-blue-900', 'overflow-hidden');
             
             // 2. Proteger hijos inmediatos (texto y buscador)
             Array.from(heroSection.children).forEach(child => {
@@ -288,7 +301,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 // MODO CUBES (Hexágonos y cubos luminosos)
                 // ----------------------------------------------------
                 const cyberBg = document.createElement('div');
-                cyberBg.className = 'singki-cyber-bg';
+                cyberBg.className = 'singki-cyber-bg singki-banner-fx';
                 
                 const glow1 = document.createElement('div'); glow1.className = 'singki-glow singki-glow-1';
                 const glow2 = document.createElement('div'); glow2.className = 'singki-glow singki-glow-2';
@@ -326,7 +339,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 // MODO WAVE (Ola degradada de izquierda a derecha)
                 // ----------------------------------------------------
                 const waveBg = document.createElement('div');
-                waveBg.className = 'singki-wave-bg';
+                waveBg.className = 'singki-wave-bg singki-banner-fx';
                 
                 waveBg.innerHTML = `
                     <svg style="width:0;height:0;position:absolute;">
@@ -365,7 +378,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 // MODO NEBULA (Nebulosa difuminada orgánica)
                 // ----------------------------------------------------
                 const nebulaBg = document.createElement('div');
-                nebulaBg.className = 'singki-nebula-bg';
+                nebulaBg.className = 'singki-nebula-bg singki-banner-fx';
                 
                 nebulaBg.innerHTML = `
                     <div class="singki-nebula-orb singki-orb-5"></div>

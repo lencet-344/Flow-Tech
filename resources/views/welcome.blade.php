@@ -186,9 +186,9 @@
                             </button>
                         </form>
                     @else
-                        <a href="{{ route('login') }}" class="text-[#3b82f6] font-medium text-base hover:underline transition">Iniciar sesión</a>
+                        <a href="{{ route('login') }}" onclick="localStorage.removeItem('singki_pending_review')" class="text-[#3b82f6] font-medium text-base hover:underline transition">Iniciar sesión</a>
                         @if (Route::has('register'))
-                            <a href="{{ route('register') }}" class="bg-[#3b82f6] text-white px-6 py-2.5 rounded-lg font-medium text-base hover:bg-[#2563eb] transition shadow-sm">Registrarse</a>
+                            <a href="{{ route('register') }}" onclick="localStorage.removeItem('singki_pending_review')" class="bg-[#3b82f6] text-white px-6 py-2.5 rounded-lg font-medium text-base hover:bg-[#2563eb] transition shadow-sm">Registrarse</a>
                         @endif
                     @endauth
                 @endif
@@ -201,9 +201,9 @@
             @guest
                 <a href="{{ route('categories.index') }}" class="text-[#0f172a] font-medium text-base hover:text-[#2563eb]">Explorar</a>
                 <hr class="border-gray-100">
-                <a href="{{ route('login') }}" class="text-[#3b82f6] font-medium text-base">Iniciar sesión</a>
+                <a href="{{ route('login') }}" onclick="localStorage.removeItem('singki_pending_review')" class="text-[#3b82f6] font-medium text-base">Iniciar sesión</a>
                 @if (Route::has('register'))
-                    <a href="{{ route('register') }}" class="bg-[#3b82f6] text-white px-6 py-2.5 rounded-lg font-medium text-center text-base shadow-sm block">Registrarse</a>
+                    <a href="{{ route('register') }}" onclick="localStorage.removeItem('singki_pending_review')" class="bg-[#3b82f6] text-white px-6 py-2.5 rounded-lg font-medium text-center text-base shadow-sm block">Registrarse</a>
                 @endif
             @endguest
             @auth
@@ -233,14 +233,14 @@
         <div class="flex flex-col">
             
             <!-- Franja Azul Superior -->
-            <section class="bg-gradient-to-r from-[#020617] via-[#0f172a] to-[#2563eb] py-8">
+            <section class="bg-gradient-to-r from-[#020617] via-[#0f172a] to-[#2563eb] py-8 singki-nebula-banner">
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-6">
-                    <div class="text-white w-full md:w-1/2">
+                    <div class="text-white w-full md:w-1/2 relative z-10">
                         <h1 class="text-[28px] font-normal tracking-wide mb-1">¡Hola, <span class="font-bold">{{ explode(' ', Auth::user()->name)[0] }}</span>!</h1>
                         <p class="text-blue-100 text-[14px] font-light">¿Qué estás buscando hoy?</p>
                     </div>
                     <div class="w-full md:w-1/2 flex justify-start md:justify-end">
-                        <form x-data="{ searchType: 'negocios', openType: false }" x-bind:action="searchType === 'productos' ? '{{ route('products.index') }}' : '{{ url('/explorar') }}'" method="GET" class="relative w-full max-w-lg bg-white rounded-full flex items-center p-1.5 shadow-sm">
+                        <form x-data="{ searchType: 'negocios', openType: false }" x-bind:action="searchType === 'productos' ? '{{ route('products.index') }}' : '{{ url('/explorar') }}'" method="GET" class="relative z-50 w-full max-w-lg bg-white rounded-full flex items-center p-1.5 shadow-sm">
                             <!-- Botón Dropdown Personalizado -->
                             <div class="relative shrink-0">
                                 <button type="button" @click="openType = !openType" @click.outside="openType = false" class="flex items-center gap-2 pl-5 pr-4 py-2.5 text-sm font-semibold text-[#0f172a] hover:text-[#1F51FF] border-r border-gray-200 rounded-l-full bg-transparent transition shrink-0 focus:outline-none">
@@ -932,54 +932,158 @@
         <div class="text-[13px] text-[#3b82f6] font-medium">Calificación promedio</div>
     </div>
 </div>
-
+    </section>
 
     <!-- SECCIÓN DE DEJAR RESEÑA -->
-<section class="max-w-3xl mx-auto px-4 py-16">
-    <div class="bg-blue-50 rounded-2xl p-8 border border-blue-100 shadow-sm text-center">
-        <h3 class="text-2xl font-extrabold text-[#0f172a] mb-2">¿Qué te parece nuestra plataforma?</h3>
-        <p class="text-gray-500 mb-6 text-sm">Tu opinión nos ayuda a mejorar el servicio para todos los negocios.</p>
+    <section class="max-w-4xl mx-auto px-4 py-16" x-data="{
+        rating: 0,
+        hoverRating: 0,
+        comment: '',
+        showAuthModal: false,
+        ratingError: false,
+        labels: {
+            1: '1/5 — Mala experiencia',
+            2: '2/5 — Podría mejorar',
+            3: '3/5 — Regular',
+            4: '4/5 — Muy bueno',
+            5: '5/5 — ¡Excelente!'
+        },
+        handleGuestSubmit(e) {
+            @guest
+                e.preventDefault();
+                this.ratingError = false;
+                if (this.rating < 1 || this.rating > 5) {
+                    this.ratingError = true;
+                    return;
+                }
+                this.showAuthModal = true;
+            @endguest
+        },
+        savePendingAndGo(e, url) {
+            e.preventDefault();
+            localStorage.setItem('singki_pending_review', JSON.stringify({
+                rating: this.rating,
+                comment: this.comment.trim(),
+                explicitlySubmitted: true,
+                timestamp: Date.now()
+            }));
+            window.location.href = url;
+        }
+    }">
+        <div class="bg-gradient-to-b from-[#f0f5ff] to-white rounded-[2rem] p-8 md:p-12 border border-blue-100 shadow-[0_20px_50px_rgba(37,99,235,0.07)] text-center relative overflow-hidden">
+            <!-- Destello decorativo azul -->
+            <div class="absolute -top-20 -right-20 w-52 h-52 bg-blue-400/10 rounded-full blur-3xl pointer-events-none"></div>
+            <div class="absolute -bottom-20 -left-20 w-52 h-52 bg-blue-600/10 rounded-full blur-3xl pointer-events-none"></div>
 
-        @if(session('success'))
-            <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4">
-                {{ session('success') }}
-            </div>
-        @endif
+            <span class="px-4 py-1.5 rounded-full border border-blue-200 bg-white text-[#2563eb] text-[10px] font-bold tracking-[0.2em] uppercase mb-4 inline-block shadow-sm">TU OPINIÓN IMPORTA</span>
+            <h3 class="text-3xl md:text-4xl font-extrabold text-[#0f172a] mb-3 tracking-tight">¿Qué te parece nuestra plataforma?</h3>
+            <p class="text-gray-500 mb-8 text-[15px] font-light max-w-xl mx-auto">Tu opinión nos ayuda a mejorar el servicio para todos los negocios y emprendedores de la comunidad SINGKI.</p>
 
-        @auth
-            <form action="{{ route('resenas.store') }}" method="POST" class="max-w-lg mx-auto text-left">
+            @if(session('success'))
+                <!-- Modal Inyectado de Éxito SINGKI -->
+                <div class="fixed inset-0 z-[100] flex items-center justify-center bg-[#0f172a]/50 backdrop-blur-sm p-4 transition-opacity duration-300" id="singki-review-success-modal">
+                    <div class="bg-white max-w-md w-full rounded-[28px] shadow-2xl p-8 border border-gray-100 text-center transform transition-all duration-300">
+                        <div class="w-20 h-20 bg-[#a7f3d0]/60 rounded-full flex items-center justify-center mx-auto mb-5 shadow-sm">
+                            <div class="w-14 h-14 bg-[#10b981] rounded-full flex items-center justify-center text-white shadow-md">
+                                <svg class="w-8 h-8" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path>
+                                </svg>
+                            </div>
+                        </div>
+                        <h3 class="text-2xl font-extrabold text-[#0f172a] mb-2">¡Reseña publicada con éxito!</h3>
+                        <p class="text-gray-500 text-sm mb-7 leading-relaxed">¡Gracias por compartir tu experiencia! Tu calificación ha sido guardada correctamente en SINGKI.</p>
+                        <button type="button" onclick="document.getElementById('singki-review-success-modal')?.remove()" class="w-full bg-[#2563eb] hover:bg-[#1d4ed8] text-white font-bold py-3.5 px-6 rounded-xl shadow-md hover:shadow-lg transition text-sm cursor-pointer">
+                            ¡Entendido!
+                        </button>
+                    </div>
+                </div>
+            @endif
+
+            <form action="{{ route('resenas.store') }}" method="POST" @submit="handleGuestSubmit($event)" class="max-w-xl mx-auto">
                 @csrf
-                
-                <!-- Calificación -->
-                <div class="mb-4">
-                    <label class="block text-sm font-medium text-[#0f172a] mb-2">Calificación (1 al 5)</label>
-                    <select name="rating" required class="w-full border-gray-300 rounded-lg shadow-sm focus:border-blue-500 focus:ring-blue-500 text-[#0f172a]">
-                        <option value="5">5 - ¡Excelente!</option>
-                        <option value="4">4 - Muy bueno</option>
-                        <option value="3">3 - Regular</option>
-                        <option value="2">2 - Podría mejorar</option>
-                        <option value="1">1 - Mala experiencia</option>
-                    </select>
+                <input type="hidden" name="rating" :value="rating">
+
+                <!-- Selector de 5 Estrellas Azules Animadas -->
+                <div class="bg-white rounded-2xl p-6 border border-blue-100/80 shadow-sm mb-6">
+                    <label class="block text-xs font-bold uppercase tracking-wider text-gray-400 mb-4">Selecciona tu calificación</label>
+                    
+                    <div class="flex items-center justify-center gap-2 sm:gap-4 mb-4" @mouseleave="hoverRating = 0">
+                        <template x-for="star in [1, 2, 3, 4, 5]" :key="star">
+                            <button type="button"
+                                @click="rating = star; ratingError = false"
+                                @mouseenter="hoverRating = star"
+                                class="p-1.5 rounded-xl focus:outline-none transition-all duration-300 ease-out transform"
+                                :class="(hoverRating >= star || (!hoverRating && rating >= star)) ? 'scale-110 -translate-y-1 text-[#2563eb] drop-shadow-[0_6px_14px_rgba(37,99,235,0.38)]' : 'scale-100 text-slate-200 hover:text-blue-200'">
+                                <svg class="w-10 h-10 sm:w-12 sm:h-12 transition-colors duration-200" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                                </svg>
+                            </button>
+                        </template>
+                    </div>
+
+                    <!-- Etiqueta dinámica de calificación -->
+                    <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-blue-50 text-[#2563eb] text-xs font-bold transition-all duration-300"
+                         x-show="hoverRating > 0 || rating > 0"
+                         x-text="labels[hoverRating || rating]">
+                    </div>
+                    
+                    <p x-show="ratingError" x-transition class="text-red-500 text-sm mt-3 font-medium">Por favor, selecciona al menos 1 estrella para calificar</p>
                 </div>
 
-                <!-- Comentario -->
-                <div class="mb-6">
-                    <label class="block text-sm font-medium text-[#0f172a] mb-2">Comentario (Opcional)</label>
-                    <textarea name="comment" rows="3" class="w-full border-gray-300 rounded-lg shadow-sm focus:border-blue-500 focus:ring-blue-500" placeholder="Cuéntanos tu experiencia..."></textarea>
+                <!-- Campo de Comentario -->
+                <div class="text-left mb-6 bg-white rounded-2xl p-5 border border-blue-100/80 shadow-sm">
+                    <div class="flex items-center justify-between mb-2">
+                        <label class="text-sm font-bold text-[#0f172a]">Tu comentario <span class="text-gray-400 font-normal">(Opcional)</span></label>
+                        <span class="text-xs text-gray-400 font-medium" x-text="comment.length + ' / 500'"></span>
+                    </div>
+                    <textarea name="comment" x-model="comment" maxlength="500" rows="3"
+                        class="w-full border border-slate-200 rounded-xl p-3.5 text-sm text-[#0f172a] placeholder-gray-400 focus:border-[#2563eb] focus:ring-2 focus:ring-blue-500/20 outline-none transition resize-none"
+                        placeholder="Cuéntanos tu experiencia usando SINGKI..."></textarea>
                 </div>
 
-                <button type="submit" class="w-full bg-[#2563eb] hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-lg transition duration-300">
-                    Enviar reseña
+                <!-- Botón Enviar -->
+                <button type="submit"
+                    class="w-full bg-[#2563eb] hover:bg-[#1d4ed8] text-white font-bold py-4 px-8 rounded-xl shadow-[0_10px_25px_rgba(37,99,235,0.3)] hover:shadow-[0_14px_30px_rgba(37,99,235,0.4)] hover:-translate-y-0.5 active:translate-y-0 transition-all duration-300 flex items-center justify-center gap-2 text-[15px] cursor-pointer">
+                    <span>Enviar reseña</span>
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
                 </button>
             </form>
-        @else
-            <div class="p-4 bg-white rounded-lg border border-gray-200">
-                <p class="text-[#0f172a] mb-3">Inicia sesión para dejar una reseña.</p>
-                <a href="{{ route('login') }}" class="inline-block bg-[#0f172a] text-white px-6 py-2 rounded-lg hover:bg-gray-800 transition">Iniciar sesión</a>
+        </div>
+
+        <!-- Modal para Invitados: Pedir Inicio de Sesión o Registro para Guardar la Reseña -->
+        <div x-show="showAuthModal" style="display: none;"
+             x-transition.opacity
+             class="fixed inset-0 z-50 flex items-center justify-center bg-[#040116]/60 backdrop-blur-sm p-4">
+            <div @click.away="showAuthModal = false; localStorage.removeItem('singki_pending_review')"
+                 x-transition:enter="transition ease-out duration-300"
+                 x-transition:enter-start="opacity-0 scale-95 translate-y-4"
+                 x-transition:enter-end="opacity-100 scale-100 translate-y-0"
+                 class="bg-white rounded-[2rem] max-w-md w-full p-8 text-center shadow-2xl border border-blue-100 relative">
+                
+                <button type="button" @click="showAuthModal = false; localStorage.removeItem('singki_pending_review')" class="absolute top-5 right-5 text-gray-400 hover:text-gray-600 p-1">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path></svg>
+                </button>
+
+                <div class="w-16 h-16 bg-blue-50 text-[#2563eb] rounded-2xl flex items-center justify-center mx-auto mb-5 shadow-inner">
+                    <svg class="w-9 h-9" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                </div>
+
+                <h4 class="text-2xl font-extrabold text-[#0f172a] mb-2">¡Tu reseña está lista!</h4>
+                <p class="text-gray-500 text-sm mb-6 leading-relaxed">
+                    Hemos guardado temporalmente tu calificación de <strong class="text-[#2563eb]" x-text="rating + ' estrellas'"></strong>. Inicia sesión o regístrate para publicarla automáticamente con tu cuenta.
+                </p>
+
+                <div class="flex flex-col gap-3">
+                    <a href="#" @click="savePendingAndGo($event, '{{ route('login') }}')" class="w-full bg-[#2563eb] hover:bg-[#1d4ed8] text-white font-bold py-3.5 px-6 rounded-xl transition shadow-md text-sm">
+                        Iniciar sesión y publicar
+                    </a>
+                    <a href="#" @click="savePendingAndGo($event, '{{ route('register') }}')" class="w-full bg-blue-50 hover:bg-blue-100 text-[#2563eb] font-bold py-3.5 px-6 rounded-xl transition text-sm">
+                        Crear cuenta gratis
+                    </a>
+                </div>
             </div>
-        @endauth
-    </div>
-</section>
+        </div>
+    </section>
 
     <!-- ========================================== -->
     <!-- SECCIÓN 9: PREGUNTAS FRECUENTES            -->
@@ -1053,15 +1157,15 @@
             <h2 class="text-4xl lg:text-5xl font-extrabold text-[#2563eb] mb-4 tracking-normal">¿Listo para empezar?</h2>
             <p class="text-[#3b82f6] text-[15px] font-light mb-10 max-w-2xl mx-auto">Únete a la plataforma que conecta negocios con oportunidades.</p>
             <div class="flex flex-col sm:flex-row gap-4 items-center justify-center mt-6 w-full px-6 sm:px-0">
-                <a href="{{ route('register') }}" class="w-full sm:w-auto bg-[#2563eb] text-white font-bold px-8 py-3 rounded-xl hover:bg-[#1d4ed8] transition shadow-sm text-[15px] inline-block text-center">Crear cuenta gratis</a>
+                <a href="{{ route('register') }}" onclick="localStorage.removeItem('singki_pending_review')" class="w-full sm:w-auto bg-[#2563eb] text-white font-bold px-8 py-3 rounded-xl hover:bg-[#1d4ed8] transition shadow-sm text-[15px] inline-block text-center">Crear cuenta gratis</a>
                 <a href="#negocios-destacados" onclick="event.preventDefault(); document.getElementById('negocios-destacados')?.scrollIntoView({ behavior: 'smooth' });" class="w-full sm:w-auto bg-white border border-[#2563eb] text-[#2563eb] font-bold px-8 py-3 rounded-xl hover:bg-blue-50 transition text-[15px] inline-block text-center">Explorar negocios</a>
             </div>
         </div>
-        @endguest
-
-        <!-- Footer -->
-        @include('components.footer')
     </section>
+    @endguest
+
+    <!-- Footer -->
+    @include('components.footer')
     <!-- ========================================== -->
     <script>
         document.addEventListener('DOMContentLoaded', function() {
@@ -1211,5 +1315,63 @@
 </script>
 @include('components.accessibility-widget')
 @include('components.welcome-scroll-animations')
+    @auth
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const pendingReview = localStorage.getItem('singki_pending_review');
+            if (pendingReview) {
+                try {
+                    const reviewData = JSON.parse(pendingReview);
+                    
+                    if (!reviewData.explicitlySubmitted || 
+                        reviewData.rating < 1 || 
+                        reviewData.rating > 5 || 
+                        (Date.now() - reviewData.timestamp > 900000)) {
+                        localStorage.removeItem('singki_pending_review');
+                        return;
+                    }
+
+                    localStorage.removeItem('singki_pending_review');
+                    
+                    fetch("{{ route('resenas.store') }}", {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                            'Accept': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            rating: reviewData.rating,
+                            comment: reviewData.comment
+                        })
+                    }).then(response => {
+                        if(response.ok) {
+                            document.body.insertAdjacentHTML('beforeend', `
+                                <div class="fixed inset-0 z-[100] flex items-center justify-center bg-[#0f172a]/50 backdrop-blur-sm p-4 transition-opacity duration-300" id="singki-review-success-modal">
+                                    <div class="bg-white max-w-md w-full rounded-[28px] shadow-2xl p-8 border border-gray-100 text-center transform transition-all duration-300">
+                                        <div class="w-20 h-20 bg-[#a7f3d0]/60 rounded-full flex items-center justify-center mx-auto mb-5 shadow-sm">
+                                            <div class="w-14 h-14 bg-[#10b981] rounded-full flex items-center justify-center text-white shadow-md">
+                                                <svg class="w-8 h-8" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path>
+                                                </svg>
+                                            </div>
+                                        </div>
+                                        <h3 class="text-2xl font-extrabold text-[#0f172a] mb-2">¡Reseña publicada con éxito!</h3>
+                                        <p class="text-gray-500 text-sm mb-7 leading-relaxed">¡Gracias por compartir tu experiencia! Tu calificación ha sido guardada correctamente en SINGKI.</p>
+                                        <button type="button" onclick="document.getElementById('singki-review-success-modal')?.remove()" class="w-full bg-[#2563eb] hover:bg-[#1d4ed8] text-white font-bold py-3.5 px-6 rounded-xl shadow-md hover:shadow-lg transition text-sm cursor-pointer">
+                                            ¡Entendido!
+                                        </button>
+                                    </div>
+                                </div>
+                            `);
+                        }
+                    }).catch(err => console.error('Error auto-guardando reseña:', err));
+                } catch(e) {
+                    localStorage.removeItem('singki_pending_review');
+                }
+            }
+        });
+    </script>
+    @endauth
 </body>
 </html>
