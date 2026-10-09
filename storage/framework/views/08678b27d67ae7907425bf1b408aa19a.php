@@ -4,8 +4,8 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>SINGKI</title>
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
-<link rel="icon" type="image/png" href="{{ asset('images/favicon.png') }}">
+    <?php echo app('Illuminate\Foundation\Vite')(['resources/css/app.css', 'resources/js/app.js']); ?>
+<link rel="icon" type="image/png" href="<?php echo e(asset('images/favicon.png')); ?>">
 </head>
 <body class="bg-slate-50 font-sans antialiased min-h-screen flex flex-col">
     
@@ -13,21 +13,23 @@
     <header class="bg-white px-6 py-4 flex justify-between items-center shadow-sm border-b border-gray-200">
         <div class="flex items-center gap-2 select-none cursor-default">
             <!-- Isotipo limpio sin cajas de fondo -->
-            <img src="{{ asset('images/LogoBlanco.png') }}" alt="Logo SINGKI" class="h-8 w-auto object-contain">
+            <img src="<?php echo e(asset('images/LogoBlanco.png')); ?>" alt="Logo SINGKI" class="h-8 w-auto object-contain">
             <!-- Texto renderizado en HTML haciendo match con el color y peso -->
             <span class="font-black text-[24px] text-[#1F51FF] tracking-tighter">SINGKI</span>
         </div>
         
-        <a href="{{ route('profile.edit') }}" class="flex items-center gap-3 px-3 py-1.5 rounded-full hover:bg-blue-50/80 transition cursor-pointer group" title="Mi perfil">
+        <a href="<?php echo e(route('profile.edit')); ?>" class="flex items-center gap-3 px-3 py-1.5 rounded-full hover:bg-blue-50/80 transition cursor-pointer group" title="Mi perfil">
             <div class="w-8 h-8 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center font-bold text-sm overflow-hidden border border-blue-200">
-                @if(Auth::check() && file_exists(public_path('uploads/avatars/avatar_u' . Auth::id() . '_' . md5(strtolower(trim(Auth::user()->email))) . '.jpg')))
-                    <img src="{{ asset('uploads/avatars/avatar_u' . Auth::id() . '_' . md5(strtolower(trim(Auth::user()->email))) . '.jpg') . '?v=' . filemtime(public_path('uploads/avatars/avatar_u' . Auth::id() . '_' . md5(strtolower(trim(Auth::user()->email))) . '.jpg')) }}" class="w-full h-full object-cover rounded-full">
-                @else
-                    {{ Auth::check() ? substr(Auth::user()->name, 0, 1) : 'C' }}
-                @endif
+                <?php if(Auth::check() && file_exists(public_path('uploads/avatars/avatar_u' . Auth::id() . '_' . md5(strtolower(trim(Auth::user()->email))) . '.jpg'))): ?>
+                    <img src="<?php echo e(asset('uploads/avatars/avatar_u' . Auth::id() . '_' . md5(strtolower(trim(Auth::user()->email))) . '.jpg') . '?v=' . filemtime(public_path('uploads/avatars/avatar_u' . Auth::id() . '_' . md5(strtolower(trim(Auth::user()->email))) . '.jpg'))); ?>" class="w-full h-full object-cover rounded-full">
+                <?php else: ?>
+                    <?php echo e(Auth::check() ? substr(Auth::user()->name, 0, 1) : 'C'); ?>
+
+                <?php endif; ?>
             </div>
             <span class="text-sm font-medium text-gray-700 hidden sm:inline-block">
-                {{ Auth::check() ? explode(' ', Auth::user()->name)[0] : 'Usuario' }}
+                <?php echo e(Auth::check() ? explode(' ', Auth::user()->name)[0] : 'Usuario'); ?>
+
             </span>
         </a>
     </header>
@@ -37,42 +39,42 @@
         <!-- max-w-lg evita que se estire de lado a lado -->
         <div class="bg-white max-w-lg w-full rounded-2xl shadow-sm p-8 border border-gray-200">
             
-            <a href="{{ url()->previous() !== url()->current() ? url()->previous() : url('/') }}" onclick="if(window.history.length > 1){ event.preventDefault(); window.history.back(); }" class="text-blue-600 text-sm font-medium mb-6 inline-flex items-center hover:underline">
+            <a href="<?php echo e(url()->previous() !== url()->current() ? url()->previous() : url('/')); ?>" onclick="if(window.history.length > 1){ event.preventDefault(); window.history.back(); }" class="text-blue-600 text-sm font-medium mb-6 inline-flex items-center hover:underline">
                 &larr; Volver
             </a>
             
-            <h1 class="text-2xl font-bold text-slate-900 mb-1 tracking-tight">{{ ($producto->quantity ?? 0) <= 0 ? 'Reservar producto agotado' : 'Encargar producto' }}</h1>
+            <h1 class="text-2xl font-bold text-slate-900 mb-1 tracking-tight"><?php echo e(($producto->quantity ?? 0) <= 0 ? 'Reservar producto agotado' : 'Encargar producto'); ?></h1>
             <p class="text-slate-500 text-sm mb-8">Te notificaremos sobre su disponibilidad</p>
 
             <!-- Resumen del Producto (Caja Gris) -->
             <div class="bg-slate-50 rounded-xl p-4 flex items-center gap-4 mb-8 border border-slate-200">
                 <div class="w-16 h-16 bg-white rounded-lg border border-slate-200 flex items-center justify-center p-2 shrink-0">
-                    <img src="{{ !empty($producto->image) ? (str_starts_with($producto->image, 'http') ? $producto->image : asset('storage/' . $producto->image)) : 'https://images.unsplash.com/photo-1542838132-92c53300491e?w=400&q=80' }}" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1542838132-92c53300491e?w=400&q=80';" class="max-w-full max-h-full object-contain">
+                    <img src="<?php echo e(!empty($producto->image) ? (str_starts_with($producto->image, 'http') ? $producto->image : asset('storage/' . $producto->image)) : 'https://images.unsplash.com/photo-1542838132-92c53300491e?w=400&q=80'); ?>" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1542838132-92c53300491e?w=400&q=80';" class="max-w-full max-h-full object-contain">
                 </div>
                 <div class="flex flex-col">
-                    <h3 class="font-bold text-slate-900 text-sm leading-tight mb-1">{{ $producto->name ?? 'Producto' }}</h3>
-                    @php
+                    <h3 class="font-bold text-slate-900 text-sm leading-tight mb-1"><?php echo e($producto->name ?? 'Producto'); ?></h3>
+                    <?php
                         $negociosCatalogo = ['Distribuidora Alimentos Norte', 'Comercial San José', 'Agroindustria del Norte', 'Abastos Central Estelí', 'Mercadito El Sol', 'Importadora Las Segovias', 'Distribuidora La Favorita', 'Suplidora Nicaragüense'];
                         $supName = $inventario->supplier->name ?? $producto->supplier->name ?? '';
                         if (empty($supName) || strtolower($supName) === 'singki' || strtolower($supName) === 'wawastech') {
                             $supName = $negociosCatalogo[($producto->id ?? 1) % count($negociosCatalogo)];
                         }
-                    @endphp
-                    <p class="text-slate-500 text-xs mb-1">{{ $supName }}</p>
-                    <p class="text-amber-600 font-bold text-sm">C$ {{ number_format($producto->cost ?? 0, 0) }}</p>
+                    ?>
+                    <p class="text-slate-500 text-xs mb-1"><?php echo e($supName); ?></p>
+                    <p class="text-amber-600 font-bold text-sm">C$ <?php echo e(number_format($producto->cost ?? 0, 0)); ?></p>
                 </div>
             </div>
 
             <!-- Formulario -->
-            <form method="POST" action="{{ url('/producto/'.($producto->id ?? 999).'/reservar') }}" x-data="{
+            <form method="POST" action="<?php echo e(url('/producto/'.($producto->id ?? 999).'/reservar')); ?>" x-data="{
                 cantidad: 1,
-                precio: {{ $producto->cost ?? $producto->price ?? 0 }},
+                precio: <?php echo e($producto->cost ?? $producto->price ?? 0); ?>,
                 showMap: false,
                 mapSelected: false,
                 lat: '',
                 lng: ''
             }">
-                @csrf
+                <?php echo csrf_field(); ?>
                 
                 <div class="grid grid-cols-2 gap-4 mb-4">
                     <div>
@@ -87,8 +89,9 @@
                         <label class="block text-xs font-semibold text-slate-500 mb-2">Presentación</label>
                         <!-- Selector bloqueado dinámico que sí envía el valor -->
                         <select name="unidad" class="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm outline-none transition-all bg-slate-100 font-semibold text-slate-600 pointer-events-none" tabindex="-1">
-                            <option value="{{ $producto->presentation ?? 'Unidades' }}" selected>
-                                {{ ucfirst($producto->presentation ?? 'Unidades') }}
+                            <option value="<?php echo e($producto->presentation ?? 'Unidades'); ?>" selected>
+                                <?php echo e(ucfirst($producto->presentation ?? 'Unidades')); ?>
+
                             </option>
                         </select>
                     </div>
@@ -136,7 +139,7 @@
 
                 <!-- Botones -->
                 <div class="flex gap-4 w-full">
-                    <a href="{{ url()->previous() !== url()->current() ? url()->previous() : url('/') }}" onclick="if(window.history.length > 1){ event.preventDefault(); window.history.back(); }" class="flex-1 text-center py-3 rounded-xl border border-slate-300 text-slate-700 font-semibold text-sm hover:bg-slate-50 transition-colors">
+                    <a href="<?php echo e(url()->previous() !== url()->current() ? url()->previous() : url('/')); ?>" onclick="if(window.history.length > 1){ event.preventDefault(); window.history.back(); }" class="flex-1 text-center py-3 rounded-xl border border-slate-300 text-slate-700 font-semibold text-sm hover:bg-slate-50 transition-colors">
                         Cancelar
                     </a>
                     <button type="submit" class="flex-1 text-center py-3 rounded-xl bg-[#1F51FF] hover:bg-blue-700 text-white font-semibold text-sm shadow-sm transition-colors">
@@ -207,15 +210,15 @@
                     if(pickerMarker) pickerMarker.setMap(map);
                 }
             </script>
-            <script async defer src="https://maps.googleapis.com/maps/api/js?key={{ env('GOOGLE_MAPS_API_KEY') }}&callback=mapaListo"></script>
+            <script async defer src="https://maps.googleapis.com/maps/api/js?key=<?php echo e(env('GOOGLE_MAPS_API_KEY')); ?>&callback=mapaListo"></script>
             
         </div>
     </main>
 
     <!-- RESTAURACIÓN DEL FOOTER CLÁSICO COMPLETO -->
-    @if(View::exists('components.footer'))
-        @include('components.footer')
-    @endif
+    <?php if(View::exists('components.footer')): ?>
+        <?php echo $__env->make('components.footer', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
+    <?php endif; ?>
     
 </body>
-</html>
+</html><?php /**PATH C:\laragon\www\Flow-Tech\resources\views/usuario/reservar.blade.php ENDPATH**/ ?>
