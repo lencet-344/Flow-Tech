@@ -264,7 +264,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // =========================================================================
     // MODULO: FONDO ANIMADO FRANJA AZUL (Solo para Welcome /)
     // =========================================================================
-    @auth
+    <?php if(auth()->guard()->check()): ?>
     if (isWelcome) {
         const headers = Array.from(document.querySelectorAll('h1, h2, h3, p')).filter(el => {
             const text = el.textContent.toLowerCase();
@@ -403,7 +403,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
     }
-    @endauth
+    <?php endif; ?>
 
     // =========================================================================
     // MODULO: ANIMACIONES SCROLL REVEAL BIDIRECCIONALES
@@ -551,3 +551,4 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 </script>
+<?php /**PATH C:\laragon\www\Flow-Tech\resources\views/components/welcome-scroll-animations.blade.php ENDPATH**/ ?>

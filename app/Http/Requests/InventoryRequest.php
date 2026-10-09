@@ -15,14 +15,15 @@ class InventoryRequest extends FormRequest
     {
         return [
             'quantity' => 'required|integer',
-            'batch_number' => 'required|integer',
+            'batch_number' => 'nullable|integer',
             'unit_cost' => 'required|numeric',
-            'status' => 'required|string|max:30',
+            'status' => 'nullable|string|max:30',
             'last_restock' => 'required|date',
             'update_restock' => 'required|date',
-            'product_id' => 'required|integer|exists:products,id',
-            'supplier_id' => 'required|integer|exists:suppliers,id',
-
+            'product_id' => 'nullable|integer|exists:products,id',
+            'product_name' => 'nullable|string|max:255',
+            'supplier_id' => 'nullable|integer|exists:suppliers,id',
+            'presentation' => 'required|string|max:50',
         ];
     }
 
@@ -31,25 +32,15 @@ class InventoryRequest extends FormRequest
         return [
             'quantity.required' => 'El campo quantity es requerido',
             'quantity.integer' => 'El campo quantity debe ser un número entero',
-            'batch_number.required' => 'El campo batch number es requerido',
-            'batch_number.integer' => 'El campo batch number debe ser un número entero',
             'unit_cost.required' => 'El campo unit cost es requerido',
             'unit_cost.numeric' => 'El campo unit cost debe ser numérico',
-            'status.required' => 'El campo status es requerido',
-            'status.max' => 'El campo status no debe exceder los 30 caracteres',
             'last_restock.required' => 'El campo last restock es requerido',
             'last_restock.date' => 'El campo last restock debe ser una fecha válida',
             'update_restock.required' => 'El campo update restock es requerido',
             'update_restock.date' => 'El campo update restock debe ser una fecha válida',
-            'product_id.required' => 'El campo product id es requerido',
-            'product_id.integer' => 'El campo product id debe ser un número entero',
             'product_id.exists' => 'La referencia seleccionada en product id no existe',
-            'supplier_id.required' => 'El campo supplier id es requerido',
-            'supplier_id.integer' => 'El campo supplier id debe ser un número entero',
             'supplier_id.exists' => 'La referencia seleccionada en supplier id no existe',
-
-
-
+            'presentation.required' => 'La unidad de medida o presentación es requerida',
         ];
     }
 }

@@ -1,13 +1,13 @@
 
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<html lang="<?php echo e(str_replace('_', '-', app()->getLocale())); ?>">
   
 <head>
-      <link rel="icon" type="image/png" href="{{ asset('images/favicon.png') }}">
+      <link rel="icon" type="image/png" href="<?php echo e(asset('images/favicon.png')); ?>">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>SINGKI</title>
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <?php echo app('Illuminate\Foundation\Vite')(['resources/css/app.css', 'resources/js/app.js']); ?>
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 </head>
 <body class="font-sans antialiased text-gray-900 bg-white selection:bg-[#3b82f6] selection:text-white relative">
@@ -15,7 +15,7 @@
     <!-- ========================================== -->
     <!-- SPLASH SCREEN OFICIAL (SOLO INVITADOS)     -->
     <!-- ========================================== -->
-    @guest
+    <?php if(auth()->guard()->guest()): ?>
     <div id="singki-loader" x-data="{ showSplash: !sessionStorage.getItem('singki_visited') }"
          x-init="if(showSplash) { 
                     /* Bloqueamos el scroll mientras dura la animación */
@@ -41,12 +41,12 @@
         <div class="h-10"></div>
 
         <div class="relative z-10 flex flex-col items-center justify-center">
-            <img src="{{ asset('images/logo-animado.gif') }}" alt="Cargando SINGKI" class="w-64 md:w-80 h-auto object-contain">
+            <img src="<?php echo e(asset('images/logo-animado.gif')); ?>" alt="Cargando SINGKI" class="w-64 md:w-80 h-auto object-contain">
         </div>
 
 
     </div>
-    @endguest
+    <?php endif; ?>
     <!-- ========================================== -->
 
     <!-- ========================================== -->
@@ -57,7 +57,7 @@
         <!-- Botón Toggle Principal (Arriba del modal) -->
         <button id="btn-chat-toggle" class="bg-[#2563eb] w-14 h-14 rounded-full shadow-xl shadow-blue-500/30 flex items-center justify-center hover:scale-105 transition-all duration-300 focus:outline-none z-50 relative">
             <!-- Ícono Cerrado (Imagen de tu robot) -->
-            <img id="chat-icon-robot" src="{{ asset('images/Robot.png') }}" alt="Robot KI" class="w-8 h-8 object-contain transition-opacity duration-300">
+            <img id="chat-icon-robot" src="<?php echo e(asset('images/Robot.png')); ?>" alt="Robot KI" class="w-8 h-8 object-contain transition-opacity duration-300">
             <!-- Ícono Abierto (X blanca) - Oculto por defecto -->
             <svg id="chat-icon-x" class="w-6 h-6 text-white absolute inset-0 m-auto opacity-0 scale-50 transition-all duration-300 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"></path></svg>
         </button>
@@ -80,7 +80,7 @@
                 <div class="flex gap-4 items-start mb-6">
                     <!-- Ícono Cuadrado Azul -->
                     <div class="w-12 h-12 bg-[#2563eb] rounded-xl flex items-center justify-center shrink-0 shadow-sm">
-                        <img src="{{ asset('images/Robot.png') }}" alt="Ki" class="w-7 h-7 object-contain scale-110">
+                        <img src="<?php echo e(asset('images/Robot.png')); ?>" alt="Ki" class="w-7 h-7 object-contain scale-110">
                     </div>
                     <!-- Burbuja de texto gris muy suave -->
                     <div class="bg-slate-50 border border-slate-100 p-4 rounded-2xl rounded-tl-sm w-full">
@@ -120,22 +120,22 @@
             
             <div class="flex items-center gap-2">
                 <div class="flex items-center gap-2 select-none cursor-default">
-                    <img src="{{ asset('images/LogoBlanco.png') }}" alt="Logo SINGKI" class="h-8 w-auto">
+                    <img src="<?php echo e(asset('images/LogoBlanco.png')); ?>" alt="Logo SINGKI" class="h-8 w-auto">
                     <span class="font-black text-2xl text-[#3b82f6] tracking-tight">SINGKI</span>
                 </div>
             </div>
             
             <!-- Enlaces centrales -->
             <nav class="hidden md:flex space-x-10 items-center">
-                <a href="{{ url('/') }}" class="text-[#0f172a] font-medium text-base hover:text-[#2563eb] transition-colors">Inicio</a>
+                <a href="<?php echo e(url('/')); ?>" class="text-[#0f172a] font-medium text-base hover:text-[#2563eb] transition-colors">Inicio</a>
                 
                 <!-- Botón de ancla hacia la sección inferior -->
                 <a href="#categorias" class="text-[#0f172a] font-medium text-base hover:text-[#2563eb] transition-colors">Categorías</a>
                 
                 <!-- Solo visible para invitados (sin sesión) -->
-                @guest
-                    <a href="{{ route('categories.index') }}" class="text-[#0f172a] font-medium text-base hover:text-[#2563eb] transition-colors">Explorar</a>
-                @endguest
+                <?php if(auth()->guard()->guest()): ?>
+                    <a href="<?php echo e(route('categories.index')); ?>" class="text-[#0f172a] font-medium text-base hover:text-[#2563eb] transition-colors">Explorar</a>
+                <?php endif; ?>
             </nav>
             <!-- Botón Menú Móvil -->
             <div class="flex md:hidden items-center">
@@ -147,80 +147,81 @@
             </div>
             
             <div class="hidden md:flex items-center space-x-6">
-                @if (Route::has('login'))
-                    @auth
-                        @php
+                <?php if(Route::has('login')): ?>
+                    <?php if(auth()->guard()->check()): ?>
+                        <?php
                             $superAdmins = ['isaacmeneses254@gmail.com', 'edmundo@ejemplo.com', 'admin@sinki.com'];
-                        @endphp
+                        ?>
 
                         <!-- Botón Premium (Oculto para clientes/usuarios comunes) -->
-                        @if(!in_array(Auth::user()->role ?? '', ['cliente', 'usuario']))
-                            <a href="{{ url('/admin/premium/planes') }}" class="bg-gradient-to-r from-[#8b5cf6] to-[#7c3aed] hover:opacity-90 text-white text-[13px] font-bold py-1.5 px-4 rounded-full flex items-center gap-1.5 transition-opacity shadow-sm mr-2">
+                        <?php if(!in_array(Auth::user()->role ?? '', ['cliente', 'usuario'])): ?>
+                            <a href="<?php echo e(url('/admin/premium/planes')); ?>" class="bg-gradient-to-r from-[#8b5cf6] to-[#7c3aed] hover:opacity-90 text-white text-[13px] font-bold py-1.5 px-4 rounded-full flex items-center gap-1.5 transition-opacity shadow-sm mr-2">
                                 <span class="text-yellow-300 text-sm">★</span> Hazte Premium
                             </a>
-                        @endif
+                        <?php endif; ?>
 
                         <!-- Avatar y Nombre -->
 
 
-                        <a href="{{ route('profile.edit') }}" class="flex items-center gap-3 px-3 py-1.5 rounded-full hover:bg-blue-50/80 transition cursor-pointer group" title="Mi perfil">
+                        <a href="<?php echo e(route('profile.edit')); ?>" class="flex items-center gap-3 px-3 py-1.5 rounded-full hover:bg-blue-50/80 transition cursor-pointer group" title="Mi perfil">
                             <div class="w-10 h-10 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center font-bold text-lg overflow-hidden border border-blue-200">
-                                @if(Auth::check() && file_exists(public_path('uploads/avatars/avatar_u' . Auth::id() . '_' . md5(strtolower(trim(Auth::user()->email))) . '.jpg')))
-                                    <img src="{{ asset('uploads/avatars/avatar_u' . Auth::id() . '_' . md5(strtolower(trim(Auth::user()->email))) . '.jpg') . '?v=' . filemtime(public_path('uploads/avatars/avatar_u' . Auth::id() . '_' . md5(strtolower(trim(Auth::user()->email))) . '.jpg')) }}" class="w-full h-full object-cover rounded-full">
-                                @else
-                                    {{ strtoupper(substr(Auth::user()->name, 0, 1)) }}
-                                @endif
+                                <?php if(Auth::check() && file_exists(public_path('uploads/avatars/avatar_u' . Auth::id() . '_' . md5(strtolower(trim(Auth::user()->email))) . '.jpg'))): ?>
+                                    <img src="<?php echo e(asset('uploads/avatars/avatar_u' . Auth::id() . '_' . md5(strtolower(trim(Auth::user()->email))) . '.jpg') . '?v=' . filemtime(public_path('uploads/avatars/avatar_u' . Auth::id() . '_' . md5(strtolower(trim(Auth::user()->email))) . '.jpg'))); ?>" class="w-full h-full object-cover rounded-full">
+                                <?php else: ?>
+                                    <?php echo e(strtoupper(substr(Auth::user()->name, 0, 1))); ?>
+
+                                <?php endif; ?>
                             </div>
-                            <span class="font-medium text-gray-700">{{ explode(' ', Auth::user()->name)[0] }}</span>
+                            <span class="font-medium text-gray-700"><?php echo e(explode(' ', Auth::user()->name)[0]); ?></span>
                         </a>
                         
-                      @if(in_array(Auth::user()->email, $superAdmins))
-                            <a href="{{ url('/superadmin/dashboard') }}" class="text-[#3b82f6] font-medium text-sm hover:underline transition">Panel Super Admin</a>
-                        @endif
+                      <?php if(in_array(Auth::user()->email, $superAdmins)): ?>
+                            <a href="<?php echo e(url('/superadmin/dashboard')); ?>" class="text-[#3b82f6] font-medium text-sm hover:underline transition">Panel Super Admin</a>
+                        <?php endif; ?>
 
                         <!-- Botón de Cerrar Sesión -->
-                        <form method="POST" action="{{ route('logout') }}" class="inline-block">
-                            @csrf
+                        <form method="POST" action="<?php echo e(route('logout')); ?>" class="inline-block">
+                            <?php echo csrf_field(); ?>
                             <button type="submit" class="bg-[#A6F4EB] hover:bg-[#8de8df] text-[#040116] font-semibold px-6 py-2 rounded-full transition-colors shadow-sm text-[14px]">
                                 Cerrar Sesión
                             </button>
                         </form>
-                    @else
-                        <a href="{{ route('login') }}" onclick="localStorage.removeItem('singki_pending_review')" class="text-[#3b82f6] font-medium text-base hover:underline transition">Iniciar sesión</a>
-                        @if (Route::has('register'))
-                            <a href="{{ route('register') }}" onclick="localStorage.removeItem('singki_pending_review')" class="bg-[#3b82f6] text-white px-6 py-2.5 rounded-lg font-medium text-base hover:bg-[#2563eb] transition shadow-sm">Registrarse</a>
-                        @endif
-                    @endauth
-                @endif
+                    <?php else: ?>
+                        <a href="<?php echo e(route('login')); ?>" onclick="localStorage.removeItem('singki_pending_review')" class="text-[#3b82f6] font-medium text-base hover:underline transition">Iniciar sesión</a>
+                        <?php if(Route::has('register')): ?>
+                            <a href="<?php echo e(route('register')); ?>" onclick="localStorage.removeItem('singki_pending_review')" class="bg-[#3b82f6] text-white px-6 py-2.5 rounded-lg font-medium text-base hover:bg-[#2563eb] transition shadow-sm">Registrarse</a>
+                        <?php endif; ?>
+                    <?php endif; ?>
+                <?php endif; ?>
             </div>
         </div>
             <!-- Menú Móvil Desplegable -->
         <div x-show="mobileMenuOpen" @click.away="mobileMenuOpen = false" x-transition class="md:hidden absolute top-full left-0 w-full bg-white shadow-xl border-t border-gray-100 flex flex-col p-4 gap-4 z-50">
-            <a href="{{ url('/') }}" class="text-[#0f172a] font-medium text-base hover:text-[#2563eb]">Inicio</a>
+            <a href="<?php echo e(url('/')); ?>" class="text-[#0f172a] font-medium text-base hover:text-[#2563eb]">Inicio</a>
             <a href="#categorias" class="text-[#0f172a] font-medium text-base hover:text-[#2563eb]">Categorías</a>
-            @guest
-                <a href="{{ route('categories.index') }}" class="text-[#0f172a] font-medium text-base hover:text-[#2563eb]">Explorar</a>
+            <?php if(auth()->guard()->guest()): ?>
+                <a href="<?php echo e(route('categories.index')); ?>" class="text-[#0f172a] font-medium text-base hover:text-[#2563eb]">Explorar</a>
                 <hr class="border-gray-100">
-                <a href="{{ route('login') }}" onclick="localStorage.removeItem('singki_pending_review')" class="text-[#3b82f6] font-medium text-base">Iniciar sesión</a>
-                @if (Route::has('register'))
-                    <a href="{{ route('register') }}" onclick="localStorage.removeItem('singki_pending_review')" class="bg-[#3b82f6] text-white px-6 py-2.5 rounded-lg font-medium text-center text-base shadow-sm block">Registrarse</a>
-                @endif
-            @endguest
-            @auth
+                <a href="<?php echo e(route('login')); ?>" onclick="localStorage.removeItem('singki_pending_review')" class="text-[#3b82f6] font-medium text-base">Iniciar sesión</a>
+                <?php if(Route::has('register')): ?>
+                    <a href="<?php echo e(route('register')); ?>" onclick="localStorage.removeItem('singki_pending_review')" class="bg-[#3b82f6] text-white px-6 py-2.5 rounded-lg font-medium text-center text-base shadow-sm block">Registrarse</a>
+                <?php endif; ?>
+            <?php endif; ?>
+            <?php if(auth()->guard()->check()): ?>
                 <hr class="border-gray-100">
-                @php
+                <?php
                     $superAdmins = ['isaacmeneses254@gmail.com', 'edmundo@ejemplo.com'];
-                @endphp
-                @if(in_array(Auth::user()->email, $superAdmins))
-                    <a href="{{ url('/superadmin/dashboard') }}" class="text-[#3b82f6] font-medium text-base">Panel Super Admin</a>
-                @else
-                    <a href="{{ url('/admin/dashboard') }}" class="text-[#3b82f6] font-medium text-base">Administrar negocio</a>
-                @endif
-                <form method="POST" action="{{ route('logout') }}" class="w-full mt-2">
-                    @csrf
+                ?>
+                <?php if(in_array(Auth::user()->email, $superAdmins)): ?>
+                    <a href="<?php echo e(url('/superadmin/dashboard')); ?>" class="text-[#3b82f6] font-medium text-base">Panel Super Admin</a>
+                <?php else: ?>
+                    <a href="<?php echo e(url('/admin/dashboard')); ?>" class="text-[#3b82f6] font-medium text-base">Administrar negocio</a>
+                <?php endif; ?>
+                <form method="POST" action="<?php echo e(route('logout')); ?>" class="w-full mt-2">
+                    <?php echo csrf_field(); ?>
                     <button type="submit" class="w-full bg-[#A6F4EB] text-[#040116] font-semibold px-6 py-2.5 rounded-lg shadow-sm text-center">Cerrar Sesión</button>
                 </form>
-            @endauth
+            <?php endif; ?>
         </div>
     </header>
     <!-- ========================================== -->
@@ -228,7 +229,7 @@
     <!-- ========================================== -->
     <!-- ENRUTADOR VISUAL DINÁMICO POR ROL          -->
     <!-- ========================================== -->
-    @auth
+    <?php if(auth()->guard()->check()): ?>
         <!-- VISTA LOGUEADO (Horizontal, ultra compacta y sin foto) -->
         <div class="flex flex-col">
             
@@ -236,11 +237,11 @@
             <section class="bg-gradient-to-r from-[#020617] via-[#0f172a] to-[#2563eb] py-8 singki-nebula-banner">
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-6">
                     <div class="text-white w-full md:w-1/2 relative z-10">
-                        <h1 class="text-[28px] font-normal tracking-wide mb-1">¡Hola, <span class="font-bold">{{ explode(' ', Auth::user()->name)[0] }}</span>!</h1>
+                        <h1 class="text-[28px] font-normal tracking-wide mb-1">¡Hola, <span class="font-bold"><?php echo e(explode(' ', Auth::user()->name)[0]); ?></span>!</h1>
                         <p class="text-blue-100 text-[14px] font-light">¿Qué estás buscando hoy?</p>
                     </div>
                     <div class="w-full md:w-1/2 flex justify-start md:justify-end">
-                        <form x-data="{ searchType: 'negocios', openType: false }" x-bind:action="searchType === 'productos' ? '{{ route('products.index') }}' : '{{ url('/explorar') }}'" method="GET" class="relative z-50 w-full max-w-lg bg-white rounded-full flex items-center p-1.5 shadow-sm">
+                        <form x-data="{ searchType: 'negocios', openType: false }" x-bind:action="searchType === 'productos' ? '<?php echo e(route('products.index')); ?>' : '<?php echo e(url('/explorar')); ?>'" method="GET" class="relative z-50 w-full max-w-lg bg-white rounded-full flex items-center p-1.5 shadow-sm">
                             <!-- Botón Dropdown Personalizado -->
                             <div class="relative shrink-0">
                                 <button type="button" @click="openType = !openType" @click.outside="openType = false" class="flex items-center gap-2 pl-5 pr-4 py-2.5 text-sm font-semibold text-[#0f172a] hover:text-[#1F51FF] border-r border-gray-200 rounded-l-full bg-transparent transition shrink-0 focus:outline-none">
@@ -267,7 +268,14 @@
                                 </div>
                             </div>
                             <input type="text" name="search" x-bind:placeholder="searchType === 'productos' ? 'Buscar productos...' : 'Buscar negocios...'" class="w-full pl-5 pr-4 py-2 bg-transparent border-0 focus:ring-0 text-gray-700 text-sm outline-none">
-                        @error('search') <span class="text-red-500 text-sm mt-1 block absolute -bottom-6">{{ $message }}</span> @enderror
+                        <?php $__errorArgs = ['search'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> <span class="text-red-500 text-sm mt-1 block absolute -bottom-6"><?php echo e($message); ?></span> <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                             <button type="submit" class="bg-[#3b82f6] hover:bg-[#2563eb] text-white font-medium px-8 py-2 rounded-full transition text-sm">Buscar</button>
                         </form>
                     </div>
@@ -279,11 +287,11 @@
         <!-- 2. FRANJA BLANCA (PÍLDORAS DE ACCIÓN) -->
         <section class="w-full bg-white py-5">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-wrap gap-3">
-                <a href="{{ route('favorites.index') }}" class="bg-[#1F51FF] text-white px-6 py-2.5 rounded-full font-medium flex items-center gap-2 text-sm shadow-sm hover:opacity-90">
+                <a href="<?php echo e(route('favorites.index')); ?>" class="bg-[#1F51FF] text-white px-6 py-2.5 rounded-full font-medium flex items-center gap-2 text-sm shadow-sm hover:opacity-90">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path></svg>
                     Mis Favoritos
                 </a>
-                <a href="{{ route('bookings.index') }}" class="bg-[#1F51FF] text-white px-6 py-2.5 rounded-full font-medium flex items-center gap-2 text-sm shadow-sm hover:opacity-90">
+                <a href="<?php echo e(route('bookings.index')); ?>" class="bg-[#1F51FF] text-white px-6 py-2.5 rounded-full font-medium flex items-center gap-2 text-sm shadow-sm hover:opacity-90">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
                     Mis Reservas
                 </a>
@@ -293,16 +301,16 @@
                 </a>
 
                 <!-- 🚀 BOTÓN NEGRO RECUPERADO Y MEJORADO 🚀 -->
-                @php
+                <?php
                     $isSuperAdmin = in_array(Auth::user()->email ?? '', ['isaacmeneses254@gmail.com', 'edmundo@ejemplo.com', 'admin@sinki.com']);
                     $hasAdminRole = in_array(Auth::user()->role ?? '', ['proveedor', 'servicios', 'administrador', 'super_admin']);
-                @endphp
+                ?>
 
-                @if($isSuperAdmin || $hasAdminRole)
-                    <a href="{{ url('/admin/dashboard') }}" class="bg-[#0f172a] text-white px-6 py-2.5 rounded-full font-medium flex items-center gap-2 text-sm shadow-sm hover:bg-gray-800 transition duration-300">
+                <?php if($isSuperAdmin || $hasAdminRole): ?>
+                    <a href="<?php echo e(url('/admin/dashboard')); ?>" class="bg-[#0f172a] text-white px-6 py-2.5 rounded-full font-medium flex items-center gap-2 text-sm shadow-sm hover:bg-gray-800 transition duration-300">
                         Administrar negocio
                     </a>
-                @endif
+                <?php endif; ?>
             </div>
         </section>
 
@@ -310,40 +318,41 @@
             <!-- Sección de Reservas Activas (Sube de posición) -->
             <section class="bg-[#FFF8EC] py-6 border-b border-yellow-100/50">
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    @php
+                    <?php
                         $reservasCount = \App\Models\Booking::count();
-                    @endphp
+                    ?>
                     <div class="flex flex-wrap items-center justify-between gap-4">
                         <div class="flex items-center gap-3 flex-wrap">
                             <h3 class="text-[#D97706] font-extrabold text-base tracking-wide m-0">Tus reservas activas</h3>
-                            <span class="inline-flex items-center justify-center min-w-[2.25rem] h-9 px-3 rounded-full text-sm font-extrabold leading-none shadow-sm transition-all {{ $reservasCount > 0 ? 'bg-[#f59e0b] text-white ring-4 ring-amber-500/15' : 'bg-amber-100 text-amber-800' }}">
-                                {{ $reservasCount }}
+                            <span class="inline-flex items-center justify-center min-w-[2.25rem] h-9 px-3 rounded-full text-sm font-extrabold leading-none shadow-sm transition-all <?php echo e($reservasCount > 0 ? 'bg-[#f59e0b] text-white ring-4 ring-amber-500/15' : 'bg-amber-100 text-amber-800'); ?>">
+                                <?php echo e($reservasCount); ?>
+
                             </span>
                             <span class="text-sm font-medium text-gray-700 ml-1">
-                                @if($reservasCount > 0)
-                                    Tienes {{ $reservasCount }} {{ $reservasCount === 1 ? 'reserva activa registrada' : 'reservas activas registradas' }}.
-                                @else
+                                <?php if($reservasCount > 0): ?>
+                                    Tienes <?php echo e($reservasCount); ?> <?php echo e($reservasCount === 1 ? 'reserva activa registrada' : 'reservas activas registradas'); ?>.
+                                <?php else: ?>
                                     No tienes reservas activas en este momento.
-                                @endif
+                                <?php endif; ?>
                             </span>
                         </div>
                         
-                        @if($reservasCount > 0)
-                            <a href="{{ route('bookings.index') }}" class="text-sm font-bold text-[#D97706] hover:text-amber-800 transition whitespace-nowrap">
+                        <?php if($reservasCount > 0): ?>
+                            <a href="<?php echo e(route('bookings.index')); ?>" class="text-sm font-bold text-[#D97706] hover:text-amber-800 transition whitespace-nowrap">
                                 Ver en Mis Reservas &rarr;
                             </a>
-                        @endif
+                        <?php endif; ?>
                     </div>
                 </div>
             </section>
 
-    @elseif(auth()->check() && in_array(auth()->user()->role, ['proveedor', 'administrador', 'super_admin']))
+    <?php elseif(auth()->check() && in_array(auth()->user()->role, ['proveedor', 'administrador', 'super_admin'])): ?>
         <!-- 2. VISTA EXCLUSIVA: ADMIN / PROVEEDOR (Banner simplificado) -->
         <section class="py-20 text-center">
-            <h2 class="text-3xl font-bold text-[#040116]">¡Bienvenido de vuelta, {{ explode(' ', Auth::user()->name)[0] }}!</h2>
+            <h2 class="text-3xl font-bold text-[#040116]">¡Bienvenido de vuelta, <?php echo e(explode(' ', Auth::user()->name)[0]); ?>!</h2>
             <p class="text-gray-500 mt-2">Dirígete a tu Panel de Control para gestionar tu cuenta.</p>
         </section>
-    @else
+    <?php else: ?>
         <!-- VISTA INVITADO (Hero Original con la Chica Sonriendo) -->
         <section class="bg-gradient-to-r from-[#0a194f] via-[#163080] to-[#2563eb] pt-20 pb-28 relative">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-1 lg:grid-cols-12 gap-8 items-center relative z-10">
@@ -360,7 +369,7 @@
                     <p class="text-lg text-blue-100/90 mb-10 max-w-lg font-light leading-relaxed">
                         Te ayudamos a que encuentres lo que necesites de forma rápida y confiable. Negocios, proveedores, productos y servicios en un solo lugar.
                     </p>
-                    <form x-data="{ searchType: 'negocios', openType: false }" x-bind:action="searchType === 'productos' ? '{{ route('products.index') }}' : '{{ url('/explorar') }}'" method="GET" class="relative bg-white p-1.5 rounded-full flex items-center max-w-xl shadow-lg mt-8">
+                    <form x-data="{ searchType: 'negocios', openType: false }" x-bind:action="searchType === 'productos' ? '<?php echo e(route('products.index')); ?>' : '<?php echo e(url('/explorar')); ?>'" method="GET" class="relative bg-white p-1.5 rounded-full flex items-center max-w-xl shadow-lg mt-8">
                         <!-- Botón Dropdown Personalizado -->
                         <div class="relative shrink-0">
                             <button type="button" @click="openType = !openType" @click.outside="openType = false" class="flex items-center gap-2 pl-5 pr-4 py-2.5 text-sm font-semibold text-[#0f172a] hover:text-[#1F51FF] border-r border-gray-200 rounded-l-full bg-transparent transition shrink-0 focus:outline-none">
@@ -387,7 +396,14 @@
                             </div>
                         </div>
                         <input type="text" name="search" x-bind:placeholder="searchType === 'productos' ? 'Buscar productos...' : 'Buscar negocios...'" class="w-full pl-6 pr-4 bg-transparent border-none focus:ring-0 text-gray-500 text-sm outline-none">
-                        @error('search') <span class="text-red-500 text-sm mt-1 block absolute -bottom-6">{{ $message }}</span> @enderror
+                        <?php $__errorArgs = ['search'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> <span class="text-red-500 text-sm mt-1 block absolute -bottom-6"><?php echo e($message); ?></span> <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                         <button type="submit" class="bg-[#3b82f6] hover:bg-[#2563eb] text-white font-semibold px-8 py-2.5 rounded-full transition text-sm whitespace-nowrap">Buscar</button>
                     </form>
                 </div>
@@ -395,31 +411,31 @@
                 <!-- Imagen Chica Sonriendo -->
                 <div class="lg:col-span-5 relative z-10 hidden lg:flex justify-end pr-10">
                     <div class="w-[380px] relative drop-shadow-2xl">
-                        <img src="{{ asset('images/ChicaSonriendo.png') }}" alt="Chica Emprendedora" class="w-full h-auto object-contain">
+                        <img src="<?php echo e(asset('images/ChicaSonriendo.png')); ?>" alt="Chica Emprendedora" class="w-full h-auto object-contain">
                     </div>
                 </div>
             </div>
         </section>
-    @endif
+    <?php endif; ?>
     <!-- ========================================== -->
 
     <!-- ========================================== -->
     <!-- NUEVA SECCIÓN: VIDEO PROMOCIONAL           -->
     <!-- ========================================== -->
-    @guest
+    <?php if(auth()->guard()->guest()): ?>
     <section class="bg-white py-16 relative z-10">
         <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <h2 class="text-3xl lg:text-4xl font-extrabold text-[#0f172a] mb-3 tracking-tight">Cómo llegan los clientes</h2>
             <p class="text-gray-500 text-base mb-10 max-w-2xl mx-auto font-light">Alguien te elige, te llega el email con el contexto, reclamás tu perfil y respondés.</p>
             <div class="relative w-full rounded-[32px] overflow-hidden shadow-2xl border border-gray-100 aspect-video bg-gray-900 group">
                 <video class="w-full h-full object-cover" controls playsinline preload="metadata">
-                    <source src="{{ asset('images/promo.mp4') }}" type="video/mp4">
+                    <source src="<?php echo e(asset('images/promo.mp4')); ?>" type="video/mp4">
                     Tu navegador no soporta el formato de video.
                 </video>
             </div>
         </div>
     </section>
-    @endguest
+    <?php endif; ?>
     <!-- ========================================== -->
     
     <!-- ========================================== -->
@@ -432,57 +448,57 @@
                 <p class="text-[#3b82f6] font-medium text-sm">Encuentra negocios y proveedores según lo que necesitas</p>
             </div>
             <!-- ENLACE ORIGINAL RECUPERADO DE GIT -->
-            <a href="{{ auth()->check() ? route('explorar.index') : route('login') }}" class="text-[#3b82f6] font-medium hover:underline flex items-center gap-2 text-sm">Ver todas <span aria-hidden="true">&rarr;</span></a>
+            <a href="<?php echo e(auth()->check() ? route('explorar.index') : route('login')); ?>" class="text-[#3b82f6] font-medium hover:underline flex items-center gap-2 text-sm">Ver todas <span aria-hidden="true">&rarr;</span></a>
         </div>
         
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 md:gap-6">
             
             <!-- CICLO DINÁMICO DESDE LA BASE DE DATOS -->
-            @foreach($categorias as $categoria)
+            <?php $__currentLoopData = $categorias; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $categoria): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
             <!-- ENLACE DINÁMICO ORIGINAL RECUPERADO -->
-            <a href="{{ auth()->check() ? route('explorar.index', ['categoria' => $categoria->name]) : route('login') }}" class="bg-white border border-gray-200 rounded-[16px] py-8 px-4 text-center hover:shadow-[0_8px_30px_rgb(0,0,0,0.06)] hover:border-[#3b82f6] transition duration-300 cursor-pointer group flex flex-col items-center">
+            <a href="<?php echo e(auth()->check() ? route('explorar.index', ['categoria' => $categoria->name]) : route('login')); ?>" class="bg-white border border-gray-200 rounded-[16px] py-8 px-4 text-center hover:shadow-[0_8px_30px_rgb(0,0,0,0.06)] hover:border-[#3b82f6] transition duration-300 cursor-pointer group flex flex-col items-center">
                 <div class="mb-4 text-[#2563eb] group-hover:-translate-y-1 transition duration-300">
                     
                     <!-- SWITCH DE ICONOS CON ARCHIVOS FÍSICOS -->
-                    @switch(\Illuminate\Support\Str::slug($categoria->name))
-                        @case('tecnologia')
-                            <img src="{{ asset('images/Vectores-01.svg') }}" alt="Tecnología" class="w-10 h-10 mx-auto">
-                            @break
-                        @case('alimentos')
-                        @case('consumibles')
-                            <img src="{{ asset('images/Vectores-02.svg') }}" alt="Alimentos" class="w-10 h-10 mx-auto">
-                            @break
-                        @case('construccion')
-                        @case('logistica')
-                            <img src="{{ asset('images/Vectores-03.svg') }}" alt="Construcción" class="w-10 h-10 mx-auto">
-                            @break
-                        @case('salud')
-                            <img src="{{ asset('images/Vectores-04.svg') }}" alt="Salud" class="w-10 h-10 mx-auto">
-                            @break
-                        @case('moda')
-                        @case('ropa')
-                            <img src="{{ asset('images/Vectores-05.svg') }}" alt="Moda" class="w-10 h-10 mx-auto">
-                            @break
-                        @case('hogar')
-                            <img src="{{ asset('images/Vectores-06.svg') }}" alt="Hogar" class="w-10 h-10 mx-auto">
-                            @break
-                        @case('servicios')
-                            <img src="{{ asset('images/Vectores-07.svg') }}" alt="Servicios" class="w-10 h-10 mx-auto">
-                            @break
-                        @case('educacion')
-                            <img src="{{ asset('images/Vectores-08.svg') }}" alt="Educación" class="w-10 h-10 mx-auto">
-                            @break
-                        @default
+                    <?php switch(\Illuminate\Support\Str::slug($categoria->name)):
+                        case ('tecnologia'): ?>
+                            <img src="<?php echo e(asset('images/Vectores-01.svg')); ?>" alt="Tecnología" class="w-10 h-10 mx-auto">
+                            <?php break; ?>
+                        <?php case ('alimentos'): ?>
+                        <?php case ('consumibles'): ?>
+                            <img src="<?php echo e(asset('images/Vectores-02.svg')); ?>" alt="Alimentos" class="w-10 h-10 mx-auto">
+                            <?php break; ?>
+                        <?php case ('construccion'): ?>
+                        <?php case ('logistica'): ?>
+                            <img src="<?php echo e(asset('images/Vectores-03.svg')); ?>" alt="Construcción" class="w-10 h-10 mx-auto">
+                            <?php break; ?>
+                        <?php case ('salud'): ?>
+                            <img src="<?php echo e(asset('images/Vectores-04.svg')); ?>" alt="Salud" class="w-10 h-10 mx-auto">
+                            <?php break; ?>
+                        <?php case ('moda'): ?>
+                        <?php case ('ropa'): ?>
+                            <img src="<?php echo e(asset('images/Vectores-05.svg')); ?>" alt="Moda" class="w-10 h-10 mx-auto">
+                            <?php break; ?>
+                        <?php case ('hogar'): ?>
+                            <img src="<?php echo e(asset('images/Vectores-06.svg')); ?>" alt="Hogar" class="w-10 h-10 mx-auto">
+                            <?php break; ?>
+                        <?php case ('servicios'): ?>
+                            <img src="<?php echo e(asset('images/Vectores-07.svg')); ?>" alt="Servicios" class="w-10 h-10 mx-auto">
+                            <?php break; ?>
+                        <?php case ('educacion'): ?>
+                            <img src="<?php echo e(asset('images/Vectores-08.svg')); ?>" alt="Educación" class="w-10 h-10 mx-auto">
+                            <?php break; ?>
+                        <?php default: ?>
                             <!-- Ícono Genérico (Engranaje) para categorías nuevas -->
-                            <img src="{{ asset('images/Vectores-07.svg') }}" alt="Categoría" class="w-10 h-10 mx-auto">
-                    @endswitch
+                            <img src="<?php echo e(asset('images/Vectores-07.svg')); ?>" alt="Categoría" class="w-10 h-10 mx-auto">
+                    <?php endswitch; ?>
 
                 </div>
                 
-                <h3 class="font-bold text-gray-900 text-[15px] mb-1">{{ $categoria->name }}</h3>
-                <p class="text-[13px] text-[#3b82f6]">{{ $categoria->companies_count ?? 0 }} negocios</p>
+                <h3 class="font-bold text-gray-900 text-[15px] mb-1"><?php echo e($categoria->name); ?></h3>
+                <p class="text-[13px] text-[#3b82f6]"><?php echo e($categoria->companies_count ?? 0); ?> negocios</p>
             </a>
-            @endforeach
+            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
 
         </div>
     </section>
@@ -493,7 +509,7 @@
     <!-- ========================================== -->
     <!-- ========================================== -->
 
-    @guest
+    <?php if(auth()->guard()->guest()): ?>
     <!-- ========================================== -->
     <!-- SECCIÓN 5: CÓMO FUNCIONA                   -->
     <!-- ========================================== -->
@@ -556,7 +572,7 @@
             </div>
         </div>
     </section>
-    @endguest
+    <?php endif; ?>
     <!-- ========================================== -->
 
     <!-- ========================================== -->
@@ -569,35 +585,36 @@
                 <h2 class="text-3xl font-extrabold text-[#0f172a] mb-2 tracking-normal">Negocios destacados</h2>
                 <p class="text-gray-500 font-light text-sm">Proveedores verificados con los mejores productos y servicios</p>
             </div>
-            <a href="{{ auth()->check() ? route('explorar.index') : route('login') }}" class="text-[#3b82f6] font-medium hover:underline flex items-center gap-2 text-sm">Ver todos <span aria-hidden="true">&rarr;</span></a>
+            <a href="<?php echo e(auth()->check() ? route('explorar.index') : route('login')); ?>" class="text-[#3b82f6] font-medium hover:underline flex items-center gap-2 text-sm">Ver todos <span aria-hidden="true">&rarr;</span></a>
         </div>
         
         <!-- Cuadrícula de 4 tarjetas -->
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            @forelse($negocios_destacados ?? [] as $negocio)
+            <?php $__empty_1 = true; $__currentLoopData = $negocios_destacados ?? []; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $negocio): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
             <!-- Borde índigo muy fino (border-[#818cf8]) como en el Figma -->
             <!-- AQUÍ SE APLICÓ LA OPCIÓN 1: cursor-pointer y el evento onclick con tu lógica de rutas -->
             <div class="cursor-pointer bg-white border border-[#818cf8] rounded-[16px] overflow-hidden hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] transition duration-300 group flex flex-col relative"
-                 onclick="window.location.href='{{ auth()->check() ? url('/perfil-publico?negocio=' . urlencode($negocio->name)) : route('login') }}'">
+                 onclick="window.location.href='<?php echo e(auth()->check() ? url('/perfil-publico?negocio=' . urlencode($negocio->name)) : route('login')); ?>'">
                 
-                @if($negocio->is_premium)
+                <?php if($negocio->is_premium): ?>
                     <!-- Etiqueta PREMIUM Morada -->
                     <div class="absolute top-4 left-4 bg-[#8b5cf6] text-white text-[10px] font-bold px-3 py-1.5 rounded-md z-10 flex items-center gap-1 shadow-sm tracking-wide">
                         <span class="text-yellow-300 text-xs">★</span> PREMIUM
                     </div>
-                @endif
+                <?php endif; ?>
                 
                 <!-- Lógica de Imagen o Iniciales -->
                 <div class="h-44 w-full overflow-hidden relative bg-gray-100 flex items-center justify-center">
-                    @if(!empty($negocio->logo))
-                        <img src="{{ asset('storage/' . $negocio->logo) }}" alt="{{ $negocio->name }}" class="w-full h-full object-cover group-hover:scale-105 transition duration-700">
-                    @else
+                    <?php if(!empty($negocio->logo)): ?>
+                        <img src="<?php echo e(asset('storage/' . $negocio->logo)); ?>" alt="<?php echo e($negocio->name); ?>" class="w-full h-full object-cover group-hover:scale-105 transition duration-700">
+                    <?php else: ?>
                         <div class="w-full h-full flex items-center justify-center bg-[#264fe3] group-hover:scale-105 transition duration-700" style="background-color: #264fe3;">
                             <span class="text-4xl font-extrabold text-white tracking-widest uppercase">
-                                {{ mb_substr($negocio->name, 0, 2) }}
+                                <?php echo e(mb_substr($negocio->name, 0, 2)); ?>
+
                             </span>
                         </div>
-                    @endif
+                    <?php endif; ?>
                 </div>
                 
                 <!-- Contenido de la Tarjeta -->
@@ -605,7 +622,7 @@
                     
                     <!-- Título y Verificado -->
                     <div class="flex justify-between items-start gap-2 mb-3">
-                        <h3 class="font-bold text-gray-900 text-[15px] leading-tight line-clamp-1">{{ $negocio->name ?? 'Sin nombre' }}</h3>
+                        <h3 class="font-bold text-gray-900 text-[15px] leading-tight line-clamp-1"><?php echo e($negocio->name ?? 'Sin nombre'); ?></h3>
                         <span class="shrink-0 inline-flex items-center gap-1 bg-[#dcfce7] text-[#16a34a] px-2 py-0.5 rounded text-[10px] font-bold border border-green-200">
                             <svg class="w-3 h-3" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path></svg>
                             Verificado
@@ -614,12 +631,14 @@
                     
                     <!-- Pastilla de Categoría Celeste -->
                     <span class="inline-block bg-[#eff6ff] text-[#3b82f6] text-[11px] font-medium px-3 py-1 rounded-full mb-3 self-start">
-                        {{ $negocio->category->name ?? 'Categoría General' }}
+                        <?php echo e($negocio->category->name ?? 'Categoría General'); ?>
+
                     </span>
                     
                     <!-- Descripción corta -->
                     <p class="text-gray-500 text-[13px] leading-relaxed mb-4 flex-grow font-light line-clamp-2">
-                        {{ $negocio->description ?? 'Sin descripción disponible.' }}
+                        <?php echo e($negocio->description ?? 'Sin descripción disponible.'); ?>
+
                     </p>
                     
                     <div class="w-full h-px bg-gray-100 mb-4"></div>
@@ -628,19 +647,19 @@
                     <div class="flex items-center justify-between text-[13px]">
                         <div class="flex items-center gap-1.5">
                             <svg class="w-4 h-4 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
-                            <span class="font-bold text-gray-900">{{ $negocio->rating ?? '5.0' }}</span>
-                            <span class="text-gray-400">({{ $negocio->reviews ?? '10+' }})</span>
+                            <span class="font-bold text-gray-900"><?php echo e($negocio->rating ?? '5.0'); ?></span>
+                            <span class="text-gray-400">(<?php echo e($negocio->reviews ?? '10+'); ?>)</span>
                         </div>
                         <!-- Se cambió la etiqueta <a> a <span> para que el onclick del padre haga todo el trabajo -->
                         <span class="text-[#3b82f6] font-medium hover:underline text-[13px]">Ver perfil</span>
                     </div>
                 </div>
             </div>
-            @empty
+            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
             <div class="col-span-full text-center text-gray-500 py-8 bg-gray-50 rounded-2xl border-2 border-dashed border-gray-200">
                 Aún no hay negocios destacados registrados.
             </div>
-            @endforelse
+            <?php endif; ?>
         </div>
     </section>
     <!-- ========================================== -->
@@ -655,91 +674,91 @@
                 <h2 class="text-3xl font-extrabold text-[#0f172a] mb-2 tracking-normal">Productos disponibles</h2>
                 <p class="text-gray-500 font-light text-sm">Explora lo más reciente en nuestro catálogo</p>
             </div>
-            <a href="{{ route('products.index') }}" class="text-[#3b82f6] font-medium hover:underline flex items-center gap-2 text-sm">Ver todos <span aria-hidden="true">&rarr;</span></a>
+            <a href="<?php echo e(route('products.index')); ?>" class="text-[#3b82f6] font-medium hover:underline flex items-center gap-2 text-sm">Ver todos <span aria-hidden="true">&rarr;</span></a>
         </div>
         
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-5">
-            @forelse($productos ?? [] as $producto)
-                @php $stock = $producto->quantity ?? $producto->stock ?? 0; @endphp
+            <?php $__empty_1 = true; $__currentLoopData = $productos ?? []; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $producto): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
+                <?php $stock = $producto->quantity ?? $producto->stock ?? 0; ?>
                 <div class="bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden flex flex-col h-full hover:shadow-md transition-shadow relative group">
                     
-                    <a href="{{ route('products.show', $producto->id) }}" class="relative h-40 bg-gray-50 flex items-center justify-center p-3 block">
+                    <a href="<?php echo e(route('products.show', $producto->id)); ?>" class="relative h-40 bg-gray-50 flex items-center justify-center p-3 block">
                         <img 
-    src="{{ str_starts_with($producto->image, 'http') ? $producto->image : asset('storage/' . $producto->image) }}" 
-    alt="{{ $producto->name }}" 
+    src="<?php echo e(str_starts_with($producto->image, 'http') ? $producto->image : asset('storage/' . $producto->image)); ?>" 
+    alt="<?php echo e($producto->name); ?>" 
     class="w-full h-48 object-cover rounded-t-lg group-hover:scale-105 transition-transform"
     onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1542838132-92c53300491e?w=400&q=80';"
 >
-                        @if($stock > 0)
+                        <?php if($stock > 0): ?>
                             <span class="absolute top-3 right-3 bg-green-50 text-green-500 border border-green-100 px-2 py-0.5 rounded-full text-[10px] font-bold">Disponible</span>
-                        @else
+                        <?php else: ?>
                             <span class="absolute top-3 right-3 bg-red-50 text-red-500 border border-red-100 px-2 py-0.5 rounded-full text-[10px] font-bold">Agotado</span>
-                        @endif
+                        <?php endif; ?>
                     </a>
 
                     <div class="p-4 flex-1 flex flex-col justify-between">
                         <div>
-                            @php
+                            <?php
                                 $supName = $producto->brand->name ?? $producto->supplier->name ?? '';
                                 if (empty($supName) || strtolower($supName) === 'singki' || strtolower($supName) === 'wawastech') {
                                     $negociosCatalogo = ['Distribuidora Alimentos Norte', 'Comercial San José', 'Agroindustria del Norte', 'Abastos Central Estelí', 'Mercadito El Sol', 'Importadora Las Segovias', 'Distribuidora La Favorita', 'Suplidora Nicaragüense'];
                                     $supName = $negociosCatalogo[($producto->id ?? 1) % count($negociosCatalogo)];
                                 }
-                            @endphp
-                            <p class="text-[10px] text-gray-400 uppercase mb-1">{{ $supName }}</p>
-                            <a href="{{ route('products.show', $producto->id) }}" class="block text-xs font-bold text-gray-900 hover:text-[#1F51FF] mb-2 leading-tight transition-colors">{{ $producto->name }}</a>
-                            <p class="text-sm font-bold text-[#1F51FF] mb-2">C$ {{ number_format($producto->cost ?? $producto->price ?? 0, 0) }}</p>
-                            <a href="{{ route('products.show', $producto->id) }}" class="inline-block text-[#1F51FF] text-[11px] font-bold hover:underline mb-3">Ver detalles &rarr;</a>
+                            ?>
+                            <p class="text-[10px] text-gray-400 uppercase mb-1"><?php echo e($supName); ?></p>
+                            <a href="<?php echo e(route('products.show', $producto->id)); ?>" class="block text-xs font-bold text-gray-900 hover:text-[#1F51FF] mb-2 leading-tight transition-colors"><?php echo e($producto->name); ?></a>
+                            <p class="text-sm font-bold text-[#1F51FF] mb-2">C$ <?php echo e(number_format($producto->cost ?? $producto->price ?? 0, 0)); ?></p>
+                            <a href="<?php echo e(route('products.show', $producto->id)); ?>" class="inline-block text-[#1F51FF] text-[11px] font-bold hover:underline mb-3">Ver detalles &rarr;</a>
                         </div>
                         
                         <div class="mb-2">
-                            @php
+                            <?php
                                 $isFav = false;
                                 if (auth()->check()) {
                                     $isFav = \App\Models\Favorite::where('user_id', auth()->id())
                                         ->where('name', 'U:' . auth()->id() . '|P:' . $producto->id)
                                         ->exists();
                                 }
-                            @endphp
+                            ?>
                             <div x-data="{ 
-                                isFav: {{ $isFav ? 'true' : 'false' }},
+                                isFav: <?php echo e($isFav ? 'true' : 'false'); ?>,
                                 animating: false,
                                 init() {
-                                    if(localStorage.getItem('fav_product_{{ $producto->id }}') === 'true') {
+                                    if(localStorage.getItem('fav_product_<?php echo e($producto->id); ?>') === 'true') {
                                         this.isFav = true;
                                     }
                                 },
                                 async toggleFav() {
-                                    @if(!auth()->check()) window.location.href = '{{ route('login') }}'; return; @endif
+                                    <?php if(!auth()->check()): ?> window.location.href = '<?php echo e(route('login')); ?>'; return; <?php endif; ?>
                                     this.animating = true;
                                     setTimeout(() => this.animating = false, 300);
                                     this.isFav = !this.isFav;
 
                                     if(this.isFav) {
-                                        localStorage.setItem('fav_product_{{ $producto->id }}', 'true');
+                                        localStorage.setItem('fav_product_<?php echo e($producto->id); ?>', 'true');
                                         let arr = JSON.parse(localStorage.getItem('singki_fav_products') || '[]');
-                                        if(!arr.some(p => p.id == {{ $producto->id }})) {
-                                            arr.push({id: {{ $producto->id }}, name: '{{ addslashes($producto->name) }}', price: '{{ $producto->price }}', image: '{{ $producto->image }}'});
+                                        if(!arr.some(p => p.id == <?php echo e($producto->id); ?>)) {
+                                            arr.push({id: <?php echo e($producto->id); ?>, name: '<?php echo e(addslashes($producto->name)); ?>', price: '<?php echo e($producto->price); ?>', image: '<?php echo e($producto->image); ?>'});
                                             localStorage.setItem('singki_fav_products', JSON.stringify(arr));
                                         }
                                         if(typeof window.showSingkiToast === 'function') window.showSingkiToast('✓ Producto añadido a favoritos');
                                     } else {
-                                        localStorage.removeItem('fav_product_{{ $producto->id }}');
+                                        localStorage.removeItem('fav_product_<?php echo e($producto->id); ?>');
                                         let arr = JSON.parse(localStorage.getItem('singki_fav_products') || '[]');
-                                        localStorage.setItem('singki_fav_products', JSON.stringify(arr.filter(p => p.id != {{ $producto->id }})));
+                                        localStorage.setItem('singki_fav_products', JSON.stringify(arr.filter(p => p.id != <?php echo e($producto->id); ?>)));
                                         if(typeof window.showSingkiToast === 'function') window.showSingkiToast('Eliminado de tus favoritos');
                                     }
 
                                     try {
-                                        fetch('{{ route('favorites.toggle') }}', {
+                                        fetch('<?php echo e(route('favorites.toggle')); ?>', {
                                             method: 'POST',
                                             headers: { 
                                                 'Content-Type': 'application/json', 
-                                                'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                                                'X-CSRF-TOKEN': '<?php echo e(csrf_token()); ?>',
                                                 'X-Requested-With': 'XMLHttpRequest',
                                                 'Accept': 'application/json'
                                             },
-                                            body: JSON.stringify({ type: 'product', id: {{ $producto->id }} })
+                                            body: JSON.stringify({ type: 'product', id: <?php echo e($producto->id); ?> })
                                         });
                                     } catch(e) { }
                                 }
@@ -751,22 +770,22 @@
                             </div>
                         </div>
                         
-                        @if($stock <= 0)
-                            <a href="{{ url('/producto/'.$producto->id.'/reservar') }}" class="w-full bg-[#1F51FF] hover:bg-blue-700 text-white text-center py-2.5 rounded-lg text-xs font-medium transition-colors mt-auto opacity-0 group-hover:opacity-100 absolute bottom-0 left-0 z-20">
+                        <?php if($stock <= 0): ?>
+                            <a href="<?php echo e(url('/producto/'.$producto->id.'/reservar')); ?>" class="w-full bg-[#1F51FF] hover:bg-blue-700 text-white text-center py-2.5 rounded-lg text-xs font-medium transition-colors mt-auto opacity-0 group-hover:opacity-100 absolute bottom-0 left-0 z-20">
                                 Reservar cuando esté disponible
                             </a>
-                        @endif
+                        <?php endif; ?>
                     </div>
                 </div>
-            @empty
+            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
                 <p class="text-gray-500 text-sm">No hay productos.</p>
-            @endforelse
+            <?php endif; ?>
 
 
         </div>
     </section>
 
-   @guest
+   <?php if(auth()->guard()->guest()): ?>
     <!-- ========================================== -->
     <!-- SECCIÓN 7: BANNER CALL TO ACTION           -->
     <!-- ========================================== -->
@@ -802,7 +821,7 @@
                     </li>
                 </ul>
                 
-                <a href="{{ route('register') }}" class="inline-block bg-white text-[#2563eb] font-bold px-8 py-2.5 rounded-full hover:bg-gray-100 transition duration-300 text-sm shadow-md text-center">
+                <a href="<?php echo e(route('register')); ?>" class="inline-block bg-white text-[#2563eb] font-bold px-8 py-2.5 rounded-full hover:bg-gray-100 transition duration-300 text-sm shadow-md text-center">
                     Registrar mi negocio
                 </a>
             </div>
@@ -832,9 +851,9 @@
             </div>
         </div>
     </section>
-    @endguest
+    <?php endif; ?>
     
-    @guest
+    <?php if(auth()->guard()->guest()): ?>
     <!-- ========================================== -->
     <!-- SECCIÓN 8: EXPERIENCIAS COMUNIDAD          -->
     <!-- ========================================== -->
@@ -915,19 +934,19 @@
 <div class="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-10">
     <div>
         <div class="text-[40px] font-extrabold text-[#0f172a] mb-1 tracking-tight">
-            {{ number_format($totalNegocios ?? 0) }}<span class="text-[#2563eb] font-black">+</span>
+            <?php echo e(number_format($totalNegocios ?? 0)); ?><span class="text-[#2563eb] font-black">+</span>
         </div>
         <div class="text-[13px] text-[#3b82f6] font-medium">Negocios registrados</div>
     </div>
     <div>
         <div class="text-[40px] font-extrabold text-[#0f172a] mb-1 tracking-tight">
-            {{ number_format($totalUsuarios ?? 0) }}<span class="text-[#2563eb] font-black">+</span>
+            <?php echo e(number_format($totalUsuarios ?? 0)); ?><span class="text-[#2563eb] font-black">+</span>
         </div>
         <div class="text-[13px] text-[#3b82f6] font-medium">Usuarios activos</div>
     </div>
     <div>
         <div class="text-[40px] font-extrabold text-[#0f172a] mb-1 tracking-tight flex items-center justify-center gap-1">
-            {{ number_format($promedioCalificacion ?? 5.0, 1) }} <span class="text-[#2563eb] text-3xl -mt-1">★</span>
+            <?php echo e(number_format($promedioCalificacion ?? 5.0, 1)); ?> <span class="text-[#2563eb] text-3xl -mt-1">★</span>
         </div>
         <div class="text-[13px] text-[#3b82f6] font-medium">Calificación promedio</div>
     </div>
@@ -949,7 +968,7 @@
             5: '5/5 — ¡Excelente!'
         },
         handleGuestSubmit(e) {
-            @guest
+            <?php if(auth()->guard()->guest()): ?>
                 e.preventDefault();
                 this.ratingError = false;
                 if (this.rating < 1 || this.rating > 5) {
@@ -957,7 +976,7 @@
                     return;
                 }
                 this.showAuthModal = true;
-            @endguest
+            <?php endif; ?>
         },
         savePendingAndGo(e, url) {
             e.preventDefault();
@@ -979,7 +998,7 @@
             <h3 class="text-3xl md:text-4xl font-extrabold text-[#0f172a] mb-3 tracking-tight">¿Qué te parece nuestra plataforma?</h3>
             <p class="text-gray-500 mb-8 text-[15px] font-light max-w-xl mx-auto">Tu opinión nos ayuda a mejorar el servicio para todos los negocios y emprendedores de la comunidad SINGKI.</p>
 
-            @if(session('success'))
+            <?php if(session('success')): ?>
                 <!-- Modal Inyectado de Éxito SINGKI -->
                 <div class="fixed inset-0 z-[100] flex items-center justify-center bg-[#0f172a]/50 backdrop-blur-sm p-4 transition-opacity duration-300" id="singki-review-success-modal">
                     <div class="bg-white max-w-md w-full rounded-[28px] shadow-2xl p-8 border border-gray-100 text-center transform transition-all duration-300">
@@ -997,10 +1016,10 @@
                         </button>
                     </div>
                 </div>
-            @endif
+            <?php endif; ?>
 
-            <form action="{{ route('resenas.store') }}" method="POST" @submit="handleGuestSubmit($event)" class="max-w-xl mx-auto">
-                @csrf
+            <form action="<?php echo e(route('resenas.store')); ?>" method="POST" @submit="handleGuestSubmit($event)" class="max-w-xl mx-auto">
+                <?php echo csrf_field(); ?>
                 <input type="hidden" name="rating" :value="rating">
 
                 <!-- Selector de 5 Estrellas Azules Animadas -->
@@ -1074,10 +1093,10 @@
                 </p>
 
                 <div class="flex flex-col gap-3">
-                    <a href="#" @click="savePendingAndGo($event, '{{ route('login') }}')" class="w-full bg-[#2563eb] hover:bg-[#1d4ed8] text-white font-bold py-3.5 px-6 rounded-xl transition shadow-md text-sm">
+                    <a href="#" @click="savePendingAndGo($event, '<?php echo e(route('login')); ?>')" class="w-full bg-[#2563eb] hover:bg-[#1d4ed8] text-white font-bold py-3.5 px-6 rounded-xl transition shadow-md text-sm">
                         Iniciar sesión y publicar
                     </a>
-                    <a href="#" @click="savePendingAndGo($event, '{{ route('register') }}')" class="w-full bg-blue-50 hover:bg-blue-100 text-[#2563eb] font-bold py-3.5 px-6 rounded-xl transition text-sm">
+                    <a href="#" @click="savePendingAndGo($event, '<?php echo e(route('register')); ?>')" class="w-full bg-blue-50 hover:bg-blue-100 text-[#2563eb] font-bold py-3.5 px-6 rounded-xl transition text-sm">
                         Crear cuenta gratis
                     </a>
                 </div>
@@ -1093,7 +1112,7 @@
         <p class="text-gray-500 text-lg mb-14 font-light">Respuestas a las dudas más comunes sobre SINGKI</p>
         
         <div class="space-y-5 max-w-3xl mx-auto">
-            @php
+            <?php
                 $faqList = [
                     [
                         'q' => '¿Cómo funciona SINGKI?',
@@ -1116,12 +1135,12 @@
                         'a' => 'Para unirte a SINGKI como proveedor, debes crear una cuenta y luego solicitar acceso desde el Panel de Administración, o contactar a nuestro equipo para que activen tu perfil de negocio y puedas subir tu inventario.'
                     ]
                 ];
-            @endphp
+            ?>
 
-            @foreach($faqList as $faq)
+            <?php $__currentLoopData = $faqList; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $faq): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
             <div x-data="{ open: false }" class="border border-blue-500 rounded-2xl bg-white overflow-hidden transition-all duration-300">
                 <button @click="open = !open" class="w-full px-8 py-[18px] flex justify-between items-center text-left hover:bg-blue-50/40 transition duration-300 group focus:outline-none">
-                    <span class="font-bold text-[#0f172a] text-[15px]">{{ $faq['q'] }}</span>
+                    <span class="font-bold text-[#0f172a] text-[15px]"><?php echo e($faq['q']); ?></span>
                     <div class="shrink-0 w-7 h-7 rounded-full border-[2px] border-[#0f172a] flex items-center justify-center text-[#0f172a] group-hover:bg-[#0f172a] group-hover:text-white transition-all duration-300" :class="{'bg-[#0f172a] text-white rotate-180': open}">
                         <svg x-show="!open" class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"></path>
@@ -1140,10 +1159,11 @@
                      x-transition:leave-end="opacity-0 -translate-y-2" 
                      class="px-8 pb-6 pt-2 text-gray-600 font-light text-sm leading-relaxed" 
                      style="display: none;">
-                    {{ $faq['a'] }}
+                    <?php echo e($faq['a']); ?>
+
                 </div>
             </div>
-            @endforeach
+            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
         </div>
     </section>
     <!-- ========================================== -->
@@ -1157,15 +1177,15 @@
             <h2 class="text-4xl lg:text-5xl font-extrabold text-[#2563eb] mb-4 tracking-normal">¿Listo para empezar?</h2>
             <p class="text-[#3b82f6] text-[15px] font-light mb-10 max-w-2xl mx-auto">Únete a la plataforma que conecta negocios con oportunidades.</p>
             <div class="flex flex-col sm:flex-row gap-4 items-center justify-center mt-6 w-full px-6 sm:px-0">
-                <a href="{{ route('register') }}" onclick="localStorage.removeItem('singki_pending_review')" class="w-full sm:w-auto bg-[#2563eb] text-white font-bold px-8 py-3 rounded-xl hover:bg-[#1d4ed8] transition shadow-sm text-[15px] inline-block text-center">Crear cuenta gratis</a>
+                <a href="<?php echo e(route('register')); ?>" onclick="localStorage.removeItem('singki_pending_review')" class="w-full sm:w-auto bg-[#2563eb] text-white font-bold px-8 py-3 rounded-xl hover:bg-[#1d4ed8] transition shadow-sm text-[15px] inline-block text-center">Crear cuenta gratis</a>
                 <a href="#negocios-destacados" onclick="event.preventDefault(); document.getElementById('negocios-destacados')?.scrollIntoView({ behavior: 'smooth' });" class="w-full sm:w-auto bg-white border border-[#2563eb] text-[#2563eb] font-bold px-8 py-3 rounded-xl hover:bg-blue-50 transition text-[15px] inline-block text-center">Explorar negocios</a>
             </div>
         </div>
     </section>
-    @endguest
+    <?php endif; ?>
 
     <!-- Footer -->
-    @include('components.footer')
+    <?php echo $__env->make('components.footer', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
     <!-- ========================================== -->
     <script>
         document.addEventListener('DOMContentLoaded', function() {
@@ -1262,7 +1282,7 @@
                         const tokenMeta = document.querySelector('meta[name="csrf-token"]');
                         const token = tokenMeta ? tokenMeta.getAttribute('content') : '';
 
-                        const response = await fetch("{{ route('chat.ask') }}", {
+                        const response = await fetch("<?php echo e(route('chat.ask')); ?>", {
                             method: 'POST',
                             headers: {
                                 'Content-Type': 'application/json',
@@ -1279,7 +1299,7 @@
                         const kiMsgHtml = `
                             <div class="flex gap-4 items-start mb-6">
                                 <div class="w-12 h-12 bg-[#2563eb] rounded-xl flex items-center justify-center shrink-0 shadow-sm">
-                                    <img src="{{ asset('images/Robot.png') }}" alt="Ki" class="w-7 h-7 object-contain scale-110">
+                                    <img src="<?php echo e(asset('images/Robot.png')); ?>" alt="Ki" class="w-7 h-7 object-contain scale-110">
                                 </div>
                                 <div class="bg-slate-50 border border-slate-100 p-4 rounded-2xl rounded-tl-sm w-full">
                                     <h4 class="text-[#2563eb] font-bold text-[14px] mb-1">Ki</h4>
@@ -1313,9 +1333,9 @@
         }
     }
 </script>
-@include('components.accessibility-widget')
-@include('components.welcome-scroll-animations')
-    @auth
+<?php echo $__env->make('components.accessibility-widget', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
+<?php echo $__env->make('components.welcome-scroll-animations', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
+    <?php if(auth()->guard()->check()): ?>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const pendingReview = localStorage.getItem('singki_pending_review');
@@ -1333,11 +1353,11 @@
 
                     localStorage.removeItem('singki_pending_review');
                     
-                    fetch("{{ route('resenas.store') }}", {
+                    fetch("<?php echo e(route('resenas.store')); ?>", {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
-                            'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                            'X-CSRF-TOKEN': '<?php echo e(csrf_token()); ?>',
                             'Accept': 'application/json'
                         },
                         body: JSON.stringify({
@@ -1372,6 +1392,6 @@
             }
         });
     </script>
-    @endauth
+    <?php endif; ?>
 </body>
-</html>
+</html><?php /**PATH C:\laragon\www\Flow-Tech\resources\views/welcome.blade.php ENDPATH**/ ?>

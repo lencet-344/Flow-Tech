@@ -31,7 +31,15 @@
                     </div>
                     <div>
                         <p class="font-semibold text-sm capitalize">{{ Auth::user()->name ?? 'Usuario' }}</p>
-                        <p class="text-[#1F51FF] text-xs">Administrador</p>
+                        <p class="text-[#1F51FF] text-xs">
+                            @if(Auth::user()->role === 'servicios')
+                                Servicios
+                            @elseif(in_array(Auth::user()->role, ['emprendedor', 'proveedor']))
+                                Emprendedor
+                            @else
+                                Administrador
+                            @endif
+                        </p>
                     </div>
                 </div>
 
@@ -127,5 +135,63 @@
         </script>
     @endif
 @include('components.accessibility-widget')
+    @auth
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const pendingReview = localStorage.getItem('singki_pending_review');
+            if (pendingReview) {
+                try {
+                    const reviewData = JSON.parse(pendingReview);
+                    
+                    if (!reviewData.explicitlySubmitted || 
+                        reviewData.rating < 1 || 
+                        reviewData.rating > 5 || 
+                        (Date.now() - reviewData.timestamp > 900000)) {
+                        localStorage.removeItem('singki_pending_review');
+                        return;
+                    }
+
+                    localStorage.removeItem('singki_pending_review');
+                    
+                    fetch("{{ route('resenas.store') }}", {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                            'Accept': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            rating: reviewData.rating,
+                            comment: reviewData.comment
+                        })
+                    }).then(response => {
+                        if(response.ok) {
+                            document.body.insertAdjacentHTML('beforeend', `
+                                <div class="fixed inset-0 z-[100] flex items-center justify-center bg-[#0f172a]/50 backdrop-blur-sm p-4 transition-opacity duration-300" id="singki-review-success-modal">
+                                    <div class="bg-white max-w-md w-full rounded-[28px] shadow-2xl p-8 border border-gray-100 text-center transform transition-all duration-300">
+                                        <div class="w-20 h-20 bg-[#a7f3d0]/60 rounded-full flex items-center justify-center mx-auto mb-5 shadow-sm">
+                                            <div class="w-14 h-14 bg-[#10b981] rounded-full flex items-center justify-center text-white shadow-md">
+                                                <svg class="w-8 h-8" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path>
+                                                </svg>
+                                            </div>
+                                        </div>
+                                        <h3 class="text-2xl font-extrabold text-[#0f172a] mb-2">¡Reseña publicada con éxito!</h3>
+                                        <p class="text-gray-500 text-sm mb-7 leading-relaxed">¡Gracias por compartir tu experiencia! Tu calificación ha sido guardada correctamente en SINGKI.</p>
+                                        <button type="button" onclick="document.getElementById('singki-review-success-modal')?.remove()" class="w-full bg-[#2563eb] hover:bg-[#1d4ed8] text-white font-bold py-3.5 px-6 rounded-xl shadow-md hover:shadow-lg transition text-sm cursor-pointer">
+                                            ¡Entendido!
+                                        </button>
+                                    </div>
+                                </div>
+                            `);
+                        }
+                    }).catch(err => console.error('Error auto-guardando reseña:', err));
+                } catch(e) {
+                    localStorage.removeItem('singki_pending_review');
+                }
+            }
+        });
+    </script>
+    @endauth
 </body>
 </html>
