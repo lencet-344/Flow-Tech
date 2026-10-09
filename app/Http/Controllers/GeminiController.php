@@ -128,15 +128,15 @@ class GeminiController extends Controller
                 return response()->json(['reply' => $reply]);
             }
 
-            $apiError = $response ? $response->json() : 'No se pudo conectar con Google';
-            
+            // MODIFICACIÓN: Mensaje amigable cuando la API falla o se satura
             return response()->json([
-                'reply' => '⚠️ ERROR DETALLADO DE GEMINI: ' . json_encode($apiError)
+                'reply' => 'El servidor de la IA está saturado en este momento. Por favor, intenta de nuevo en unos minutos.'
             ], 500);
 
         } catch (Exception $e) {
+            // MODIFICACIÓN: Mensaje amigable cuando ocurre un error en el servidor
             return response()->json([
-                'reply' => 'Excepción en el Servidor: ' . $e->getMessage()
+                'reply' => 'El servidor de la IA está saturado en este momento. Por favor, intenta de nuevo en unos minutos.'
             ], 500);
         }
     }
