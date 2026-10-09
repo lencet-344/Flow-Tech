@@ -9,7 +9,7 @@
 
     <link rel="icon" type="image/png" href="{{ asset('images/favicon.png') }}?v=2">
 </head>
-<body class="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-600 via-indigo-500 to-purple-600 font-sans antialiased p-4">
+<body class="min-h-screen w-full flex items-center justify-center bg-gradient-to-br from-[#3565fd] to-[#000034] font-sans antialiased p-4">
 
     <!-- Tarjeta Principal (Blanca) -->
     <div class="w-full max-w-md bg-white rounded-3xl shadow-2xl p-10 text-center">

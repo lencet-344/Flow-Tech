@@ -408,10 +408,14 @@ unset($__errorArgs, $__bag); ?>
                     </form>
                 </div>
 
-                <!-- Imagen Chica Sonriendo -->
+                <!-- Imagen 2 Personas con Burbuja Cian (Vista Invitado - TAMAÑO MAXIMIZADO) -->
                 <div class="lg:col-span-5 relative z-10 hidden lg:flex justify-end pr-10">
-                    <div class="w-[380px] relative drop-shadow-2xl">
-                        <img src="<?php echo e(asset('images/ChicaSonriendo.png')); ?>" alt="Chica Emprendedora" class="w-full h-auto object-contain">
+                    <div class="w-[380px] h-[380px] relative flex items-end justify-center">
+                        <!-- Fondo Cian estilo burbuja de chat (Tailwind puro) -->
+                        <div class="absolute inset-0 bg-[#adfeff] rounded-tl-full rounded-tr-full rounded-bl-full rounded-br-[50px] shadow-2xl mt-8"></div>
+                        
+                        <!-- Imagen de personas (fondo transparente y ESCALADA) -->
+                        <img src="<?php echo e(asset('images/personas.png')); ?>" alt="Emprendedores SINGKI" class="w-[115%] max-w-none h-auto object-contain relative z-10 drop-shadow-xl scale-110 origin-bottom translate-y-2">
                     </div>
                 </div>
             </div>

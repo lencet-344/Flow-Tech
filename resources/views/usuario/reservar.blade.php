@@ -84,12 +84,12 @@
                         </div>
                     </div>
                     <div>
-                        <label class="block text-xs font-semibold text-slate-500 mb-2">Unidad</label>
-                        <select name="unidad" class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:ring-2 focus:ring-blue-600 focus:border-blue-600 outline-none transition-all bg-white font-medium text-slate-700">
-                            <option value="Unidades">Unidades</option>
-                            <option value="Libras">Libras</option>
-                            <option value="Metros">Metros</option>
-                            <option value="Botellas">Botellas</option>
+                        <label class="block text-xs font-semibold text-slate-500 mb-2">Presentación</label>
+                        <!-- Selector bloqueado dinámico que sí envía el valor -->
+                        <select name="unidad" class="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm outline-none transition-all bg-slate-100 font-semibold text-slate-600 pointer-events-none" tabindex="-1">
+                            <option value="{{ $producto->presentation ?? 'Unidades' }}" selected>
+                                {{ ucfirst($producto->presentation ?? 'Unidades') }}
+                            </option>
                         </select>
                     </div>
                 </div>
